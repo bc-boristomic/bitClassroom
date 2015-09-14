@@ -54,7 +54,7 @@
                                 <li class="active"><a href="/login">Sign in</a></li>
                             }
                             @if(currentUser != null) {
-                                <li class="dropdown">
+                                <li class="dropdown active">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                         @currentUser.getFirstName() <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
@@ -62,7 +62,7 @@
                                         <li><a href="#">ITEM TO BE ADDED</a></li>
                                         <li><a href="#">ITEM TO BE ADDED</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="/user/createprofile">Edit profile</a></li>
+                                        <li><a href="/user/editprofile">Edit profile</a></li>
                                         <li class="divider"></li>
                                         <li><a href="/logout">Sign out</a></li>
                                     </ul>
@@ -86,14 +86,22 @@
                 </div>
             }
             </div>
+            <div class="col-lg-4 col-lg-offset-4">
             @if(flash.containsKey("warning")) {
-                <div class="col-lg-4 col-lg-offset-4">
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        @flash.get("warning")
-                    </div>
-                    }
-        </div>
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("warning")
+                </div>
+            }
+            </div>
+            <div class="col-lg-4 col-lg-offset-4">
+            @if(flash.containsKey("info")) {
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("info")
+                </div>
+            }
+            </div>
         </div>
 
             <!-- CONTAINER WITH ALL CONTENT FOR MAIN HTML -->

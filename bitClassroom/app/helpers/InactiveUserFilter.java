@@ -1,6 +1,7 @@
 package helpers;
 
 import models.user.User;
+import static play.mvc.Controller.flash;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -25,7 +26,8 @@ public class InactiveUserFilter extends Security.Authenticator {
 
     @Override
     public Result onUnauthorized(Http.Context context) {
-        return redirect("/login");
+        flash("info", "You already created your profile, perhaps you wanted to edit it?");
+        return redirect("/user/editprofile");
     }
 
 }

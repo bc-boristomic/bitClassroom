@@ -6,6 +6,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utility.MD5Hash;
+import utility.UserConstants;
 import views.html.about;
 import views.html.index;
 import views.html.users.login;
@@ -63,15 +64,18 @@ public class Application extends Controller {
         String password = boundForm.bindFromRequest().field("password").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
         User user = User.findByEmailAndPassword(email, passwordHashed);
-        user.setStatus(1);
-        Logger.info(user.getProfilePicture());
 
         if (user != null) {
-            user.update();
-            Logger.info(user.toString());
+            if (user.getStatus() != UserConstants.FULLY_ACTIVE) {
+                user.setStatus(1);
+                user.update();
+                session("username", user.getEmail());
+                flash("success", String.format("%s successfully logged in", user.getFirstName()));
+                return redirect("/user/createprofile");
+            }
             session("username", user.getEmail());
-            flash("success", String.format("User %s successfully logged in", user.getEmail()));
-            return redirect("/user/createprofile");
+            flash("success", String.format("%s successfully logged in", user.getFirstName()));
+            return redirect("/");
         }
         flash("warning", "Wrong email or password, user not found.");
         return ok(login.render(userForm));

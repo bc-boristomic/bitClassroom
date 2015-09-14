@@ -16,6 +16,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.MD5Hash;
 import utility.UserUtils;
+import views.html.users.editprofile;
 import views.html.users.profile;
 
 import java.io.File;
@@ -102,6 +103,18 @@ public class UserController extends Controller {
         flash("warning", "Your profile could not be updated. Please contact site administrator.");
         return redirect("user/editprofile");
 
+    }
+
+    @Security.Authenticated(CurrentUserFilter.class)
+    public Result editProfile() {
+        User temp = SessionHelper.currentUser(ctx());
+        return ok(editprofile.render(temp));
+    }
+
+
+    @Security.Authenticated(CurrentUserFilter.class)
+    public Result saveProfile() {
+        return ok("asd");
     }
 
     @Security.Authenticated(CurrentUserFilter.class)
