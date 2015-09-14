@@ -3,6 +3,7 @@ package controllers.users;
 import helpers.CurrentUserFilter;
 import helpers.InactiveUserFilter;
 import helpers.SessionHelper;
+import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -15,6 +16,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.MD5Hash;
+import utility.UserConstants;
 import utility.UserUtils;
 import views.html.users.editprofile;
 import views.html.users.profile;
@@ -33,6 +35,10 @@ public class UserController extends Controller {
 
     private Form<User> userForm = Form.form(User.class);
 
+    /**
+     * Renders template for creating initial user profile with all information, once profile is created status of user is
+     * @return
+     */
     @Security.Authenticated(InactiveUserFilter.class)
     public Result createProfile() {
         User temp = SessionHelper.currentUser(ctx());
@@ -53,7 +59,7 @@ public class UserController extends Controller {
         String password2 = boundForm.bindFromRequest().field("password2").value();
         if (!password1.equals(password2)) {
             flash("warning", "Your passwords don't match.");
-            return redirect("/user/createrofile");
+            return redirect("/user/createprofile");
         }
 
         MultipartFormData data = request().body().asMultipartFormData();
@@ -101,20 +107,89 @@ public class UserController extends Controller {
         }
 
         flash("warning", "Your profile could not be updated. Please contact site administrator.");
-        return redirect("user/editprofile");
+        return redirect("/");
 
     }
 
     @Security.Authenticated(CurrentUserFilter.class)
     public Result editProfile() {
         User temp = SessionHelper.currentUser(ctx());
+
+//        if (temp.getRoles().size() > 0 && temp.getRoles() != null) {
+//            for (Role r : temp.getRoles()) {
+//                if (r.getId().equals(UserConstants.ADMIN)){
+//                    Logger.info("sadrzi admina");
+//
+//                }
+//            }
+//        }
+//
+//        Logger.info("novi red");
         return ok(editprofile.render(temp));
     }
 
 
     @Security.Authenticated(CurrentUserFilter.class)
     public Result saveProfile() {
-        return ok("asd");
+        User temp = SessionHelper.currentUser(ctx());
+        Form<User> boundForm = userForm.bindFromRequest();
+
+        if (boundForm.hasErrors()) {
+            flash("warning", "Please correct the form.");
+            return redirect("/");
+        }
+
+        String password1 = boundForm.bindFromRequest().field("password1").value();
+        String password2 = boundForm.bindFromRequest().field("password2").value();
+        if (!password1.equals(password2)) {
+            flash("warning", "Your passwords don't match.");
+            return redirect("/user/editprofile");
+        }
+
+        MultipartFormData data = request().body().asMultipartFormData();
+        List<MultipartFormData.FilePart> pictures = data.getFiles();
+
+        if (pictures != null) {
+            String picName = null;
+            for (FilePart picture : pictures) {
+                picName = picture.getFilename();
+                File file = picture.getFile();
+
+                try {
+                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/users/" + temp.getId() + "/" + picName));
+                    Logger.info(Play.application().path() + "\\public\\images\\" + temp.getId() + "/" + picName);
+                    imageList.add(picName);
+                } catch (IOException e) {
+                    Logger.info("Could not move file. " + e.getMessage());
+                    flash("error", "Could not move file.");
+                }
+            }
+            temp.setProfilePicture(temp.getId() + "\\" + picName);
+        }
+
+        String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
+        String nickname = boundForm.bindFromRequest().field("nickname").value();
+        String location = boundForm.bindFromRequest().field("location").value();
+        String homePhone = boundForm.bindFromRequest().field("home-phone").value();
+        String mobilePhone = boundForm.bindFromRequest().field("mobile-phone").value();
+        String website = boundForm.bindFromRequest().field("website").value();
+        String skype = boundForm.bindFromRequest().field("skype").value();
+        String facebook = boundForm.bindFromRequest().field("facebook").value();
+        String twitter = boundForm.bindFromRequest().field("twitter").value();
+        String youtube = boundForm.bindFromRequest().field("youtube").value();
+
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube);
+
+        if (temp != null) {
+            temp.setUpdateDate(new DateTime());
+            temp.setUpdatedBy(temp.getEmail());
+            temp.update();
+            flash("success", "You successfuly updated your profile.");
+            return redirect("/");
+        }
+
+        flash("warning", "Your profile could not be updated. Please contact site administrator.");
+        return redirect("/");
     }
 
     @Security.Authenticated(CurrentUserFilter.class)

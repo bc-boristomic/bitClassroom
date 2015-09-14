@@ -4,8 +4,10 @@ import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import utility.UserConstants;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,9 +54,9 @@ public final class User extends Model {
     @Column(name = "youtube")
     private String youtube;
     @Column(name = "picture")
-    private String profilePicture;
+    private String profilePicture = "default.jpg";
     @Column(name = "status", length = 1)
-    private Integer status = 0;
+    private Integer status = UserConstants.INACTIVE;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false)
@@ -63,9 +65,8 @@ public final class User extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
-//    @OneToMany
-//    @JoinColumn(name = "user_role_id", referencedColumnName = "id")
-//    private List<UserRole> userRoles;
+    @ManyToMany
+    private List<Role> roles = new ArrayList<>();
 
     /**
      * Default empty constructor for Ebean
@@ -125,16 +126,6 @@ public final class User extends Model {
     }
 
     /**
-     * TODO check if ok
-     * @param email
-     * @param role
-     * @return
-     */
-    public static User findByEmailAndRole(String email, Integer role) {
-        return finder.where().eq("email", email).eq("role_id", role).findUnique();
-    }
-
-    /**
      * Returns finder on User model
      *
      * @return
@@ -151,20 +142,21 @@ public final class User extends Model {
      */
     @Override
     public String toString() {
-//        String g = "female";
-//        if (gender.equals(1) && gender != null) {
-//            g = "male";
-//        }
+        String g = "female";
+        if (gender.equals(1) && gender != null) {
+            g = "male";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(firstName).append(" ");
         sb.append(lastName).append(" ");
         sb.append("Born ").append(birthDate).append(" ");
-   //     sb.append("Gender: ").append(g).append(" ");
+        sb.append("Gender: ").append(g).append(" ");
         sb.append("Location: ").append(location).append(" ");
         sb.append("Phone: ").append(cellPhone).append(" ");
         sb.append("Web: ").append(website);
 
         sb.append("STATUS ").append(status);
+        sb.append(roles);
 
         return sb.toString();
 
@@ -307,13 +299,13 @@ public final class User extends Model {
         this.updatedBy = updatedBy;
     }
 
-//    public List<UserRole> getUserRoles() {
-//        return userRoles;
-//    }
-//
-//    public void setUserRoles(List<UserRole> userRoles) {
-//        this.userRoles = userRoles;
-//    }
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public void setUpdateDate(DateTime updateDate) {
         this.updateDate = updateDate;

@@ -10,6 +10,12 @@ create table error_log (
   constraint pk_error_log primary key (id))
 ;
 
+create table role (
+  id                        bigint auto_increment not null,
+  name                      varchar(10),
+  constraint pk_role primary key (id))
+;
+
 create table user (
   id                        bigint auto_increment not null,
   email                     varchar(100),
@@ -38,7 +44,17 @@ create table user (
 ;
 
 
+create table user_role (
+  user_id                        bigint not null,
+  role_id                        bigint not null,
+  constraint pk_user_role primary key (user_id, role_id))
+;
 
+
+
+alter table user_role add constraint fk_user_role_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) references role (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -46,7 +62,11 @@ SET FOREIGN_KEY_CHECKS=0;
 
 drop table error_log;
 
+drop table role;
+
 drop table user;
+
+drop table user_role;
 
 SET FOREIGN_KEY_CHECKS=1;
 

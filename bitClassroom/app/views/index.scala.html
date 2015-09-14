@@ -1,5 +1,8 @@
+@import helpers.SessionHelper
+@import models.user.User
+@(user: User)
 @main("Welcome to bitClassroom") {
-
+    @if(user == null) {
     <div class="row top5">
         <div class="text-center">
             <div class="row">
@@ -37,6 +40,12 @@
 
         </div>
     </div>
+}
+    @if(user != null) {
+        <!-- TODO -->
+        Ovdje ubaciti kod za divove coursea. :) Ovaj gore dio je text za usera koji nije logovan, to je onaj dio sto je pisao na registeru na proslom siteu.
+        <!-- TODO -->
+}
 
 
 }

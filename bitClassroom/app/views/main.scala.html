@@ -1,6 +1,7 @@
 @import helpers.SessionHelper
 @import models.user.User
 
+@import utility.UserConstants
 @(title: String)(content: Html)(implicit currentUser: User = SessionHelper.currentUser(ctx()))
 
 <!DOCTYPE html>
@@ -50,6 +51,23 @@
                             <li><a href="/about">About</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
+                            @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
+                                @for(role <- currentUser.getRoles) {
+                                    @if(role.getId.equals(UserConstants.ADMIN)) {
+                                        <li><a href="#">Admin panel</a></li>
+                                    }
+                                    @if(role.getId.equals(UserConstants.TEACHER)) {
+                                        <li><a href="#">Go to classrom</a></li>
+                                    }
+                                    @if(role.getId.equals(UserConstants.MENTOR)) {
+                                        <li><a href="#">Go to classrom</a></li>
+                                    }
+                                    @if(role.getId.equals(UserConstants.STUDENT)) {
+                                        <li><a href="#">Go to classrom</a></li>
+                                    }
+                                }
+                            }
+
                             @if(currentUser == null) {
                                 <li class="active"><a href="/login">Sign in</a></li>
                             }

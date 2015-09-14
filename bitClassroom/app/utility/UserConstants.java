@@ -5,10 +5,10 @@ package utility;
  */
 public abstract class UserConstants {
 
-    public static final int ADMIN = 1;
-    public static final int TEACHER = 2;
-    public static final int MENTOR = 3;
-    public static final int STUDENT = 4;
+    public static final Long ADMIN = 1L;
+    public static final Long TEACHER = 2L;
+    public static final Long MENTOR = 3L;
+    public static final Long STUDENT = 4L;
 
     public static final int INACTIVE = 0;
     public static final int NOT_FULLY_ACTIVE = 1;

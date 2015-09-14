@@ -1,5 +1,6 @@
 package controllers;
 
+import helpers.SessionHelper;
 import models.user.User;
 import play.Logger;
 import play.data.Form;
@@ -22,7 +23,8 @@ public class Application extends Controller {
      * @return
      */
     public Result index() {
-        return ok(index.render());
+        User temp = SessionHelper.currentUser(ctx());
+        return ok(index.render(temp));
     }
 
     /**
