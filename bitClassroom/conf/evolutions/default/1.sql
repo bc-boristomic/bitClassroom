@@ -10,6 +10,17 @@ create table error_log (
   constraint pk_error_log primary key (id))
 ;
 
+create table post (
+  id                        bigint auto_increment not null,
+  title                     varchar(255),
+  content                   text,
+  post_type                 integer,
+  visible_mentors           tinyint(1) default 0,
+  date                      varchar(255),
+  user_id                   bigint,
+  constraint pk_post primary key (id))
+;
+
 create table role (
   id                        bigint auto_increment not null,
   name                      varchar(10),
@@ -49,6 +60,8 @@ create table user_role (
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
+alter table post add constraint fk_post_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_post_user_1 on post (user_id);
 
 
 
@@ -61,6 +74,8 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 SET FOREIGN_KEY_CHECKS=0;
 
 drop table error_log;
+
+drop table post;
 
 drop table role;
 

@@ -17,6 +17,8 @@ POST        /user/createprofile        @controllers.users.UserController.updateP
 GET         /user/editprofile          @controllers.users.UserController.editProfile()
 POST        /user/editprofile          @controllers.users.UserController.saveProfile()
 
+GET         /post/new                  @controllers.posts.PostController.addPost()
+POST        /post/                     @controllers.posts.PostController.savePost()
 
 GET         /user/test                 @controllers.users.UserController.test()
 

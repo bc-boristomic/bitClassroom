@@ -33,7 +33,7 @@ public class UserController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
-    private Form<User> userForm = Form.form(User.class);
+    private final Form<User> userForm = Form.form(User.class);
 
     /**
      * Renders template for creating initial user profile with all information, once profile is created status of user is
