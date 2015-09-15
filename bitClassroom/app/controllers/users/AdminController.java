@@ -1,5 +1,6 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.AdminFilter;
 import helpers.SessionHelper;
 import models.user.Role;
@@ -15,6 +16,7 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
+import views.html.admins.userlist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);
 
+
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(adminindex.render(temp));
@@ -34,6 +37,13 @@ public class AdminController extends Controller {
 
     public Result addNewUser() {
         return ok(adduser.render(userForm));
+    }
+
+    public Result listOfUser(){
+
+        List<User> userList = User.findAll();
+        return ok(userlist.render(userList));
+
     }
 
     public Result saveNewUser() {
@@ -78,11 +88,23 @@ public class AdminController extends Controller {
 
 
         Logger.info(fname + " " + lname + " " + email + " " + password + " " + role);
-        return ok();
+        List<User> userList = User.findAll();
+        return ok(userlist.render(userList));
     }
 
     public Result test() {
         return ok("you are admin");
+    }
+
+
+    public Result deleteUser(Long id) {
+
+        final User user = User.findById(id);
+        if (user == null) {
+            return notFound(String.format("User %s does not exists.", id));
+        }
+        Ebean.delete(user);
+        return redirect("/admin/allusers");
     }
 
 }
