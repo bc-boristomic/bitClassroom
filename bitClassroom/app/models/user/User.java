@@ -290,6 +290,10 @@ public final class User extends Model {
         return dtf.print(updateDate);
     }
 
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }

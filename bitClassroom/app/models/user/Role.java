@@ -29,6 +29,11 @@ public final class Role extends Model {
     public Role() {
     }
 
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public static Finder<Long, Role> getFinder() {
         return finder;
     }

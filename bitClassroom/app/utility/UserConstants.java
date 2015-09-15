@@ -10,6 +10,11 @@ public abstract class UserConstants {
     public static final Long MENTOR = 3L;
     public static final Long STUDENT = 4L;
 
+    public static final String NAME_ADMIN = "Admin";
+    public static final String NAME_TEACHER = "Teacher";
+    public static final String NAME_MENTOR = "Mentor";
+    public static final String NAME_STUDENT = "Student";
+
     public static final int INACTIVE = 0;
     public static final int NOT_FULLY_ACTIVE = 1;
     public static final int FULLY_ACTIVE = 2;

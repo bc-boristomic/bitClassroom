@@ -56,7 +56,7 @@
                             @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
                                 @for(role <- currentUser.getRoles) {
                                     @if(role.getId.equals(UserConstants.ADMIN)) {
-                                        <li><a href="#">Admin panel</a></li>
+                                        <li><a href="/">Admin panel</a></li>
                                     }
                                     @if(role.getId.equals(UserConstants.TEACHER)) {
                                         <li class="dropdown ">
