@@ -20,7 +20,13 @@ POST        /user/editprofile          @controllers.users.UserController.savePro
 GET         /post/new                  @controllers.posts.PostController.addPost()
 POST        /post/                     @controllers.posts.PostController.savePost()
 
+
+# FOR TESTING ONLY
 GET         /user/test                 @controllers.users.UserController.test()
+GET         /admin/test                @controllers.users.AdminController.test()
+GET         /teacher/test              @controllers.users.TeacherController.test()
+GET         /mentor/test               @controllers.users.MentorController.test()
+GET         /student/test               @controllers.users.StudentController.test()
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -114,16 +114,6 @@ public class UserController extends Controller {
     @Security.Authenticated(CurrentUserFilter.class)
     public Result editProfile() {
         User temp = SessionHelper.currentUser(ctx());
-
-//        if (temp.getRoles().size() > 0 && temp.getRoles() != null) {
-//            for (Role r : temp.getRoles()) {
-//                if (r.getId().equals(UserConstants.ADMIN)){
-//                    Logger.info("sadrzi admina");
-//
-//                }
-//            }
-//        }
-//
         return ok(editprofile.render(temp));
     }
 

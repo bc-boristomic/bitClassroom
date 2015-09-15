@@ -13,4 +13,5 @@ public abstract class UserConstants {
     public static final int INACTIVE = 0;
     public static final int NOT_FULLY_ACTIVE = 1;
     public static final int FULLY_ACTIVE = 2;
+    public static final int DELETED = 3;
 }
