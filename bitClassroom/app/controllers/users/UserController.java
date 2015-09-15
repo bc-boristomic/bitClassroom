@@ -178,7 +178,7 @@ public class UserController extends Controller {
         String twitter = boundForm.bindFromRequest().field("twitter").value();
         String youtube = boundForm.bindFromRequest().field("youtube").value();
 
-        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube);
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());

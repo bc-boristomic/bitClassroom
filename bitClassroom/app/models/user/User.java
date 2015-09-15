@@ -1,6 +1,7 @@
 package models.user;
 
 import com.avaje.ebean.Model;
+import models.Post;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -67,6 +68,8 @@ public final class User extends Model {
     private String updatedBy;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
+    @OneToMany
+    private List<Post> posts = new ArrayList<>();
 
     /**
      * Default empty constructor for Ebean
@@ -154,12 +157,8 @@ public final class User extends Model {
         sb.append("Location: ").append(location).append(" ");
         sb.append("Phone: ").append(cellPhone).append(" ");
         sb.append("Web: ").append(website);
-
         sb.append("STATUS ").append(status);
-        sb.append(roles);
-
         return sb.toString();
-
     }
 
 
@@ -289,6 +288,14 @@ public final class User extends Model {
     public String getFormattedUpdateDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(updateDate);
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
     }
 
     public String getUpdatedBy() {

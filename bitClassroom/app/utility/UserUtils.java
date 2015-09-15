@@ -13,42 +13,42 @@ public class UserUtils {
         if (user == null) {
             return null;
         }
-        if (nickname.length() > 3 && nickname != null) {
+        if (nickname != null && nickname.length() > 3) {
             user.setNickName(nickname);
         }
-        if (birthDate.length() == 10 && birthDate != null) {
+        if (birthDate != null && birthDate.length() == 10) {
             String[] parts = birthDate.split("-");
             String baLocal = parts[2] + "." + parts[1] + "." + parts[0];
             user.setBirthDate(baLocal);
         }
-        if (password.length() > 6 && password != null) {
+        if (password != null && password.length() > 6) {
             user.setPassword(password);
         }
-        if (location.length() > 2 && location != null) {
+        if (location != null && location.length() > 2) {
             user.setLocation(location);
         }
-        if (homePhone.length() > 6 && homePhone != null) {
+        if (homePhone != null && homePhone.length() > 6) {
             user.setHomePhone(homePhone);
         }
-        if (mobilePhone.length() > 6 && mobilePhone != null) {
+        if (mobilePhone != null && mobilePhone.length() > 6) {
             user.setCellPhone(mobilePhone);
         }
-        if (website.toLowerCase().contains("http://") && website.length() > 8 && website != null) {
+        if (website != null && website.toLowerCase().contains("http://") && website.length() > 8) {
             user.setWebsite(website);
         }
-        if (skype.length() > 0 && skype != null) {
+        if (skype != null && skype.length() > 0) {
             user.setSkype(skype);
         }
-        if (facebook.toLowerCase().contains("facebook.com") && facebook != null) {
+        if (facebook != null && facebook.toLowerCase().contains("facebook.com")) {
             user.setFacebook(facebook);
         }
-        if (twitter.toLowerCase().contains("twitter.com") && twitter != null) {
+        if (twitter != null && twitter.toLowerCase().contains("twitter.com")) {
             user.setTwitter(twitter);
         }
-        if (youtube.toLowerCase().contains("youtube.com") && youtube != null) {
+        if (youtube != null && youtube.toLowerCase().contains("youtube.com")) {
             user.setYoutube(youtube);
         }
-        if (gender.length() > 0 && gender != null) {
+        if (gender != null && gender.length() > 0) {
             try {
                 Integer gend = Integer.parseInt(gender);
                 user.setGender(gend);
@@ -56,44 +56,10 @@ public class UserUtils {
                 Logger.error(e.getMessage());
             }
         }
-        user.setStatus(UserConstants.FULLY_ACTIVE);
+        if (user.getStatus() != UserConstants.FULLY_ACTIVE) {
+            user.setStatus(UserConstants.FULLY_ACTIVE);
+        }
         return user;
     }
 
-    public static User ckeckUserProfileDetails(User user, String nickname, String password, String location, String homePhone, String mobilePhone, String website, String skype, String facebook, String twitter, String youtube) {
-        if (user == null) {
-            return null;
-        }
-        if (nickname.length() > 3 && nickname != null) {
-            user.setNickName(nickname);
-        }
-        if (password.length() > 6 && password != null) {
-            user.setPassword(password);
-        }
-        if (location.length() > 2 && location != null) {
-            user.setLocation(location);
-        }
-        if (homePhone.length() > 6 && homePhone != null) {
-            user.setHomePhone(homePhone);
-        }
-        if (mobilePhone.length() > 6 && mobilePhone != null) {
-            user.setCellPhone(mobilePhone);
-        }
-        if (website.toLowerCase().contains("http://") && website.length() > 8 && website != null) {
-            user.setWebsite(website);
-        }
-        if (skype.length() > 0 && skype != null) {
-            user.setSkype(skype);
-        }
-        if (facebook.toLowerCase().contains("facebook.com") && facebook != null) {
-            user.setFacebook(facebook);
-        }
-        if (twitter.toLowerCase().contains("twitter.com") && twitter != null) {
-            user.setTwitter(twitter);
-        }
-        if (youtube.toLowerCase().contains("youtube.com") && youtube != null) {
-            user.setYoutube(youtube);
-        }
-        return user;
-    }
 }
