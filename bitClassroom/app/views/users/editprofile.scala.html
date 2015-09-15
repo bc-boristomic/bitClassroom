@@ -23,14 +23,16 @@
         <div class="form-group">
           <label for="nickname" class="col-lg-3 control-label">Nickname</label>
           <div class="col-lg-9">
-            <input name="nickname" type="text" class="form-control" id="nickname" placeholder="Your nickname" value="@user.getNickName">
+            <input name="nickname" type="text" class="form-control" id="inputName"  onblur="checkNameInput()" placeholder="Your nickname" value="@user.getNickName">
+            <span id="nameError" class="alert-warning " data-error-for="" ></span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="inputPassword1" class="col-lg-3 control-label">Password</label>
           <div class="col-lg-9">
-            <input name="password1" type="password" class="form-control" id="inputPassword1" placeholder="Type new password">
+            <input name="password1" type="password" class="form-control" onblur="checkPassword()" id="inputPassword1" placeholder="Type new password">
+            <span id="passError" class="alert-warning " data-error-for="" ></span>
           </div>
         </div>
 
@@ -38,7 +40,8 @@
         <div class="form-group">
           <label for="inputPassword" class="col-lg-3 control-label">Password</label>
           <div class="col-lg-9">
-            <input name="password2" type="password" class="form-control" id="inputPassword" placeholder="Retype your password">
+            <input name="password2" type="password" class="form-control" onblur="checkPasswords()" id="inputPassword" placeholder="Retype your password">
+            <span id="repassError" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
 
@@ -52,14 +55,16 @@
         <div class="form-group">
           <label for="home-phone" class="col-lg-3 control-label">Home phone</label>
           <div class="col-lg-9">
-            <input name="home-phone" type="text" class="form-control" id="home-phone" placeholder="Your home phone number" value="@user.getHomePhone">
+            <input name="home-phone" type="text" class="form-control" onblur="checkPhone()" id="home-phone" placeholder="Your home phone number" value="@user.getHomePhone">
+            <span id="phoneCheck" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="mobile-phone" class="col-lg-3 control-label">Mobile phone</label>
           <div class="col-lg-9">
-            <input name="mobile-phone" type="text" class="form-control" id="mobile-phone" placeholder="Your mobile phone number" value="@user.getCellPhone">
+            <input name="mobile-phone" type="text" class="form-control" onblur="checkMobilePhone()" id="mobile-phone" placeholder="Your mobile phone number" value="@user.getCellPhone">
+            <span id="mobilePhoneCheck" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
 
@@ -75,14 +80,16 @@
         <div class="form-group">
           <label for="skype" class="col-lg-3 control-label">Skype</label>
           <div class="col-lg-9">
-            <input name="skype" type="text" class="form-control" id="skype" placeholder="Your skype name" value="@user.getSkype">
+            <input name="skype" type="text" class="form-control" onblur="checkSkypeName()" id="skype" placeholder="Your skype name" value="@user.getSkype">
+            <span id="skypeCheck" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="facebook" class="col-lg-3 control-label">Facebook</label>
           <div class="col-lg-9">
-            <input name="facebook" type="text" class="form-control" id="facebook" placeholder="Your facebook profile" value="@user.getFacebook">
+            <input name="facebook" type="text" class="form-control" onblur="checkFacebook()" id="facebook" placeholder="Your facebook profile" value="@user.getFacebook">
+            <span id="facebookCheck" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
 
