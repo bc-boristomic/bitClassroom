@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.user.User;
 import org.junit.*;
 
 import play.mvc.*;
@@ -28,6 +29,14 @@ import static org.junit.Assert.*;
 */
 public class ApplicationTest {
 
+    @Before
+    public void configureDatabase() {
+        fakeApplication(inMemoryDatabase());
+    }
+
+    /**
+     * Test application if it works or not.
+     */
     @Test
     public void simpleCheck() {
         int a = 1 + 1;
@@ -35,11 +44,54 @@ public class ApplicationTest {
     }
 
     @Test
-    public void renderTemplate() {
-        Content html = views.html.index.render("Your new application is ready.");
-        assertEquals("text/html", contentType(html));
-        assertTrue(contentAsString(html).contains("Your new application is ready."));
+    public void testNullPointer() {
+        String s = "Not null";
+        assertNotNull(s);
     }
+
+    @Test
+    public void testDatabase() {
+        List<User> users = User.findAll();
+        assertNotNull(users);
+    }
+
+    /**
+     * Test saving user in database.
+     */
+    @Test
+    public void testSavingInDatabase() {
+        User u = new User();
+        u.setEmail("test@test.com");
+        u.setPassword("passwordtest");
+        u.setFirstName("name");
+        u.save();
+    }
+
+    /**
+     * Test if user saved in testSavingInDatabase
+     * method can be loaded from database.
+     */
+    @Test
+    public void testSavingAndLoadingFromDatabase() {
+        User temp = new User();
+        temp.setEmail("email@email.com");
+        temp.setPassword("password");
+        temp.setFirstName("username");
+
+        User u = User.findByEmail("email@email.com");
+        assertNull(u);
+    }
+
+    /**
+     * Expected not to find user with this id
+     */
+    @Test
+    public void testNonexistentUser() {
+        User u = User.findById(90000000000L);
+        assertNull(u);
+    }
+
+
 
 
 }
