@@ -1,21 +1,23 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.AdminFilter;
 import helpers.SessionHelper;
+import models.ErrorLog;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-
 import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
+import views.html.admins.allerrors;
 
+import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +29,35 @@ public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);
 
+    /**
+     * Admin index page.
+     *
+     * @return
+     */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(adminindex.render(temp));
     }
 
+    /**
+     * Renders page with user information for registration.
+     * TODO roles as checkboxes
+     *
+     * @return
+     */
     public Result addNewUser() {
         return ok(adduser.render(userForm));
     }
 
+    /**
+     * Registers new user to the site.
+     *
+     * @return
+     */
     public Result saveNewUser() {
         Form<User> boundForm = userForm.bindFromRequest();
 
         if (boundForm.hasErrors()) {
-
             flash("warning", "Please correct the form.");
             return redirect("register");
         }
@@ -55,8 +72,8 @@ public class AdminController extends Controller {
         if (tmpRole != null) {
             try {
                 role = Long.parseLong(tmpRole);
-            } catch(NumberFormatException e) {
-                // TODO all logger
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog(e.getMessage()));
             }
         }
 
@@ -73,13 +90,32 @@ public class AdminController extends Controller {
         u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
 
         if (u != null) {
-            u.save();
+            try {
+                u.save();
+            } catch (PersistenceException e) {
+                Ebean.save(new ErrorLog(e.getMessage()));
+                flash("warning", "Something went wrong, user could not be saved to database. Possible duplicate user.");
+                return redirect("/admin/new");
+            }
+            flash("success", String.format("User %s successfully added to database", u.getFirstName()));
+            return redirect("/admin/adduser");
         }
-
-
-        Logger.info(fname + " " + lname + " " + email + " " + password + " " + role);
-        return ok();
+        flash("warning", "Something went wrong, user could not be saved to database.");
+        Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
+        return redirect("/admin");
     }
+
+    /**
+     * Lists all errors caught in the code with exception getMessage message,
+     * or custom message, And time of occurence.
+     *
+     * @return
+     */
+    public Result seeErrors() {
+        List<ErrorLog> errorLogss = ErrorLog.findAllErrors();
+        return ok(allerrors.render(errorLogss));
+    }
+
 
     public Result test() {
         return ok("you are admin");

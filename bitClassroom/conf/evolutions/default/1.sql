@@ -17,6 +17,7 @@ create table post (
   post_type                 integer,
   visible_mentors           tinyint(1) default 0,
   date                      varchar(255),
+  link                      varchar(255),
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;

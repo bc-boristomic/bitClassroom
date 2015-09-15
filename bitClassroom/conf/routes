@@ -25,7 +25,7 @@ GET         /admin                     @controllers.users.AdminController.index(
 GET         /admin/adduser             @controllers.users.AdminController.addNewUser()
 POST        /admin/adduser             @controllers.users.AdminController.saveNewUser()
 
-
+GET         /admin/errors              @controllers.users.AdminController.seeErrors()
 
 
 

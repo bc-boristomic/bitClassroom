@@ -1,0 +1,19 @@
+@(errorList: List[ErrorLog])
+@adminmain("List of all errors") {
+
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>Error message</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(err <- errorList) {
+            <tr class="danger">
+                <td>@err.getMessage</td>
+                <td>@err.getDate</td>
+            </tr>
+}
+
+}

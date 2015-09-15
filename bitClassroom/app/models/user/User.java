@@ -354,4 +354,5 @@ public final class User extends Model {
         this.youtube = youtube;
     }
 
+
 }
