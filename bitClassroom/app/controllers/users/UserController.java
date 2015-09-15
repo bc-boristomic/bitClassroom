@@ -124,7 +124,6 @@ public class UserController extends Controller {
 //            }
 //        }
 //
-//        Logger.info("novi red");
         return ok(editprofile.render(temp));
     }
 
