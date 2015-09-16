@@ -1,7 +1,7 @@
 package controllers.users;
 
 import com.avaje.ebean.Ebean;
-import helpers.AdminFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
 import models.user.Role;
@@ -16,8 +16,8 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
-import views.html.admins.userlist;
 import views.html.admins.allerrors;
+import views.html.admins.userlist;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by boris on 9/12/15.
  */
-@Security.Authenticated(AdminFilter.class)
+@Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);

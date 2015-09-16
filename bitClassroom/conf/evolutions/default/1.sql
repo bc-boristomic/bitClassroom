@@ -4,7 +4,11 @@
 # --- !Ups
 
 create table daily_report (
+<<<<<<< HEAD
   id                        bigint not null,
+=======
+  id                        bigint auto_increment not null,
+>>>>>>> master
   name                      varchar(255),
   create_date               datetime,
   data                      varchar(255),
@@ -104,7 +108,13 @@ drop table if exists user;
 
 drop table if exists user_role;
 
+<<<<<<< HEAD
 SET REFERENTIAL_INTEGRITY TRUE;
+=======
+drop table daily_report;
+
+drop table error_log;
+>>>>>>> master
 
 drop sequence if exists daily_report_seq;
 
