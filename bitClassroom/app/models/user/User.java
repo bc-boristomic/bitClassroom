@@ -355,4 +355,8 @@ public final class User extends Model {
     }
 
 
+    public static boolean deleteUser(Long id){
+        finder.deleteById(id);
+        return true;
+    }
 }

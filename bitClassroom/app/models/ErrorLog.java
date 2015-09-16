@@ -68,7 +68,12 @@ public class ErrorLog extends Model {
     }
 
     public static List<ErrorLog> findAllErrors() {
-        return finder.all();
+        return finder.orderBy("id desc").findList();
+    }
+
+    public static boolean deleteError(Long id){
+        finder.deleteById(id);
+        return true;
     }
 
     public String toString(){

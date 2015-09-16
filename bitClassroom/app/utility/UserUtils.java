@@ -22,7 +22,7 @@ public class UserUtils {
             user.setBirthDate(baLocal);
         }
         if (password != null && password.length() > 6) {
-            user.setPassword(password);
+            user.setPassword(MD5Hash.getEncriptedPasswordMD5(password));
         }
         if (location != null && location.length() > 2) {
             user.setLocation(location);

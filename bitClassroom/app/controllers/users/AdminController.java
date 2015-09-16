@@ -1,13 +1,14 @@
 package controllers.users;
 
 import com.avaje.ebean.Ebean;
-import helpers.AdminFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
 import models.report.Field;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -18,8 +19,11 @@ import views.html.admins.adduser;
 import views.html.admins.adminindex;
 import views.html.admins.allerrors;
 import views.html.admins.userlist;
+<<<<<<< HEAD
 import views.html.dailyreports.dailyraport;
 import views.html.admins.setingsdailyraport;
+=======
+>>>>>>> master
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -27,7 +31,7 @@ import java.util.List;
 /**
  * Created by boris on 9/12/15.
  */
-@Security.Authenticated(AdminFilter.class)
+@Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);
@@ -77,14 +81,25 @@ public class AdminController extends Controller {
         String password = boundForm.bindFromRequest().field("password").value();
         String tmpRole = boundForm.bindFromRequest().field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
+
+        Logger.debug(tmpRole);
+
         Long role = 1L;
         if (tmpRole != null) {
+            if ("2".equals(tmpRole)) {
+                role = 2L;
+            } else if ("3".equals(tmpRole)) {
+                role = 3L;
+            } else if ("4".equals(tmpRole)) {
+                role = 4L;
+            }
             try {
-                role = Long.parseLong(tmpRole);
+                //role = Long.parseLong(tmpRole);
             } catch (NumberFormatException e) {
                 Ebean.save(new ErrorLog(e.getMessage()));
             }
         }
+
 
         Role r = new Role(role, UserConstants.NAME_ADMIN);
         List<Role> roles = new ArrayList<>();
@@ -103,8 +118,8 @@ public class AdminController extends Controller {
                 u.save();
             } catch (PersistenceException e) {
                 Ebean.save(new ErrorLog(e.getMessage()));
-                flash("warning", "Something went wrong, user could not be saved to database. Possible duplicate user.");
-                return redirect("/admin/new");
+                flash("warning", "Something went wrong, user could not be saved to database.");
+                return redirect("/admin");
             }
             flash("success", String.format("User %s successfully added to database", u.getFirstName()));
             return redirect("/admin/adduser");
@@ -132,12 +147,17 @@ public class AdminController extends Controller {
 
     public Result deleteUser(Long id) {
 
-        final User user = User.findById(id);
-        if (user == null) {
-            return notFound(String.format("User %s does not exists.", id));
-        }
-        Ebean.delete(user);
-        return redirect("/admin/allusers");
+        if (User.deleteUser(id))
+            return redirect("/admin/allusers");
+        else
+            return badRequest("Can't delete last admin");
+
+    }
+
+    public Result deleteError(Long id){
+
+        ErrorLog.findErrorById(id).delete();
+        return redirect("/admin/errors");
     }
     public Result genField() {
         return ok(setingsdailyraport.render());

@@ -3,49 +3,54 @@
 @(user: User)
 @main("Welcome to bitClassroom") {
     @if(user == null) {
-    <div class="row top5">
-        <div class="text-center">
-            <div class="row">
-                <h1> Welcome to <em>bitClassroom</em></h1>
-            </div>
-            <div class="row top30">
-                <p>We are currently developing web application that is similar to Google classroom. Login to see current work.</p>
+        <div class="row top5">
+            <div class="text-center">
+                <div class="row">
+                    <h1> Welcome to <em>bitClassroom</em></h1>
+                </div>
+                <div class="row top30">
+                    <p>We are currently developing web application that is similar to Google classroom. Login to see current work.</p>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="text-justify">
-        <div class="row top15">
-            <h2>How it works</h2><br>
-            <h3>Easy set up</h3>
+        <div class="text-justify">
+            <div class="row top15">
+                <h2>How it works</h2><br>
+                <h3>Easy set up</h3>
 
-            <p>Teachers can add students directly or share a code with their class to join. It takes just minutes to set up.</p>
+                <p>Teachers can add students directly or share a code with their class to join. It takes just minutes to set up.</p>
 
-            <h3>Saves time</h3>
+                <h3>Saves time</h3>
 
-            <p>The simple, paperless assignment workflow allows teachers to create, review, and grade assignments quickly, all in one place.</p>
+                <p>The simple, paperless assignment workflow allows teachers to create, review, and grade assignments quickly, all in one place.</p>
 
-            <h3>Improves organization</h3>
+                <h3>Improves organization</h3>
 
-            <p>Students can see all of their assignments on an assignments page, and all class materials are automatically filed into folders in Google Drive.</p>
+                <p>Students can see all of their assignments on an assignments page, and all class materials are automatically filed into folders in Google Drive.</p>
 
-            <h3>Enhances communication</h3>
+                <h3>Enhances communication</h3>
 
-            <p>Classroom allows teachers to send announcements and start class discussions instantly. Students can share resources with each other or provide answers to questions on the stream.</p>
+                <p>Classroom allows teachers to send announcements and start class discussions instantly. Students can share resources with each other or provide answers to questions on the stream.</p>
 
-            <h3>Affordable and secure</h3>
+                <h3>Affordable and secure</h3>
 
-            <p>Like the rest of our Google Apps for Education services, Classroom contains no ads, never uses your content or student data for advertising purposes, and is free for schools.</p>
+                <p>Like the rest of our Google Apps for Education services, Classroom contains no ads, never uses your content or student data for advertising purposes, and is free for schools.</p>
 
+            </div>
         </div>
-    </div>
-}
+    }
     @if(user != null) {
-        <!-- TODO -->
-        Ovdje ubaciti kod za divove coursea. :) Ovaj gore dio je text za usera koji nije logovan, to je onaj dio sto je pisao na registeru na proslom siteu.
-        <!-- TODO -->
-}
+
+        <a id="add" href="@controllers.course.routes.CourseController.addCourse()" class="btn btn-info">
+            Add class</a>
+
+
+        
+
+
+    }
 
 
 }
