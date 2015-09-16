@@ -32,6 +32,10 @@ public class Post extends Model {
     private Boolean visibleToMentors;
     @Column(name = "date")
     private String date;
+    @Column(name = "link")
+    private String link;
+    @Column(name="files")
+    private List<String> files = new ArrayList<>();
     @ManyToOne
     private User user;
 
@@ -121,5 +125,25 @@ public class Post extends Model {
         return "Post: " + title + " ["  +
                 content + "]  " +
                 " by: " + user.getFirstName();
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setFiles(List<String> files) {
+        this.files = files;
+    }
+
+    public List<String> getFiles() {
+        return files;
     }
 }

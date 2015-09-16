@@ -7,6 +7,7 @@ import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import play.Logger;
 import play.Play;
 import play.data.Form;
@@ -183,6 +184,7 @@ public class UserController extends Controller {
 
     @Security.Authenticated(CurrentUserFilter.class)
     public Result test() {
+        Logger.info(new DateTime().getMillis() + " ");
         return ok("test");
     }
 }

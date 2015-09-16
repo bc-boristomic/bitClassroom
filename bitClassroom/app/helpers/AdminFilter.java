@@ -8,6 +8,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
 
+import static play.mvc.Controller.flash;
+
 /**
  * Created by boris on 9/12/15.
  */
@@ -31,6 +33,7 @@ public class AdminFilter extends Security.Authenticator {
 
     @Override
     public Result onUnauthorized(Http.Context context) {
+        flash("warning", "You don't have right permissions");
         return redirect("/login");
     }
 }
