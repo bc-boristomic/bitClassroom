@@ -38,7 +38,7 @@
                   <td>Admin</td>
                     <td>
                         <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId())" class="btn btn-danger" role="button">
-                            Delete</a>
+                            <i class="glyphicon glyphicon-trash"></i></a>
                     </td>
 
                 }
@@ -46,21 +46,20 @@
                  <td>Teacher</td>
                     <td>
                         <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
-                            Delete</a>
+                            <i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 }
                 @if(role.getId.equals(UserConstants.MENTOR)) {
                  <td>Mentor</td>
                     <td>
-                        <a data-role="delete"  data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
-                            Delete</a>
-                    </td>
+                        <a data-role="delete"  data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
                 }
                 @if(role.getId.equals(UserConstants.STUDENT)) {
                   <td>Student</td>
                     <td>
-                        <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
-                            Delete</a>
+                        <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 }
               }

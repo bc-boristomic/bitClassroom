@@ -1,9 +1,19 @@
 @(errorList: List[ErrorLog])
 @adminmain("List of all errors") {
 
-    <table class="table table-striped table-hover ">
+
+    <div class="container">
+        <h4 class="page-head-line">Errors:</h4>
+
+    </div>
+
+
+    <div class="container">
+        <div class="table-responsive">
+
+    <table class="table-condensed table-hover table table-bordered">
         <thead>
-            <tr>
+            <tr class="danger">
                 <th>Error message</th>
                 <th>Time</th>
                 <th></th>
@@ -11,14 +21,19 @@
         </thead>
         <tbody>
         @for(err <- errorList) {
-            <tr class="danger">
+            <tr class="info">
                 <td>@err.getMessage</td>
                 <td>@err.getDate</td>
                 <td>
                     <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteError(err.getId)" class="btn btn-danger" role="button">
-                            Delete</a>
+                        <i class="glyphicon glyphicon-trash"></i></a>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    </div>
+    </div>
 }
 
 }
