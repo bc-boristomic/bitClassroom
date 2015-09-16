@@ -1,0 +1,151 @@
+@import helpers.SessionHelper
+@import models.user.User
+@(title: String)(content: Html)(implicit currentUser: User = SessionHelper.currentUser(ctx()))
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <!-- support for all characters -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <!-- TITLE IS ADDED FROM EVERY PAGE -->
+        <title>@title</title>
+
+            <!-- main theme for site css bootstrap -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
+
+            <!-- css for validation and other main stylesheat -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
+
+            <!-- custom icon -->
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/logo.png")">
+
+    </head>
+        <!-- END OF HEAD TAG -->
+
+    <body>
+            <!-- COLAPSABLE NAVIGATION BAR -->
+        <div class="col-lg-offset-1 col-lg-10">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><strong>bitClassroom</strong></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Users<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/admin/adduser">Add new user</a></li>
+                                    <li><a href="/admin/allusers">See all users</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Classroom<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/courses/allcourses">See all courses</a></li>
+                                    <li><a href="/courses/newcourse">Add new Course</a></li>
+                                    <li><a href="/post/new"></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/courses/adduser">Add user to course</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/post/new">Write post</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/dailyreport/new">Add new daily report</a></li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/admin/errors">See all errors</a></li>
+
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    @currentUser.getFirstName() <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#"></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/user/editprofile">Edit profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Sign out</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+            <!-- END OF NAVIGATION BAR -->
+
+
+        <div class="col-lg-12">
+            <div class="col-lg-4 col-lg-offset-4">
+            @if(flash.containsKey("success")) {
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("success")
+                </div>
+            }
+            </div>
+            <div class="col-lg-4 col-lg-offset-4">
+            @if(flash.containsKey("warning")) {
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("warning")
+                </div>
+            }
+            </div>
+            <div class="col-lg-4 col-lg-offset-4">
+            @if(flash.containsKey("info")) {
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("info")
+                </div>
+            }
+            </div>
+            <div class="col-lg-4 col-lg-offset-4">
+            @if(flash.containsKey("danger")) {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    @flash.get("danger")
+                </div>
+            }
+            </div>
+        </div>
+
+            <!-- CONTAINER WITH ALL CONTENT FOR MAIN HTML -->
+        <div class="container">
+        @content
+        </div>
+            <!-- END OF CONTAINER WITH CONTENT -->
+
+
+            <!-- FOOTER ALWAYS FIXED AT BOTTOM OF PAGE -->
+        <div class="row top50">
+            <footer class="panel-footer navbar-fixed-bottom"><div class="text-center">Copyright &copy;
+                2015 bitClassroom &#64; BITCamp</div></footer>
+        </div>
+            <!-- END OF FOOTER -->
+
+
+            <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED-->
+        <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
+        <script src="@routes.Assets.versioned("javascript/main.js")"></script>
+
+
+    </body>
+</html>

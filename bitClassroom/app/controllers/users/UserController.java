@@ -1,9 +1,7 @@
 package controllers.users;
 
-import helpers.CurrentUserFilter;
-import helpers.InactiveUserFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
-import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -15,16 +13,14 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
-import utility.MD5Hash;
-import utility.UserConstants;
 import utility.UserUtils;
 import views.html.users.editprofile;
 import views.html.users.profile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by boris on 9/12/15.
@@ -39,13 +35,13 @@ public class UserController extends Controller {
      * Renders template for creating initial user profile with all information, once profile is created status of user is
      * @return
      */
-    @Security.Authenticated(InactiveUserFilter.class)
+    @Security.Authenticated(Authorization.InactiveUser.class)
     public Result createProfile() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(profile.render(temp));
     }
 
-    @Security.Authenticated(InactiveUserFilter.class)
+    @Security.Authenticated(Authorization.InactiveUser.class)
     public Result updateProfile() {
         User temp = SessionHelper.currentUser(ctx());
         Form<User> boundForm = userForm.bindFromRequest();
@@ -80,10 +76,9 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "\\" + picName);
+            temp.setProfilePicture(temp.getId() + "/" + picName);
         }
 
-        String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
         String nickname = boundForm.bindFromRequest().field("nickname").value();
         String birthDate = boundForm.bindFromRequest().field("birth-date").value();
         String location = boundForm.bindFromRequest().field("location").value();
@@ -96,7 +91,7 @@ public class UserController extends Controller {
         String youtube = boundForm.bindFromRequest().field("youtube").value();
         String gender = boundForm.bindFromRequest().field("gender").value();
 
-        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
@@ -111,25 +106,14 @@ public class UserController extends Controller {
 
     }
 
-    @Security.Authenticated(CurrentUserFilter.class)
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result editProfile() {
         User temp = SessionHelper.currentUser(ctx());
-
-//        if (temp.getRoles().size() > 0 && temp.getRoles() != null) {
-//            for (Role r : temp.getRoles()) {
-//                if (r.getId().equals(UserConstants.ADMIN)){
-//                    Logger.info("sadrzi admina");
-//
-//                }
-//            }
-//        }
-//
-//        Logger.info("novi red");
         return ok(editprofile.render(temp));
     }
 
 
-    @Security.Authenticated(CurrentUserFilter.class)
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result saveProfile() {
         User temp = SessionHelper.currentUser(ctx());
         Form<User> boundForm = userForm.bindFromRequest();
@@ -164,10 +148,11 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "\\" + picName);
+            if (picName != null) {
+                temp.setProfilePicture(temp.getId() + "/" + picName);
+            }
         }
 
-        String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
         String nickname = boundForm.bindFromRequest().field("nickname").value();
         String location = boundForm.bindFromRequest().field("location").value();
         String homePhone = boundForm.bindFromRequest().field("home-phone").value();
@@ -178,7 +163,7 @@ public class UserController extends Controller {
         String twitter = boundForm.bindFromRequest().field("twitter").value();
         String youtube = boundForm.bindFromRequest().field("youtube").value();
 
-        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
@@ -192,8 +177,9 @@ public class UserController extends Controller {
         return redirect("/");
     }
 
-    @Security.Authenticated(CurrentUserFilter.class)
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result test() {
-        return ok("test");
+        Logger.info(new DateTime().getMillis() + " ");
+        return redirect("/login");
     }
 }

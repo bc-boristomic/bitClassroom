@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import java.util.List;
 
 /**
@@ -23,10 +24,19 @@ public final class Role extends Model {
     private String name;
 
 
+
+   // private int accessLevel;
+
+
     /**
      * Default empty constructor for Ebean
      */
     public Role() {
+    }
+
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public static Finder<Long, Role> getFinder() {

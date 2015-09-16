@@ -2,9 +2,10 @@ package models;
 
 import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
-
 import java.util.List;
 
 /**
@@ -61,12 +62,18 @@ public class ErrorLog extends Model {
         return message;
     }
 
-    public DateTime getDate() {
-        return logedDate;
+    public String getDate() {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+        return dtf.print(logedDate);
     }
 
     public static List<ErrorLog> findAllErrors() {
-        return finder.all();
+        return finder.orderBy("id desc").findList();
+    }
+
+    public static boolean deleteError(Long id){
+        finder.deleteById(id);
+        return true;
     }
 
     public String toString(){

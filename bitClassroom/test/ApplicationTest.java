@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import controllers.users.routes;
+import models.Post;
+import models.report.DailyReport;
 import models.user.User;
+import org.joda.time.DateTime;
 import org.junit.*;
 
+import play.Logger;
 import play.mvc.*;
 import play.test.*;
 import play.data.DynamicForm;
@@ -19,14 +24,13 @@ import play.twirl.api.Content;
 
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;
+import static org.fest.assertions.Assertions.*;
 
 
 /**
-*
-* Simple (JUnit) tests that can call all parts of a play app.
-* If you are interested in mocking a whole application, see the wiki for more details.
-*
-*/
+ * Simple (JUnit) tests that can call all parts of a play app.
+ * If you are interested in mocking a whole application, see the wiki for more details.
+ */
 public class ApplicationTest {
 
     @Before
@@ -34,21 +38,11 @@ public class ApplicationTest {
         fakeApplication(inMemoryDatabase());
     }
 
+
+
     /**
-     * Test application if it works or not.
+     * Checks if user table is empty
      */
-    @Test
-    public void simpleCheck() {
-        int a = 1 + 1;
-        assertEquals(2, a);
-    }
-
-    @Test
-    public void testNullPointer() {
-        String s = "Not null";
-        assertNotNull(s);
-    }
-
     @Test
     public void testDatabase() {
         List<User> users = User.findAll();
@@ -77,9 +71,25 @@ public class ApplicationTest {
         temp.setEmail("email@email.com");
         temp.setPassword("password");
         temp.setFirstName("username");
+        temp.save();
 
         User u = User.findByEmail("email@email.com");
-        assertNull(u);
+        assertNotNull(u);
+    }
+
+
+    @Test
+    public void testSavingDaily() {
+        DailyReport daily = new DailyReport();
+        daily.setName("name");
+        daily.setData("data");
+        daily.setCreatedDate(new DateTime());
+
+        daily.save();
+
+        List<DailyReport> d = DailyReport.getFinder().all();
+        assertNotNull(d);
+
     }
 
     /**
@@ -91,6 +101,105 @@ public class ApplicationTest {
         assertNull(u);
     }
 
+    @Test
+    public void testFindPostByID() {
+        User u = new User();
+        u.setEmail("email@email.com");
+        u.setPassword("password");
+        u.setFirstName("username");
+        u.save();
+
+        Post p = new Post();
+        p.setTitle("title");
+        p.setContent("content");
+        p.setUser(u);
+        p.setVisibleToMentors(true);
+        p.save();
+
+        Post post = Post.findPostById(1L);
+
+        assertEquals(post, p);
+    }
+
+    @Test
+    public void testFindPostByUser() {
+        User u = new User();
+        u.setEmail("email@email.com");
+        u.setPassword("password");
+        u.setFirstName("username");
+        u.save();
+
+        Post p = new Post();
+        p.setTitle("title");
+        p.setContent("content");
+        p.setUser(u);
+        p.setVisibleToMentors(true);
+        p.save();
+
+        List<Post> posts = Post.findPostsByUser(u);
+
+        assertNotNull(posts);
+        assertEquals(p, posts.get(0));
+    }
+
+    @Test
+    public void testFindAllPosts() {
+        User u = new User();
+        u.setEmail("email@email.com");
+        u.setPassword("password");
+        u.setFirstName("username");
+        u.save();
+
+        Post p = new Post();
+        p.setTitle("title");
+        p.setContent("content");
+        p.setUser(u);
+        p.setVisibleToMentors(true);
+        p.save();
+
+        User u1 = new User();
+        u1.setEmail("email1@email.com");
+        u1.setPassword("password1");
+        u1.setFirstName("username1");
+        u1.save();
+
+        Post p1 = new Post();
+        p1.setTitle("title1");
+        p1.setContent("content1");
+        p1.setUser(u1);
+        p1.setVisibleToMentors(false);
+        p1.save();
+
+        List<Post> posts = Post.findAllPosts();
+
+        assertEquals(2, posts.size());
+    }
+
+    @Test
+    public void testGetDate() {
+        User u = new User();
+        u.setEmail("email@email.com");
+        u.setPassword("password");
+        u.setFirstName("username");
+        u.save();
+
+        Post p = new Post();
+        p.setTitle("title");
+        p.setContent("content");
+        p.setUser(u);
+        p.setVisibleToMentors(true);
+        p.save();
+    }
+
+    @Test
+    public void testIndex() {
+        running(fakeApplication(), () -> {
+            Result result = route(routes.UserController.test());
+            assertEquals(result.status(), SEE_OTHER);
+            assertThat(result.status()).isEqualTo(SEE_OTHER);
+            assertThat(result.redirectLocation()).isEqualTo("/login");
+        });
+    }
 
 
 

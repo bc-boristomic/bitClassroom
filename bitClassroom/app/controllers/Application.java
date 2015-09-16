@@ -2,7 +2,6 @@ package controllers;
 
 import helpers.SessionHelper;
 import models.user.User;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -101,7 +100,8 @@ public class Application extends Controller {
     public Result logout() {
         session().clear();
         flash("success", "You successfuly signed out.");
-        return redirect("login");
+        return redirect("/login");
     }
+
 
 }

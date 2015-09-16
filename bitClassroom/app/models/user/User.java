@@ -290,6 +290,10 @@ public final class User extends Model {
         return dtf.print(updateDate);
     }
 
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
@@ -350,4 +354,9 @@ public final class User extends Model {
         this.youtube = youtube;
     }
 
+
+    public static boolean deleteUser(Long id){
+        finder.deleteById(id);
+        return true;
+    }
 }
