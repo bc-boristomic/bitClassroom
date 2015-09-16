@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.report.Field;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
@@ -18,11 +19,15 @@ import views.html.admins.adduser;
 import views.html.admins.adminindex;
 import views.html.admins.allerrors;
 import views.html.admins.userlist;
+<<<<<<< HEAD
+import views.html.dailyreports.dailyraport;
+import views.html.admins.setingsdailyraport;
+=======
+>>>>>>> master
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by boris on 9/12/15.
  */
@@ -154,5 +159,14 @@ public class AdminController extends Controller {
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
     }
+    public Result genField() {
+        return ok(setingsdailyraport.render());
+    }
 
+    private static final Form<Field> fieldForm = Form.form(Field.class);
+
+
+
+    public Result saveField() {
+        return ok(dailyraport.render(fieldForm)); }
 }

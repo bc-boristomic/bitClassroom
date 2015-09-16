@@ -1,0 +1,37 @@
+@import models.report.DailyReport
+@import play.data.Form
+@import models.report
+@(raportForm: Form[DailyReport])(fields: List[report.Field])
+
+@main("Raport Model") {
+
+    @helper.form(action = controllers.users.routes.AdminController.saveField()) {
+        <!-- custom css -->
+        <link rel="stylesheets" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")">
+
+        <body>
+            <div class="row">
+                <div class="col-md-12">
+
+                <div class="form-group">
+                    <form class="form-control">
+                        <input name="report_name" type="text"/>
+                        <br/>
+                        @fields.map { field =>
+                                <label for="field_@field.getId()">@field.getName()</label>
+                            <textarea name="@field.getId()" id="field_@field.getId()" type="text"></textarea>
+                        }
+
+                        <input type="submit" value="Save"/>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+        </body>
+
+
+    }
+}
+
+

@@ -26,10 +26,25 @@ GET           /admin/adduser             @controllers.users.AdminController.addN
 POST          /admin/adduser             @controllers.users.AdminController.saveNewUser()
 
 GET           /admin/allusers            @controllers.users.AdminController.listOfUser()
+<<<<<<< HEAD
+DELETE        /admin/users:id            @controllers.users.AdminController.deleteUser(id: Long)
+GET           /admin/errors              @controllers.users.AdminController.seeErrors()
+
+# CREATE REPORT FIELD
+GET            /admin/createdaily        @controllers.users.AdminController.genField()
+POST           /admin/createdaily        @controllers.users.AdminController.saveField()
+#=========
+
+
+#GET           /daily/report              @controllers.daily.DailyReportController.dailyReport()
+#POST          /daily/reportSubmit        @controllers.daily.DailyReportController.saveRaport()
+#POST          /daily/report              @controllers.daily.DailyReportController.reportModel()
+=======
 DELETE        /admin/delete/:id          @controllers.users.AdminController.deleteUser(id: Long)
 GET           /admin/delete/:id          @controllers.users.AdminController.deleteUser(id: Long)
 GET           /admin/errors              @controllers.users.AdminController.seeErrors()
 DELETE        /admin/error/:id           @controllers.users.AdminController.deleteError(id: Long)
+>>>>>>> master
 
 
 
