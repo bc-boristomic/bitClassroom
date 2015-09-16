@@ -6,6 +6,7 @@
             <tr>
                 <th>Error message</th>
                 <th>Time</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -13,6 +14,10 @@
             <tr class="danger">
                 <td>@err.getMessage</td>
                 <td>@err.getDate</td>
+                <td>
+                    <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteError(err.getId)" class="btn btn-danger" role="button">
+                            Delete</a>
+                </td>
             </tr>
 }
 
