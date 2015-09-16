@@ -19,11 +19,9 @@ import views.html.admins.adduser;
 import views.html.admins.adminindex;
 import views.html.admins.allerrors;
 import views.html.admins.userlist;
-<<<<<<< HEAD
 import views.html.dailyreports.dailyraport;
 import views.html.admins.setingsdailyraport;
-=======
->>>>>>> master
+
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;

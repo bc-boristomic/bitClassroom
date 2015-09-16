@@ -1,5 +1,6 @@
 package controllers.posts;
 
+import helpers.Authorization;
 import helpers.CurrentUserFilter;
 import helpers.SessionHelper;
 import models.Post;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by banjich on 9/14/15.
  */
-@Security.Authenticated(CurrentUserFilter.class)
+@Security.Authenticated(Authorization.FullyActiveUser.class)
 public class PostController extends Controller {
 
     private final Form<Post> postForm = Form.form(Post.class);
@@ -100,8 +101,4 @@ public class PostController extends Controller {
 
     }
 
-//    public Result listPosts() {
-//        List<Post> posts = Post.findAllPosts();
-//        return ok(allPosts.render(Post.descOrder(posts)));
-//    }
 }

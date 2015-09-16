@@ -9,7 +9,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import views.html.dailyraport.*;
+import views.html.dailyreports.dailyraport;
 import java.util.List;
 
 /**
