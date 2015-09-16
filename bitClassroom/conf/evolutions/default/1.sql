@@ -3,6 +3,14 @@
 
 # --- !Ups
 
+create table daily_report (
+  id                        bigint auto_increment not null,
+  name                      varchar(255),
+  create_date               datetime,
+  data                      varchar(255),
+  constraint pk_daily_report primary key (id))
+;
+
 create table error_log (
   id                        bigint auto_increment not null,
   message                   varchar(255),
@@ -73,6 +81,8 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
+
+drop table daily_report;
 
 drop table error_log;
 

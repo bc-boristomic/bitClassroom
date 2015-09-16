@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import java.util.List;
 
 /**
@@ -21,6 +22,10 @@ public final class Role extends Model {
     private Long id;
     @Column(name = "name", length = 10)
     private String name;
+
+
+
+   // private int accessLevel;
 
 
     /**
