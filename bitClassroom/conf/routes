@@ -29,10 +29,12 @@ GET           /admin/allusers            @controllers.users.AdminController.list
 GET           /admin/errors              @controllers.users.AdminController.seeErrors()
 
 # CREATE REPORT FIELD
-GET            /admin/createdaily        @controllers.users.AdminController.genField()
-POST           /admin/createdaily        @controllers.users.AdminController.saveField()
+GET           /admin/createdaily         @controllers.users.AdminController.genField()
+POST          /admin/createdaily         @controllers.users.AdminController.saveField()
 #=========
 
+GET           /admin/createcourse        @controllers.users.AdminController.addCourse()
+POST          /admin/createcourse        @controllers.users.AdminController.saveCourse()
 
 #GET           /daily/report              @controllers.daily.DailyReportController.dailyReport()
 #POST          /daily/reportSubmit        @controllers.daily.DailyReportController.saveRaport()
