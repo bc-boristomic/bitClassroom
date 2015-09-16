@@ -142,12 +142,17 @@ public class AdminController extends Controller {
 
     public Result deleteUser(Long id) {
 
-        final User user = User.findById(id);
-        if (user == null) {
-            return notFound(String.format("User %s does not exists.", id));
-        }
-        Ebean.delete(user);
-        return redirect("/admin/allusers");
+        if (User.deleteUser(id))
+            return redirect("/admin/allusers");
+        else
+            return badRequest("Can't delete last admin");
+
+    }
+
+    public Result deleteError(Long id){
+
+        ErrorLog.findErrorById(id).delete();
+        return redirect("/admin/errors");
     }
 
 }

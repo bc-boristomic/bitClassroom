@@ -71,6 +71,11 @@ public class ErrorLog extends Model {
         return finder.orderBy("id desc").findList();
     }
 
+    public static boolean deleteError(Long id){
+        finder.deleteById(id);
+        return true;
+    }
+
     public String toString(){
 
         return "Error: " + message + " time:" + logedDate;

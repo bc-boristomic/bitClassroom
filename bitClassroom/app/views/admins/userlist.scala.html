@@ -3,19 +3,6 @@
 @(userList: List[User])
 @adminmain("Users ") {
 
-  <script>
-        function del(urlToDel) {
-
-            $.ajax({
-
-                url: urlToDel,
-                type: 'DELETE',
-                success: function(results) {
-                    location.reload();
-                }
-            });
-        }
-    </script>
 
   <!-- TODO make a better design of table and page -->
 
@@ -31,7 +18,6 @@
       <table class="table-condensed table-hover table table-bordered">
         <thead>
           <tr class="danger">
-            <th>Id:</th>
             <th>First name:</th>
             <th>Last name:</th>
             <th>Email:</th>
@@ -43,7 +29,6 @@
         <tbody>
         @for(users <- userList) {
           <tr class="info">
-            <td>@users.getId</td>
             <td>@users.getFirstName</td>
             <td>@users.getLastName</td>
             <td>@users.getEmail</td>
@@ -51,18 +36,31 @@
               @for(role <- users.getRoles) {
                 @if(role.getId.equals(UserConstants.ADMIN)) {
                   <td>Admin</td>
+                    <td>
+                        <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId())" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+
                 }
                 @if(role.getId.equals(UserConstants.TEACHER)) {
                  <td>Teacher</td>
-                  <td><a onclick="del('/admin/users:id')"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td>
+                        <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
                 }
                 @if(role.getId.equals(UserConstants.MENTOR)) {
                  <td>Mentor</td>
-                  <td><a onclick="del('/admin/users:id')"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td>
+                        <a data-role="delete"  data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
                 }
                 @if(role.getId.equals(UserConstants.STUDENT)) {
                   <td>Student</td>
-                  <td><a onclick="del('/admin/users:id')"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td>
+                        <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                            <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
                 }
               }
             }
