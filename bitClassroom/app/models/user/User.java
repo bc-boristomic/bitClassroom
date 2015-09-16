@@ -71,7 +71,7 @@ public final class User extends Model {
     private List<Role> roles = new ArrayList<>();
     @OneToMany
     private List<Post> posts = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany(mappedBy = "users")
     private List<Course> courses = new ArrayList<>();
 
     /**
