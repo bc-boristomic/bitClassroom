@@ -165,14 +165,9 @@ public class AdminController extends Controller {
         return ok(setingsdailyraport.render());
     }
 
-
-
-
     public Result saveField() {
-
         return ok("ad");
     }
-
 
     private final Form<Course> courseForm = Form.form(Course.class);
 
