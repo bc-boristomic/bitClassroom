@@ -81,7 +81,7 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "\\" + picName);
+            temp.setProfilePicture(temp.getId() + "/" + picName);
         }
 
         String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
@@ -154,10 +154,13 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "\\" + picName);
+            if (picName != null) {
+                temp.setProfilePicture(temp.getId() + "/" + picName);
+            }
+
+            Logger.debug("picname " + picName);
         }
 
-        String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
         String nickname = boundForm.bindFromRequest().field("nickname").value();
         String location = boundForm.bindFromRequest().field("location").value();
         String homePhone = boundForm.bindFromRequest().field("home-phone").value();
@@ -168,7 +171,9 @@ public class UserController extends Controller {
         String twitter = boundForm.bindFromRequest().field("twitter").value();
         String youtube = boundForm.bindFromRequest().field("youtube").value();
 
-        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
+
+        Logger.debug(password1 + " " + password1.length() + "hasshed ");
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
