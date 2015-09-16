@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import controllers.users.routes;
 import models.Post;
 import models.report.DailyReport;
 import models.user.User;
@@ -23,6 +24,7 @@ import play.twirl.api.Content;
 
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;
+import static org.fest.assertions.Assertions.*;
 
 
 /**
@@ -188,4 +190,17 @@ public class ApplicationTest {
         p.setVisibleToMentors(true);
         p.save();
     }
+
+    @Test
+    public void testIndex() {
+        running(fakeApplication(), () -> {
+            Result result = route(routes.UserController.test());
+            assertEquals(result.status(), SEE_OTHER);
+            assertThat(result.status()).isEqualTo(SEE_OTHER);
+            assertThat(result.redirectLocation()).isEqualTo("/login");
+        });
+    }
+
+
+
 }

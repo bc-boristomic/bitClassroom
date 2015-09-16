@@ -104,7 +104,7 @@ public class Application extends Controller {
     public Result logout() {
         session().clear();
         flash("success", "You successfuly signed out.");
-        return redirect("login");
+        return redirect("/login");
     }
 
 

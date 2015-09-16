@@ -185,6 +185,6 @@ public class UserController extends Controller {
     @Security.Authenticated(CurrentUserFilter.class)
     public Result test() {
         Logger.info(new DateTime().getMillis() + " ");
-        return ok("test");
+        return redirect("/login");
     }
 }

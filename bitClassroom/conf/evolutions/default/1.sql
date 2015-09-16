@@ -3,19 +3,27 @@
 
 # --- !Ups
 
+create table daily_report (
+  id                        bigint not null,
+  name                      varchar(255),
+  create_date               datetime,
+  data                      varchar(255),
+  constraint pk_daily_report primary key (id))
+;
+
 create table error_log (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   message                   varchar(255),
   loged_date                datetime,
   constraint pk_error_log primary key (id))
 ;
 
 create table post (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   title                     varchar(255),
   content                   text,
   post_type                 integer,
-  visible_mentors           tinyint(1) default 0,
+  visible_mentors           boolean,
   date                      varchar(255),
   link                      varchar(255),
   user_id                   bigint,
@@ -23,13 +31,13 @@ create table post (
 ;
 
 create table role (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   name                      varchar(10),
   constraint pk_role primary key (id))
 ;
 
 create table user (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   email                     varchar(100),
   password                  varchar(100),
   first_name                varchar(100),
@@ -61,6 +69,16 @@ create table user_role (
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
+create sequence daily_report_seq;
+
+create sequence error_log_seq;
+
+create sequence post_seq;
+
+create sequence role_seq;
+
+create sequence user_seq;
+
 alter table post add constraint fk_post_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_post_user_1 on post (user_id);
 
@@ -72,17 +90,29 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 
 # --- !Downs
 
-SET FOREIGN_KEY_CHECKS=0;
+SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table error_log;
+drop table if exists daily_report;
 
-drop table post;
+drop table if exists error_log;
 
-drop table role;
+drop table if exists post;
 
-drop table user;
+drop table if exists role;
 
-drop table user_role;
+drop table if exists user;
 
-SET FOREIGN_KEY_CHECKS=1;
+drop table if exists user_role;
+
+SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists daily_report_seq;
+
+drop sequence if exists error_log_seq;
+
+drop sequence if exists post_seq;
+
+drop sequence if exists role_seq;
+
+drop sequence if exists user_seq;
 

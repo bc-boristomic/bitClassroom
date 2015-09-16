@@ -1,20 +1,17 @@
+import controllers.routes;
 import models.user.User;
-import org.junit.*;
-
-import play.Logger;
-import play.mvc.*;
-import play.test.*;
-import play.libs.F.*;
-import utility.MD5Hash;
+import org.junit.Test;
+import play.mvc.Result;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
-import static org.junit.Assert.*;
 
-import static org.fluentlenium.core.filter.FilterConstructor.*;
+import static org.fest.assertions.Assertions.*;
 
-public class IntegrationTest extends WithApplication {
+public class IntegrationTest {
 
     /**
      * add your integration test here
@@ -28,32 +25,33 @@ public class IntegrationTest extends WithApplication {
         });
     }
 
-//    /**
-//     * Checks if user successfully logged in.
-//     */
-//    @Test
-//    public void testLogin() {
-//        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
-//            browser.goTo("http://localhost:3333/login");
-//
-//        User temp = new User();
-//        temp.setEmail("login@test.com");
-//        temp.setPassword("password1L!");
-//        temp.save();
-//
-//        browser.fill("#inputEmail").with("login@test.com");
-//            //String hash = MD5Hash.getEncriptedPasswordMD5("password");
-//        browser.fill("#inputPassword").with("password1L!");
-//
-//            List<User> u =User.findAll();
-//        //Logger.info("SEE ALL RESULTS" + u.toString() + "SEE ALL RESULTS");
-//
-//            //browser.submit("#login");
-//        browser.click("#login");
-//
-//            assert
-//        assertTrue(browser.pageSource().contains("Ovdje ubaciti kod"));
-//
-//        });
-//    }
+    /**
+     * Checks if user successfully logged in.
+     */
+    @Test
+    public void testLogin() {
+        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
+            browser.goTo("http://localhost:3333/login");
+
+            User temp = new User();
+            temp.setEmail("boris.tomic@bitcamp.ba");
+            temp.setPassword("password");
+            temp.save();
+
+            browser.fill("#inputEmail").with("boris.tomic@bitcamp.ba");
+            //String hash = MD5Hash.getEncriptedPasswordMD5("password");
+            browser.fill("#inputPassword").with("password");
+
+            List<User> u = User.findAll();
+            //Logger.info("SEE ALL RESULTS" + u.toString() + "SEE ALL RESULTS");
+
+            browser.submit("#login");
+            //browser.click("#login");
+
+            Result result = route(routes.Application.login());
+            //assertThat(result.status(), isEqualsTo(SEE_OTHER));
+            assertEquals(result.status(), SEE_OTHER);
+
+        });
+    }
 }
