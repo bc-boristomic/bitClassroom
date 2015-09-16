@@ -84,7 +84,6 @@ public class UserController extends Controller {
             temp.setProfilePicture(temp.getId() + "/" + picName);
         }
 
-        String newPassword = MD5Hash.getEncriptedPasswordMD5(password1);
         String nickname = boundForm.bindFromRequest().field("nickname").value();
         String birthDate = boundForm.bindFromRequest().field("birth-date").value();
         String location = boundForm.bindFromRequest().field("location").value();
@@ -97,7 +96,7 @@ public class UserController extends Controller {
         String youtube = boundForm.bindFromRequest().field("youtube").value();
         String gender = boundForm.bindFromRequest().field("gender").value();
 
-        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, newPassword, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
+        temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
@@ -157,8 +156,6 @@ public class UserController extends Controller {
             if (picName != null) {
                 temp.setProfilePicture(temp.getId() + "/" + picName);
             }
-
-            Logger.debug("picname " + picName);
         }
 
         String nickname = boundForm.bindFromRequest().field("nickname").value();
@@ -172,8 +169,6 @@ public class UserController extends Controller {
         String youtube = boundForm.bindFromRequest().field("youtube").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
-
-        Logger.debug(password1 + " " + password1.length() + "hasshed ");
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
