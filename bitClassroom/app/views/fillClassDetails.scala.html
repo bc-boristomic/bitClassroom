@@ -2,7 +2,7 @@
 @(courseForm: Form[Course])
 @main("Fill in the form") {
 
-    @helper.form(action = controllers.course.routes.CourseController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+    @helper.form(action = controllers.users.routes.AdminController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
 
         <legend>Create new post</legend>
 
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <div class="col-xs-5 col-xs-offset-1">
-                    <button type="submit" href="@controllers.course.routes.CourseController.saveCourse()" id="saveCourse" class="btn btn-default">
+                    <button type="submit" href="@controllers.users.routes.AdminController.saveCourse()" id="saveCourse" class="btn btn-default">
                         Save</button>
                 </div>
             </div>

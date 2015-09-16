@@ -30,7 +30,7 @@ function checkNameInput() {
 
         if (!filter.test(firstName)) {
             document.getElementById("nameError").innerHTML = "Only letters allowed.";
-        } else  if (firstName.length < 5){
+        } else  if (firstName.length < 3){
             document.getElementById("nameError").innerHTML = "Nick name is short";
         }else{
 
@@ -122,9 +122,6 @@ function checkSkypeName(){
 
         document.getElementById("skypeCheck").innerHTML = "Too short";
 
-    }else if (!filter.test(skypeName)){
-
-        document.getElementById("skypeCheck").innerHTML =  "Skype name must have at least one letter.";
     }else if (skypeName >= 3 ||  filter.test(skypeName)){
         document.getElementById("skypeCheck").innerHTML =  "";
     }
@@ -138,10 +135,10 @@ function checkFacebook(){
     if ( facebook == null){
 
         facebook.val("http://www.facebook.com/");
-    }else if ( facebook.length < 30){
+    }else if ( facebook.length < 28){
 
         document.getElementById("facebookCheck").innerHTML = " Wrong URL, please enter valid URL";
-    }else if ( facebook.length >= 30) {
+    }else if ( facebook.length >= 28) {
 
         document.getElementById("facebookCheck").innerHTML = "";
     }

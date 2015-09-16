@@ -1,9 +1,11 @@
 package controllers.users;
 
 import com.avaje.ebean.Ebean;
-import helpers.AdminFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.course.Course;
+import models.report.Field;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
@@ -16,20 +18,26 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
-import views.html.admins.userlist;
 import views.html.admins.allerrors;
+import views.html.admins.userlist;
+import views.html.dailyreports.dailyraport;
+import views.html.admins.setingsdailyraport;
+import views.html.fillClassDetails;
+
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by boris on 9/12/15.
  */
-@Security.Authenticated(AdminFilter.class)
+@Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);
+
+    private final Form<Field> fieldForm = Form.form(Field.class);
+
 
 
     /**
@@ -54,7 +62,6 @@ public class AdminController extends Controller {
 
     public Result listOfUser(){
         return ok(userlist.render(User.findAll()));
-
     }
 
     /**
@@ -153,6 +160,39 @@ public class AdminController extends Controller {
 
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
+    }
+    public Result genField() {
+        return ok(setingsdailyraport.render());
+    }
+
+
+
+
+    public Result saveField() {
+
+        return ok("ad");
+    }
+
+
+    private final Form<Course> courseForm = Form.form(Course.class);
+
+    public Result addCourse() {
+        return ok(fillClassDetails.render(courseForm));
+    }
+
+    public Result saveCourse() {
+        Form<Course> boundForm = courseForm.bindFromRequest();
+
+        String name = boundForm.bindFromRequest().field("name").value();
+        String description = boundForm.bindFromRequest().field("description").value();
+        String teacher = boundForm.bindFromRequest().field("teacher").value();
+
+        Course course = new Course(name, description, teacher);
+        course.save();
+        flash("success", "You successfully added new course.");
+        return redirect("/index"); // TODO add call to route for listing posts
+
+
     }
 
 }

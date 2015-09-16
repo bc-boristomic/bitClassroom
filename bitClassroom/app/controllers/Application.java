@@ -1,14 +1,10 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
-import helpers.AdminFilter;
 import helpers.SessionHelper;
 import models.user.User;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;

@@ -1,6 +1,6 @@
 package controllers.posts;
 
-import helpers.CurrentUserFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
 import models.user.User;
@@ -8,10 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
 import play.Play;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
 import views.html.posts.newpost;
@@ -19,13 +18,12 @@ import views.html.posts.newpost;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by banjich on 9/14/15.
  */
-@Security.Authenticated(CurrentUserFilter.class)
+@Security.Authenticated(Authorization.FullyActiveUser.class)
 public class PostController extends Controller {
 
     private final Form<Post> postForm = Form.form(Post.class);
@@ -100,8 +98,4 @@ public class PostController extends Controller {
 
     }
 
-//    public Result listPosts() {
-//        List<Post> posts = Post.findAllPosts();
-//        return ok(allPosts.render(Post.descOrder(posts)));
-//    }
 }
