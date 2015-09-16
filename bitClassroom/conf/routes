@@ -25,12 +25,9 @@ GET         /admin                     @controllers.users.AdminController.index(
 GET         /admin/adduser             @controllers.users.AdminController.addNewUser()
 POST        /admin/adduser             @controllers.users.AdminController.saveNewUser()
 
-<<<<<<< HEAD
 GET         /admin/allusers            @controllers.users.AdminController.listOfUser()
 DELETE      /admin/users:id            @controllers.users.AdminController.deleteUser(id: Long)
-=======
 GET         /admin/errors              @controllers.users.AdminController.seeErrors()
->>>>>>> develop
 
 
 

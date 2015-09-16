@@ -15,11 +15,8 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
-<<<<<<< HEAD
 import views.html.admins.userlist;
-=======
 import views.html.admins.allerrors;
->>>>>>> develop
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -33,15 +30,12 @@ public class AdminController extends Controller {
 
     private final Form<User> userForm = Form.form(User.class);
 
-<<<<<<< HEAD
 
-=======
     /**
      * Admin index page.
      *
      * @return
      */
->>>>>>> develop
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(adminindex.render(temp));
@@ -57,21 +51,16 @@ public class AdminController extends Controller {
         return ok(adduser.render(userForm));
     }
 
-<<<<<<< HEAD
     public Result listOfUser(){
-
-        List<User> userList = User.findAll();
-        return ok(userlist.render(userList));
+        return ok(userlist.render(User.findAll()));
 
     }
 
-=======
     /**
      * Registers new user to the site.
      *
      * @return
      */
->>>>>>> develop
     public Result saveNewUser() {
         Form<User> boundForm = userForm.bindFromRequest();
 
@@ -123,12 +112,6 @@ public class AdminController extends Controller {
         return redirect("/admin");
     }
 
-<<<<<<< HEAD
-
-        Logger.info(fname + " " + lname + " " + email + " " + password + " " + role);
-        List<User> userList = User.findAll();
-        return ok(userlist.render(userList));
-=======
     /**
      * Lists all errors caught in the code with exception getMessage message,
      * or custom message, And time of occurence.
@@ -136,9 +119,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result seeErrors() {
-        List<ErrorLog> errorLogss = ErrorLog.findAllErrors();
-        return ok(allerrors.render(errorLogss));
->>>>>>> develop
+        return ok(allerrors.render(ErrorLog.findAllErrors()));
     }
 
 
