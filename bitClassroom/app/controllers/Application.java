@@ -27,10 +27,14 @@ public class Application extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
+        if (temp != null) {
 
-        List<Course> list = CourseUser.allUserCourses(temp);
+            List<Course> list = CourseUser.allUserCourses(temp);
 
-        return ok(index.render(temp, list));
+            return ok(index.render(temp, list));
+        } else {
+            return ok("");
+        }
 
     }
 
@@ -114,7 +118,7 @@ public class Application extends Controller {
     public Result getNotification() {
         User temp = SessionHelper.currentUser(ctx());
         int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
-        return ok(notify+"");
+        return ok(notify + "");
     }
 
 

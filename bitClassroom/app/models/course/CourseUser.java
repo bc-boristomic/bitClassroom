@@ -23,13 +23,11 @@ public class CourseUser extends Model {
     @Column
     private Integer status;
     @ManyToOne
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     @ManyToOne
-    @JoinColumn(name="course_id", referencedColumnName = "id")
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
-
-    private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
@@ -43,19 +41,25 @@ public class CourseUser extends Model {
         List<CourseUser> list = finder.all();
         List<CourseUser> courseUserList = new ArrayList<>();
 
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getUser().getId().equals(userId)) {
-                    courseUserList.add(list.get(i));
-                }
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUser().getId().equals(userId)) {
+                courseUserList.add(list.get(i));
             }
-            return courseUserList;
+        }
+        return courseUserList;
     }
 
-    public static List<Course> allUserCourses(User currentUser){
+    public static List<Course> allUserCourses(User currentUser) {
         List<Course> courseByUserList = new ArrayList<>();
+
         List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
-        for (int i = 0; i < courseUserList.size(); i++){
-            courseByUserList.add(courseUserList.get(i).getCourse());
+
+        if (courseUserList == null) {
+            courseUserList = new ArrayList<>();
+        } else {
+            for (int i = 0; i < courseUserList.size(); i++) {
+                courseByUserList.add(courseUserList.get(i).getCourse());
+            }
         }
         return courseByUserList;
     }
