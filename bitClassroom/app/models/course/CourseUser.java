@@ -4,6 +4,8 @@ import com.avaje.ebean.Model;
 import models.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by NN on 17.9.2015.
@@ -13,12 +15,14 @@ import javax.persistence.*;
 @Table(name = "course_user")
 public class CourseUser extends Model {
 
+    private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
 
-    @Column
+    @Column(name="status")
     private Integer status;
 
     @ManyToOne
@@ -46,7 +50,6 @@ public class CourseUser extends Model {
     public Integer getStatus() {
         return status;
     }
-
 
     public void setStatus(Integer status) {
         this.status = status;

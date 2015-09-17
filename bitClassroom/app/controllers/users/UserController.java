@@ -177,6 +177,7 @@ public class UserController extends Controller {
         return redirect("/");
     }
 
+
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result test() {
         Logger.info(new DateTime().getMillis() + " ");

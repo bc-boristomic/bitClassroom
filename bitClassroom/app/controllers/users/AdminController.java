@@ -23,7 +23,7 @@ import views.html.admins.allerrors;
 import views.html.admins.userlist;
 
 import views.html.admins.setingsdailyraport;
-import views.html.fillClassDetails;
+import views.html.courses.fillClassDetails;
 
 
 import javax.persistence.PersistenceException;
