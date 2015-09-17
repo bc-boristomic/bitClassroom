@@ -17,45 +17,6 @@ import java.util.List;
  */
 public class DailyReportController extends Controller {
 
-    private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
-
-
-    public Result dailyReport() {
-        DynamicForm dynamicForm = new DynamicForm();
-        dynamicForm.bindFromRequest(request());
-        dynamicForm.get("1");
-
-        List<Field> fields = Field.getFinder().findList();
-        return ok(dailyraport.render(raportForm, fields));
-
-    }
-
-    public Result saveRaport() {
-        List<Field> fields = Field.getFinder().findList();
-        DynamicForm dynamicForm = Form.form().bindFromRequest();
-        dynamicForm.bindFromRequest(request());
-
-        DailyReport dailyReport = new DailyReport();
-        dailyReport.setName(dynamicForm.get("report_name"));
-        dailyReport.setCreatedDate(new DateTime());
-        dailyReport.save();
-
-        for (Field field: fields){
-            ReportField reportField = new ReportField();
-            reportField.setDailyReport(dailyReport);
-
-            String fieldId = String.valueOf(field.getId());
-
-            if (dynamicForm.get(fieldId) == null)
-                continue;
-
-            reportField.setValue(fieldId);
-            reportField.setField(field);
-            reportField.save();
-        }
-
-        return ok();
-    }
 
     public Result listRaport() {
         return TODO;

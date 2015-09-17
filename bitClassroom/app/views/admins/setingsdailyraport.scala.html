@@ -1,20 +1,21 @@
 @adminmain("Daily Raport") {
 
-  @helper.form(action = controllers.users.routes.AdminController.saveField()) {
-    <!-- custom css -->
-    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/dailyraport.css")">
+    @helper.form(action = controllers.users.routes.AdminController.saveField()) {
+        <!-- custom css -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/dailyraport.css")">
+        <!-- custom js -->
+        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/dailyraport.js") "></script>
 
-    <!-- custom js -->
-    <script type="text/javascript" src="@routes.Assets.versioned("javascripts/dailyraport.js") "></script>
-
-  <form>
-    <label>Script Name</label>
-    <input id="scriptName" name="scriptName">
-
-    <input type="submit" value="Add" onclick=""/>
-    <input type="submit" value="Save" onclick=""/>
-  </form>
+        <br> <br> <br> <br> <br> <br>
 
 
-  }
+        <div class="col-lg-offset-1 col-lg-5">
+            <form>
+                <label>Field Name</label>
+                <input id="scriptName" name="scriptName">
+                <input type="submit" value="Add" onclick=""/>
+            </form>
+        </div>
+
+    }
 }

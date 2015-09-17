@@ -36,9 +36,8 @@ POST          /admin/createdaily         @controllers.users.AdminController.save
 GET           /admin/createcourse        @controllers.users.AdminController.addCourse()
 POST          /admin/createcourse        @controllers.users.AdminController.saveCourse()
 
-#GET           /daily/report              @controllers.daily.DailyReportController.dailyReport()
-#POST          /daily/reportSubmit        @controllers.daily.DailyReportController.saveRaport()
-#POST          /daily/report              @controllers.daily.DailyReportController.reportModel()
+GET           /daily/report              @controllers.users.TeacherController.dailyReport()
+POST          /daily/reportSubmit        @controllers.users.TeacherController.saveRaport()
 
 DELETE        /admin/delete/:id          @controllers.users.AdminController.deleteUser(id: Long)
 GET           /admin/delete/:id          @controllers.users.AdminController.deleteUser(id: Long)

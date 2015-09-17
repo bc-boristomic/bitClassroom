@@ -26,7 +26,7 @@ public final class DailyReport extends Model {
     private DateTime createdDate = new DateTime();
 
     @Column(name = "data")
-    private String data;    // TODO
+    private String data;
 
     /*
      * Default empty constructor for Ebean

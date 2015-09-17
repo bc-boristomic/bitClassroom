@@ -8,6 +8,7 @@ import models.course.Course;
 import models.report.Field;
 import models.user.Role;
 import models.user.User;
+import models.report.Field;
 import org.joda.time.DateTime;
 import play.Logger;
 import play.data.Form;
@@ -20,7 +21,7 @@ import views.html.admins.adduser;
 import views.html.admins.adminindex;
 import views.html.admins.allerrors;
 import views.html.admins.userlist;
-import views.html.dailyreports.dailyraport;
+
 import views.html.admins.setingsdailyraport;
 import views.html.fillClassDetails;
 
@@ -169,8 +170,14 @@ public class AdminController extends Controller {
 
 
     public Result saveField() {
-
-        return ok("ad");
+        Form<Field> fieldModelForm = Form.form(Field.class);
+        Field model = new Field();
+        String name = fieldModelForm.bindFromRequest().field("scriptName").value();
+        //if (model != null && name.length() > 4) {
+            model.setName(name);
+            model.save();
+        //}
+        return ok(setingsdailyraport.render()) ;
     }
 
 
