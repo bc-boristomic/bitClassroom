@@ -1,6 +1,7 @@
 @import helpers.SessionHelper
 @import models.user.User
-@(user: User)
+@import models.course.Course
+@(user: User)(courseList: List[Course])
 @main("Welcome to bitClassroom") {
     @if(user == null) {
         <div class="row top5">
@@ -42,10 +43,21 @@
         </div>
     }
     @if(user != null) {
+        @for(course <- courseList) {
 
+            <div class="col-sm-3" id="courseDiv">
+                <div class="jumbotron ">
+                    <a href="#"><h2>@course.getName</h2>
+                        <h4>@course.getDescription</h4></a>
+                    <br>
+                    <h6>@course.getTeacher</h6>
+                    <a href="#" class="btn btn-success">Join</a>
+
+                </div>
+
+            </div>
+        }
 
 
     }
-
-
 }

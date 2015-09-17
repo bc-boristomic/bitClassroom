@@ -2,6 +2,8 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.course.Course;
+import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
@@ -48,7 +50,7 @@ public class TeacherController extends Controller {
 
         dailyReport.save();
 
-        for (Field field: fields){
+        for (Field field : fields) {
             ReportField reportField = new ReportField();
             reportField.setDailyReport(dailyReport);
 
@@ -58,8 +60,11 @@ public class TeacherController extends Controller {
             reportField.setField(field);
             reportField.save();
         }
-            User u = SessionHelper.currentUser(ctx());
-        return ok(index.render(u));
+        User u = SessionHelper.currentUser(ctx());
+        List<Course> list = CourseUser.allUserCourses(u);
+
+        return ok(index.render(u, list));
+
     }
 
 

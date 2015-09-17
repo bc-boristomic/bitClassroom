@@ -1,9 +1,12 @@
 package models.course;
 
 import com.avaje.ebean.Model;
+import helpers.SessionHelper;
 import models.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by NN on 17.9.2015.
@@ -30,6 +33,35 @@ public class CourseUser extends Model {
     @JoinColumn(name="course_id", referencedColumnName = "id")
     private Course course;
 
+
+    private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
+
+
+    /**
+     * Returns all coursesUser objects from database as List.
+     *
+     * @return <code>List</code> type value of all courses from database
+     */
+    public static List<CourseUser> findAll(Long userId) {
+        List<CourseUser> list = finder.all();
+        List<CourseUser> courseUserList = new ArrayList<>();
+
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getUser().getId().equals(userId)) {
+                    courseUserList.add(list.get(i));
+                }
+            }
+            return courseUserList;
+    }
+
+    public static List<Course> allUserCourses(User currentUser){
+        List<Course> courseByUserList = new ArrayList<>();
+        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
+        for (int i = 0; i < courseUserList.size(); i++){
+            courseByUserList.add(courseUserList.get(i).getCourse());
+        }
+        return courseByUserList;
+    }
 
     public Long getId() {
         return id;

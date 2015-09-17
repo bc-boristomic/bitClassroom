@@ -1,6 +1,8 @@
 package controllers;
 
 import helpers.SessionHelper;
+import models.course.Course;
+import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
@@ -11,6 +13,8 @@ import views.html.about;
 import views.html.index;
 import views.html.users.login;
 import views.html.users.util.email;
+
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -23,7 +27,11 @@ public class Application extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        return ok(index.render(temp));
+
+        List<Course> list = CourseUser.allUserCourses(temp);
+
+        return ok(index.render(temp, list));
+
     }
 
     /**
