@@ -44,6 +44,8 @@ public class AdminController extends Controller {
 
     private final Form<Field> fieldForm = Form.form(Field.class);
 
+    private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
+
 
 
     /**
@@ -210,16 +212,28 @@ public class AdminController extends Controller {
         return redirect("/admin/createcourse");
     }
 
-    public Result approveUser() {
-        DynamicForm dynamicForm = Form.form().bindFromRequest();
-        dynamicForm.bindFromRequest(request());
+    public Result approveStudent() {
+        DynamicForm form = Form.form().bindFromRequest();
 
-        CourseUser courseUser = new CourseUser();
-        courseUser.setCourse(Course.findById(Long.valueOf(dynamicForm.get("course.getId"))));
+        String courseUser = form.get("courseUser");
+        String s = form.data().get("pressed");
 
-        Logger.info("vrijednost " + dynamicForm.get("course.getId"));
-        return ok("radi");
+        if (courseUser != null) {
+            Long id = Long.valueOf(courseUser);
+            CourseUser cu = CourseUser.getFinder().byId(id);
+            if (s != null) {
+                cu.setStatus(Integer.parseInt(s));
+                cu.save();
+            }
+        }
+        return ok("");
     }
+
+    public Result awaitList() {
+        return ok(views.html.admins.approveuser.render(CourseUser.getFinder().all()));
+    }
+
+
 
 
 

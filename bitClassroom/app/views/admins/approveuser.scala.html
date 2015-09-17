@@ -1,0 +1,65 @@
+@import models.course.CourseUser
+@import utility.UserConstants
+@(courseUserForm: List[CourseUser])
+@adminmain("Lis of applied students") {
+
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Student</th>
+                <th>Status</th>
+                <th>Accept</th>
+                <th>Decline</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(courseUser <- courseUserForm) {
+                @if(courseUser.getStatus.equals(UserConstants.INACTIVE)) {
+                    <tr class="active">
+                        <td>@courseUser.getCourse.getName</td>
+                        <td>@courseUser.getUser.getFirstName @courseUser.getUser.getLastName</td>
+                        <td>Inactive</td>
+                        <td><button id="approved" class="btn btn-success btn-xs " type="submit" ><i class="glyphicon glyphicon-ok"></i></button></td>
+                        <td><button id="dissaproved" class="btn btn-danger btn-xs " type="submit" ><i class="glyphicon glyphicon-remove"></i></button></td>
+                        <td><input type="text" id="course" value="@courseUser.getId" hidden /></td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+
+
+    <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+    <script>
+
+    var user = $('#course').val();
+        $(document).ready(function() {
+
+            $("#approved").click(function() {
+            console.log(user);
+                $.ajax({
+                    type: "post",
+                    url: "@controllers.users.routes.AdminController.approveStudent()",
+                    data: "pressed=2" + "&courseUser=" + user
+                }).success(function(response) {
+                   window.location.href = '/admin/awaitlist';
+                })
+            })
+             $("#dissaproved").click(function() {
+                 console.log(user);
+                $.ajax({
+                    type: "post",
+                    url: "@controllers.users.routes.AdminController.approveStudent()",
+                    data: "pressed=3" + "&courseUser=" + user
+                }).success(function(response) {
+                    window.location.href = '/admin/awaitlist';
+                })
+            })
+        });
+    </script>
+
+
+}

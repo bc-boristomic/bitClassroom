@@ -31,7 +31,6 @@ public class CourseController extends Controller {
     }
 
     public Result course(){
-
         User temp = SessionHelper.currentUser(ctx());
         return ok(courseView.render(temp));
     }
