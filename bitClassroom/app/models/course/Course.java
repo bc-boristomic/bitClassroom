@@ -25,13 +25,14 @@ public final class Course extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
-    @Column(name = "name", unique = true, length = 100)
+    @Column(name = "name", length = 100)
     private String name;
     @Column(name = "description", length = 100)
     private String description;
     @Column(name = "teacher", length = 100)
     private String teacher;
-
+    @Column(name = "image")
+    private String image;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false)
@@ -139,6 +140,13 @@ public final class Course extends Model {
         this.teacher = teacher;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
