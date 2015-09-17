@@ -3,22 +3,26 @@
 @(courseList: List[Course])
 @main("Course") {
 
-    @for(course <- courseList){
+    @for(course <- courseList) {
+        <form action="@controllers.users.routes.StudentController.joinCourse()" method="post">
 
-    <div class="col-sm-3" id="courseDiv">
-        <div class="jumbotron ">
-                <a href="#"><h2>@course.getName</h2>
-                    <h4>@course.getDescription</h4></a>
-                <br>
-                <h6>@course.getTeacher</h6>
-            <a href="#" class="btn btn-success">Join</a>
+            <div class="col-sm-3" id="courseDiv">
+                <div class="jumbotron ">
+                    <input type="text" name="course-id" value="@course.getId" hidden/>
+                    <a href="#"><h2>@course.getName</h2>
+                        <h4>@course.getDescription</h4></a>
+                    @course.getId
+                    <br>
+                    <h6>@course.getTeacher</h6>
+                    <input type="submit" class="btn btn-success" href="@controllers.users.routes.StudentController.joinCourse()" value="Join"/>
 
-        </div>
+                </div>
 
+            </div>
 
-    </div>
-
-
+        </form>
     }
+
+
 
 }

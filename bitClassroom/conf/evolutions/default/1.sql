@@ -8,11 +8,11 @@ create table course (
   name                      varchar(100),
   description               varchar(100),
   teacher                   varchar(100),
+  image                     varchar(255),
   create_date               datetime,
   created_by                varchar(255),
   update_date               datetime,
   updated_by                varchar(255),
-  constraint uq_course_name unique (name),
   constraint pk_course primary key (id))
 ;
 

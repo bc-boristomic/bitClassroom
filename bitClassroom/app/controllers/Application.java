@@ -1,6 +1,7 @@
 package controllers;
 
 import helpers.SessionHelper;
+import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
@@ -101,6 +102,12 @@ public class Application extends Controller {
         session().clear();
         flash("success", "You successfuly signed out.");
         return redirect("/login");
+    }
+
+    public Result getNotification() {
+        User temp = SessionHelper.currentUser(ctx());
+        int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
+        return ok(notify+"");
     }
 
 
