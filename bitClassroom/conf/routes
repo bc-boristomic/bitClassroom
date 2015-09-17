@@ -28,9 +28,9 @@ POST          /admin/adduser             @controllers.users.AdminController.save
 GET           /admin/allusers            @controllers.users.AdminController.listOfUser()
 GET           /admin/errors              @controllers.users.AdminController.seeErrors()
 
-<<<<<<< HEAD
+
 # CREATE REPORT FIELD  ===============================================================
-=======
+
 # Routes for admin approval of user to join certain course
 GET           /admin/approveuser         @controllers.users.AdminController.approveUser()
 POST          /admin/approveuser         @controllers.users.AdminController.approveUser()
@@ -40,7 +40,7 @@ POST          /student/joincourse        @controllers.users.StudentController.jo
 
 
 # CREATE REPORT FIELD
->>>>>>> 81ba8ac82c38ac7864b93b2b3e4109b138330cb8
+
 GET           /admin/createdaily         @controllers.users.AdminController.genField()
 POST          /admin/createdaily         @controllers.users.AdminController.saveField()
 
@@ -75,7 +75,5 @@ GET           /assets/*file              @controllers.Assets.versioned(path="/pu
 
 
 GET           /user/courses              @controllers.course.CourseController.allCourses()
-<<<<<<< HEAD
+
 GET           /user/class                @controllers.course.CourseController.course()
-=======
->>>>>>> f926d3369d2cdfa5ba8de36f0d2215270fe36d10

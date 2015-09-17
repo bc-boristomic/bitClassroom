@@ -30,7 +30,7 @@ public class CourseController extends Controller {
         return ok(courseList.render(Course.findAll()));
     }
 
-    public Result course (){
+    public Result course(){
 
         User temp = SessionHelper.currentUser(ctx());
         return ok(courseView.render(temp));

@@ -9,7 +9,6 @@ function checkEmail() {
     var ends = email.substring(email.length - 11, email.length);
     var res = ends.includes("@bitcamp.ba");
     var containspoint = email.substring(0,email.search("@bitcamp.ba"));
-    alert(ends + " " + res );
     if (!filter.test(email)) {
         document.getElementById("emailError").innerHTML = "Invalid E-mail.";
     }else if(email.search("@bitcamp.ba")== -1){

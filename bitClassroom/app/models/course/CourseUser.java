@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "course_user")
 public class CourseUser extends Model {
 
-    private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

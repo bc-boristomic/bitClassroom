@@ -27,7 +27,7 @@ import views.html.admins.userlist;
 import views.html.admins.setingsdailyraport;
 
 import views.html.courses.fillClassDetails;
-import views.html.admins.fillClassDetails;
+
 
 
 
