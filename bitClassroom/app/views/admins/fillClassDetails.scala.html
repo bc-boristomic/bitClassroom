@@ -4,7 +4,7 @@
 @(users: List[User])(courseForm: Form[Course])
 
 
-@main("Fill in the form") {
+@adminmain("Fill in the form") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
 

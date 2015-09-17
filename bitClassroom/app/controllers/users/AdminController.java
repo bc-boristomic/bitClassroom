@@ -5,12 +5,14 @@ import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
 import models.course.Course;
+import models.course.CourseUser;
 import models.report.Field;
 import models.user.Role;
 import models.user.User;
 import models.report.Field;
 import org.joda.time.DateTime;
 import play.Logger;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -23,7 +25,7 @@ import views.html.admins.allerrors;
 import views.html.admins.userlist;
 
 import views.html.admins.setingsdailyraport;
-import views.html.fillClassDetails;
+import views.html.admins.fillClassDetails;
 
 
 import javax.persistence.PersistenceException;
@@ -84,8 +86,6 @@ public class AdminController extends Controller {
         String password = boundForm.bindFromRequest().field("password").value();
         String tmpRole = boundForm.bindFromRequest().field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
-
-        Logger.debug(tmpRole);
 
         Long role = 1L;
         if (tmpRole != null) {
@@ -194,6 +194,8 @@ public class AdminController extends Controller {
         String teacher = boundForm.bindFromRequest().field("type").value();
 
         Course course = new Course(name, description, teacher);
+        course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
+        course.setUpdateDate(new DateTime());
         try{
         course.save();
         } catch (PersistenceException e) {
@@ -201,9 +203,21 @@ public class AdminController extends Controller {
             flash("warning", "Something went wrong, course could not be saved to data base");
             return redirect("/admin/createcourse");
         }
-
         flash("success", "You successfully added new course.");
-        return redirect("/"); // TODO add call to route for listing posts
+        return redirect("/admin/createcourse");
     }
+
+    public Result approveUser() {
+        DynamicForm dynamicForm = Form.form().bindFromRequest();
+        dynamicForm.bindFromRequest(request());
+
+        CourseUser courseUser = new CourseUser();
+        courseUser.setCourse(Course.findById(Long.valueOf(dynamicForm.get("course.getId"))));
+
+        Logger.info("vrijednost " + dynamicForm.get("course.getId"));
+        return ok("radi");
+    }
+
+
 
 }

@@ -111,5 +111,11 @@ public class Application extends Controller {
         return redirect("/login");
     }
 
+    public Result getNotification() {
+        User temp = SessionHelper.currentUser(ctx());
+        int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
+        return ok(notify+"");
+    }
+
 
 }

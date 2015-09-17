@@ -20,19 +20,16 @@ public class CourseUser extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
-
     @Column
     private Integer status;
-
     @ManyToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
-
-
     @ManyToOne
     @JoinColumn(name="course_id", referencedColumnName = "id")
     private Course course;
 
+    private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
@@ -90,6 +87,10 @@ public class CourseUser extends Model {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public static Finder<Long, CourseUser> getFinder() {
+        return finder;
     }
 
     @Override
