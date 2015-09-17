@@ -78,6 +78,7 @@
                                     }
                                     @if(role.getId.equals(UserConstants.STUDENT)) {
                                         <li><a href="#">Go to classrom</a></li>
+                                        <li><a href="/user/courses">Courses</a></li>
                                     }
                                 }
                             }
@@ -164,6 +165,13 @@
             <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
             <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
 
+
+        <script type="text/javascript">
+
+           $(document).ready(function(){
+            $('#sort').DataTable();
+            });
+        </script>
 
     </body>
 </html>

@@ -1,10 +1,14 @@
 @import models.course.Course
-@(courseForm: Form[Course])
+@import models.user.User
+@import utility.UserConstants
+@(users: List[User])(courseForm: Form[Course])
+
+
 @main("Fill in the form") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
 
-        <legend>Create new post</legend>
+        <legend>Create new course</legend>
 
         <form id="courseForm" method="post" class="form-horizontal">
                 <!-- The template for adding new field -->
@@ -16,7 +20,20 @@
                     <input type="text" class="form-control" name="description" placeholder="Description" />
                 </div>
                 <div class="col-xs-2">
-                    <input type="text" class="form-control" name="teacher" placeholder="Teacher" />
+                    <select id="selection" name="type">
+
+                    @for(user <- users) {
+                        @if(user.getRoles != null && user.getRoles.size() > 0) {
+                            @for(role <- user.getRoles) {
+                                @if(role.getId.equals(UserConstants.TEACHER)) {
+                                    <option value="@user.getFirstName">@user.getFirstName</option>
+                                }
+
+                            }
+                        }
+                    }
+                    </select>
+                    <label>Teacher</label>
                 </div>
 
             </div>

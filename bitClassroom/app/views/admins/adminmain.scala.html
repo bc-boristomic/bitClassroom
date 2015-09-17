@@ -21,6 +21,8 @@
             <!-- custom icon -->
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/logo.png")">
 
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
+
     </head>
         <!-- END OF HEAD TAG -->
 
@@ -53,8 +55,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Classroom<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/courses/allcourses">See all courses</a></li>
-                                    <li><a href="/courses/newcourse">Add new Course</a></li>
+                                    <li><a href="/user/courses">See all courses</a></li>
+                                    <li><a href="/admin/createcourse">Add new Course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
                                     <li><a href="/courses/adduser">Add user to course</a></li>
@@ -140,11 +142,21 @@
 
             <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED-->
         <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+        <script src="@routes.Assets.versioned("/javascripts/tablesorter.min.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
-        <script src="@routes.Assets.versioned("javascript/main.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
+
+
+
+        <script type="text/javascript">
+
+           $(document).ready(function(){
+            $('#sort').DataTable();
+            });
+        </script>
 
 
     </body>

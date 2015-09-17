@@ -15,7 +15,7 @@
 
   <div class="container">
     <div class="table-responsive">
-      <table class="table-condensed table-hover table table-bordered">
+      <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
           <tr class="danger">
             <th>First name:</th>
@@ -48,7 +48,7 @@
                 @if(role.getId.equals(UserConstants.MENTOR)) {
                  <td>Mentor</td>
                     <td>
-                        <a data-role="delete"   data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)" class="btn btn-danger" role="button">
+                        <a data-role="delete"   data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)"  role="button">
                             <i class="glyphicon glyphicon-trash"></i></a>
                 }
                 @if(role.getId.equals(UserConstants.STUDENT)) {

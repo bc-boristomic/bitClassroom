@@ -1,0 +1,24 @@
+@import models.course.Course
+
+@(courseList: List[Course])
+@main("Course") {
+
+    @for(course <- courseList){
+
+    <div class="col-sm-3" id="courseDiv">
+        <div class="jumbotron ">
+                <a href="#"><h2>@course.getName</h2>
+                    <h4>@course.getDescription</h4></a>
+                <br>
+                <h6>@course.getTeacher</h6>
+            <a href="#" class="btn btn-success">Join</a>
+
+        </div>
+
+
+    </div>
+
+
+    }
+
+}

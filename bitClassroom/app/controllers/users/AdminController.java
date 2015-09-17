@@ -166,10 +166,8 @@ public class AdminController extends Controller {
         return ok(setingsdailyraport.render());
     }
 
-
-
-
     public Result saveField() {
+<<<<<<< HEAD
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
@@ -178,13 +176,15 @@ public class AdminController extends Controller {
             model.save();
         //}
         return ok(setingsdailyraport.render()) ;
+=======
+        return ok("ad");
+>>>>>>> 58c6ccb95fe4cd261290cf730ba3b607a587abd7
     }
-
 
     private final Form<Course> courseForm = Form.form(Course.class);
 
     public Result addCourse() {
-        return ok(fillClassDetails.render(courseForm));
+        return ok(fillClassDetails.render(User.getFinder().all(), courseForm));
     }
 
     public Result saveCourse() {
@@ -192,14 +192,12 @@ public class AdminController extends Controller {
 
         String name = boundForm.bindFromRequest().field("name").value();
         String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("teacher").value();
+        String teacher = boundForm.bindFromRequest().field("type").value();
 
         Course course = new Course(name, description, teacher);
         course.save();
         flash("success", "You successfully added new course.");
-        return redirect("/index"); // TODO add call to route for listing posts
-
-
+        return redirect("/"); // TODO add call to route for listing posts
     }
 
 }
