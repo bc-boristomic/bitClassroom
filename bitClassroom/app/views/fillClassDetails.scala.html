@@ -13,13 +13,17 @@
         <form id="courseForm" method="post" class="form-horizontal">
                 <!-- The template for adding new field -->
             <div class="form-group" id="courseTemplate">
-                <div class="col-xs-4 col-xs-offset-1">
-                    <input type="text" class="form-control" name="name" placeholder="Name" />
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" name="name" placeholder="Name" required/>
                 </div>
-                <div class="col-xs-4">
-                    <input type="text" class="form-control" name="description" placeholder="Description" />
                 </div>
-                <div class="col-xs-2">
+            <div class="form-group" id="courseTemplate">
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" name="description" placeholder="Description" required />
+                </div>
+                </div>
+            <div class="form-group" id="courseTemplate">
+                <div class="col-lg-6">
                     <select id="selection" name="type">
 
                     @for(user <- users) {
