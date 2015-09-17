@@ -1,6 +1,8 @@
 package controllers;
 
 import helpers.SessionHelper;
+import models.course.Course;
+import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
@@ -11,6 +13,8 @@ import views.html.about;
 import views.html.index;
 import views.html.users.login;
 import views.html.users.util.email;
+
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -23,7 +27,15 @@ public class Application extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        return ok(index.render(temp));
+        if (temp != null) {
+
+            List<Course> list = CourseUser.allUserCourses(temp);
+
+            return ok(index.render(temp, list));
+        } else {
+            return ok("");
+        }
+
     }
 
     /**
@@ -101,6 +113,12 @@ public class Application extends Controller {
         session().clear();
         flash("success", "You successfuly signed out.");
         return redirect("/login");
+    }
+
+    public Result getNotification() {
+        User temp = SessionHelper.currentUser(ctx());
+        int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
+        return ok(notify + "");
     }
 
 

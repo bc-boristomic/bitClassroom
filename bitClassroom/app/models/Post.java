@@ -4,7 +4,6 @@ import com.avaje.ebean.Model;
 import models.user.User;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

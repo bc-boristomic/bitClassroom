@@ -28,7 +28,19 @@ POST          /admin/adduser             @controllers.users.AdminController.save
 GET           /admin/allusers            @controllers.users.AdminController.listOfUser()
 GET           /admin/errors              @controllers.users.AdminController.seeErrors()
 
+<<<<<<< HEAD
 # CREATE REPORT FIELD  ===============================================================
+=======
+# Routes for admin approval of user to join certain course
+GET           /admin/approveuser         @controllers.users.AdminController.approveUser()
+POST          /admin/approveuser         @controllers.users.AdminController.approveUser()
+
+POST          /student/joincourse        @controllers.users.StudentController.joinCourse()
+
+
+
+# CREATE REPORT FIELD
+>>>>>>> 81ba8ac82c38ac7864b93b2b3e4109b138330cb8
 GET           /admin/createdaily         @controllers.users.AdminController.genField()
 POST          /admin/createdaily         @controllers.users.AdminController.saveField()
 
@@ -49,8 +61,6 @@ GET           /admin/delete/:id          @controllers.users.AdminController.dele
 GET           /admin/errors              @controllers.users.AdminController.seeErrors()
 DELETE        /admin/error/:id           @controllers.users.AdminController.deleteError(id: Long)
 
-
-
 # FOR TESTING ONLY
 GET           /user/test                 @controllers.users.UserController.test()
 GET           /admin/test                @controllers.users.AdminController.test()
@@ -58,9 +68,14 @@ GET           /teacher/test              @controllers.users.TeacherController.te
 GET           /mentor/test               @controllers.users.MentorController.test()
 GET           /student/test              @controllers.users.StudentController.test()
 
+POST          /notify                    @controllers.Application.getNotification()
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file              @controllers.Assets.versioned(path="/public", file: Asset)
 
 
-GET           /user/courses             @controllers.course.CourseController.allCourses()
+GET           /user/courses              @controllers.course.CourseController.allCourses()
+<<<<<<< HEAD
+GET           /user/class                @controllers.course.CourseController.course()
+=======
+>>>>>>> f926d3369d2cdfa5ba8de36f0d2215270fe36d10

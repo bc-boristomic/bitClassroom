@@ -3,6 +3,7 @@ package models.user;
 import com.avaje.ebean.Model;
 import models.Post;
 import models.course.Course;
+import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;

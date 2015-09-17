@@ -59,12 +59,14 @@
                                     <li><a href="/admin/createcourse">Add new course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="/courses/adduser">Add user to course</a></li>
+                                    <li><a href="/courses/adduser">Users awaiting approval <span class="badge" id="notify"></span></a></li>
                                     <li class="divider"></li>
                                     <li><a href="/post/new">Write post</a></li>
                                 </ul>
                             </li>
                             <li><a href="/admin/createdaily">Add new daily report</a></li>
+
+
                         </ul>
 
                         <ul class="nav navbar-nav navbar-right">
@@ -150,11 +152,21 @@
         <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
 
 
-
         <script type="text/javascript">
 
            $(document).ready(function(){
             $('#sort').DataTable();
+            });
+
+            $(document).ready(function() {
+                    $.ajax({
+                    type: "post",
+                    url: "@routes.Application.getNotification()",
+                    data: ""
+                }).success(function(response) {
+                    $('#notify').html(response);
+                })
+
             });
         </script>
 
