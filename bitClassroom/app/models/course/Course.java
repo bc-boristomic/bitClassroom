@@ -40,8 +40,6 @@ public final class Course extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
-    @ManyToMany
-    private List<User> users = new ArrayList<>();
 
     /**
      * Consturctor used to create Course by admin.
@@ -166,14 +164,6 @@ public final class Course extends Model {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public void setUpdateDate(DateTime updateDate) {

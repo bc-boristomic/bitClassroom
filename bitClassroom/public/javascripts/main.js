@@ -39,6 +39,29 @@ function checkNameInput() {
     }
 }
 
+function checkLastNameInput() {
+
+
+    var firstName = document.getElementById("inputLName").value;
+    var filter = /^[a-zA-Z]+$/;
+
+
+    if (firstName.length == 0) {
+        document.getElementById("lastNameError").innerHTML = "This field is required";
+    } else {
+
+
+        if (!filter.test(firstName)) {
+            document.getElementById("lastNameError").innerHTML = "Only letters allowed.";
+        } else  if (firstName.length < 3){
+            document.getElementById("lastNameError").innerHTML = "Nick name is short";
+        }else{
+
+            document.getElementById("lastNameError").innerHTML = "";
+        }
+    }
+}
+
 
 
 function checkPassword() {

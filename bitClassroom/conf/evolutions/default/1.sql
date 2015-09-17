@@ -16,6 +16,14 @@ create table course (
   constraint pk_course primary key (id))
 ;
 
+create table course_user (
+  id                        bigint auto_increment not null,
+  status                    integer,
+  user_id                   bigint,
+  course_id                 bigint,
+  constraint pk_course_user primary key (id))
+;
+
 create table daily_report (
   id                        bigint auto_increment not null,
   name                      varchar(255),
@@ -91,29 +99,23 @@ create table user (
 ;
 
 
-create table course_user (
-  course_id                      bigint not null,
-  user_id                        bigint not null,
-  constraint pk_course_user primary key (course_id, user_id))
-;
-
 create table user_role (
   user_id                        bigint not null,
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
-alter table post add constraint fk_post_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_post_user_1 on post (user_id);
-alter table report_field add constraint fk_report_field_dailyReport_2 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
-create index ix_report_field_dailyReport_2 on report_field (daly_id);
-alter table report_field add constraint fk_report_field_field_3 foreign key (field_id) references field (id) on delete restrict on update restrict;
-create index ix_report_field_field_3 on report_field (field_id);
+alter table course_user add constraint fk_course_user_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_course_user_user_1 on course_user (user_id);
+alter table course_user add constraint fk_course_user_course_2 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_course_user_course_2 on course_user (course_id);
+alter table post add constraint fk_post_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_post_user_3 on post (user_id);
+alter table report_field add constraint fk_report_field_dailyReport_4 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_4 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_5 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_5 on report_field (field_id);
 
 
-
-alter table course_user add constraint fk_course_user_course_01 foreign key (course_id) references course (id) on delete restrict on update restrict;
-
-alter table course_user add constraint fk_course_user_user_02 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table user_role add constraint fk_user_role_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 

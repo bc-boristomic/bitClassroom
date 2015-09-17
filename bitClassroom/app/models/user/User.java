@@ -71,8 +71,7 @@ public final class User extends Model {
     private List<Role> roles = new ArrayList<>();
     @OneToMany
     private List<Post> posts = new ArrayList<>();
-    @ManyToMany(mappedBy = "users")
-    private List<Course> courses = new ArrayList<>();
+
 
     /**
      * Default empty constructor for Ebean
@@ -358,16 +357,10 @@ public final class User extends Model {
     }
 
 
-    public static boolean deleteUser(Long id){
+    public static boolean deleteUser(Long id) {
+
         finder.deleteById(id);
         return true;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
 }

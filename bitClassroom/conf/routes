@@ -56,4 +56,7 @@ GET           /student/test              @controllers.users.StudentController.te
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file              controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file              @controllers.Assets.versioned(path="/public", file: Asset)
+
+
+GET           /user/courses             @controllers.course.CourseController.allCourses()
