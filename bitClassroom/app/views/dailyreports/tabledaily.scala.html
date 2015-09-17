@@ -1,0 +1,67 @@
+@import models.report.Field
+@import models.report.ReportField
+@import models.report.DailyReport
+@(listFields: List[Field], listReportField: List[ReportField], listDailyReport: List[DailyReport])
+
+@main("List") {
+
+
+    <div class="container">
+        <h3 class="page-head-line"> Table of daily reports </h3>
+    </div>
+    <body>
+        <div class="container">
+
+        @for(ldr <- listDailyReport) {
+            <table class="table table-striped">
+                <tr><td>Date</td> <td>@ldr.getCreateDate</td></tr>
+                <tr><td>Name</td> <td>@ldr.getName</td></tr>
+                <tr><td>Report</td> <td>@ldr.getData</td></tr>
+                @for(lrf <- listReportField) {
+                    @if(lrf.getDailyReport.getId.equals(ldr.getId)) {
+                        <tr><td> @lrf.getField.getName</td>  <td>@lrf.getValue</td></tr>
+                    }
+
+
+                }
+
+                <br> <br>
+
+            </table>
+        }
+        </div>
+    </body>
+}
+
+
+    <!--
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table-condensed table-hover table table-bordered">
+                    <thead>
+                        <tr class="danger">
+
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Report</th>
+                            <th>Delete</th>
+                             @for(lists <- listFields) {
+    <th>@lists.getName</th>
+}
+    </tr>
+    </thead>
+<tbody>
+@for(report <- listDailyReport) {
+    <tr class="info">
+        <td>@report.getName</td>
+        <td> @report.getCreateDate</td>
+        <td>@report.getData</td>
+
+    </tr>
+}
+</tbody>
+    </table>
+    </div>
+    </div> -->
+
+

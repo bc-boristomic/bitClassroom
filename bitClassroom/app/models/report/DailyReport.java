@@ -25,7 +25,7 @@ public final class DailyReport extends Model {
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
 
-    @Column(name = "data")
+    @Column(name = "data", length = 255)
     private String data;
 
     /*
@@ -49,6 +49,9 @@ public final class DailyReport extends Model {
     public Long getId() {
         return id;
     }
+
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+        return dtf.print(createdDate); }
 
     public void setName(String name) {
         this.name = name;
