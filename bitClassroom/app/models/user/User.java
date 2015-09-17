@@ -164,7 +164,7 @@ public final class User extends Model {
         return sb.toString();
     }
 
-    
+
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */
 
     public Long getId() {

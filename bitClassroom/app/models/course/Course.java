@@ -43,6 +43,12 @@ public final class Course extends Model {
     private String updatedBy;
 
     /**
+     * Empty constructor for Ebean
+     */
+    public Course() {
+    }
+
+    /**
      * Consturctor used to create Course by admin.
      *
      * @param name        <code>String</code> type value of name
