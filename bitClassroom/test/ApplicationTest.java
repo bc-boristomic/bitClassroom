@@ -1,16 +1,15 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import controllers.routes;
 import com.fasterxml.jackson.databind.JsonNode;
-import controllers.users.routes;
+
 import models.Post;
 import models.report.DailyReport;
 import models.user.User;
 import org.joda.time.DateTime;
 import org.junit.*;
-
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import play.api.routing.Router;
 import play.Logger;
 import play.mvc.*;
 import play.test.*;
@@ -25,6 +24,7 @@ import play.twirl.api.Content;
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;
 import static org.fest.assertions.Assertions.*;
+import org.openqa.selenium.Cookie;
 
 
 /**
@@ -173,34 +173,57 @@ public class ApplicationTest {
         List<Post> posts = Post.findAllPosts();
 
         assertEquals(2, posts.size());
+        //assertThat(2).isEqualTo(posts.size());
     }
 
-    @Test
-    public void testGetDate() {
-        User u = new User();
-        u.setEmail("email@email.com");
-        u.setPassword("password");
-        u.setFirstName("username");
-        u.save();
 
-        Post p = new Post();
-        p.setTitle("title");
-        p.setContent("content");
-        p.setUser(u);
-        p.setVisibleToMentors(true);
-        p.save();
-    }
+//    @Test
+//    public void testIndex() {
+//        running(fakeApplication(), () -> {
+//            Result result = route(routes.UserController.test());
+//            assertEquals(result.status(), SEE_OTHER);
+//            assertThat(result.status()).isEqualTo(SEE_OTHER);
+//            assertThat(result.redirectLocation()).isEqualTo("/login");
+//        });
+//    }
 
     @Test
-    public void testIndex() {
-        running(fakeApplication(), () -> {
-            Result result = route(routes.UserController.test());
-            assertEquals(result.status(), SEE_OTHER);
-            assertThat(result.status()).isEqualTo(SEE_OTHER);
-            assertThat(result.redirectLocation()).isEqualTo("/login");
+    public void testLogin(){
+        running(testServer(9000, fakeApplication(inMemoryDatabase())), new HtmlUnitDriver(), new Callback<TestBrowser>() {
+            @Override
+            public void invoke(TestBrowser testBrowser) throws Throwable {
+                Logger.info(":D:D:D:D");
+                User u = new User();
+                u.setEmail("becir.omerbasic@bitcamp.ba");
+                u.setPassword("936e0b608058ca689ec74c6025315a5a");
+                u.setCellPhone("+38761-284-319");
+                u.setFirstName("Becir");
+                u.setGender(1);
+                u.setLastName("Omerbasic");
+                u.setStatus(1);
+
+                u.save();
+
+                testBrowser.goTo("http://localhost:9000/login");
+                Http.Context.current().session().get("");
+
+
+                assertFalse(testBrowser.pageSource().contains("successfully logged in"));
+
+                testBrowser.fill("#inputEmail").with("becir.omerbasic@bitcamp.ba");
+                testBrowser.fill("#inputPassword").with("Becir123");
+                testBrowser.click("#login");
+                testBrowser.goTo("http://localhost:9000/user/createprofile");
+
+
+
+                assertTrue(testBrowser.pageSource().contains("successfully logged in"));
+
+            }
         });
     }
 
 
+    }
 
-}
+
