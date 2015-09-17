@@ -4,7 +4,7 @@
 @(users: List[User])(courseForm: Form[Course])
 
 
-@main("Fill in the form") {
+@adminmain("Fill in the form") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
 
@@ -24,13 +24,13 @@
                 </div>
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
-                    <select id="selection" name="type">
+                    <select id="selection" name="type" required>
 
                     @for(user <- users) {
                         @if(user.getRoles != null && user.getRoles.size() > 0) {
                             @for(role <- user.getRoles) {
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <option value="@user.getFirstName">@user.getFirstName</option>
+                                    <option  value="@user.getFirstName">@user.getFirstName</option>
                                 }
 
                             }
