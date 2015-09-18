@@ -62,8 +62,9 @@ public class TeacherController extends Controller {
         }
         User u = SessionHelper.currentUser(ctx());
         List<Course> list = CourseUser.allUserCourses(u);
+        CourseUser userc = CourseUser.findAll(u.getId()).get(0);
 
-        return ok(index.render(u, list));
+        return ok(index.render(u, list,userc));
 
     }
 

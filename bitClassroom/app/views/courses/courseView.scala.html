@@ -3,6 +3,12 @@
 @(userListCourse: List[CourseUser])
 @main("Classroom") {
 
+
+    <div class="container">
+        <h4 class="page-head-line">Your wall</h4>
+
+    </div>
+
   @for(temp <- userListCourse){
 
      @if(temp.getStatus == 2){
@@ -36,7 +42,7 @@
             </div>
 
               <div class="panel-footer">
-                <span class="label label-default">@post.getPostType </span> <span class="label label-default">@post.getDate</span> <span class="label label-default">Updates</span>
+                <span class="label label-default">@if(post.getPostType == 0){ Announcement} Assigment </span> <span class="label label-default">@post.getDate</span> <span class="label label-default">Updates</span>
               </div>
             </div>
            </div>
@@ -46,7 +52,6 @@
        }
      }else{
 
-         <div>Error</div>
      }
 }
 }

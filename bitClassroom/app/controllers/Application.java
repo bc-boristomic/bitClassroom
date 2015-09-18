@@ -27,11 +27,14 @@ public class Application extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        if (temp != null) {
+        List<CourseUser> culist = CourseUser.findAll(temp.getId());
+
+        if (temp != null && culist.size()!= 0) {
 
             List<Course> list = CourseUser.allUserCourses(temp);
+            CourseUser userc = culist.get(0);
 
-            return ok(index.render(temp, list));
+            return ok(index.render(temp, list, userc));
         } else {
 
             return ok(login.render(userForm));
