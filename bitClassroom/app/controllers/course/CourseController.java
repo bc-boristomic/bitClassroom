@@ -4,6 +4,7 @@ import helpers.SessionHelper;
 
 import models.Post;
 import models.course.Course;
+import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
@@ -32,8 +33,8 @@ public class CourseController extends Controller {
 
     public Result course(){
 
-        User temp = SessionHelper.currentUser(ctx());
-        return ok(courseView.render(temp));
+        List<CourseUser>  courUserList = CourseUser.all();
+        return ok(courseView.render(courUserList));
     }
 
 

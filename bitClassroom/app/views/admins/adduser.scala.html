@@ -3,9 +3,9 @@
 @adminmain("Add new user") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveNewUser(), 'class -> "form-horizontal", 'role -> "form") {
-        <div class="col-lg-offset-2">
+        <div class="col-lg-offset-2" style="border: 5px #134fb8">
             <legend>Please fill the form to add new user</legend>
-            <div class="form-group" >
+            <div class="form-group">
                 <label for="fname" class="col-lg-2 control-label">
                     First name <abbr class="req" title="Please add users first name" style="color : red"> * </abbr></label>
                 <div class="col-lg-6">

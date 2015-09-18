@@ -45,7 +45,10 @@ GET           /admin/createdaily         @controllers.users.AdminController.genF
 POST          /admin/createdaily         @controllers.users.AdminController.saveField()
 
 #LIST DAILY REPORT  ===================================================================
-GET            /listReport               @controllers.daily.DailyReportController.listReport()
+GET           /listReport                @controllers.daily.DailyReportController.listReport()
+DELETE        /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
+
 
 
 #======================================================================================

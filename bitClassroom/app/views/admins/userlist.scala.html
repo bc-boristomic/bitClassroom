@@ -50,6 +50,7 @@
                     <td>
                         <a data-role="delete"   data-delete-parent="tr"  href="@controllers.users.routes.AdminController.deleteUser(users.getId)"  role="button">
                             <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
                 }
                 @if(role.getId.equals(UserConstants.STUDENT)) {
                   <td>Student</td>

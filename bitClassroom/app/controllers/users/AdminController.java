@@ -6,6 +6,7 @@ import helpers.SessionHelper;
 import models.ErrorLog;
 import models.course.Course;
 import models.course.CourseUser;
+import models.report.DailyReport;
 import models.report.Field;
 import models.user.Role;
 import models.user.User;
@@ -164,6 +165,12 @@ public class AdminController extends Controller {
 
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
+    }
+
+    public Result deleteReport(Long id){
+
+        DailyReport.findDailyReportById(id).delete();
+        return redirect("/listReport");
     }
     public Result genField() {
         return ok(setingsdailyraport.render());

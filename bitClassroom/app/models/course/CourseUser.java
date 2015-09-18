@@ -66,6 +66,17 @@ public class CourseUser extends Model {
         return courseByUserList;
     }
 
+
+    /**
+     * Find all course_user
+     * @return List
+     */
+    public static List<CourseUser> all() {
+
+        return finder.all();
+    }
+
+
     public Long getId() {
         return id;
     }
