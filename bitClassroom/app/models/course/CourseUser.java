@@ -28,7 +28,6 @@ public class CourseUser extends Model {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
