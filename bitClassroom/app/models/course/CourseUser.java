@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "course_user")
-public class CourseUser extends Model {
+public final class CourseUser extends Model {
 
 
 
@@ -22,7 +22,7 @@ public class CourseUser extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
-    @Column(name="status")
+    @Column(name="status", length = 1)
     private Integer status;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

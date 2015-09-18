@@ -25,11 +25,11 @@ public final class Course extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
-    @Column(name = "name", length = 100)
+    @Column(name = "name", length = 50)
     private String name;
-    @Column(name = "description", length = 100)
+    @Column(name = "description", length = 2000)
     private String description;
-    @Column(name = "teacher", length = 100)
+    @Column(name = "teacher", length = 50)
     private String teacher;
     @Column(name = "image")
     private String image;

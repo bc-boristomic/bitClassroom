@@ -25,8 +25,7 @@ public final class DailyReport extends Model {
     private String name;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
-
-    @Column(name = "data", length = 255)
+    @Column(name = "data", length = 4000)
     private String data;
 
     /*

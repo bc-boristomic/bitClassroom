@@ -5,9 +5,9 @@
 
 create table course (
   id                        bigint auto_increment not null,
-  name                      varchar(100),
-  description               varchar(100),
-  teacher                   varchar(100),
+  name                      varchar(50),
+  description               varchar(2000),
+  teacher                   varchar(50),
   image                     varchar(255),
   create_date               datetime,
   created_by                varchar(255),
@@ -18,7 +18,7 @@ create table course (
 
 create table course_user (
   id                        bigint auto_increment not null,
-  status                    integer,
+  status                    integer(1),
   user_id                   bigint,
   course_id                 bigint,
   constraint pk_course_user primary key (id))
@@ -28,13 +28,13 @@ create table daily_report (
   id                        bigint auto_increment not null,
   name                      varchar(255),
   create_date               datetime,
-  data                      varchar(255),
+  data                      varchar(4000),
   constraint pk_daily_report primary key (id))
 ;
 
 create table error_log (
   id                        bigint auto_increment not null,
-  message                   varchar(255),
+  message                   varchar(500),
   loged_date                datetime,
   constraint pk_error_log primary key (id))
 ;

@@ -3,18 +3,12 @@ package models.report;
 import com.avaje.ebean.Model;
 import javax.persistence.*;
 
-
-//
-//import com.avaje.ebean.Model;
-//
-//import javax.persistence.*;
-//
-///**
-// * Created by enver on 9/12/15.
-// */
+/**
+ * Created by enver on 9/12/15.
+ */
 @Entity
 @Table(name = "field")
-public class Field extends Model {
+public final class Field extends Model {
 
     private static Finder<Long, Field> finder = new Finder<>(Field.class);
 

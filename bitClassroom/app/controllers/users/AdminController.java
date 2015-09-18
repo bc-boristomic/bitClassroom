@@ -8,14 +8,18 @@ import models.course.Course;
 import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
+import models.report.ReportField;
 import models.user.Role;
 import models.user.User;
 import models.report.Field;
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
+import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.MD5Hash;
@@ -27,12 +31,13 @@ import views.html.admins.userlist;
 
 import views.html.admins.setingsdailyraport;
 
-import views.html.courses.fillClassDetails;
-
-
+import views.html.admins.fillClassDetails;
+import views.html.admins.tabledaily;
 
 
 import javax.persistence.PersistenceException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -46,6 +51,9 @@ public class AdminController extends Controller {
     private final Form<Field> fieldForm = Form.form(Field.class);
 
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
+
+    private List<String> imageList = new ArrayList<>();
+
 
 
 
@@ -201,6 +209,7 @@ public class AdminController extends Controller {
     public Result saveCourse() {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
+
         String name = boundForm.bindFromRequest().field("name").value();
         String description = boundForm.bindFromRequest().field("description").value();
         String teacher = boundForm.bindFromRequest().field("type").value();
@@ -208,6 +217,30 @@ public class AdminController extends Controller {
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
+
+        Http.MultipartFormData data = request().body().asMultipartFormData();
+        List<Http.MultipartFormData.FilePart> pictures = data.getFiles();
+
+        if (pictures != null) {
+            String picName = null;
+            for (Http.MultipartFormData.FilePart picture : pictures) {
+                picName = picture.getFilename();
+                File file = picture.getFile();
+
+                try {
+                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/courses/" + course.getName() + "/" + picName));
+                    Logger.info(Play.application().path() + "\\public\\images\\" + course.getName() + "/" + picName);
+                    imageList.add(picName);
+                } catch (IOException e) {
+                    Logger.info("Could not move file. " + e.getMessage());
+                    flash("error", "Could not move file.");
+                }
+            }
+            if (picName != null) {
+                course.setImage(course.getName() + "/" + picName);
+            }
+        }
+
         try{
         course.save();
         } catch (PersistenceException e) {
@@ -238,6 +271,14 @@ public class AdminController extends Controller {
 
     public Result awaitList() {
         return ok(views.html.admins.approveuser.render(CourseUser.getFinder().all()));
+    }
+
+    /**
+     * See tables of daily reports
+     * @return
+     */
+    public Result listReport() {
+        return ok(tabledaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all()));
     }
 
 

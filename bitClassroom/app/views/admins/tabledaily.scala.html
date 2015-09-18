@@ -1,0 +1,43 @@
+@import models.report.Field
+@import models.report.ReportField
+@import models.report.DailyReport
+@(listReportField: List[ReportField], listDailyReport: List[DailyReport])
+
+@adminmain("List") {
+
+
+    <div class="container">
+        <h3 class="page-head-line"> Table of daily reports </h3>
+    </div>
+    <body>
+        <div class="container" style="background : peachpuff">
+            <table id="sort" class="table table-bordered">
+
+            @for(ldr <- listDailyReport) {
+                <div style="margin : 40 px 30 px 0 px 30 px" >
+                    <div style="background : #c1e2b3">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Content</th>
+                            </tr>
+                        </thead>
+                        <tr><td>Date</td> <td>@ldr.getCreateDate</td></tr>
+                        <tr><td>Name</td> <td>@ldr.getName</td></tr>
+
+                        @for(lrf <- listReportField) {
+                            @if(lrf.getDailyReport.getId.equals(ldr.getId)) {
+                                <tr><td> @lrf.getField.getName</td>  <td>@lrf.getValue</td></tr>
+                            }
+
+
+                        }
+                        <tr><td>Report</td> <td>@ldr.getData</td></tr>
+                    </div>
+                </div>
+            }
+            </table>
+
+        </div>
+    </body>
+}

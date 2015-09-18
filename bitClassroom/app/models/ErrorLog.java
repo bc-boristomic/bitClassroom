@@ -13,16 +13,14 @@ import java.util.List;
  */
 @Entity
 @Table(name="error_log")
-public class ErrorLog extends Model {
+public final class ErrorLog extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private Long id;
-
-    @Column(name="message")
+    @Column(name="message", length = 500)
     private String message;
-
     @Column(name="loged_date", columnDefinition = "datetime")
     private DateTime logedDate = new DateTime();
 
