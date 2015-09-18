@@ -11,11 +11,14 @@
     </div>
     <body>
         <div class="container" style="background : peachpuff">
-            <table id="sort" class="table table-bordered">
 
-            @for(ldr <- listDailyReport) {
+            <table id="sort" class="table table-bordered">
                 <div style="margin : 40 px 30 px 0 px 30 px" >
                     <div style="background : #c1e2b3">
+
+
+                    @for(ldr <- listDailyReport) {
+
                         <thead>
                             <tr>
                                 <th>Field</th>
@@ -29,15 +32,15 @@
                             @if(lrf.getDailyReport.getId.equals(ldr.getId)) {
                                 <tr><td> @lrf.getField.getName</td>  <td>@lrf.getValue</td></tr>
                             }
-
-
                         }
                         <tr><td>Report</td> <td>@ldr.getData</td></tr>
+
+
+                    }
+
                     </div>
                 </div>
-            }
             </table>
-
         </div>
     </body>
 }

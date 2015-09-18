@@ -61,10 +61,11 @@ public class TeacherController extends Controller {
             reportField.save();
         }
         User u = SessionHelper.currentUser(ctx());
-        List<Course> list = CourseUser.allUserCourses(u);
-        CourseUser userc = CourseUser.findAll(u.getId()).get(0);
+       // List<Course> list = CourseUser.allUserCourses(u);
+        //CourseUser userc = CourseUser.findAll(u.getId()).get(0);
+        List<CourseUser> userc = CourseUser.getFinder().all();
 
-        return ok(index.render(u, list,userc));
+        return ok(index.render(u, userc));
 
     }
 
