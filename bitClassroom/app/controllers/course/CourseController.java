@@ -32,18 +32,10 @@ public class CourseController extends Controller {
     }
 
     public Result course(){
-<<<<<<< HEAD
 
         List<CourseUser>  courUserList = CourseUser.all();
         return ok(courseView.render(courUserList));
-=======
-        User temp = SessionHelper.currentUser(ctx());
-        return ok(courseView.render(temp));
->>>>>>> 12031afd18a58c1a8a7516242003e7853ff99504
+
     }
-
-
-
-
 
 }

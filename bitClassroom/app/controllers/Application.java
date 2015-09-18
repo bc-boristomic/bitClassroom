@@ -33,7 +33,8 @@ public class Application extends Controller {
 
             return ok(index.render(temp, list));
         } else {
-            return ok("");
+
+            return ok(login.render(userForm));
         }
 
     }

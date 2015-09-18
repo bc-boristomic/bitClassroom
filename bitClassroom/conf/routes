@@ -44,14 +44,14 @@ GET           /admin/createdaily           @controllers.users.AdminController.ge
 POST          /admin/createdaily           @controllers.users.AdminController.saveField()
 
 #LIST DAILY REPORT  ===================================================================
-<<<<<<< HEAD
+
 GET           /listReport                @controllers.daily.DailyReportController.listReport()
 DELETE        /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
 
-=======
+
 GET           /listReport                  @controllers.daily.DailyReportController.listReport()
->>>>>>> 12031afd18a58c1a8a7516242003e7853ff99504
+
 
 
 #======================================================================================
