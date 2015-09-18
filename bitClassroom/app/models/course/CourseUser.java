@@ -66,6 +66,8 @@ public final class CourseUser extends Model {
     }
 
 
+
+
     /**
      * Find all course_user
      * @return List
