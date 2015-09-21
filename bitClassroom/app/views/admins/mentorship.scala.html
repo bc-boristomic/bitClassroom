@@ -1,0 +1,47 @@
+@import models.user.User
+@import utility.UserConstants
+@(userList: List[User])
+@adminmain("Assign mentor to students") {
+
+    @helper.form(action = controllers.users.routes.AdminController.saveMentorship(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+
+
+        <legend>Mentorship process</legend>
+        <div class="form-group">
+            <label for="select" class="col-lg-2 control-label">Mentors</label>
+            <div class="col-lg-4">
+                <select class="form-control" id="select" name="mentor">
+                @for(user <- userList) {
+                    @if(user.getRoles != null && user.getRoles.size() > 0) {
+                        @for(role <- user.getRoles) {
+                            @if(role.getId.equals(UserConstants.MENTOR)) {
+                                <option value="@user.getId">@user.getFirstName @user.getLastName</option>
+                            }
+                        }
+                    }
+                }
+                </select>
+            </div>
+            <label for="select" class="col-lg-2 control-label">Students</label>
+            <div class="col-lg-4">
+                <select class="form-control" id="select" name="student">
+                @for(user <- userList) {
+                    @if(user.getRoles != null && user.getRoles.size() > 0) {
+                        @for(role <- user.getRoles) {
+                            @if(role.getId.equals(UserConstants.STUDENT) && user.getStatus.equals(UserConstants.DONT_HAVE_MENTOR)) {
+                                <option value="@user.getId">@user.getFirstName @user.getLastName</option>
+                            }
+                        }
+                    }
+                }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.saveMentorship()">
+                Asign</button>
+        </div>
+
+    }
+
+
+}
+

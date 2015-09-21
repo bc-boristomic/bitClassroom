@@ -9,6 +9,7 @@ import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
+import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import models.report.Field;
@@ -279,6 +280,46 @@ public class AdminController extends Controller {
      */
     public Result listReport() {
         return ok(tabledaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all()));
+    }
+
+    public Result mentorship() {
+        return ok(views.html.admins.mentorship.render(User.findAll()));
+    }
+
+    public Result saveMentorship() {
+        DynamicForm form = Form.form().bindFromRequest();
+        String men = form.get("mentor");
+        String stu = form.get("student");
+        Long ment = null;
+        Long stud = null;
+        if (men != null && stu !=null) {
+            try {
+                ment = Long.parseLong(men);
+                stud = Long.parseLong(stu);
+            } catch(NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse users Id: " + e.getMessage()));
+                flash("warning", "Something went wrong, could not assign mentor to student.");
+                return redirect("/admin/mentorship");
+            }
+        }
+        User mentor = User.findById(ment);
+        User student = User.findById(stud);
+        student.setStatus(UserConstants.HAVE_MENTOR);
+        student.update();
+
+        Mentorship mentorship = new Mentorship();
+        mentorship.setMentor(mentor);
+        mentorship.setStudent(student);
+        mentorship.setCreatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
+        mentorship.save();
+
+        flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
+        return redirect("/admin/mentorship");
+    }
+
+    public Result seeMentorsAndStudents() {
+        return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().all()));
     }
 
 
