@@ -17,11 +17,14 @@
             <!-- main theme for site css bootstrap -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
 
-        <!-- css for validation and other main stylesheat -->
+            <!-- css for validation and other main stylesheat -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
 
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/aplication.css")" />
             <!-- custom icon -->
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/logo.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
+
 
     </head>
         <!-- END OF HEAD TAG -->
@@ -35,8 +38,8 @@
 
 
             <!-- COLAPSABLE NAVIGATION BAR -->
-        <div class="col-lg-offset-1 col-lg-10">
-            <nav class="navbar navbar-inverse">
+        <div class="col-lg-offset-1 col-lg-10" >
+            <nav class="navbar navbar-inverse" style="background-color : #d9534f">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -62,14 +65,13 @@
                                         <li class="dropdown ">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                                 Go to classroom<span class="caret"></span></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#">ITEM TO BE ADDED</a></li>
-                                                <li><a href="#">ITEM TO BE ADDED</a></li>
-                                                <li><a href="/post/new">add post</a></li>
+                                            <ul class="dropdown-menu" role="menu" style="background-color : #d9534f">
+                                                <li><a href="/user/courses">Courses</a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="/user/editprofile">Edit profile</a></li>
+                                                <li><a href="/post/new">Add post</a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="/logout">Sign out</a></li>
+                                                <li><a href="/daily/report">Write daily report</a></li>
+
                                             </ul>
                                         </li>
                                     }
@@ -77,7 +79,9 @@
                                         <li><a href="#">Go to classrom</a></li>
                                     }
                                     @if(role.getId.equals(UserConstants.STUDENT)) {
-                                        <li><a href="#">Go to classrom</a></li>
+                                        <li><a href="/">Go to classrom</a></li>
+                                        <li><a href="/post/new">Add post</a></li>
+                                        <li><a href="/user/courses">Courses</a></li>
                                     }
                                 }
                             }
@@ -89,11 +93,7 @@
                                 <li class="dropdown active">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                         @currentUser.getFirstName() <span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">ITEM TO BE ADDED</a></li>
-                                        <li><a href="#">ITEM TO BE ADDED</a></li>
-                                        <li><a href="/post/new">add post</a></li>
-                                        <li class="divider"></li>
+                                    <ul class="dropdown-menu" role="menu" style="background-color : #d9534f">
                                         <li><a href="/user/editprofile">Edit profile</a></li>
                                         <li class="divider"></li>
                                         <li><a href="/logout">Sign out</a></li>
@@ -146,6 +146,7 @@
 
             <!-- CONTAINER WITH ALL CONTENT FOR MAIN HTML -->
         <div class="container">
+            <br><br><br>
         @content
         </div>
             <!-- END OF CONTAINER WITH CONTENT -->
@@ -155,15 +156,23 @@
         <div class="row top50">
             <footer class="panel-footer navbar-fixed-bottom"><div class="text-center">Copyright &copy;
                 2015 bitClassroom &#64; BITCamp</div></footer>
-              </div>
-                <!-- END OF FOOTER -->
+        </div>
+            <!-- END OF FOOTER -->
 
 
-                <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED -->
-            <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
-            <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
-            <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+            <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED -->
+        <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("/javascripts/tablesorter.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
 
+
+        <script type="text/javascript">
+
+           $(document).ready(function(){
+            $('#sort').DataTable();
+            });
+        </script>
 
     </body>
 </html>

@@ -11,7 +11,7 @@
     <div class="container">
         <div class="table-responsive">
 
-    <table class="table-condensed table-hover table table-bordered">
+    <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
             <tr class="danger">
                 <th>Error message</th>
@@ -25,15 +25,14 @@
                 <td>@err.getMessage</td>
                 <td>@err.getDate</td>
                 <td>
-                    <a data-role="delete"  data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteError(err.getId)" class="btn btn-danger" role="button">
+                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteError(err.getId)" role="button">
                         <i class="glyphicon glyphicon-trash"></i></a>
                 </td>
             </tr>
-
+        }
         </tbody>
     </table>
     </div>
     </div>
-}
 
 }

@@ -1,20 +1,20 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
-import helpers.AdminFilter;
 import helpers.SessionHelper;
+import models.course.Course;
+import models.course.CourseUser;
 import models.user.User;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;
 import views.html.index;
 import views.html.users.login;
 import views.html.users.util.email;
+
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -27,7 +27,19 @@ public class Application extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        return ok(index.render(temp));
+        //List<CourseUser> culist = CourseUser.findAll(temp.getId());
+
+       // if (temp != null && culist.size()!= 0) {
+
+         //   List<Course> list = CourseUser.allUserCourses(temp);
+            List<CourseUser> userc = CourseUser.getFinder().all();
+
+            return ok(index.render(temp, userc));
+       // } else {
+
+       //     return ok(temp);
+       // }
+
     }
 
     /**
@@ -105,6 +117,12 @@ public class Application extends Controller {
         session().clear();
         flash("success", "You successfuly signed out.");
         return redirect("/login");
+    }
+
+    public Result getNotification() {
+        User temp = SessionHelper.currentUser(ctx());
+        int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
+        return ok(notify + "");
     }
 
 

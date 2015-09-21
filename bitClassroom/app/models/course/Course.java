@@ -25,13 +25,14 @@ public final class Course extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false)
     private Long id;
-    @Column(name = "name", unique = true, length = 100)
+    @Column(name = "name", length = 50)
     private String name;
-    @Column(name = "description", length = 100)
+    @Column(name = "description", length = 2000)
     private String description;
-    @Column(name = "teacher", length = 100)
+    @Column(name = "teacher", length = 50)
     private String teacher;
-
+    @Column(name = "image")
+    private String image;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false)
@@ -40,8 +41,12 @@ public final class Course extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
-    @ManyToMany
-    private List<User> users = new ArrayList<>();
+
+    /**
+     * Empty constructor for Ebean
+     */
+    public Course() {
+    }
 
     /**
      * Consturctor used to create Course by admin.
@@ -141,6 +146,13 @@ public final class Course extends Model {
         this.teacher = teacher;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
@@ -166,14 +178,6 @@ public final class Course extends Model {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public void setUpdateDate(DateTime updateDate) {

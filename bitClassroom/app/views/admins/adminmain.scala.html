@@ -14,12 +14,18 @@
 
             <!-- main theme for site css bootstrap -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
 
-            <!-- css for validation and other main stylesheat -->
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
+
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.css")" />
+
+            <!-- Custom font and icon -->
+        <link href="@routes.Assets.versioned("stylesheets/font-awesome.css")" rel="stylesheet"/>
+        <link href="@routes.Assets.versioned("stylesheets/style.css")" rel="stylesheet" />
 
             <!-- custom icon -->
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/logo.png")">
+
 
     </head>
         <!-- END OF HEAD TAG -->
@@ -53,16 +59,25 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Classroom<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/courses/allcourses">See all courses</a></li>
-                                    <li><a href="/courses/newcourse">Add new Course</a></li>
+                                    <li><a href="/user/courses">See all courses</a></li>
+                                    <li><a href="/admin/createcourse">Add new course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="/courses/adduser">Add user to course</a></li>
+                                    <li><a href="/admin/awaitlist">Users awaiting approval <span class="badge" id="notify"></span></a></li>
                                     <li class="divider"></li>
                                     <li><a href="/post/new">Write post</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/dailyreport/new">Add new daily report</a></li>
+                            <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Daily report<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/admin/createdaily">Add new daily report</a></li>
+                                    <li><a href="/listReport ">View daily report</a></li>
+                                </ul>
+                            </li>
+
+
                         </ul>
 
                         <ul class="nav navbar-nav navbar-right">
@@ -131,19 +146,41 @@
 
 
             <!-- FOOTER ALWAYS FIXED AT BOTTOM OF PAGE -->
-        <div class="row top50">
+<!--        <div class="row top50">
             <footer class="panel-footer navbar-fixed-bottom"><div class="text-center">Copyright &copy;
                 2015 bitClassroom &#64; BITCamp</div></footer>
-        </div>
+        </div> -->
             <!-- END OF FOOTER -->
 
 
             <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED-->
         <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+        <script src="@routes.Assets.versioned("/javascripts/tablesorter.min.js")"></script>
+  <!--      <script src="@routes.Assets.versioned("javascripts/jquery-1.11.1.js")"></script> -->
         <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
+
+
+        <script type="text/javascript">
+
+           $(document).ready(function(){
+            $('#sort').DataTable();
+            });
+
+            $(document).ready(function() {
+                    $.ajax({
+                    type: "post",
+                    url: "@routes.Application.getNotification()",
+                    data: ""
+                }).success(function(response) {
+                    $('#notify').html(response);
+                })
+
+            });
+        </script>
 
 
     </body>

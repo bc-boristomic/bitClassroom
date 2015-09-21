@@ -4,7 +4,6 @@ import com.avaje.ebean.Model;
 import models.user.User;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  * Author: Medina Banjic
  */
 @Entity
-public class Post extends Model {
+public final class Post extends Model {
 
     public static final int ASSIGNMENT = 1;
     public static final int ANNOUNCEMENT = 2;
@@ -23,7 +22,7 @@ public class Post extends Model {
     private Long id;
     @Column(name="title")
     private String title;
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text", length = 3000)
     @Constraints.Required
     private String content;
     @Column(name="post_type")

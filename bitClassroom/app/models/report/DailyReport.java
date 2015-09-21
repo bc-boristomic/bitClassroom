@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by enver on 9/12/15.
@@ -24,9 +25,8 @@ public final class DailyReport extends Model {
     private String name;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
-
-    @Column(name = "data")
-    private String data;    // TODO
+    @Column(name = "data", length = 4000)
+    private String data;
 
     /*
      * Default empty constructor for Ebean
@@ -50,6 +50,9 @@ public final class DailyReport extends Model {
         return id;
     }
 
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+        return dtf.print(createdDate); }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -60,6 +63,16 @@ public final class DailyReport extends Model {
 
     public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+
+    public static DailyReport findDailyReportById(Long id) {
+
+        List<DailyReport> report = finder.where().eq("id", id).findList();
+        if (report.size() == 0) {
+            return null;
+        }
+        return (DailyReport) report.get(0);
     }
 
 

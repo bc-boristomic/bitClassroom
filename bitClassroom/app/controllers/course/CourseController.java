@@ -1,34 +1,41 @@
 package controllers.course;
 
+import helpers.SessionHelper;
+
+import models.Post;
 import models.course.Course;
+import models.course.CourseUser;
+import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.fillClassDetails;
+import views.html.courses.courseList;
+import views.html.courses.courseView;
+import views.html.courses.courseView;
+
+import models.course.Course;
+import models.user.User;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.courses.courseList;
+import java.util.List;
+import views.html.*;
 
 /**
  * Created by Medina and Senadin on 16/09/15.
  */
 public class CourseController extends Controller {
 
-    private final Form<Course> courseForm = Form.form(Course.class);
+    public Result allCourses() {
 
-    public Result addCourse() {
-        return ok(fillClassDetails.render(courseForm));
+        return ok(courseList.render(Course.findAll()));
     }
 
-    public Result saveCourse() {
-        Form<Course> boundForm = courseForm.bindFromRequest();
+    public Result course(){
 
-        String name = boundForm.bindFromRequest().field("name").value();
-        String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("teacher").value();
-
-        Course course = new Course(name, description, teacher);
-        course.save();
-        flash("success", "You successfully added new course.");
-        return redirect("/index"); // TODO add call to route for listing posts
-
+        List<CourseUser>  courUserList = CourseUser.all();
+        return ok(courseView.render(courUserList));
 
     }
+
 }

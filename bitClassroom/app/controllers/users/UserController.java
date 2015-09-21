@@ -1,13 +1,10 @@
 package controllers.users;
 
-import helpers.CurrentUserFilter;
-import helpers.InactiveUserFilter;
+import helpers.Authorization;
 import helpers.SessionHelper;
-import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import play.Logger;
 import play.Play;
 import play.data.Form;
@@ -16,16 +13,14 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
-import utility.MD5Hash;
-import utility.UserConstants;
 import utility.UserUtils;
 import views.html.users.editprofile;
 import views.html.users.profile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by boris on 9/12/15.
@@ -40,13 +35,13 @@ public class UserController extends Controller {
      * Renders template for creating initial user profile with all information, once profile is created status of user is
      * @return
      */
-    @Security.Authenticated(InactiveUserFilter.class)
+    @Security.Authenticated(Authorization.InactiveUser.class)
     public Result createProfile() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(profile.render(temp));
     }
 
-    @Security.Authenticated(InactiveUserFilter.class)
+    @Security.Authenticated(Authorization.InactiveUser.class)
     public Result updateProfile() {
         User temp = SessionHelper.currentUser(ctx());
         Form<User> boundForm = userForm.bindFromRequest();
@@ -111,14 +106,14 @@ public class UserController extends Controller {
 
     }
 
-    @Security.Authenticated(CurrentUserFilter.class)
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result editProfile() {
         User temp = SessionHelper.currentUser(ctx());
         return ok(editprofile.render(temp));
     }
 
 
-    @Security.Authenticated(CurrentUserFilter.class)
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result saveProfile() {
         User temp = SessionHelper.currentUser(ctx());
         Form<User> boundForm = userForm.bindFromRequest();
@@ -182,7 +177,8 @@ public class UserController extends Controller {
         return redirect("/");
     }
 
-    @Security.Authenticated(CurrentUserFilter.class)
+
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result test() {
         Logger.info(new DateTime().getMillis() + " ");
         return redirect("/login");

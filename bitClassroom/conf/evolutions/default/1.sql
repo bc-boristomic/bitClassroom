@@ -3,41 +3,76 @@
 
 # --- !Ups
 
+create table course (
+  id                        bigint auto_increment not null,
+  name                      varchar(50),
+  description               varchar(2000),
+  teacher                   varchar(50),
+  image                     varchar(255),
+  create_date               datetime,
+  created_by                varchar(255),
+  update_date               datetime,
+  updated_by                varchar(255),
+  constraint pk_course primary key (id))
+;
+
+create table course_user (
+  id                        bigint auto_increment not null,
+  status                    integer(1),
+  user_id                   bigint,
+  course_id                 bigint,
+  constraint pk_course_user primary key (id))
+;
+
 create table daily_report (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   create_date               datetime,
-  data                      varchar(255),
+  data                      varchar(4000),
   constraint pk_daily_report primary key (id))
 ;
 
 create table error_log (
-  id                        bigint not null,
-  message                   varchar(255),
+  id                        bigint auto_increment not null,
+  message                   varchar(500),
   loged_date                datetime,
   constraint pk_error_log primary key (id))
 ;
 
+create table field (
+  id                        bigint auto_increment not null,
+  name                      varchar(255),
+  constraint pk_field primary key (id))
+;
+
 create table post (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   title                     varchar(255),
   content                   text,
   post_type                 integer,
-  visible_mentors           boolean,
+  visible_mentors           tinyint(1) default 0,
   date                      varchar(255),
   link                      varchar(255),
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;
 
+create table report_field (
+  id                        bigint auto_increment not null,
+  value                     varchar(255),
+  daly_id                   bigint,
+  field_id                  bigint,
+  constraint pk_report_field primary key (id))
+;
+
 create table role (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(10),
   constraint pk_role primary key (id))
 ;
 
 create table user (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   email                     varchar(100),
   password                  varchar(100),
   first_name                varchar(100),
@@ -69,18 +104,16 @@ create table user_role (
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
-create sequence daily_report_seq;
-
-create sequence error_log_seq;
-
-create sequence post_seq;
-
-create sequence role_seq;
-
-create sequence user_seq;
-
-alter table post add constraint fk_post_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_post_user_1 on post (user_id);
+alter table course_user add constraint fk_course_user_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_course_user_user_1 on course_user (user_id);
+alter table course_user add constraint fk_course_user_course_2 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_course_user_course_2 on course_user (course_id);
+alter table post add constraint fk_post_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_post_user_3 on post (user_id);
+alter table report_field add constraint fk_report_field_dailyReport_4 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_4 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_5 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_5 on report_field (field_id);
 
 
 
@@ -90,29 +123,27 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists daily_report;
+drop table course;
 
-drop table if exists error_log;
+drop table course_user;
 
-drop table if exists post;
+drop table daily_report;
 
-drop table if exists role;
+drop table error_log;
 
-drop table if exists user;
+drop table field;
 
-drop table if exists user_role;
+drop table post;
 
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table report_field;
 
-drop sequence if exists daily_report_seq;
+drop table role;
 
-drop sequence if exists error_log_seq;
+drop table user;
 
-drop sequence if exists post_seq;
+drop table user_role;
 
-drop sequence if exists role_seq;
-
-drop sequence if exists user_seq;
+SET FOREIGN_KEY_CHECKS=1;
 

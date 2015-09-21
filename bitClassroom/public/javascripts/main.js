@@ -6,10 +6,17 @@
 function checkEmail() {
     var email = document.getElementById("inputEmail").value;
     var filter = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-
-
+    var ends = email.substring(email.length - 11, email.length);
+    var res = ends.includes("@bitcamp.ba");
+    var containspoint = email.substring(0,email.search("@bitcamp.ba"));
     if (!filter.test(email)) {
         document.getElementById("emailError").innerHTML = "Invalid E-mail.";
+    }else if(email.search("@bitcamp.ba")== -1){
+        document.getElementById("emailError").innerHTML = "Must contains @bitcamp.ba";
+    }else if(ends.includes("@bitcamp.ba") == false){
+        document.getElementById("emailError").innerHTML = "Must ends with @bitcamp.ba";
+    }else if(containspoint.includes(".") == false){
+        document.getElementById("emailError").innerHTML = "Must contains . etc firstname.lastname@bitcamp.ba";
     } else {
         document.getElementById("emailError").innerHTML = "";
     }
@@ -30,11 +37,34 @@ function checkNameInput() {
 
         if (!filter.test(firstName)) {
             document.getElementById("nameError").innerHTML = "Only letters allowed.";
-        } else  if (firstName.length < 5){
+        } else  if (firstName.length < 3){
             document.getElementById("nameError").innerHTML = "Nick name is short";
         }else{
 
             document.getElementById("nameError").innerHTML = "";
+        }
+    }
+}
+
+function checkLastNameInput() {
+
+
+    var firstName = document.getElementById("inputLName").value;
+    var filter = /^[a-zA-Z]+$/;
+
+
+    if (firstName.length == 0) {
+        document.getElementById("lastNameError").innerHTML = "This field is required";
+    } else {
+
+
+        if (!filter.test(firstName)) {
+            document.getElementById("lastNameError").innerHTML = "Only letters allowed.";
+        } else  if (firstName.length < 3){
+            document.getElementById("lastNameError").innerHTML = "Nick name is short";
+        }else{
+
+            document.getElementById("lastNameError").innerHTML = "";
         }
     }
 }
@@ -75,38 +105,36 @@ function checkPasswords() {
                  document.getElementById("repassError").innerHTML = "";
               }
 }
-
 function checkPhone(){
 
 
-        var phone = document.getElementById("home-phone").value;
-        var filter = /^[a-zA-Z]+$/;
+    var phone = document.getElementById("home-phone").value;
+    var phoneno = /^\+?([0-9]{3})\)?[-. ]?([0-9]{2})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/;
 
-        if ( phone.length <10 || phone.length > 15){
-            document.getElementById("phoneCheck").innerHTML = "Enter correct form of phone number[ +387******** ]";
-        }else if (filter.test(phone)){
-            document.getElementById("phoneCheck").innerHTML = "Enter only numbers";
+    if (!(phone.length == 15)){
+        document.getElementById("phoneCheck").innerHTML = "Enter correct form of phone number[ +387-XX-XXX-XXX ]";
+    }else if (!(phone.match(phoneno))){
+        document.getElementById("phoneCheck").innerHTML = "Enter only numbers";
 
-        }else if(phone.length >=10 && phone.length<=15 && !filter.test(phone)){
+    }else if(phone.length >=10 && phone.length<=15 && phone.match(phoneno)){
 
-            document.getElementById("phoneCheck").innerHTML = "";
-        }
+        document.getElementById("phoneCheck").innerHTML = "";
+    }
 
 }
 
 function checkMobilePhone(){
 
 
-    var phone = document.getElementById("home-phone").value;
-    var filter = /^[a-zA-Z]+$/;
+    var phone = document.getElementById("mobile-phone").value;
+    var phoneno = /^\+?([0-9]{3})\)?[-. ]?([0-9]{2})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/;
 
-
-    if ( phone.length <10 || phone.length > 15){
-        document.getElementById("phoneCheck").innerHTML = "Enter correct form of phone number[ +387******** ]";
-    }else if (filter.test(phone)){
+    if (!(phone.length == 15)){
+        document.getElementById("mobilePhoneCheck").innerHTML = "Enter correct form of phone number[ +387-XX-XXX-XXX ]";
+    }else if (!(phone.match(phoneno))){
         document.getElementById("mobilePhoneCheck").innerHTML = "Enter only numbers";
 
-    }else if(phone.length >=10 && phone.length<=15 && !filter.test(phone)){
+    }else if(phone.length >=10 && phone.length<=15 && phone.match(phoneno)){
 
         document.getElementById("mobilePhoneCheck").innerHTML = "";
     }
@@ -122,9 +150,6 @@ function checkSkypeName(){
 
         document.getElementById("skypeCheck").innerHTML = "Too short";
 
-    }else if (!filter.test(skypeName)){
-
-        document.getElementById("skypeCheck").innerHTML =  "Skype name must have at least one letter.";
     }else if (skypeName >= 3 ||  filter.test(skypeName)){
         document.getElementById("skypeCheck").innerHTML =  "";
     }
@@ -138,10 +163,12 @@ function checkFacebook(){
     if ( facebook == null){
 
         facebook.val("http://www.facebook.com/");
-    }else if ( facebook.length < 30){
+    } else if(facebook.includes("http://www.facebook.com/") == false){
+        document.getElementById("facebookCheck").innerHTML = "Wrong URL, please enter valid URL";
+    } else if ( facebook.length < 28){
 
-        document.getElementById("facebookCheck").innerHTML = " Wrong URL, please enter valid URL";
-    }else if ( facebook.length >= 30) {
+        document.getElementById("facebookCheck").innerHTML = "URL must contains at least four letters after http://www.facebook.com/";
+    }else if ( facebook.length >= 28) {
 
         document.getElementById("facebookCheck").innerHTML = "";
     }

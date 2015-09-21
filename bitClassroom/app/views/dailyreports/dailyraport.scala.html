@@ -1,0 +1,55 @@
+@import models.report.DailyReport
+@import play.data.Form
+@import models.report
+@(raportForm: Form[DailyReport])(fields: List[report.Field])
+
+@main("Raport Model") {
+    @helper.form(action = controllers.users.routes.TeacherController.saveRaport()) {
+        <!-- custom css -->
+        <link rel="stylesheets" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")">
+        <div class="container">
+            <h4 class="page-head-line">Fill the report:</h4>
+        </div>
+        <body>
+            <div class="container" style="background-color: peachpuff">
+                <form class="form-horizontal">
+                    <div class="row top30">
+                        <label class="col-sm-1">Title</label>
+                        <div class="col-sm-11"><input class="form-control" name="title" value="" required></div>
+                    </div>
+                    <div class="form-group top30">
+                    @fields.map { field =>
+                        <div class="row top10">
+                            <div class="col-sm-1">
+                                <label for="field_@field.getId()" >@field.getName()</label>
+                            </div>
+                            <div class="col-sm-11">
+                                <textarea class="form-control" rows="2" name="@field.getId()" id="field_@field.getId()" type="text"></textarea>
+                            </div>
+                        </div>
+                    }
+                    </div>
+                    <div class="row top30">
+                        <label class="col-sm-1 control-label">Report</label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control" rows="4" name="data"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-11 top30">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </body>
+    }
+}
+
+
+<script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
+
+
+
+
+

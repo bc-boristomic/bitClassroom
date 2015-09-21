@@ -1,6 +1,8 @@
 @import helpers.SessionHelper
 @import models.user.User
-@(user: User)
+@import models.course.Course
+@import models.course.CourseUser
+@(user: User)(courseUser: List[CourseUser])
 @main("Welcome to bitClassroom") {
     @if(user == null) {
         <div class="row top5">
@@ -42,15 +44,51 @@
         </div>
     }
     @if(user != null) {
+        <div class="text-center">
+            <h4>Wellcome back @user.getFirstName @user.getLastName</h4>
+        </div>
+        @for(cU <- courseUser) {
+            @if(cU.getUser.getId == user.getId) {
+                @if(cU.getStatus == 2) {
+                    <div class="col-sm-3" id="courseDiv">
+                        <div class="thumbnail">
+                            <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="">
+                            <div class="jumbotron ">
+                                <a href="/user/class"><h2>@cU.getCourse.getName</h2></a>
+                                <h4>@cU.getCourse.getDescription</h4>
+                                <br>
+                                <h6>@cU.getCourse.getTeacher</h6>
 
-        <a id="add" href="@controllers.course.routes.CourseController.addCourse()" class="btn btn-info">
-            Add class</a>
+                            </div>
 
+                        </div>
+                    </div>
+                }
+            }
+        }
 
-        
 
 
     }
+    @*<!-- @for(course <- courseList) {
 
+    <div class="col-sm-3" id="courseDiv">
+    <div class="jumbotron ">
 
+    @if(courseUser.getStatus == 2 && courseUser.getCourse.getId == course.getId){
+    <a href="/user/class"><h2>@course.getName</h2></a>
+    }else{
+
+    <a href="#"><h2>@course.getName</h2></a>
+    }
+    <h4>@course.getDescription</h4>
+    <br>
+    <h6>@course.getTeacher</h6>
+
+    </div>
+
+    </div>
+    }
+
+    }-->*@
 }
