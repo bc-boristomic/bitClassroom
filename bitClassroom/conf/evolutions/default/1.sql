@@ -102,10 +102,11 @@ create table user (
   youtube                   varchar(255),
   picture                   varchar(255),
   status                    integer(1),
+  student_status            integer(1),
   create_date               datetime,
-  created_by                varchar(255),
+  created_by                varchar(50),
   update_date               datetime,
-  updated_by                varchar(255),
+  updated_by                varchar(50),
   constraint uq_user_email unique (email),
   constraint pk_user primary key (id))
 ;

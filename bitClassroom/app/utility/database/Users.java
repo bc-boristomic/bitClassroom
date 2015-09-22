@@ -60,6 +60,7 @@ public class Users {
         becir.setPassword(MD5Hash.getEncriptedPasswordMD5("Becir123"));
         becir.setFirstName("Becir");
         becir.setLastName("Omerbasic");
+        becir.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
         becir.setRoles(new ArrayList<Role>(Arrays.asList(new Role[]{Roles.STUDENT})));
         becir.setCreatedBy("Global.java");
         becir.save();
@@ -69,6 +70,7 @@ public class Users {
         senadin.setPassword(MD5Hash.getEncriptedPasswordMD5("Senadin123"));
         senadin.setFirstName("Senadin");
         senadin.setLastName("Botic");
+        senadin.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
         senadin.setRoles(new ArrayList<Role>(Arrays.asList(new Role[]{Roles.STUDENT})));
         senadin.setCreatedBy("Global.java");
         senadin.save();
