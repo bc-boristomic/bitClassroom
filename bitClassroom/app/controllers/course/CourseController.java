@@ -26,11 +26,17 @@ import views.html.*;
  */
 public class CourseController extends Controller {
 
+    /**
+     * Shows on the page list of all courses
+     */
     public Result allCourses() {
 
         return ok(courseList.render(Course.findAll()));
     }
 
+    /**
+     * Shows on the page list of users who are going to the course
+     */
     public Result course(){
 
         List<CourseUser>  courUserList = CourseUser.all();

@@ -49,7 +49,7 @@ public final class Course extends Model {
     }
 
     /**
-     * Consturctor used to create Course by admin.
+     * Constructor used to create Course by admin.
      *
      * @param name        <code>String</code> type value of name
      * @param description <code>String</code> type value of description

@@ -23,6 +23,10 @@ public class StudentController extends Controller {
 
     /**
      * Check if user is joined to the course
+     * Get from request course id
+     * Get user from session
+     * If user is already joined then error will be show and he will be redirect to /user/courses
+     * otherwise it will be show success message and alse he will be redirected to /user/courses
      */
     public Result joinCourse() {
         DynamicForm dynamicForm = Form.form().bindFromRequest();
@@ -50,8 +54,8 @@ public class StudentController extends Controller {
 
 
     /**
-        Check if active user have access to join specified course
-        If method returns "1" then access is denied otherwise user have possibility to join to the course
+     *  Check if active user have access to join specified course
+     *  If method returns "1" then access is denied otherwise user have possibility to join to the course
      */
     public Result haveCourseAccess() {
         DynamicForm form = Form.form().bindFromRequest();
