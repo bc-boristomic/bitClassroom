@@ -1,6 +1,9 @@
+import models.course.Course;
+import models.user.Role;
 import models.user.User;
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -18,9 +21,16 @@ public class Global extends GlobalSettings {
 
     @Override
     public void onStart(Application application) {
-        //Roles.saveAllRoles();
-        //Users.saveUsers();
-        //Courses.saveCourses();
+        if (Role.getFinder().findRowCount() == 0) {
+            Roles.saveAllRoles();
+        }
+        if (User.getFinder().findRowCount() == 0) {
+            Users.saveUsers();
+        }
+        if (Course.getFinder().findRowCount() == 0) {
+            Courses.saveCourses();
+        }
+
 
     }
 
