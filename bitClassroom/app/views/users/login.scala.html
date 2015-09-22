@@ -19,7 +19,7 @@
             <label for="inputPassword" class="col-lg-2 control-label">
                 Password <abbr class="req" title="Login with provided password" style="color : red"> * </abbr></label>
             <div class="col-lg-6">
-                <input value="@userForm.bindFromRequest().field("password").value()" type="password" name="password" class="form-control" id="inputPassword" placeholder="Password must be strong eg. [A-Z, a-z, 0-9, special characters]." required>
+                <input value="@userForm.bindFromRequest().field("password").value()" type="password" name="password" class="form-control" id="inputPassword" placeholder="Password must be strong eg. [A-Z, a-z, 0-9]." required>
             </div>
         </div>
 

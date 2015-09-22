@@ -35,7 +35,7 @@ POST          /admin/approvestudent        @controllers.users.AdminController.ap
 GET           /admin/awaitlist             @controllers.users.AdminController.awaitList()
 
 POST          /student/joincourse          @controllers.users.StudentController.joinCourse()
-
+POST          /student/joincourse/haveaccess @controllers.users.StudentController.haveCourseAccess()
 # CREATE REPORT FIELD
 
 GET           /admin/createdaily           @controllers.users.AdminController.genField()
