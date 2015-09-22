@@ -3,82 +3,86 @@
 # ~~~~
 
 # Home page
-GET           /                            @controllers.Application.index()
-GET           /about                       @controllers.Application.about()
+GET           /                               @controllers.Application.index()
+GET           /about                          @controllers.Application.about()
 
-GET           /login                       @controllers.Application.login()
-GET           /logout                      @controllers.Application.logout()
-POST          /login                       @controllers.Application.checkLogin()
-GET           /util/email                  @controllers.Application.sendEmail()
+GET           /login                          @controllers.Application.login()
+GET           /logout                         @controllers.Application.logout()
+POST          /login                          @controllers.Application.checkLogin()
+GET           /util/email                     @controllers.Application.sendEmail()
 
-GET           /user/createprofile          @controllers.users.UserController.createProfile()
-POST          /user/createprofile          @controllers.users.UserController.updateProfile()
+GET           /user/createprofile             @controllers.users.UserController.createProfile()
+POST          /user/createprofile             @controllers.users.UserController.updateProfile()
 
-GET           /user/editprofile            @controllers.users.UserController.editProfile()
-POST          /user/editprofile            @controllers.users.UserController.saveProfile()
+GET           /user/editprofile               @controllers.users.UserController.editProfile()
+POST          /user/editprofile               @controllers.users.UserController.saveProfile()
 
-GET           /post/new                    @controllers.posts.PostController.addPost()
-POST          /post/                       @controllers.posts.PostController.savePost()
+GET           /post/new                       @controllers.posts.PostController.addPost()
+POST          /post/                          @controllers.posts.PostController.savePost()
 
-GET           /admin                       @controllers.users.AdminController.index()
+GET           /admin                          @controllers.users.AdminController.index()
 
-GET           /admin/adduser               @controllers.users.AdminController.addNewUser()
-POST          /admin/adduser               @controllers.users.AdminController.saveNewUser()
+GET           /admin/adduser                  @controllers.users.AdminController.addNewUser()
+POST          /admin/adduser                  @controllers.users.AdminController.saveNewUser()
 
-GET           /admin/allusers              @controllers.users.AdminController.listOfUser()
-GET           /admin/errors                @controllers.users.AdminController.seeErrors()
+GET           /admin/allusers                 @controllers.users.AdminController.listOfUser()
+GET           /admin/errors                   @controllers.users.AdminController.seeErrors()
 
 # CREATE REPORT FIELD  ===============================================================
 
 # Routes for admin approval of user to join certain course
-POST          /admin/approvestudent        @controllers.users.AdminController.approveStudent()
-GET           /admin/awaitlist             @controllers.users.AdminController.awaitList()
+POST          /admin/approvestudent           @controllers.users.AdminController.approveStudent()
+GET           /admin/awaitlist                @controllers.users.AdminController.awaitList()
 
-POST          /student/joincourse          @controllers.users.StudentController.joinCourse()
+POST          /student/joincourse             @controllers.users.StudentController.joinCourse()
 
 # CREATE REPORT FIELD
 
-GET           /admin/createdaily           @controllers.users.AdminController.genField()
-POST          /admin/createdaily           @controllers.users.AdminController.saveField()
+GET           /admin/createdaily              @controllers.users.AdminController.genField()
+POST          /admin/createdaily              @controllers.users.AdminController.saveField()
 
 #LIST DAILY REPORT  ===================================================================
 
-GET           /listReport                  @controllers.users.AdminController.listReport()
-DELETE        /listReport/:id              @controllers.users.AdminController.deleteReport(id: Long)
-GET           /listReport/:id              @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport                     @controllers.users.AdminController.listReport()
+DELETE        /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
 
 #======================================================================================
 
-GET           /admin/createcourse          @controllers.users.AdminController.addCourse()
-POST          /admin/createcourse          @controllers.users.AdminController.saveCourse()
+GET           /admin/createcourse             @controllers.users.AdminController.addCourse()
+POST          /admin/createcourse             @controllers.users.AdminController.saveCourse()
 
-GET           /daily/report                @controllers.users.TeacherController.dailyReport()
-POST          /daily/reportSubmit          @controllers.users.TeacherController.saveRaport()
+GET           /daily/report                   @controllers.users.TeacherController.dailyReport()
+POST          /daily/reportSubmit             @controllers.users.TeacherController.saveRaport()
 
-DELETE        /admin/delete/:id            @controllers.users.AdminController.deleteUser(id: Long)
-GET           /admin/delete/:id            @controllers.users.AdminController.deleteUser(id: Long)
-GET           /admin/errors                @controllers.users.AdminController.seeErrors()
-DELETE        /admin/error/:id             @controllers.users.AdminController.deleteError(id: Long)
+DELETE        /admin/delete/:id               @controllers.users.AdminController.deleteUser(id: Long)
+GET           /admin/delete/:id               @controllers.users.AdminController.deleteUser(id: Long)
+GET           /admin/errors                   @controllers.users.AdminController.seeErrors()
+DELETE        /admin/error/:id                @controllers.users.AdminController.deleteError(id: Long)
 
 # FOR TESTING ONLY
-GET           /user/test                   @controllers.users.UserController.test()
-GET           /admin/test                  @controllers.users.AdminController.test()
-GET           /teacher/test                @controllers.users.TeacherController.test()
-GET           /mentor/test                 @controllers.users.MentorController.test()
-GET           /student/test                @controllers.users.StudentController.test()
+GET           /user/test                      @controllers.users.UserController.test()
+GET           /admin/test                     @controllers.users.AdminController.test()
+GET           /teacher/test                   @controllers.users.TeacherController.test()
+GET           /mentor/test                    @controllers.users.MentorController.test()
+GET           /student/test                   @controllers.users.StudentController.test()
 
-POST          /notify                      @controllers.Application.getNotification()
+POST          /notify                         @controllers.Application.getNotification()
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                @controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file                   @controllers.Assets.versioned(path="/public", file: Asset)
 
 
-GET           /user/courses                @controllers.course.CourseController.allCourses()
+GET           /user/courses                   @controllers.course.CourseController.allCourses()
 
-GET           /user/class                  @controllers.course.CourseController.course()
+GET           /user/class                     @controllers.course.CourseController.course()
 
 
-GET           /admin/mentorship            @controllers.users.AdminController.mentorship()
-POST          /admin/mentorship            @controllers.users.AdminController.saveMentorship()
-GET           /admin/activementors         @controllers.users.AdminController.seeMentorsAndStudents()
+GET           /admin/mentorship               @controllers.users.AdminController.mentorship()
+POST          /admin/mentorship               @controllers.users.AdminController.saveMentorship()
+GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
+DELETE        /admin/activementors/:id        @controllers.users.AdminController.deleteMentorship(id: Long)
+
+
+
 
