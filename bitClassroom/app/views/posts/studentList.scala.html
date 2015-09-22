@@ -1,0 +1,42 @@
+
+@import models.course.CourseUser
+@(userList: List[CourseUser])
+@main("Students") {
+
+
+
+  <div class="container">
+    <h4 class="page-head-line">Users:</h4>
+
+  </div>
+
+  <div class="container">
+    <div class="table-responsive">
+      <table id="sort" class="table-condensed table-hover table table-bordered">
+        <thead>
+          <tr class="information">
+            <th>Email:</th>
+            <th>Role:</th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+        @for(users <- userList){
+
+          @if(users.getStatus == 2){
+            <tr class="info">
+              <td>@users.getUser.getEmail</td>
+              <td>@users.getUser.getRoles.get(0)</td>
+              <td><button id="send-msg" class="btn btn-success btn-xs " type="submit"  href="@controllers.users.routes.UserController.sendMessage(users.getUser.getId)"><i class="glyphicon glyphicon-envelope"></i></button></td>
+            </tr> }
+
+        }
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+  }

@@ -2,6 +2,7 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.course.CourseUser;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -14,8 +15,10 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserUtils;
+import views.html.posts.message;
 import views.html.users.editprofile;
 import views.html.users.profile;
+import views.html.posts.studentList;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,5 +185,19 @@ public class UserController extends Controller {
     public Result test() {
         Logger.info(new DateTime().getMillis() + " ");
         return redirect("/login");
+    }
+
+
+    public Result newMessage(){
+        List<CourseUser> students = CourseUser.all();
+        return ok(studentList.render(students));
+    }
+
+    public Result sendMessage(Long id){
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = User.findById(id);
+        Logger.info("dsfdfd");
+        return ok(message.render(sender, receiver));
     }
 }
