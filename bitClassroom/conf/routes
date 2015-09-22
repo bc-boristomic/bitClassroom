@@ -43,9 +43,9 @@ POST          /admin/createdaily           @controllers.users.AdminController.sa
 
 #LIST DAILY REPORT  ===================================================================
 
-GET           /listReport                  @controllers.users.AdminController.listReport()
-DELETE        /listReport/:id              @controllers.users.AdminController.deleteReport(id: Long)
-GET           /listReport/:id              @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport                @controllers.users.AdminController.listReport()
+DELETE        /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
 
 #======================================================================================
 
@@ -76,9 +76,3 @@ GET           /assets/*file                @controllers.Assets.versioned(path="/
 GET           /user/courses                @controllers.course.CourseController.allCourses()
 
 GET           /user/class                  @controllers.course.CourseController.course()
-
-
-GET           /admin/mentorship            @controllers.users.AdminController.mentorship()
-POST          /admin/mentorship            @controllers.users.AdminController.saveMentorship()
-GET           /admin/activementors         @controllers.users.AdminController.seeMentorsAndStudents()
-

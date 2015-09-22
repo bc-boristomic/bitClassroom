@@ -3,9 +3,11 @@ package models;
 import com.avaje.ebean.Model;
 import models.user.User;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import play.data.validation.Constraints;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,12 +31,15 @@ public final class Post extends Model {
     private Integer postType;
     @Column(name="visible_mentors")
     private Boolean visibleToMentors;
-    @Column(name = "date")
-    private String date;
     @Column(name = "link")
     private String link;
     @Column(name="files")
-    private List<String> files = new ArrayList<>();
+    private String files;
+    @Column(name = "date")
+    private String date;
+    @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
+    private DateTime createdDate = new DateTime();
+
     @ManyToOne
     private User user;
 
@@ -48,6 +53,7 @@ public final class Post extends Model {
         this.visibleToMentors = visible;
         this.user = user;
         this.date = date;
+
     }
 
     private static final Model.Finder<Long, Post> find = new Model.Finder<>(Post.class);
@@ -56,6 +62,7 @@ public final class Post extends Model {
         return find
                 .where()
                 .eq("user", user)
+                .orderBy("id desc")
                 .findList();
     }
 
@@ -63,11 +70,12 @@ public final class Post extends Model {
         return find
                 .where()
                 .eq("id", id)
+                .orderBy("id desc")
                 .findUnique();
     }
 
     public static List<Post> findAllPosts() {
-        return find.all();
+        return find.orderBy("id desc").findList();
     }
 
 
@@ -87,14 +95,7 @@ public final class Post extends Model {
         this.title = title;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public String getDate() {
-        String[] parts = date.split("-");
-        return parts[2] + "." + parts[1] + "." + parts[0];
-    }
+    public User getUser() {return user;}
 
     public void setUser(User user) {
         this.user = user;
@@ -126,10 +127,6 @@ public final class Post extends Model {
                 " by: " + user.getFirstName();
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public void setLink(String link) {
         this.link = link;
     }
@@ -138,11 +135,24 @@ public final class Post extends Model {
         return link;
     }
 
-    public void setFiles(List<String> files) {
+    public void setFiles(String files) {
         this.files = files;
     }
 
-    public List<String> getFiles() {
-        return files;
+    public String getFiles() {return files;}
+
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+        return dtf.print(createdDate); }
+
+    public void setCreatedDate(DateTime createdDate) {
+        this.createdDate = createdDate;
     }
+
+    public void setDate(String date) {this.date = date;}
+
+    public String getDate() {
+        String[] parts = date.split("-");
+        return parts[2] + "." + parts[1] + "." + parts[0];
+    }
+
 }
