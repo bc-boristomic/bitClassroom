@@ -24,19 +24,6 @@
             </div>
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
-                    Mentors<select class="form-control" id="selection" name="mentor1">
-                    @for(user <- users) {
-                        @if(user.getRoles != null && user.getRoles.size() > 0) {
-                            @for(role <- user.getRoles) {
-                                @if(role.getId.equals(UserConstants.MENTOR)) {
-                                    <option value="@user.getId">@user.getFirstName @user.getLastName</option>
-                                }
-                            }
-                        }
-                    }
-                    </select>
-                </div>
-                <div class="col-lg-6">
                     Teachers<select class="form-control" id="selection" name="teacher">
                     @for(user <- users) {
                         @if(user.getRoles != null && user.getRoles.size() > 0) {
@@ -50,6 +37,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
 

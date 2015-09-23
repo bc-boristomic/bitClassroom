@@ -32,9 +32,6 @@ public final class Course extends Model {
     @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private User teacher;
-    @ManyToOne
-    @JoinColumn(name = "mentor_id", referencedColumnName = "id")
-    private User mentor;
     @Column(name = "image")
     private String image;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
@@ -45,6 +42,8 @@ public final class Course extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
+    @OneToMany
+    private List<User> mentors = new ArrayList<>();
 
     /**
      * Empty constructor for Ebean
@@ -53,17 +52,16 @@ public final class Course extends Model {
     }
 
     /**
-     * Consturctor used to create Course by admin.
+     * Constructor used to create Course by admin.
      *
      * @param name        <code>String</code> type value of name
      * @param description <code>String</code> type value of description
      * @param teacher     <code>String</code>   type value of teacher
      */
-    public Course(String name, String description, User teacher, User mentor) {
+    public Course(String name, String description, User teacher) {
         this.name = name;
         this.description = description;
         this.teacher = teacher;
-        this.mentor = mentor;
     }
 
     /**
@@ -151,14 +149,6 @@ public final class Course extends Model {
         this.teacher = teacher;
     }
 
-    public User getMentor() {
-        return mentor;
-    }
-
-    public void setMentor(User mentor) {
-        this.mentor = mentor;
-    }
-
     public String getImage() {
         return image;
     }
@@ -197,4 +187,7 @@ public final class Course extends Model {
         this.updateDate = updateDate;
     }
 
+    public List<User> getMentors(){ return mentors;}
+
+    public void setMentors(List<User> mentors){this.mentors = mentors;}
 }

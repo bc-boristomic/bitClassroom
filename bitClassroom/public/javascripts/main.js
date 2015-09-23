@@ -109,10 +109,13 @@ function checkPhone(){
 
 
     var phone = document.getElementById("home-phone").value;
-    var phoneno = /^\+?([0-9]{3})\)?[-. ]?([0-9]{2})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/;
+    var phoneno = /^\+?([0-9]{3})\)?([0-9]{2})?([0-9]{3})?([0-9]{3})$/;
 
-    if (!(phone.length == 15)){
-        document.getElementById("phoneCheck").innerHTML = "Enter correct form of phone number[ +387-XX-XXX-XXX ]";
+
+    if(phone.length == 0){
+        document.getElementById("phoneCheck").innerHTML = "";
+    }else if (!(phone.length == 12)){
+        document.getElementById("phoneCheck").innerHTML = "Enter correct form of phone number[ +387XXXXXXXX ]";
     }else if (!(phone.match(phoneno))){
         document.getElementById("phoneCheck").innerHTML = "Enter only numbers";
 
@@ -127,10 +130,10 @@ function checkMobilePhone(){
 
 
     var phone = document.getElementById("mobile-phone").value;
-    var phoneno = /^\+?([0-9]{3})\)?[-. ]?([0-9]{2})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/;
+    var phoneno = /^\+?([0-9]{3})\)?([0-9]{2})?([0-9]{3})?([0-9]{3})$/;
 
-    if (!(phone.length == 15)){
-        document.getElementById("mobilePhoneCheck").innerHTML = "Enter correct form of phone number[ +387-XX-XXX-XXX ]";
+    if (!(phone.length == 12)){
+        document.getElementById("mobilePhoneCheck").innerHTML = "Enter correct form of phone number[ +387XXXXXXXX ]";
     }else if (!(phone.match(phoneno))){
         document.getElementById("mobilePhoneCheck").innerHTML = "Enter only numbers";
 
@@ -146,7 +149,9 @@ function checkSkypeName(){
     var skypeName = document.getElementById("skype").value;
     var filter = /^[a-zA-Z]+$/;
 
-    if ( skypeName.length < 3){
+    if(skypeName.length == 0){
+        document.getElementById("skypeCheck").innerHTML =  "";
+    }else if ( skypeName.length < 3){
 
         document.getElementById("skypeCheck").innerHTML = "Too short";
 

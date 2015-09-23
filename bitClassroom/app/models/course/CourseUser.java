@@ -3,6 +3,7 @@ package models.course;
 import com.avaje.ebean.Model;
 import helpers.SessionHelper;
 import models.user.User;
+import utility.UserConstants;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,20 +51,27 @@ public final class CourseUser extends Model {
         return courseUserList;
     }
 
-//    public static List<Course> allUserCourses(User currentUser) {
-//        List<Course> courseByUserList = new ArrayList<>();
-//
-//        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
-//
-//        if (courseUserList == null) {
-//            courseUserList = new ArrayList<>();
-//        } else {
-//            for (int i = 0; i < courseUserList.size(); i++) {
-//                courseByUserList.add(courseUserList.get(i).getCourse());
-//            }
-//        }
-//        return courseByUserList;
-//    }
+    /**
+     *Returns all Course objects related to current user from database as List.
+     *
+     * @return <code>List</code> type value of all courses from database
+     */
+    public static List<Course> allUserCourses(User currentUser) {
+        List<Course> courseByUserList = new ArrayList<>();
+
+        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
+
+        if (courseUserList == null) {
+            courseUserList = new ArrayList<>();
+        } else {
+            for (int i = 0; i < courseUserList.size(); i++) {
+                if (courseUserList.get(i).getStatus() == UserConstants.APPROVED){
+                courseByUserList.add(courseUserList.get(i).getCourse());
+            }
+            }
+        }
+        return courseByUserList;
+    }
 
 
 
@@ -110,7 +118,6 @@ public final class CourseUser extends Model {
         return finder;
     }
 
-    @Override
     public String toString() {
         return "CourseUser{" +
                 "status=" + status +

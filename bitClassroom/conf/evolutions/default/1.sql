@@ -64,8 +64,10 @@ create table post (
   content                   text,
   post_type                 integer,
   visible_mentors           tinyint(1) default 0,
-  date                      varchar(255),
   link                      varchar(255),
+  files                     varchar(255),
+  date                      varchar(255),
+  create_date               datetime,
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;

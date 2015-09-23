@@ -35,6 +35,11 @@ public final class ErrorLog extends Model {
 
     }
 
+    /**
+     * Finding error by id
+     * @param id
+     * @return error
+     */
     public static ErrorLog findErrorById(Long id) {
 
         List<ErrorLog> error = finder.where().eq("id", id).findList();

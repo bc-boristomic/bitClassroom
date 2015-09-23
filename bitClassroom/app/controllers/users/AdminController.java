@@ -56,6 +56,10 @@ public class AdminController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
+    private List <Course> studentSubscribedCourses = new ArrayList<>();
+
+
+
 
     /**
      * Admin index page.
@@ -77,7 +81,7 @@ public class AdminController extends Controller {
         return ok(adduser.render(userForm));
     }
 
-    public Result listOfUser() {
+    public Result listOfUser(){
         return ok(userlist.render(User.findAll()));
     }
 
@@ -171,18 +175,17 @@ public class AdminController extends Controller {
 
     }
 
-    public Result deleteError(Long id) {
+    public Result deleteError(Long id){
 
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
     }
 
-    public Result deleteReport(Long id) {
+    public Result deleteReport(Long id){
 
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
     }
-
     public Result genField() {
         return ok(setingsdailyraport.render());
     }
@@ -193,11 +196,11 @@ public class AdminController extends Controller {
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
         //if (model != null && name.length() > 4) {
-        model.setName(name);
-        model.save();
+            model.setName(name);
+            model.save();
         //}
         return ok(setingsdailyraport.render());
-        // return ok("ad");
+       // return ok("ad");
 
     }
 
@@ -212,15 +215,12 @@ public class AdminController extends Controller {
 
         String name = boundForm.bindFromRequest().field("name").value();
         String description = boundForm.bindFromRequest().field("description").value();
-
-        String men = boundForm.bindFromRequest().field("mentor1").value();
         String tea = boundForm.bindFromRequest().field("teacher").value();
 
-        Long ment = null;
+
         Long teac = null;
-        if (men != null && tea != null) {
+        if (tea != null) {
             try {
-                ment = Long.parseLong(men);
                 teac = Long.parseLong(tea);
             } catch (NumberFormatException e) {
                 Ebean.save(new ErrorLog("Could not parse users Id: " + e.getMessage()));
@@ -229,16 +229,18 @@ public class AdminController extends Controller {
             }
         }
 
-        User mentor = User.findById(ment);
         User teacher = User.findById(teac);
 
         Course course = new Course();
         course.setName(name);
         course.setDescription(description);
-        course.setMentor(mentor);
         course.setTeacher(teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
+
+        //Add mentors assigned to students subscribed to this course to list of mentorsCourse
+        List<User> mentors = course.getMentors();
+        mentors.add(mentor);
 
         Http.MultipartFormData data = request().body().asMultipartFormData();
         List<Http.MultipartFormData.FilePart> pictures = data.getFiles();
@@ -263,18 +265,12 @@ public class AdminController extends Controller {
             }
         }
 
-//        try {
-//            course.save();
-//        } catch (PersistenceException e) {
-//            Ebean.save(new ErrorLog(e.getMessage()));
-//            flash("warning", "Something went wrong, course could not be saved to data base");
-//            return redirect("/admin/createcourse");
-//        }
-
+        try{
         course.save();
+        } catch (PersistenceException e) {
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
-    }
+    }}
 
     public Result approveStudent() {
         DynamicForm form = Form.form().bindFromRequest();
@@ -299,12 +295,12 @@ public class AdminController extends Controller {
 
     /**
      * See tables of daily reports
-     *
      * @return
      */
     public Result listReport() {
         return ok(tabledaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all()));
     }
+
 
     /**
      * Renders page with two dropdown menus. One is for mentors and other is for
@@ -358,6 +354,23 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
+
+        studentSubscribedCourses = CourseUser.allUserCourses(student);
+        List<User> mentorsOnCourse = new ArrayList<>();
+        boolean onList = false;
+        for (int i = 0; i < studentSubscribedCourses.size(); i++){
+            mentorsOnCourse = studentSubscribedCourses.get(i).getMentors();
+            for (int j = 0; j < mentorsOnCourse.size(); j++){
+                if (mentorsOnCourse.get(j).getId().equals(mentor.getId())){
+                    onList = true;
+                    break;
+                }
+            }
+            if(!onList){
+                mentorsOnCourse.add(mentor);
+            }
+        }
+
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
     }
@@ -368,7 +381,20 @@ public class AdminController extends Controller {
      * @return
      */
     public Result seeMentorsAndStudents() {
-        return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().all()));
+        return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
+    }
+
+    public Result deleteMentorship(Long id) {
+        Mentorship men = Mentorship.getFinder().byId(id);
+        men.setStatus(UserConstants.EXPIRED_MENTORSHIP);
+        men.setUpdateDate(new DateTime());
+        men.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        men.update();
+
+        men.getStudent().setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+        men.getStudent().update();
+        flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
+        return redirect("/admin/activementors");
     }
 
 
