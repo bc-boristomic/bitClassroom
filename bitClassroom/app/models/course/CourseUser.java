@@ -50,20 +50,20 @@ public final class CourseUser extends Model {
         return courseUserList;
     }
 
-//    public static List<Course> allUserCourses(User currentUser) {
-//        List<Course> courseByUserList = new ArrayList<>();
-//
-//        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
-//
-//        if (courseUserList == null) {
-//            courseUserList = new ArrayList<>();
-//        } else {
-//            for (int i = 0; i < courseUserList.size(); i++) {
-//                courseByUserList.add(courseUserList.get(i).getCourse());
-//            }
-//        }
-//        return courseByUserList;
-//    }
+    public static List<Course> allUserCourses(User currentUser) {
+        List<Course> courseByUserList = new ArrayList<>();
+
+        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
+
+        if (courseUserList == null) {
+            courseUserList = new ArrayList<>();
+        } else {
+            for (int i = 0; i < courseUserList.size(); i++) {
+                courseByUserList.add(courseUserList.get(i).getCourse());
+            }
+        }
+        return courseByUserList;
+    }
 
 
 

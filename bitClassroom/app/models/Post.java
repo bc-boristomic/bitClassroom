@@ -43,6 +43,9 @@ public final class Post extends Model {
     @ManyToOne
     private User user;
 
+    /**
+     * Empty constructor for Ebean
+     */
     public Post() {
     }
 
@@ -58,6 +61,11 @@ public final class Post extends Model {
 
     private static final Model.Finder<Long, Post> find = new Model.Finder<>(Post.class);
 
+    /**
+     * Finding all post for given user and returning them like a list
+     * @param user
+     * @return list of posts for given user
+     */
     public static List<Post> findPostsByUser(final User user) {
         return find
                 .where()
@@ -66,6 +74,11 @@ public final class Post extends Model {
                 .findList();
     }
 
+    /**
+     * Finding post for given id
+     * @param id Long
+     * @return return post
+     */
     public static Post findPostById(Long id) {
         return find
                 .where()
@@ -74,6 +87,10 @@ public final class Post extends Model {
                 .findUnique();
     }
 
+    /**
+     * Finding all posts and return them like a list
+     * @return list of posts
+     */
     public static List<Post> findAllPosts() {
         return find.orderBy("id desc").findList();
     }

@@ -35,11 +35,18 @@ public class PostController extends Controller {
 
     private List<String> filesList = new ArrayList<>();
 
-
+    /**
+     * Adding post and refresh the page with added post
+     */
     public Result addPost() {
         return ok(newpost.render(postForm));
     }
 
+    /**
+     * Getting http request
+     * Getting user from session
+     * Saving post in database
+     */
     public Result savePost() {
         Form<Post> boundForm = postForm.bindFromRequest();
         User user = SessionHelper.currentUser(ctx());
