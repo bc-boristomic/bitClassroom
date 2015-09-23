@@ -5,6 +5,8 @@
 
 @adminmain("NEW List") {
 
+<<<<<<< HEAD
+=======
   <div class="container">
     <br><br><br>
     <div class="">
@@ -28,24 +30,56 @@
                 <tr class="success" style="background : #81d186">
                   <td>@ldr.getCreateDate</td>
                   <td>@ldr.getName</td>
+>>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef
 
-                  @for(field <- listField) {
-                    @if(ldr.containsField(field) == true) {
-                      <td>@ldr.getField(field).getValue()</td>
-                    } else {
-                      <td>/</td>
-                    }
-                  }
-                  <td>@ldr.getData</td>
-                  <td>
-                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteReport(ldr.getId)">
-                      <i class="glyphicon glyphicon-trash"></i></a>
-                  </td>
-                </tr>
-              </div>
-            </tbody>
-          }
+    <form>
+
+        <div style="margin-top: 110px">
+            <h3 class="page-head-line"> Table of daily reports </h3>
         </div>
+<<<<<<< HEAD
+
+            <table id="sort" class="table-bordered" style="background : papayawhip">
+                <div style="margin : 40 px 30 px 0 px 30 px" >
+                    <thead>
+                        <tr> <th>Date</th>
+                            <th>Title</th>
+                            @for(rf <- listField) {
+                                <th>@rf.getName</th>
+                            }
+                            <th>Report</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    @for(ldr <- listDailyReport) {
+                        <tbody>
+                            <div>
+                                <tr class="success" style="background : #81d186">
+                                    <td>@ldr.getCreateDate</td>
+                                    <td>@ldr.getName</td>
+
+                                    @for(field <- listField) {
+                                        @if(ldr.containsField(field) == true) {
+                                            <td>@ldr.getField(field).getValue()</td>
+                                        } else {
+                                            <td>/</td>
+                                        }
+                                    }
+                                    <td>@ldr.getData</td>
+                                    <td>
+                                        <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteReport(ldr.getId)">
+                                            <i class="glyphicon glyphicon-trash"></i></a>
+                                    </td>
+                                </tr>
+                            </div>
+                        </tbody>
+                    }
+                </div>
+            </table>
+
+    </form>
+=======
       </table>
   </div>
+>>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef
 }
