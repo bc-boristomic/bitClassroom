@@ -9,6 +9,7 @@ import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
+import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import models.report.Field;
