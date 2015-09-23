@@ -24,4 +24,6 @@ public abstract class UserConstants {
     public static final int HAVE_MENTOR = 11;
     public static final int ACTIVE_MENTORSHIP = 12;
     public static final int EXPIRED_MENTORSHIP = 13;
+
+    public static final int APPROVED = 2;
 }

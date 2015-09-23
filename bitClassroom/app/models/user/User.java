@@ -79,6 +79,7 @@ public final class User extends Model {
     private List<PrivateMessage> messages = new ArrayList<>();
 
 
+
     /**
      * Default empty constructor for Ebean
      */
@@ -145,29 +146,6 @@ public final class User extends Model {
         return finder;
     }
 
-    /**
-     * Overrided toString method returns User first and last name, birth date,
-     * gender, location, cell phone and website.
-     *
-     * @return <code>String</code> type value of User information
-     */
-    @Override
-    public String toString() {
-        String g = "female";
-        if (gender.equals(1) && gender != null) {
-            g = "male";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(firstName).append(" ");
-        sb.append(lastName).append(" ");
-        sb.append("Born ").append(birthDate).append(" ");
-        sb.append("Gender: ").append(g).append(" ");
-        sb.append("Location: ").append(location).append(" ");
-        sb.append("Phone: ").append(cellPhone).append(" ");
-        sb.append("Web: ").append(website);
-        sb.append("STATUS ").append(status);
-        return sb.toString();
-    }
 
 
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */

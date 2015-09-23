@@ -53,3 +53,4 @@ public class Global extends GlobalSettings {
 //        return filters;
 //    }
 }
+

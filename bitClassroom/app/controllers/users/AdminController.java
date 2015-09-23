@@ -56,6 +56,8 @@ public class AdminController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
+    private List<Course> studentSubscribedCourses = new ArrayList<>();
+
 
 
 
@@ -209,12 +211,28 @@ public class AdminController extends Controller {
     public Result saveCourse() {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
-
         String name = boundForm.bindFromRequest().field("name").value();
         String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("type").value();
+        String tea = boundForm.bindFromRequest().field("teacher").value();
 
-        Course course = new Course(name, description, teacher);
+
+        Long teac = null;
+        if (tea != null) {
+            try {
+                teac = Long.parseLong(tea);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse users Id: " + e.getMessage()));
+                flash("warning", "Something went wrong.");
+                return redirect("/admin");
+            }
+        }
+
+        User teacher = User.findById(teac);
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setTeacher(teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
 
@@ -242,7 +260,7 @@ public class AdminController extends Controller {
         }
 
         try{
-        course.save();
+            course.save();
         } catch (PersistenceException e) {
             Ebean.save(new ErrorLog(e.getMessage()));
             flash("warning", "Something went wrong, course could not be saved to data base");
@@ -250,6 +268,7 @@ public class AdminController extends Controller {
         }
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
+
     }
 
     public Result approveStudent() {
@@ -335,6 +354,28 @@ public class AdminController extends Controller {
         mentorship.setCreatedBy(SessionHelper.currentUser(ctx()).getEmail());
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
+
+        boolean onList = false;
+        studentSubscribedCourses = CourseUser.allUserCourses(student);
+        List<User> userByCourselist = new ArrayList<>();
+        for (int i = 0; i < studentSubscribedCourses.size(); i++){
+            userByCourselist=CourseUser.allUsersOnCourse(studentSubscribedCourses.get(i));
+
+            for (int j = 0; j < userByCourselist.size(); j++){
+                if (userByCourselist.get(j).getId().equals(mentor.getId())){
+                    onList = true;
+                    break;
+                }
+            }
+
+            if (!onList) {
+                CourseUser cu = new CourseUser();
+                cu.setCourse(studentSubscribedCourses.get(i));
+                cu.setUser(mentor);
+                cu.setStatus(UserConstants.APPROVED);
+                cu.save();
+            }
+        }
 
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
