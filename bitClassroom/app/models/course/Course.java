@@ -42,8 +42,6 @@ public final class Course extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
-    @OneToMany
-    private List<User> mentors = new ArrayList<>();
 
     /**
      * Empty constructor for Ebean
@@ -187,7 +185,4 @@ public final class Course extends Model {
         this.updateDate = updateDate;
     }
 
-    public List<User> getMentors(){ return mentors;}
-
-    public void setMentors(List<User> mentors){this.mentors = mentors;}
 }

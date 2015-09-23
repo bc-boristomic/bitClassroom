@@ -5,6 +5,7 @@ import helpers.SessionHelper;
 import models.user.User;
 import utility.UserConstants;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,28 @@ public final class CourseUser extends Model {
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
+    /**
+     * Constructor for Ebean
+     */
+    public CourseUser() {
+    }
 
     /**
      * Returns all coursesUser objects from database as List.
      *
      * @return <code>List</code> type value of all courses from database
      */
-    public static List<CourseUser> findAll(Long userId) {
+    public static List<CourseUser> findAll() {
+        return finder.all();
+    }
+
+
+    /**
+     * Returns all coursesUser objects from database which are connected with the given user id as List.
+     *
+     * @return <code>List</code> type value of all courses from database
+     */
+    public static List<CourseUser> findAllForUser(Long userId) {
         List<CourseUser> list = finder.all();
         List<CourseUser> courseUserList = new ArrayList<>();
 
@@ -59,7 +75,7 @@ public final class CourseUser extends Model {
     public static List<Course> allUserCourses(User currentUser) {
         List<Course> courseByUserList = new ArrayList<>();
 
-        List<CourseUser> courseUserList = CourseUser.findAll(currentUser.getId());
+        List<CourseUser> courseUserList = CourseUser.findAllForUser(currentUser.getId());
 
         if (courseUserList == null) {
             courseUserList = new ArrayList<>();
@@ -71,6 +87,28 @@ public final class CourseUser extends Model {
             }
         }
         return courseByUserList;
+    }
+
+    /**
+     *Returns all User objects related to course id from database as List.
+     *
+     * @return <code>List</code> type value of all users from database
+     */
+    public static List<User> allUsersOnCourse(Course course) {
+        List<User> UserByCourseList = new ArrayList<>();
+
+        List<CourseUser> courseUserList = findAll();
+
+        if (courseUserList == null) {
+            courseUserList = new ArrayList<>();
+        } else {
+            for (int i = 0; i < courseUserList.size(); i++) {
+                if (courseUserList.get(i).getCourse().getId().equals(course.getId())){
+                    UserByCourseList.add(courseUserList.get(i).getUser());
+                }
+            }
+        }
+        return UserByCourseList;
     }
 
 

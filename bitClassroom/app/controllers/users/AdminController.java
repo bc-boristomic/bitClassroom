@@ -56,7 +56,7 @@ public class AdminController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
-    private List <Course> studentSubscribedCourses = new ArrayList<>();
+    private List<Course> studentSubscribedCourses = new ArrayList<>();
 
 
 
@@ -238,10 +238,6 @@ public class AdminController extends Controller {
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
 
-        //Add mentors assigned to students subscribed to this course to list of mentorsCourse
-        List<User> mentors = course.getMentors();
-        mentors.add(mentor);
-
         Http.MultipartFormData data = request().body().asMultipartFormData();
         List<Http.MultipartFormData.FilePart> pictures = data.getFiles();
 
@@ -266,11 +262,16 @@ public class AdminController extends Controller {
         }
 
         try{
-        course.save();
+            course.save();
         } catch (PersistenceException e) {
+            Ebean.save(new ErrorLog(e.getMessage()));
+            flash("warning", "Something went wrong, course could not be saved to data base");
+            return redirect("/admin/createcourse");
+        }
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
-    }}
+
+    }
 
     public Result approveStudent() {
         DynamicForm form = Form.form().bindFromRequest();
@@ -356,20 +357,25 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
-
-        studentSubscribedCourses = CourseUser.allUserCourses(student);
-        List<User> mentorsOnCourse = new ArrayList<>();
         boolean onList = false;
+        studentSubscribedCourses = CourseUser.allUserCourses(student);
+        List<User> userByCourselist = new ArrayList<>();
         for (int i = 0; i < studentSubscribedCourses.size(); i++){
-            mentorsOnCourse = studentSubscribedCourses.get(i).getMentors();
-            for (int j = 0; j < mentorsOnCourse.size(); j++){
-                if (mentorsOnCourse.get(j).getId().equals(mentor.getId())){
+            userByCourselist=CourseUser.allUsersOnCourse(studentSubscribedCourses.get(i));
+
+            for (int j = 0; j < userByCourselist.size(); j++){
+                if (userByCourselist.get(j).getId().equals(mentor.getId())){
                     onList = true;
                     break;
                 }
             }
-            if(!onList){
-                mentorsOnCourse.add(mentor);
+
+            if (!onList) {
+                CourseUser cu = new CourseUser();
+                cu.setCourse(studentSubscribedCourses.get(i));
+                cu.setUser(mentor);
+                cu.setStatus(UserConstants.APPROVED);
+                cu.save();
             }
         }
 
