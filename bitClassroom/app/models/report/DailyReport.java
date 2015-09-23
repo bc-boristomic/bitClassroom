@@ -28,6 +28,8 @@ public final class DailyReport extends Model {
     private DateTime createdDate = new DateTime();
     @Column(name = "data", length = 4000)
     private String data;
+    @Column(name = "date")
+    private String date;
 
     /*
      * Default empty constructor for Ebean
@@ -65,6 +67,12 @@ public final class DailyReport extends Model {
     public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+    public void setDate(String date) { this.date = date;}
+
+
+
+    public String getDate() {  return date;}
 
 
 

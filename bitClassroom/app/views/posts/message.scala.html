@@ -1,33 +1,35 @@
 @import user.User
 @(userSes: User)(receiver: User)
-@main("Message"){
+@main("Message") {
 
-  <br><br><br>
+    @helper.form(action = controllers.users.routes.UserController.sendMessage(receiver.getId), 'role -> "form") {
+        <br> <br> <br>
 
-                  <div class="Compose-Message">
-                    <div class="panel panel-success">
-                      <div class="panel-heading">
-                        Compose New Message
-                      </div>
-                      <div class="panel-body">
+        <div class="Compose-Message">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Compose New Message
+                </div>
+                <div class="panel-body">
 
-                        <label>Subject :  </label>
-                        <input type="text" name="subject" class="form-control" required />
-                        <label>Text Message : </label>
-                        <textarea rows="9" name="content" class="form-control" required></textarea>
-                        <hr />
-                        <a href="@controllers.users.routes.UserController.sendMessage(receiver.getId)" class="btn btn-warning"><span class="glyphicon glyphicon-envelope"></span>
-                          Send Message </a>&nbsp;
-                      </div>
-                      <div class="panel-footer text-muted">
-                        <strong>Note : </strong>Please note that we track all messages so don't send any spams.
-                      </div>
-                    </div>
-                  </div>
-
-            <div class="col span_1_of_3">
-              <div class="contact_info">
-
-              </div>
+                    <label>Subject :  </label>
+                    <input type="text" name="subject" class="form-control" required />
+                    <label>Text Message : </label>
+                    <textarea rows="9" name="content" class="form-control" required></textarea>
+                    <hr />
+                    <button type="submit" class="btn btn-success glyphicon-envelope" href="@controllers.users.routes.UserController.sendMessage(receiver.getId)">
+                        Send Message</button>
+                </div>
+                <div class="panel-footer text-muted">
+                    <strong>Note : </strong>Please note that we track all messages so don't send any spams.
+                </div>
             </div>
+        </div>
+
+        <div class="col span_1_of_3">
+            <div class="contact_info">
+
+            </div>
+        </div>
+    }
 }
