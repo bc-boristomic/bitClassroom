@@ -47,10 +47,10 @@ public class Global extends GlobalSettings {
         return F.Promise.<Result>pure(badRequest(views.html.notfound.render()));
     }
 
-    @Override
-    public <T extends EssentialFilter> Class<T>[] filters() {
-        Class[] filters = {CSRFFilter.class};
-        return filters;
-    }
+//    @Override
+//    public <T extends EssentialFilter> Class<T>[] filters() {
+//        Class[] filters = {CSRFFilter.class};
+//        return filters;
+//    }
 }
 

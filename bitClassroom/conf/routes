@@ -40,7 +40,9 @@ POST          /student/joincourse/haveaccess @controllers.users.StudentControlle
 # CREATE REPORT FIELD
 
 GET           /admin/createdaily              @controllers.users.AdminController.genField()
-POST          /admin/createdaily              @controllers.users.AdminController.saveField()
+#POST          /admin/createdaily              @controllers.users.AdminController.saveField()
+#ovaj gore ne treba vise
+POST          /admin/savefielddaily              @controllers.users.AdminController.saveField()
 
 #LIST DAILY REPORT  ===================================================================
 
@@ -84,5 +86,14 @@ GET           /admin/mentorship               @controllers.users.AdminController
 POST          /admin/mentorship               @controllers.users.AdminController.saveMentorship()
 GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id        @controllers.users.AdminController.deleteMentorship(id: Long)
+
+# SENDING MESSAGE
+
+GET           /user/message                   @controllers.users.UserController.studentList()
+GET           /message/:id                    @controllers.users.UserController.newMessage(id: Long)
+POST          /message/:id                    @controllers.users.UserController.sendMessage(id: Long)
+GET           /allMessage                     @controllers.users.UserController.allMessage()
+
+
 
 GET           /user/class                  @controllers.course.CourseController.course()

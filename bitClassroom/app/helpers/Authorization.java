@@ -8,6 +8,7 @@ import play.mvc.Security;
 import utility.UserConstants;
 
 import static play.mvc.Controller.flash;
+import static play.mvc.Controller.session;
 
 /**
  * Created by NN on 16.9.2015.
@@ -38,7 +39,8 @@ public class Authorization {
 
         @Override
         public Result onUnauthorized(Http.Context context) {
-            flash("warning", "You don't have right permissions");
+            session().clear();
+            flash("warning", "You don't have right permissions. You've been logged out.");
             return redirect("/login");
         }
     }
@@ -67,7 +69,8 @@ public class Authorization {
 
         @Override
         public Result onUnauthorized(Http.Context context) {
-            flash("warning", "You don't have right permissions");
+            session().clear();
+            flash("warning", "You don't have right permissions. You've been logged out.");
             return redirect("/login");
         }
     }
@@ -95,7 +98,8 @@ public class Authorization {
 
         @Override
         public Result onUnauthorized(Http.Context context) {
-            flash("warning", "You don't have right permissions");
+            session().clear();
+            flash("warning", "You don't have right permissions. You've been logged out.");
             return redirect("/login");
         }
     }
@@ -123,7 +127,8 @@ public class Authorization {
 
         @Override
         public Result onUnauthorized(Http.Context context) {
-            flash("warning", "You don't have right permissions");
+            session().clear();
+            flash("warning", "You don't have right permissions. You've been logged out.");
             return redirect("/login");
         }
     }
@@ -147,7 +152,8 @@ public class Authorization {
 
         @Override
         public Result onUnauthorized(Http.Context context) {
-            flash("warning", "You don't have right permissions");
+            session().clear();
+            flash("warning", "You don't have right permissions. You've been logged out.");
             return redirect("/login");
         }
     }
