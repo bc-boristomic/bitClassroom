@@ -184,8 +184,7 @@ public class AdminController extends Controller {
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
     }
-    //==========================================================================
-    //Enver sprint 4
+
 
     public Result genField() {
         return ok(setingsdailyraport.render(Field.getFinder().all()));
@@ -197,11 +196,10 @@ public class AdminController extends Controller {
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
         model.setName(name);
         model.save();
-        //  return ok(setingsdailyraport.render(Field.getFinder().all()));
         return redirect("/admin/createdaily");
 
     }
-    //===========================================================================
+
     private final Form<Course> courseForm = Form.form(Course.class);
 
     public Result addCourse() {
@@ -279,11 +277,11 @@ public class AdminController extends Controller {
      * See tables of daily reports
      * @return
      */
-    //==============================================================================
+
     public Result listReport() {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
-    //=================================================================================
+
 
 
     /**

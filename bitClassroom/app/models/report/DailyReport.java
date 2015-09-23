@@ -67,7 +67,7 @@ public final class DailyReport extends Model {
     }
 
 
-    //==================================================================
+
     @OneToMany(mappedBy = "dailyReport", cascade = CascadeType.ALL)
     private List<ReportField> fieldList = new ArrayList<>();
     //Enver sprint 4
@@ -101,8 +101,6 @@ public final class DailyReport extends Model {
 
         return null;
     }
-//==================================================================
-
 
 
     public static DailyReport findDailyReportById(Long id) {
