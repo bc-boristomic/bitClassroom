@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public final class DailyReport extends Model {
         return id;
     }
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
         return dtf.print(createdDate); }
 
     public void setName(String name) {
@@ -64,6 +65,44 @@ public final class DailyReport extends Model {
     public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+
+    //==================================================================
+    @OneToMany(mappedBy = "dailyReport", cascade = CascadeType.ALL)
+    private List<ReportField> fieldList = new ArrayList<>();
+    //Enver sprint 4
+
+    /** Metoda se poziva iz vieiw.admins.newTableDaily preko scale,
+     * vraca true ukoliko pronadje isti field, ili false ukoliko ga ne pronadje*/
+
+    public boolean containsField(Field field) {
+        for (ReportField rf :fieldList) {
+            if (rf.getField().equals(field)) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    //Enver sprint 4
+    /** Metoda se poziva iz vieiw.admins.newTableDaily preko scale,
+     * prima field koji je u boolean metodi containsField uporedjen sa fieldom iz tabele,
+     * i ako su isti upisuje u njega value, ukoliko nisu ostavlja polje u tabeli prazno
+     * */
+    public ReportField getField(Field field) {
+        for (ReportField rf : fieldList) {
+            if (rf.getField().equals(field)) {
+                return rf;
+            }
+
+        }
+
+        return null;
+    }
+//==================================================================
+
 
 
     public static DailyReport findDailyReportById(Long id) {

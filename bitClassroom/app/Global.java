@@ -11,6 +11,9 @@ import utility.database.Courses;
 import utility.database.Roles;
 import utility.database.Users;
 
+import play.api.mvc.EssentialFilter;
+import play.filters.csrf.CSRFFilter;
+
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.notFound;
 
@@ -43,4 +46,10 @@ public class Global extends GlobalSettings {
     public F.Promise<Result> onBadRequest(Http.RequestHeader requestHeader, String s) {
         return F.Promise.<Result>pure(badRequest(views.html.notfound.render()));
     }
+
+//    @Override
+//    public <T extends EssentialFilter> Class<T>[] filters() {
+//        Class[] filters = {CSRFFilter.class};
+//        return filters;
+//    }
 }
