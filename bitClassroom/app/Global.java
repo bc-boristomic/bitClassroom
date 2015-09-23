@@ -12,7 +12,7 @@ import utility.database.Roles;
 import utility.database.Users;
 
 import play.api.mvc.EssentialFilter;
-import play.filters.csrf.CSRFFilter;
+
 
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.notFound;
