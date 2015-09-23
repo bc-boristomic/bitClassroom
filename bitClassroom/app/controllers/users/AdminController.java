@@ -284,6 +284,30 @@ public class AdminController extends Controller {
 
 
 
+<<<<<<< HEAD
+=======
+    /**
+     * Renders table with information about current mentorship status.
+     *
+     * @return
+     */
+    public Result seeMentorsAndStudents() {
+        return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
+    }
+
+    public Result deleteMentorship(Long id) {
+        Mentorship men = Mentorship.getFinder().byId(id);
+        men.setStatus(UserConstants.EXPIRED_MENTORSHIP);
+        men.setUpdateDate(new DateTime());
+        men.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        men.update();
+
+        men.getStudent().setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+        men.getStudent().update();
+        flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
+        return redirect("/admin/activementors");
+    }
+>>>>>>> origin/develop
 
 
 }
