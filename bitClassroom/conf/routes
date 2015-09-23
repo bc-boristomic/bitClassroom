@@ -43,9 +43,15 @@ POST          /admin/createdaily              @controllers.users.AdminController
 
 #LIST DAILY REPORT  ===================================================================
 
+<<<<<<< HEAD
+GET           /listReport                @controllers.users.AdminController.listReport()
+DELETE        /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
+=======
 GET           /listReport                     @controllers.users.AdminController.listReport()
 DELETE        /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
+>>>>>>> origin/develop
 
 #======================================================================================
 
@@ -83,6 +89,10 @@ POST          /admin/mentorship               @controllers.users.AdminController
 GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id        @controllers.users.AdminController.deleteMentorship(id: Long)
 
+<<<<<<< HEAD
+GET           /user/class                  @controllers.course.CourseController.course()
+=======
 
 
 
+>>>>>>> origin/develop

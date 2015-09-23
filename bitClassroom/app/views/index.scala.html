@@ -51,11 +51,11 @@
             @if(cU.getUser.getId == user.getId) {
                 @if(cU.getStatus == 2) {
                     <div class="col-sm-3" id="courseDiv">
-                        <div class="thumbnail">
-                            <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="">
-                            <div class="jumbotron ">
-                                <a href="/user/class"><h2>@cU.getCourse.getName</h2></a>
-                                <h4>@cU.getCourse.getDescription</h4>
+                        <div class="thumbnail" style="max-height: 700px; max-width: 300px">
+                            <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="" style="width:280px; height: 200px">
+                            <div class="caption">
+                                <a href="/user/class"><h2>@cU.getCourse.getName</h2>
+                                <h4>@cU.getCourse.getDescription</h4></a>
                                 <br>
                                 <h6>@cU.getCourse.getTeacher</h6>
 

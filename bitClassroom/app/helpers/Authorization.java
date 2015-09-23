@@ -28,7 +28,7 @@ public class Authorization {
             User temp = User.findByEmail(context.session().get("username"));
             if (temp != null && temp.getRoles() != null && temp.getRoles().size() > 0) {
                 for (Role r : temp.getRoles()) {
-                    if (r.getId().equals(UserConstants.ADMIN) && temp.getStatus().equals(UserConstants.FULLY_ACTIVE)) {
+                    if (r.getId().equals(UserConstants.ADMIN)) {
                         return temp.getEmail();
                     }
                 }
@@ -57,7 +57,7 @@ public class Authorization {
             User temp = User.findByEmail(context.session().get("username"));
             if (temp != null && temp.getRoles() != null && temp.getRoles().size() > 0) {
                 for (Role r : temp.getRoles()) {
-                    if (r.getId().equals(UserConstants.MENTOR) && temp.getStatus().equals(UserConstants.FULLY_ACTIVE)) {
+                    if (r.getId().equals(UserConstants.MENTOR)) {
                         return temp.getEmail();
                     }
                 }
@@ -85,7 +85,7 @@ public class Authorization {
             User temp = User.findByEmail(context.session().get("username"));
             if (temp != null && temp.getRoles() != null && temp.getRoles().size() > 0) {
                 for (Role r : temp.getRoles()) {
-                    if (r.getId().equals(UserConstants.TEACHER) && temp.getStatus().equals(UserConstants.FULLY_ACTIVE)) {
+                    if (r.getId().equals(UserConstants.TEACHER)) {
                         return temp.getEmail();
                     }
                 }
@@ -113,7 +113,7 @@ public class Authorization {
             User temp = User.findByEmail(context.session().get("username"));
             if (temp != null && temp.getRoles() != null && temp.getRoles().size() > 0) {
                 for (Role r : temp.getRoles()) {
-                    if (r.getId().equals(UserConstants.STUDENT) && temp.getStatus().equals(UserConstants.FULLY_ACTIVE)) {
+                    if (r.getId().equals(UserConstants.STUDENT)) {
                         return temp.getEmail();
                     }
                 }
