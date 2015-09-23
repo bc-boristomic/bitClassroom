@@ -9,12 +9,14 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
 import play.Play;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 import utility.UserUtils;
 import views.html.posts.message;
 import views.html.users.editprofile;
@@ -201,7 +203,7 @@ public class UserController extends Controller {
         User u = SessionHelper.currentUser(ctx());
         for (CourseUser student : students) {
             if (student.getUser().getEmail().equals(u.getEmail())) {
-                if (student.getStatus() == 2) {
+                if (student.getStatus() == UserConstants.FULLY_ACTIVE) {
                     return ok(studentList.render(students));
                 }
             }
@@ -211,21 +213,18 @@ public class UserController extends Controller {
     }
 
     public Result newMessage(Long id){
-
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
-        Logger.info("dsfdfd");
         return ok(message.render(sender, receiver));
     }
 
     public Result sendMessage(Long id){
-
-        Form<User> boundForm = userForm.bindFromRequest();
+        DynamicForm form = Form.form().bindFromRequest();
 
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
-        String subject = boundForm.bindFromRequest().field("subject").value();
-        String content = boundForm.bindFromRequest().field("content").value();
+        String subject = form.get("subject");
+        String content = form.get("content");
 
         PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
         privMessage.setStatus(0);
@@ -242,10 +241,14 @@ public class UserController extends Controller {
 
             return redirect("/");
         }
-        List<PrivateMessage> messagesReceived = PrivateMessage.find.where().eq("receiver.id", u.getId()).findList();
-        List<PrivateMessage> messagesSent = PrivateMessage.find.where().eq("sender.id", u.getId()).findList();
+        List<PrivateMessage> messagesReceived = PrivateMessage.getFind().where().eq("receiver.id", u.getId()).findList();
+        List<PrivateMessage> messagesSent = PrivateMessage.getFind().where().eq("sender.id", u.getId()).findList();
 
         return ok(allMessage.render(u, messagesReceived, messagesSent));
 
+    }
+
+    public Result seeMessage(Long id) {
+        return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }
 }
