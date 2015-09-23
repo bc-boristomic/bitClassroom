@@ -5,39 +5,13 @@
 
 @adminmain("NEW List") {
 
-<<<<<<< HEAD
-=======
-  <div class="container">
-    <br><br><br>
-    <div class="">
-      <h3 class="page-head-line"> Table of daily reports </h3>
-    </div>
-      <table id="sort" class="table-bordered" style="background : papayawhip">
-        <div style="margin : 40 px 30 px 0 px 30 px" >
-          <thead>
-            <tr> <th>Date</th>
-              <th>Title</th>
-              @for(rf <- listField) {
-                <th>@rf.getName</th>
-              }
-              <th>Report</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          @for(ldr <- listDailyReport) {
-            <tbody>
-              <div>
-                <tr class="success" style="background : #81d186">
-                  <td>@ldr.getCreateDate</td>
-                  <td>@ldr.getName</td>
->>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef
 
     <form>
 
         <div style="margin-top: 110px">
             <h3 class="page-head-line"> Table of daily reports </h3>
         </div>
-<<<<<<< HEAD
+
 
             <table id="sort" class="table-bordered" style="background : papayawhip">
                 <div style="margin : 40 px 30 px 0 px 30 px" >
@@ -78,8 +52,5 @@
             </table>
 
     </form>
-=======
-      </table>
-  </div>
->>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef
+
 }

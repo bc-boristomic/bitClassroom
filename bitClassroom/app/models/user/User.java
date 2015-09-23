@@ -145,7 +145,7 @@ public final class User extends Model {
     public static Finder<Long, User> getFinder() {
         return finder;
     }
-    
+
 
 
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */
