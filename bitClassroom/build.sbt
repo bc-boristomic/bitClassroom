@@ -12,13 +12,10 @@ libraryDependencies ++= Seq(
   javaWs,
   javaJpa,
   "org.easytesting" % "fest-assert" % "1.4" % Test,
-  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
   "mysql" % "mysql-connector-java" % "5.1.36",
   "joda-time" % "joda-time" % "2.8.2",
   "org.apache.directory.studio" % "org.apache.commons.io" % "2.4",
-  "junit" % "junit" % "4.11",
-  "log4j" % "log4j" % "1.2.17"
-
+  "junit" % "junit" % "4.11"
 
 )
 

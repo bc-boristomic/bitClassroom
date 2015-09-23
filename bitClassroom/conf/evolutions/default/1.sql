@@ -45,26 +45,16 @@ create table field (
   constraint pk_field primary key (id))
 ;
 
-create table mentorship (
-  id                        bigint auto_increment not null,
-  mentor_id                 bigint,
-  student_id                bigint,
-  status                    integer(1),
-  create_date               datetime,
-  created_by                varchar(255),
-  update_date               datetime,
-  updated_by                varchar(255),
-  constraint pk_mentorship primary key (id))
-;
-
 create table post (
   id                        bigint auto_increment not null,
   title                     varchar(255),
   content                   text,
   post_type                 integer,
   visible_mentors           tinyint(1) default 0,
-  date                      varchar(255),
   link                      varchar(255),
+  files                     varchar(255),
+  date                      varchar(255),
+  create_date               datetime,
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;
@@ -102,11 +92,10 @@ create table user (
   youtube                   varchar(255),
   picture                   varchar(255),
   status                    integer(1),
-  student_status            integer(1),
   create_date               datetime,
-  created_by                varchar(50),
+  created_by                varchar(255),
   update_date               datetime,
-  updated_by                varchar(50),
+  updated_by                varchar(255),
   constraint uq_user_email unique (email),
   constraint pk_user primary key (id))
 ;
@@ -121,16 +110,12 @@ alter table course_user add constraint fk_course_user_user_1 foreign key (user_i
 create index ix_course_user_user_1 on course_user (user_id);
 alter table course_user add constraint fk_course_user_course_2 foreign key (course_id) references course (id) on delete restrict on update restrict;
 create index ix_course_user_course_2 on course_user (course_id);
-alter table mentorship add constraint fk_mentorship_mentor_3 foreign key (mentor_id) references user (id) on delete restrict on update restrict;
-create index ix_mentorship_mentor_3 on mentorship (mentor_id);
-alter table mentorship add constraint fk_mentorship_student_4 foreign key (student_id) references user (id) on delete restrict on update restrict;
-create index ix_mentorship_student_4 on mentorship (student_id);
-alter table post add constraint fk_post_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_post_user_5 on post (user_id);
-alter table report_field add constraint fk_report_field_dailyReport_6 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
-create index ix_report_field_dailyReport_6 on report_field (daly_id);
-alter table report_field add constraint fk_report_field_field_7 foreign key (field_id) references field (id) on delete restrict on update restrict;
-create index ix_report_field_field_7 on report_field (field_id);
+alter table post add constraint fk_post_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_post_user_3 on post (user_id);
+alter table report_field add constraint fk_report_field_dailyReport_4 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_4 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_5 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_5 on report_field (field_id);
 
 
 
@@ -151,8 +136,6 @@ drop table daily_report;
 drop table error_log;
 
 drop table field;
-
-drop table mentorship;
 
 drop table post;
 

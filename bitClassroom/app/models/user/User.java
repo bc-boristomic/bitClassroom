@@ -60,15 +60,13 @@ public final class User extends Model {
     private String profilePicture = "default.jpg";
     @Column(name = "status", length = 1)
     private Integer status = UserConstants.INACTIVE;
-    @Column(name = "student_status", length = 1)
-    private Integer studentStatus;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
-    @Column(name = "created_by", updatable = false, length = 50)
+    @Column(name = "created_by", updatable = false)
     private String createdBy;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
-    @Column(name = "updated_by", length = 50)
+    @Column(name = "updated_by")
     private String updatedBy;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
@@ -359,13 +357,6 @@ public final class User extends Model {
         this.youtube = youtube;
     }
 
-    public void setStudentStatus(Integer studentStatus) {
-        this.studentStatus = studentStatus;
-    }
-
-    public Integer getStudentStatus() {
-        return studentStatus;
-    }
 
     public static boolean deleteUser(Long id) {
 

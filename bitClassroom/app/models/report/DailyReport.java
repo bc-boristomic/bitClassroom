@@ -50,7 +50,7 @@ public final class DailyReport extends Model {
         return id;
     }
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
         return dtf.print(createdDate); }
 
     public void setName(String name) {

@@ -1,5 +1,6 @@
 package controllers.posts;
 
+import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
@@ -10,6 +11,7 @@ import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -19,6 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import models.course.Course;
+
 
 /**
  * Created by banjich on 9/14/15.
@@ -49,26 +54,26 @@ public class PostController extends Controller {
         Post post = new Post();
         MultipartFormData data = request().body().asMultipartFormData();
         List<MultipartFormData.FilePart> files = data.getFiles();
-        String fileName = "";
+
+
 
         if (files != null) {
             String fName = null;
-            for (MultipartFormData.FilePart filePart : files) {
+            for (Http.MultipartFormData.FilePart filePart : files) {
                 fName = filePart.getFilename();
-                int n = fName.lastIndexOf(".");
-                fName = fName.substring(n, fName.length());
                 File file = filePart.getFile();
+
                 try {
-                    fileName = String.valueOf(new DateTime().getMillis());
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/files/users/" + user.getId() + "/" + fileName + fName));
-                    filesList.add(fileName);
+                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/files/users/" + user.getNickName() + "/" + fName));
+                    filesList.add(fName);
                 } catch (IOException e) {
                     Logger.info("Could not move file. " + e.getMessage());
                     flash("error", "Could not move file.");
                 }
             }
-            post.setFiles(filesList);
-
+                if(fName != null) {
+                    post.setFiles(user.getNickName() + "/" + fName);
+                }
         }
 
         String date = boundForm.bindFromRequest().field("date").value();
@@ -76,7 +81,7 @@ public class PostController extends Controller {
         String message = boundForm.bindFromRequest().field("content").value();
         String mentor = boundForm.bindFromRequest().field("visible").value();
         String type = boundForm.bindFromRequest().field("post-type").value();
-        String link = boundForm.bindFromRequest().field("").value();
+        String link = boundForm.bindFromRequest().field("link").value();
 
         Boolean visible = false;
         if ("on".equals(mentor)) {
