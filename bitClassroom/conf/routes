@@ -34,13 +34,9 @@ GET           /admin/errors                   @controllers.users.AdminController
 POST          /admin/approvestudent           @controllers.users.AdminController.approveStudent()
 GET           /admin/awaitlist                @controllers.users.AdminController.awaitList()
 
-<<<<<<< HEAD
 POST          /student/joincourse          @controllers.users.StudentController.joinCourse()
 POST          /student/joincourse/haveaccess @controllers.users.StudentController.haveCourseAccess()
-=======
-POST          /student/joincourse             @controllers.users.StudentController.joinCourse()
 
->>>>>>> develop
 # CREATE REPORT FIELD
 
 GET           /admin/createdaily              @controllers.users.AdminController.genField()
@@ -48,15 +44,10 @@ POST          /admin/createdaily              @controllers.users.AdminController
 
 #LIST DAILY REPORT  ===================================================================
 
-<<<<<<< HEAD
 GET           /listReport                @controllers.users.AdminController.listReport()
 DELETE        /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id            @controllers.users.AdminController.deleteReport(id: Long)
-=======
-GET           /listReport                     @controllers.users.AdminController.listReport()
-DELETE        /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
-GET           /listReport/:id                 @controllers.users.AdminController.deleteReport(id: Long)
->>>>>>> origin/develop
+
 
 #======================================================================================
 

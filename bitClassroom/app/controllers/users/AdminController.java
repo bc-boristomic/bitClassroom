@@ -284,9 +284,62 @@ public class AdminController extends Controller {
     }
 
 
+    /**
+     * Renders page with two dropdown menus. One is for mentors and other is for
+     * students that don't have mentor. User selects mentor on left side and student
+     * on right side. Once buttom assign is pressed selected mentor is assigned to slected student.
+     *
+     * @return
+     */
+    public Result mentorship() {
+        return ok(views.html.admins.mentorship.render(User.findAll()));
+    }
 
-<<<<<<< HEAD
-=======
+    /**
+     * Get's user inputed selection via DynamicForm, gets mentor.id value from mentor
+     * selection in <code>String</code> type men variable and student.id value from
+     * student selection in <code>String</code> type stu variable.
+     * <p>
+     * After that string is parsed into Long since id is Long value.
+     * If everything goes well user mentor is found by mentor.id, and student by student.id.
+     * <p>
+     * Student's studentStatus is set to HAVE_MENTOR and student is updated.
+     * Mentorship is created and status is set to ACTIVE.
+     *
+     * @return
+     */
+    public Result saveMentorship() {
+        DynamicForm form = Form.form().bindFromRequest();
+        String men = form.get("mentor");
+        String stu = form.get("student");
+        Long ment = null;
+        Long stud = null;
+        if (men != null && stu != null) {
+            try {
+                ment = Long.parseLong(men);
+                stud = Long.parseLong(stu);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse users Id: " + e.getMessage()));
+                flash("warning", "Something went wrong, could not assign mentor to student.");
+                return redirect("/admin/mentorship");
+            }
+        }
+        User mentor = User.findById(ment);
+        User student = User.findById(stud);
+        student.setStudentStatus(UserConstants.HAVE_MENTOR);
+        student.update();
+
+        Mentorship mentorship = new Mentorship();
+        mentorship.setMentor(mentor);
+        mentorship.setStudent(student);
+        mentorship.setCreatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
+        mentorship.save();
+
+        flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
+        return redirect("/admin/mentorship");
+    }
+
     /**
      * Renders table with information about current mentorship status.
      *
@@ -308,7 +361,6 @@ public class AdminController extends Controller {
         flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
         return redirect("/admin/activementors");
     }
->>>>>>> origin/develop
 
 
 }
