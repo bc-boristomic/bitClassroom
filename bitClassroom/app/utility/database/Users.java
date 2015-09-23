@@ -15,16 +15,20 @@ public class Users {
 
     private static String[] firstNameTeam = {"Medina", "Nidal", "Enver", "Becir", "Senadin", "Boris"};
     private static String[] lastNameTeam = {"Banjic", "Salkic", "Memic", "Omerbasic", "Botic", "Tomic"};
-    private static String[] emailTeam = {"medina.banjic@bitcamp.ba", "nidal.salkic@bitcamp.ba", "enver.memic@bitcamp.ba", "becir.omerbasic@bitcamp.ba", "senadin.botic@bitcamp.ba", "boris.tomic@bitcamp.ba"};
+    private static String[] emailTeam = {"medina.banjic@bitcamp.ba", "nidal.salkic@bitcamp.ba",
+            "enver.memic@bitcamp.ba", "becir.omerbasic@bitcamp.ba", "senadin.botic@bitcamp.ba", "boris.tomic@bitcamp.ba"};
     private static String[] passwordTeam = {"Medina123", "Nidal123", "Enver123", "Becir123", "Senadin123", "Boris123"};
 
     private static String[] firstNameTeachers = {"Benjamin", "Vedad", "Tarik", "Emir", "Elmedin", "Damir", "Zaid"};
     private static String[] lastNameTeachers = {"Talic", "Letic", "Celik", "Arnautovic", "Selmanovic", "Zekic", "Zerdo"};
-    private static String[] emailTeachers = {"benjamin.talic@bitcamp.ba", "vedad.letic@bitcamp.ba", "tarik.celik@bitcamp.ba", "emir.arnautovic@bitcamp.ba", "elmedin.selmanovic@bitcamp.ba", "damir.zekic@bitcamp.ba", "zaid.zerdo@bitcamp.ba"};
+    private static String[] emailTeachers = {"benjamin.talic@bitcamp.ba", "vedad.letic@bitcamp.ba",
+            "tarik.celik@bitcamp.ba", "emir.arnautovic@bitcamp.ba", "elmedin.selmanovic@bitcamp.ba",
+            "damir.zekic@bitcamp.ba", "zaid.zerdo@bitcamp.ba"};
 
     private static String[] firstNameStudents = {"Adis", "Adnan", "Ajdin", "Ajla", "Alen", "Amra"};
     private static String[] lastNameStudents = {"Cehajic", "Lapendic", "Brkic", "El Tabari", "Bumbulovic", "Sabic"};
-    private static String[] emailStudents = {"adis.cehajic@bitcamp.ba", "adnan.lapendic@bitcamp.ba", "ajdin.brkic@bitcamp.ba", "ajla.eltabari@bitcamp.ba", "alen.bumbulovic@bitcamp.ba", "amra.sabic@bitcamp.ba"};
+    private static String[] emailStudents = {"adis.cehajic@bitcamp.ba", "adnan.lapendic@bitcamp.ba",
+            "ajdin.brkic@bitcamp.ba", "ajla.eltabari@bitcamp.ba", "alen.bumbulovic@bitcamp.ba", "amra.sabic@bitcamp.ba"};
 
     private static String[] firstNameMentors = {"Nejra", "Nermin", "Mirza"};
     private static String[] lastNameMentors = {"Hodzic", "Sehic", "Mujanovic"};
