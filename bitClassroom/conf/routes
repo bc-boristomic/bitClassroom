@@ -40,7 +40,9 @@ POST          /student/joincourse/haveaccess @controllers.users.StudentControlle
 # CREATE REPORT FIELD
 
 GET           /admin/createdaily              @controllers.users.AdminController.genField()
-POST          /admin/createdaily              @controllers.users.AdminController.saveField()
+#POST          /admin/createdaily              @controllers.users.AdminController.saveField()
+#ovaj gore ne treba vise
+POST          /admin/savefielddaily              @controllers.users.AdminController.saveField()
 
 #LIST DAILY REPORT  ===================================================================
 
