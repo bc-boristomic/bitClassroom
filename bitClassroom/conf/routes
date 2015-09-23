@@ -87,15 +87,23 @@ POST          /admin/mentorship               @controllers.users.AdminController
 GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id        @controllers.users.AdminController.deleteMentorship(id: Long)
 
+<<<<<<< HEAD
 
 # SENDING MESSAGE
+=======
+# SENDING MESSAGE======================================================================================
+>>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef
 
 GET           /user/message                   @controllers.users.UserController.studentList()
 GET           /message/:id                    @controllers.users.UserController.newMessage(id: Long)
-POST          /message/:id                    @controllers.users.UserController.sendMessage(id: Long)
+GET          /message/:id/send                @controllers.users.UserController.sendMessage(id: Long)
 GET           /allMessage                     @controllers.users.UserController.allMessage()
 
 
+<<<<<<< HEAD
 
 
 GET           /user/class                  @controllers.course.CourseController.course()
+=======
+GET           /user/class                     @controllers.course.CourseController.course()
+>>>>>>> a5ed718404299bfad5a99ec80306e6a5e59753ef

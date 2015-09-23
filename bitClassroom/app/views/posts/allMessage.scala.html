@@ -34,8 +34,8 @@
                   @for(message <- messagesSent){
                     <li><h5><span style="padding-bottom: 0px;">Receiver
                     <a href="#">@message.getReceiver.getFirstName</a>:</span></h5>
-                      <p><mark style="font-size: 0.9em;font-family: verdana, arial, helvetica, helve, sans-serif;">@message.getContent
-                      </mark></p></li>
+                      <p>@message.getContent
+                     </p></li>
                     <hr style="margin-top: 5px; margin-bottom: 5px;">
 
                     }
