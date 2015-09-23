@@ -81,8 +81,18 @@
                                     @if(role.getId.equals(UserConstants.STUDENT)) {
                                         <li><a href="/">Go to classrom</a></li>
                                         <li><a href="/post/new">Add post</a></li>
-                                        <li><a href="/user/courses">Courses</a></li>
-                                        <li><a href="/user/message">Students</a></li>
+                                        <li><a href="/allMessage">Messages</a></li>
+                                        <li class="dropdown active">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                                Course <span class="caret"></span></a>
+                                            <ul class="dropdown-menu" role="menu" style="background-color : #d9534f">
+                                                <li><a href="/user/courses">Join course</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/user/message">Students</a></li>
+                                            </ul>
+                                        </li>
+
+
                                     }
                                 }
                             }

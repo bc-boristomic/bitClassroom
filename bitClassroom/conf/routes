@@ -85,9 +85,10 @@ DELETE        /admin/activementors/:id        @controllers.users.AdminController
 
 # SENDING MESSAGE
 
-GET           /user/message                   @controllers.users.UserController.newMessage()
-#GET           /message/:id                    @controllers.users.UserController.sendMessage(id: Long)
+GET           /user/message                   @controllers.users.UserController.studentList()
+GET           /message/:id                    @controllers.users.UserController.newMessage(id: Long)
 POST          /message/:id                    @controllers.users.UserController.sendMessage(id: Long)
+GET           /allMessage                     @controllers.users.UserController.allMessage()
 
 
 
