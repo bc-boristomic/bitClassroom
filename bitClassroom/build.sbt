@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   javaJpa,
+  filters,
   "org.easytesting" % "fest-assert" % "1.4" % Test,
   "mysql" % "mysql-connector-java" % "5.1.36",
   "joda-time" % "joda-time" % "2.8.2",
