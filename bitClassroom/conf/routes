@@ -87,7 +87,7 @@ POST          /admin/mentorship               @controllers.users.AdminController
 GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id        @controllers.users.AdminController.deleteMentorship(id: Long)
 
-<<<<<<< HEAD
+
 # SENDING MESSAGE
 
 GET           /user/message                   @controllers.users.UserController.studentList()
@@ -97,6 +97,5 @@ GET           /allMessage                     @controllers.users.UserController.
 
 
 
-=======
+
 GET           /user/class                  @controllers.course.CourseController.course()
->>>>>>> origin/develop
