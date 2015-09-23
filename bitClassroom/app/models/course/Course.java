@@ -29,8 +29,12 @@ public final class Course extends Model {
     private String name;
     @Column(name = "description", length = 2000)
     private String description;
-    @Column(name = "teacher", length = 50)
-    private String teacher;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private User teacher;
+    @ManyToOne
+    @JoinColumn(name = "mentor_id", referencedColumnName = "id")
+    private User mentor;
     @Column(name = "image")
     private String image;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
@@ -55,10 +59,11 @@ public final class Course extends Model {
      * @param description <code>String</code> type value of description
      * @param teacher     <code>String</code>   type value of teacher
      */
-    public Course(String name, String description, String teacher) {
+    public Course(String name, String description, User teacher, User mentor) {
         this.name = name;
         this.description = description;
         this.teacher = teacher;
+        this.mentor = mentor;
     }
 
     /**
@@ -138,12 +143,20 @@ public final class Course extends Model {
         this.description = description;
     }
 
-    public String getTeacher() {
+    public User getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(User teacher) {
         this.teacher = teacher;
+    }
+
+    public User getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(User mentor) {
+        this.mentor = mentor;
     }
 
     public String getImage() {

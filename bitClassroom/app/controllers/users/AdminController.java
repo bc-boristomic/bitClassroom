@@ -210,12 +210,33 @@ public class AdminController extends Controller {
     public Result saveCourse() {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
-
         String name = boundForm.bindFromRequest().field("name").value();
         String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("type").value();
 
-        Course course = new Course(name, description, teacher);
+        String men = boundForm.bindFromRequest().field("mentor1").value();
+        String tea = boundForm.bindFromRequest().field("teacher").value();
+
+        Long ment = null;
+        Long teac = null;
+        if (men != null && tea != null) {
+            try {
+                ment = Long.parseLong(men);
+                teac = Long.parseLong(tea);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse users Id: " + e.getMessage()));
+                flash("warning", "Something went wrong.");
+                return redirect("/admin");
+            }
+        }
+
+        User mentor = User.findById(ment);
+        User teacher = User.findById(teac);
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setMentor(mentor);
+        course.setTeacher(teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
 
@@ -242,13 +263,15 @@ public class AdminController extends Controller {
             }
         }
 
-        try {
-            course.save();
-        } catch (PersistenceException e) {
-            Ebean.save(new ErrorLog(e.getMessage()));
-            flash("warning", "Something went wrong, course could not be saved to data base");
-            return redirect("/admin/createcourse");
-        }
+//        try {
+//            course.save();
+//        } catch (PersistenceException e) {
+//            Ebean.save(new ErrorLog(e.getMessage()));
+//            flash("warning", "Something went wrong, course could not be saved to data base");
+//            return redirect("/admin/createcourse");
+//        }
+
+        course.save();
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
     }

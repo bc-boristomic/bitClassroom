@@ -24,22 +24,31 @@
             </div>
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
-                    <select id="selection" name="type" required>
-
+                    Mentors<select class="form-control" id="selection" name="mentor1">
                     @for(user <- users) {
                         @if(user.getRoles != null && user.getRoles.size() > 0) {
                             @for(role <- user.getRoles) {
-                                @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <option value="@user.getFirstName">@user.getFirstName</option>
+                                @if(role.getId.equals(UserConstants.MENTOR)) {
+                                    <option value="@user.getId">@user.getFirstName @user.getLastName</option>
                                 }
-
                             }
                         }
                     }
                     </select>
-                    <label>Teacher</label>
                 </div>
-
+                <div class="col-lg-6">
+                    Teachers<select class="form-control" id="selection" name="teacher">
+                    @for(user <- users) {
+                        @if(user.getRoles != null && user.getRoles.size() > 0) {
+                            @for(role <- user.getRoles) {
+                                @if(role.getId.equals(UserConstants.TEACHER)) {
+                                    <option value="@user.getId">@user.getFirstName @user.getLastName</option>
+                                }
+                            }
+                        }
+                    }
+                    </select>
+                </div>
             </div>
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
