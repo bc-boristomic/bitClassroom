@@ -1,0 +1,71 @@
+
+@import models.course.CourseUser
+
+@(userListCourse: List[CourseUser])
+@main("Classroom") {
+
+
+    <div class="container">
+        <h4 class="page-head-line">Your wall</h4>
+
+    </div>
+
+  @for(temp <- userListCourse){
+
+     @if(temp.getStatus == 2){
+
+       @for(post <- temp.getUser.getPosts){
+
+        <div class="container">
+
+            <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div id="postlist">
+            <div class="panel">
+              <div class="panel-heading">
+                <div class="text-center">
+                  <div class="row">
+                    <div class="col-sm-9">
+                      <h3 class="pull-left">@post.getTitle</h3>
+                        <h5 class="pull-left" style="font-family: Arial" y><em>@post.getDate</em></h5>
+                    </div>
+                    <div class="col-sm-3">
+                      <h4 class="pull-right">
+                       <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <h5><em>@post.getContent</em></h5>
+                <br>
+              </div>
+
+              <div class="panel-body" style="border: 1px solid darkgrey; background-color: lightgrey; margin: 0 20px 0 20px; height: 60px">
+                  <label>Link : </label>
+                  <a href="@post.getLink">@post.getLink</a>
+              </div>
+
+              <div class="panel-body" style="border: 1px solid darkgrey; background-color: lightgrey; margin: 0 20px 20px 20px; height: 60px">
+                  <label>Attachment : </label>
+               <a href="@routes.Assets.versioned("/files/users/"+ post.getFiles)">@post.getFiles</a>
+              </div>
+
+              <div class="panel-footer">
+                <span class="label label-default">@if(post.getPostType == 0){ Announcement} Assigment </span> <span class="label label-default">@post.getCreateDate</span>
+                  <span class="label label-default">Updates</span>
+              </div>
+            </div>
+           </div>
+         </div>
+      </div>
+    </div>
+       }
+     }else{
+
+     }
+}
+}
