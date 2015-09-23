@@ -1,0 +1,63 @@
+@import models.report.Field
+@(listField: List[Field])
+@adminmain("Add field") {
+
+    @helper.form(action = controllers.users.routes.AdminController.saveField()) {
+        <!-- custom css -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/dailyraport.css")">
+        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/dailyraport.js") "></script>
+
+        <div class="container">
+            <br><br>
+            <h3 class="page-head-line">Add a field day reports</h3>
+        </div>
+        <body>
+            <form class="container">
+                <div class="row ">
+                    <div class="col-md-offset-1">
+                        <div class="col-md-4" style="background: #dff0d8; border: 1px solid black">
+                            <h4 style="text-align: center ; color: blueviolet">Adding fields</h4>
+                            <div class="form-group" style="margin: 25px">
+                                <label>Field Name</label>
+                                <input class="form-control" id="scriptName" name="scriptName" required>
+                                <input style="margin-top: 30px" type="submit" value="Add" onclick=""/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-md-offset-1" style="background: #dff0d8; border: 1px solid black">
+                            <h4 style="text-align: center; color: blueviolet">Preview</h4>
+                            <div style="margin: 25px">
+                                <div class="row top30">
+                                    <label class="col-md-offset-7 col-md-1">Date</label>
+                                    <div class=" col-md-4"><input class="form-control" disabled></div>
+                                </div>
+
+                                <div class="row top30">
+                                    <label class="col-sm-5">Title</label>
+                                    <div class="col-sm-7"><input class="form-control" disabled></div>
+                                </div>
+                                @for(rf <- listField) {
+                                    <div class="row top30">
+                                        <div class="col-sm-5">
+                                            <label>@rf.getName</label>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <textarea class="form-control" rows="1" disabled></textarea>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row top30">
+                                    <label class="col-sm-5 control-label">Report</label>
+                                    <div class="col-sm-7">
+                                        <textarea class="form-control" rows="3" disabled></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+
+
+    }
+}
