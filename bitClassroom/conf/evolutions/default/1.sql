@@ -71,6 +71,17 @@ create table post (
   constraint pk_post primary key (id))
 ;
 
+create table private_message (
+  id                        bigint auto_increment not null,
+  subject                   varchar(255),
+  content                   varchar(255),
+  sender_id                 bigint,
+  receiver_id               bigint,
+  status                    integer,
+  create_date               datetime,
+  constraint pk_private_message primary key (id))
+;
+
 create table report_field (
   id                        bigint auto_increment not null,
   value                     varchar(255),
@@ -129,10 +140,14 @@ alter table mentorship add constraint fk_mentorship_student_4 foreign key (stude
 create index ix_mentorship_student_4 on mentorship (student_id);
 alter table post add constraint fk_post_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_post_user_5 on post (user_id);
-alter table report_field add constraint fk_report_field_dailyReport_6 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
-create index ix_report_field_dailyReport_6 on report_field (daly_id);
-alter table report_field add constraint fk_report_field_field_7 foreign key (field_id) references field (id) on delete restrict on update restrict;
-create index ix_report_field_field_7 on report_field (field_id);
+alter table private_message add constraint fk_private_message_sender_6 foreign key (sender_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_sender_6 on private_message (sender_id);
+alter table private_message add constraint fk_private_message_receiver_7 foreign key (receiver_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_receiver_7 on private_message (receiver_id);
+alter table report_field add constraint fk_report_field_dailyReport_8 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_8 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_9 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_9 on report_field (field_id);
 
 
 
@@ -157,6 +172,8 @@ drop table field;
 drop table mentorship;
 
 drop table post;
+
+drop table private_message;
 
 drop table report_field;
 

@@ -2,6 +2,8 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.PrivateMessage;
+import models.course.CourseUser;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -14,8 +16,11 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserUtils;
+import views.html.posts.message;
 import views.html.users.editprofile;
 import views.html.users.profile;
+import views.html.posts.studentList;
+import views.html.posts.allMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,5 +187,65 @@ public class UserController extends Controller {
     public Result test() {
         Logger.info(new DateTime().getMillis() + " ");
         return redirect("/login");
+    }
+
+
+    /**
+     * Method for see all student in the class.
+     * Current user must be added in the class first to see other student
+     * Also then he can send message other students, teacher and mentors.
+     * @return - view of all students in the class
+     */
+    public Result studentList() {
+        List<CourseUser> students = CourseUser.all();
+        User u = SessionHelper.currentUser(ctx());
+        for (CourseUser student : students) {
+            if (student.getUser().getEmail().equals(u.getEmail())) {
+                if (student.getStatus() == 2) {
+                    return ok(studentList.render(students));
+                }
+            }
+
+        }
+        return redirect("/user/courses");
+    }
+
+    public Result newMessage(Long id){
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = User.findById(id);
+        Logger.info("dsfdfd");
+        return ok(message.render(sender, receiver));
+    }
+
+    public Result sendMessage(Long id){
+
+        Form<User> boundForm = userForm.bindFromRequest();
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = User.findById(id);
+        String subject = boundForm.bindFromRequest().field("subject").value();
+        String content = boundForm.bindFromRequest().field("content").value();
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+
+        return redirect("/allMessage");
+    }
+
+    public Result allMessage(){
+
+        User u = SessionHelper.currentUser(ctx());
+        if(u == null) {
+
+            return redirect("/");
+        }
+        List<PrivateMessage> messagesReceived = PrivateMessage.find.where().eq("receiver.id", u.getId()).findList();
+        List<PrivateMessage> messagesSent = PrivateMessage.find.where().eq("sender.id", u.getId()).findList();
+
+        return ok(allMessage.render(u, messagesReceived, messagesSent));
+
     }
 }

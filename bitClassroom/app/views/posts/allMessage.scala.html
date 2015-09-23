@@ -1,0 +1,49 @@
+@import user.User
+@(u: User)(messagesReceived: List[PrivateMessage])(messagesSent: List[PrivateMessage])
+
+@main("Inbox"){
+
+    <div class="wrap">
+      <div class="main">
+        <div class="content">
+          <div class="section group">
+            <div class="col span_2_of_3">
+              <div class="contact-form">
+
+                <h4 style="	font-size: 0.7em; color: #fa3953;">Inbox</h4>
+
+                <hr style="margin-top: 5px; margin-bottom: 5px;">
+                <ul>
+
+                @for(message <- messagesReceived){
+                  <li><h5><span style="padding-bottom: 0px;">Sender
+                  <a href="#">@message.getSender.getFirstName</a>:</span></h5>
+                    <p><mark style="font-size: 0.9em;font-family: verdana, arial, helvetica, helve, sans-serif;">@message.getContent
+                    </mark></p></li>
+                  <hr style="margin-top: 5px; margin-bottom: 5px;">
+                  }
+                </ul>
+                <br>
+
+                <ul>
+
+                  <h4 style="	font-size: 0.7em; color: #fa3953;">Sent message</h4>
+
+                  <hr style="margin-top: 5px; margin-bottom: 5px;">
+
+                  @for(message <- messagesSent){
+                    <li><h5><span style="padding-bottom: 0px;">Receiver
+                    <a href="#">@message.getReceiver.getFirstName</a>:</span></h5>
+                      <p><mark style="font-size: 0.9em;font-family: verdana, arial, helvetica, helve, sans-serif;">@message.getContent
+                      </mark></p></li>
+                    <hr style="margin-top: 5px; margin-bottom: 5px;">
+
+                    }
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+}
