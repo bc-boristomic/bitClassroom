@@ -33,7 +33,7 @@ import views.html.admins.userlist;
 import views.html.admins.setingsdailyraport;
 
 import views.html.admins.fillClassDetails;
-import views.html.admins.tabledaily;
+import views.html.admins.newTableDaily;
 
 
 import javax.persistence.PersistenceException;
@@ -184,24 +184,24 @@ public class AdminController extends Controller {
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
     }
+    //==========================================================================
+    //Enver sprint 4
+
     public Result genField() {
-        return ok(setingsdailyraport.render());
+        return ok(setingsdailyraport.render(Field.getFinder().all()));
     }
 
     public Result saveField() {
-
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
-        //if (model != null && name.length() > 4) {
-            model.setName(name);
-            model.save();
-        //}
-        return ok(setingsdailyraport.render());
-       // return ok("ad");
+        model.setName(name);
+        model.save();
+        //  return ok(setingsdailyraport.render(Field.getFinder().all()));
+        return redirect("/admin/createdaily");
 
     }
-
+    //===========================================================================
     private final Form<Course> courseForm = Form.form(Course.class);
 
     public Result addCourse() {
@@ -279,9 +279,11 @@ public class AdminController extends Controller {
      * See tables of daily reports
      * @return
      */
+    //==============================================================================
     public Result listReport() {
-        return ok(tabledaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all()));
+        return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
+    //=================================================================================
 
 
     /**
