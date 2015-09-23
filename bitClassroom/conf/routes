@@ -77,7 +77,7 @@ GET           /user/courses                   @controllers.course.CourseControll
 
 GET           /user/class                     @controllers.course.CourseController.course()
 
-
+# Mentorship routes
 GET           /admin/mentorship               @controllers.users.AdminController.mentorship()
 POST          /admin/mentorship               @controllers.users.AdminController.saveMentorship()
 GET           /admin/activementors            @controllers.users.AdminController.seeMentorsAndStudents()
