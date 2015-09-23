@@ -29,6 +29,7 @@ create table daily_report (
   name                      varchar(255),
   create_date               datetime,
   data                      varchar(4000),
+  date                      varchar(255),
   constraint pk_daily_report primary key (id))
 ;
 

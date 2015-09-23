@@ -47,6 +47,7 @@ public class TeacherController extends Controller {
         dailyReport.setName(dynamicForm.get("title"));
         dailyReport.setCreatedDate(new DateTime());
         dailyReport.setData(dynamicForm.get("data"));
+        dailyReport.setDate(dynamicForm.get("date"));
 
         dailyReport.save();
 
