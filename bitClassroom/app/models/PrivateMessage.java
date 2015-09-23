@@ -41,7 +41,7 @@ public class PrivateMessage extends Model {
     private DateTime creationDate = new DateTime();
 
 
-    public static Finder<Long, PrivateMessage> find = new Finder<Long, PrivateMessage>(PrivateMessage.class);
+    private static Finder<Long, PrivateMessage> find = new Finder<Long, PrivateMessage>(PrivateMessage.class);
 
 
     public PrivateMessage(String subject, String content, User sender, User receiver){
@@ -96,6 +96,14 @@ public class PrivateMessage extends Model {
         PrivateMessage newMessage = new PrivateMessage(subject, content, sender, receiver);
         newMessage.save();
         return newMessage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public static Finder<Long, PrivateMessage> getFind() {
+        return find;
     }
 
     public Integer getStatus() {

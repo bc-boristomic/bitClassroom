@@ -1,49 +1,55 @@
 @import user.User
 @(u: User)(messagesReceived: List[PrivateMessage])(messagesSent: List[PrivateMessage])
 
-@main("Inbox"){
+    @main("Inbox") {
 
-    <div class="wrap">
-      <div class="main">
-        <div class="content">
-          <div class="section group">
-            <div class="col span_2_of_3">
-              <div class="contact-form">
+        <div class="wrap">
+            <div class="main">
+                <div class="content">
+                    <div class="section group">
+                        <div class="col span_2_of_3">
+                            <div class="contact-form">
 
-                <h4 style="	font-size: 0.7em; color: #fa3953;">Inbox</h4>
+                                <h4 style=" font-size : 0.7 em ; color : #fa3953 ;">Inbox</h4>
 
-                <hr style="margin-top: 5px; margin-bottom: 5px;">
-                <ul>
+                                <hr style="margin-top : 5 px ; margin-bottom : 5 px ;">
+                                <ul>
 
-                @for(message <- messagesReceived){
-                  <li><h5><span style="padding-bottom: 0px;">Sender
-                  <a href="#">@message.getSender.getFirstName</a>:</span></h5>
-                    <p><mark style="font-size: 0.9em;font-family: verdana, arial, helvetica, helve, sans-serif;">@message.getContent
-                    </mark></p></li>
-                  <hr style="margin-top: 5px; margin-bottom: 5px;">
-                  }
-                </ul>
-                <br>
+                                @for(message <- messagesReceived) {
+                                    <li><h5><span style="padding-bottom : 0 px ;">Sender
+                                        <a href="#">@message.getSender.getFirstName</a>: </span>
+                                    </h5>
+                                        <a href="@controllers.users.routes.UserController.seeMessage(message.getId)" ><p><mark style="font-size : 0.9 em ; font-family : verdana, arial, helvetica, helve, sans-serif ;">@message.getSubject
+                                        </mark>
+                                        </p></a>
 
-                <ul>
+                                    </li>
+                                    <hr style="margin-top : 5 px ; margin-bottom : 5 px ;">
+                                    }
+                                </ul>
+                                <br>
 
-                  <h4 style="	font-size: 0.7em; color: #fa3953;">Sent message</h4>
+                                <ul>
 
-                  <hr style="margin-top: 5px; margin-bottom: 5px;">
+                                    <h4 style=" font-size : 0.7 em ; color : #fa3953 ;">Sent message</h4>
 
-                  @for(message <- messagesSent){
-                    <li><h5><span style="padding-bottom: 0px;">Receiver
-                    <a href="#">@message.getReceiver.getFirstName</a>:</span></h5>
-                      <p>@message.getContent
-                     </p></li>
-                    <hr style="margin-top: 5px; margin-bottom: 5px;">
+                                    <hr style="margin-top : 5 px ; margin-bottom : 5 px ;">
 
-                    }
-                </ul>
-              </div>
+                                    @for(message <- messagesSent) {
+                                        <li><h5><span style="padding-bottom : 0 px ;">Receiver
+                                            <a href="#">@message.getReceiver.getFirstName</a>: </span>
+                                        </h5>
+                                            <p>@message.getSubject
+                                            </p>
+                                        </li>
+                                        <hr style="margin-top : 5 px ; margin-bottom : 5 px ;">
+
+                                        }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-}
+    }
