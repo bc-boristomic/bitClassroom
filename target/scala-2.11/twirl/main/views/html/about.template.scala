@@ -141,10 +141,10 @@ Seq[Any](_display_(/*1.2*/main("About bitClassroom team")/*1.33*/ {_display_(Seq
 object about extends about_Scope0.about
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/about.scala.html
-                  HASH: 23777295a79257f9259ef96a2caf623004030751
-                  MATRIX: 827->1|866->32|905->34|935->38|3595->2668
+                  DATE: Thu Sep 24 11:57:16 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/about.scala.html
+                  HASH: 3c9f651e6c12cf1c59b85e0ea665010ca8d79e81
+                  MATRIX: 827->1|866->32|905->34|937->40|3686->2759
                   LINES: 32->1|32->1|32->1|34->3|123->92
                   -- GENERATED --
               */

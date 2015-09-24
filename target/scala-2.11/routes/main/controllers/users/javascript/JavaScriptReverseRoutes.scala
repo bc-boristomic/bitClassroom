@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/conf/routes
-// @DATE:Wed Sep 23 19:50:14 CEST 2015
+// @SOURCE:C:/Users/prile/Desktop/bitClassroom/conf/routes
+// @DATE:Thu Sep 24 13:08:30 CEST 2015
 
 import play.api.routing.JavaScriptReverseRoute
 import play.api.mvc.{ QueryStringBindable, PathBindable, Call, JavascriptLiteral }
@@ -11,11 +11,11 @@ import play.core.routing.{ HandlerDef, ReverseRouteContext, queryString, dynamic
 import _root_.controllers.Assets.Asset
 import _root_.play.libs.F
 
-// @LINE:14
+// @LINE:16
 package controllers.users.javascript {
   import ReverseRouteContext.empty
 
-  // @LINE:23
+  // @LINE:31
   class ReverseAdminController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -23,7 +23,7 @@ package controllers.users.javascript {
     }
 
   
-    // @LINE:34
+    // @LINE:53
     def approveStudent: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.approveStudent",
       """
@@ -33,7 +33,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:88
+    // @LINE:50
     def deleteMentorship: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.deleteMentorship",
       """
@@ -43,7 +43,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:42
+    // @LINE:57
     def genField: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.genField",
       """
@@ -53,7 +53,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:86
+    // @LINE:46
     def saveMentorship: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.saveMentorship",
       """
@@ -63,7 +63,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:87
+    // @LINE:49
     def seeMentorsAndStudents: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.seeMentorsAndStudents",
       """
@@ -73,7 +73,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:28
+    // @LINE:38
     def listOfUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.listOfUser",
       """
@@ -83,7 +83,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:56
+    // @LINE:66
     def addCourse: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.addCourse",
       """
@@ -93,21 +93,21 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:62
+    // @LINE:70
     def deleteUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.deleteUser",
       """
         function(id) {
         
           if (true) {
-            return _wA({method:"DELETE", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/delete/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
+            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/delete/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
           }
         
         }
       """
     )
   
-    // @LINE:35
+    // @LINE:54
     def awaitList: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.awaitList",
       """
@@ -117,7 +117,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:50
+    // @LINE:62
     def deleteReport: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.deleteReport",
       """
@@ -131,21 +131,17 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:29
+    // @LINE:41
     def seeErrors: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.seeErrors",
       """
         function() {
-        
-          if (true) {
-            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/errors"})
-          }
-        
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/errors"})
         }
       """
     )
   
-    // @LINE:69
+    // @LINE:99
     def test: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.test",
       """
@@ -155,7 +151,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:26
+    // @LINE:35
     def saveNewUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.saveNewUser",
       """
@@ -165,7 +161,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:57
+    // @LINE:67
     def saveCourse: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.saveCourse",
       """
@@ -175,7 +171,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:45
+    // @LINE:58
     def saveField: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.saveField",
       """
@@ -185,7 +181,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:65
+    // @LINE:42
     def deleteError: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.deleteError",
       """
@@ -195,7 +191,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:23
+    // @LINE:31
     def index: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.index",
       """
@@ -205,7 +201,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:25
+    // @LINE:34
     def addNewUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.addNewUser",
       """
@@ -215,7 +211,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:85
+    // @LINE:45
     def mentorship: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.mentorship",
       """
@@ -225,7 +221,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:49
+    // @LINE:61
     def listReport: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.AdminController.listReport",
       """
@@ -237,7 +233,7 @@ package controllers.users.javascript {
   
   }
 
-  // @LINE:37
+  // @LINE:81
   class ReverseStudentController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -245,7 +241,7 @@ package controllers.users.javascript {
     }
 
   
-    // @LINE:38
+    // @LINE:82
     def haveCourseAccess: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.StudentController.haveCourseAccess",
       """
@@ -255,7 +251,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:37
+    // @LINE:81
     def joinCourse: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.StudentController.joinCourse",
       """
@@ -265,7 +261,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:72
+    // @LINE:102
     def test: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.StudentController.test",
       """
@@ -277,7 +273,7 @@ package controllers.users.javascript {
   
   }
 
-  // @LINE:59
+  // @LINE:76
   class ReverseTeacherController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -285,7 +281,7 @@ package controllers.users.javascript {
     }
 
   
-    // @LINE:60
+    // @LINE:77
     def saveRaport: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.TeacherController.saveRaport",
       """
@@ -295,7 +291,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:70
+    // @LINE:100
     def test: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.TeacherController.test",
       """
@@ -305,7 +301,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:59
+    // @LINE:76
     def dailyReport: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.TeacherController.dailyReport",
       """
@@ -317,7 +313,7 @@ package controllers.users.javascript {
   
   }
 
-  // @LINE:14
+  // @LINE:16
   class ReverseUserController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -325,7 +321,7 @@ package controllers.users.javascript {
     }
 
   
-    // @LINE:14
+    // @LINE:16
     def createProfile: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.createProfile",
       """
@@ -335,21 +331,17 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:99
+    // @LINE:24
     def newMessage: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.newMessage",
       """
         function(id) {
-        
-          if (true) {
-            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "message/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
-          }
-        
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "message/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
         }
       """
     )
   
-    // @LINE:68
+    // @LINE:98
     def test: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.test",
       """
@@ -359,7 +351,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:18
+    // @LINE:20
     def saveProfile: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.saveProfile",
       """
@@ -369,7 +361,7 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:17
+    // @LINE:19
     def editProfile: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.editProfile",
       """
@@ -379,21 +371,17 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:98
+    // @LINE:23
     def studentList: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.studentList",
       """
         function() {
-        
-          if (true) {
-            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "user/message"})
-          }
-        
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "user/message"})
         }
       """
     )
   
-    // @LINE:15
+    // @LINE:17
     def updateProfile: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.updateProfile",
       """
@@ -403,35 +391,27 @@ package controllers.users.javascript {
       """
     )
   
-    // @LINE:101
+    // @LINE:26
     def allMessage: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.allMessage",
       """
         function() {
-        
-          if (true) {
-            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "allMessage"})
-          }
-        
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "allMessage"})
         }
       """
     )
   
-    // @LINE:100
+    // @LINE:25
     def sendMessage: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.sendMessage",
       """
         function(id) {
-        
-          if (true) {
-            return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "message/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id) + "/send"})
-          }
-        
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "message/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
         }
       """
     )
   
-    // @LINE:113
+    // @LINE:27
     def seeMessage: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.UserController.seeMessage",
       """
@@ -443,7 +423,7 @@ package controllers.users.javascript {
   
   }
 
-  // @LINE:71
+  // @LINE:101
   class ReverseMentorController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -451,7 +431,7 @@ package controllers.users.javascript {
     }
 
   
-    // @LINE:71
+    // @LINE:101
     def test: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.users.MentorController.test",
       """

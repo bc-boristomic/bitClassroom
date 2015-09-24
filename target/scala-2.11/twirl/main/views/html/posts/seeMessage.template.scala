@@ -78,10 +78,10 @@ Seq[Any](format.raw/*2.27*/("""
 object seeMessage extends seeMessage_Scope0.seeMessage_Scope1.seeMessage
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/posts/seeMessage.scala.html
-                  HASH: c5639da2f5f106fc3cdffb28e7f05ca55e2a70e6
-                  MATRIX: 819->19|939->44|966->46|989->61|1028->63|1056->65|1218->200|1234->207|1278->230|1307->232|1323->239|1366->261|1402->270|1593->434|1609->441|1642->452|1794->577|1810->584|1842->595|1947->673|1967->684|2053->748
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/posts/seeMessage.scala.html
+                  HASH: 4f82b738d07f09b89562c347c3dd61c8158e8a71
+                  MATRIX: 819->20|939->45|967->48|990->63|1029->65|1059->69|1226->209|1242->216|1286->239|1315->241|1331->248|1374->270|1411->280|1606->448|1622->455|1655->466|1809->593|1825->600|1857->611|1964->691|1984->702|2070->766
                   LINES: 30->2|35->2|36->3|36->3|36->3|38->5|43->10|43->10|43->10|43->10|43->10|43->10|44->11|48->15|48->15|48->15|50->17|50->17|50->17|52->19|52->19|52->19
                   -- GENERATED --
               */

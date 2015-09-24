@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/conf/routes
-// @DATE:Wed Sep 23 19:50:14 CEST 2015
+// @SOURCE:C:/Users/prile/Desktop/bitClassroom/conf/routes
+// @DATE:Thu Sep 24 13:08:30 CEST 2015
 
 package controllers.users;
 

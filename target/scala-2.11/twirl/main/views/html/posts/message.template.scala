@@ -86,10 +86,10 @@ Seq[Any](format.raw/*2.33*/("""
 object message extends message_Scope0.message_Scope1.message
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/posts/message.scala.html
-                  HASH: d6e89b18b325acbf9929fa2ca120323eda84959b
-                  MATRIX: 805->19|931->50|958->52|981->67|1020->69|1052->76|1066->82|1175->182|1215->184|1250->193|1926->842|1947->853|2025->909|2464->1318
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/posts/message.scala.html
+                  HASH: 8c465b3c7001eaf43c75cba7003db0e7f3fdd8c4
+                  MATRIX: 805->20|931->51|959->54|982->69|1021->71|1055->80|1069->86|1178->186|1218->188|1254->198|1944->861|1965->872|2043->928|2496->1351
                   LINES: 30->2|35->2|36->3|36->3|36->3|38->5|38->5|38->5|38->5|39->6|53->20|53->20|53->20|67->34
                   -- GENERATED --
               */

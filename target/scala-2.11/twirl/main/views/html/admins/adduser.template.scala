@@ -114,10 +114,10 @@ Seq[Any](format.raw/*2.24*/("""
 object adduser extends adduser_Scope0.adduser_Scope1.adduser
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/admins/adduser.scala.html
-                  HASH: 1e21a884f2482a338248e77b6bf210eb9b56fe08
-                  MATRIX: 814->26|931->48|958->50|991->75|1030->77|1062->84|1076->90|1201->206|1241->208|1276->217|4496->3410|4516->3421|4581->3464|4711->3564
+                  DATE: Thu Sep 24 11:57:16 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/admins/adduser.scala.html
+                  HASH: b5fd730602c4cc09433e069200e9fc207bef12b6
+                  MATRIX: 814->27|931->49|959->52|992->77|1031->79|1065->88|1079->94|1204->210|1244->212|1280->222|4551->3466|4571->3477|4636->3520|4771->3625
                   LINES: 30->2|35->2|36->3|36->3|36->3|38->5|38->5|38->5|38->5|39->6|90->57|90->57|90->57|95->62
                   -- GENERATED --
               */

@@ -230,10 +230,10 @@ Seq[Any](format.raw/*2.14*/("""
 object adminindex extends adminindex_Scope0.adminindex_Scope1.adminindex
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/admins/adminindex.scala.html
-                  HASH: 320fb0ac55ae195968e85eebbdeb6efbb56870de
-                  MATRIX: 817->26|924->38|955->44|981->62|1020->64|1055->73|1301->293|1313->297|1346->310|1395->331
+                  DATE: Thu Sep 24 11:57:16 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/admins/adminindex.scala.html
+                  HASH: 9f1270164ea16184f4cf40531837c923fe529f31
+                  MATRIX: 817->27|924->39|956->46|982->64|1021->66|1057->76|1308->301|1320->305|1353->318|1403->340
                   LINES: 30->2|35->2|36->3|36->3|36->3|37->4|42->9|42->9|42->9|43->10
                   -- GENERATED --
               */
