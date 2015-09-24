@@ -50,7 +50,7 @@ GET           /admin/activementors                  @controllers.users.AdminCont
 DELETE        /admin/activementors/:id              @controllers.users.AdminController.deleteMentorship(id: Long)
 
 # Routes for admin approval of user to join certain course
-POST          /admin/approvestudent                 @controllers.users.AdminController.approveStudent()
+POST          /admin/approvestudent/:id             @controllers.users.AdminController.approveStudent(id: Long)
 GET           /admin/awaitlist                      @controllers.users.AdminController.awaitList()
 
 # Create report field

@@ -57,8 +57,6 @@ public class AdminController extends Controller {
     private List<String> imageList = new ArrayList<>();
 
 
-
-
     /**
      * Admin index page.
      *
@@ -79,7 +77,7 @@ public class AdminController extends Controller {
         return ok(adduser.render(userForm));
     }
 
-    public Result listOfUser(){
+    public Result listOfUser() {
         return ok(userlist.render(User.findAll()));
     }
 
@@ -173,13 +171,13 @@ public class AdminController extends Controller {
 
     }
 
-    public Result deleteError(Long id){
+    public Result deleteError(Long id) {
 
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
     }
 
-    public Result deleteReport(Long id){
+    public Result deleteReport(Long id) {
 
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
@@ -241,8 +239,8 @@ public class AdminController extends Controller {
             }
         }
 
-        try{
-        course.save();
+        try {
+            course.save();
         } catch (PersistenceException e) {
             Ebean.save(new ErrorLog(e.getMessage()));
             flash("warning", "Something went wrong, course could not be saved to data base");
@@ -252,19 +250,14 @@ public class AdminController extends Controller {
         return redirect("/admin/createcourse");
     }
 
-    public Result approveStudent() {
+    public Result approveStudent(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
 
-        String courseUser = form.get("courseUser");
         String s = form.data().get("pressed");
-
-        if (courseUser != null) {
-            Long id = Long.valueOf(courseUser);
-            CourseUser cu = CourseUser.getFinder().byId(id);
-            if (s != null) {
-                cu.setStatus(Integer.parseInt(s));
-                cu.save();
-            }
+        CourseUser cu = CourseUser.getFinder().byId(id);
+        if (s != null) {
+            cu.setStatus(Integer.parseInt(s));
+            cu.save();
         }
         return ok("");
     }
@@ -275,13 +268,13 @@ public class AdminController extends Controller {
 
     /**
      * See tables of daily reports
+     *
      * @return
      */
 
     public Result listReport() {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
-
 
 
     /**
