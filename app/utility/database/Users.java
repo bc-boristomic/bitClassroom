@@ -23,7 +23,7 @@ public class Users {
 
 	private static final String[] FIRST_NAME_TEACHERS = { "Benjamin", "Vedad", "Tarik", "Emir", "Elmedin", "Damir",
 			"Zaid" };
-	private static final String[] lAST_NAME_TEACHERS = { "Talic", "Letic", "Celik", "Arnautovic", "Selmanovic", "Zekic",
+	private static final String[] LAST_NAME_TEACHERS = { "Talic", "Letic", "Celik", "Arnautovic", "Selmanovic", "Zekic",
 			"Zerdo" };
 	private static final String[] EMAIL_TEACHERS = { "benjamin.talic@bitcamp.ba", "vedad.letic@bitcamp.ba",
 			"tarik.celik@bitcamp.ba", "emir.arnautovic@bitcamp.ba", "elmedin.selmanovic@bitcamp.ba",
@@ -32,7 +32,7 @@ public class Users {
 	private static final String[] FIRST_NAME_STUDENTS = { "Adis", "Adnan", "Ajdin", "Ajla", "Alen", "Amra", "Dinko",
 			"Edin", "Edvin", "Emina", "Gordan", "Hajrudin", "Kerim", "Kristina", "Mladen", "Narena", "Ognjen", "Semir",
 			"Tomislav", "Zeljko" };
-	private static final String[] lAST_NAME_STUDENTS = { "Cehajic", "Lapendic", "Brkic", "El Tabari", "Bumbulovic",
+	private static final String[] LAST_NAME_STUDENTS = { "Cehajic", "Lapendic", "Brkic", "El Tabari", "Bumbulovic",
 			"Sabic", "Hodzic", "Pilavdzic", "Mulabdic", "Arapcic", "Masic", "Sehic", "Dragolj", "Pupavac", "Teofilovic",
 			"Ibrisimovic", "Cetkovic", "Sahman", "Trifunovic", "Miljevic" };
 	private static final String[] EMAIL_STUDENTS = { "adis.cehajic@bitcamp.ba", "adnan.lapendic@bitcamp.ba",
@@ -71,7 +71,7 @@ public class Users {
 			teacher.setEmail(EMAIL_TEACHERS[i]);
 			teacher.setPassword(MD5Hash.getEncriptedPasswordMD5("Teacher123"));
 			teacher.setFirstName(FIRST_NAME_TEACHERS[i]);
-			teacher.setLastName(lAST_NAME_TEACHERS[i]);
+			teacher.setLastName(LAST_NAME_TEACHERS[i]);
 			teacher.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.TEACHER })));
 			teacher.setCreatedBy("Global.java");
 			teacher.save();
@@ -82,7 +82,7 @@ public class Users {
 			student.setEmail(EMAIL_STUDENTS[i]);
 			student.setPassword(MD5Hash.getEncriptedPasswordMD5("Student123"));
 			student.setFirstName(FIRST_NAME_STUDENTS[i]);
-			student.setLastName(lAST_NAME_STUDENTS[i]);
+			student.setLastName(LAST_NAME_STUDENTS[i]);
 			student.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.STUDENT })));
 			student.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
 			student.setCreatedBy("Global.java");
