@@ -114,10 +114,10 @@ Seq[Any](format.raw/*2.26*/("""
 object setingsdailyraport extends setingsdailyraport_Scope0.setingsdailyraport_Scope1.setingsdailyraport
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/admins/setingsdailyraport.scala.html
-                  HASH: 7edd17a23dcb041645f118b3fcead394f1007ec7
-                  MATRIX: 851->29|970->53|997->55|1027->77|1066->79|1098->86|1112->92|1188->160|1227->162|1262->171|1361->244|1375->250|1444->298|1518->346|1532->352|1599->399|1628->400|3398->2143|3434->2163|3474->2165|3539->2202|3705->2341|3716->2343|3745->2351|4123->2698|4184->2731|4728->3245
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/admins/setingsdailyraport.scala.html
+                  HASH: ae3a8fb99fcf7fba70950c4ffe1f2b8c7f17e10e
+                  MATRIX: 851->30|970->54|998->57|1028->79|1067->81|1101->90|1115->96|1191->164|1230->166|1266->176|1366->250|1380->256|1449->304|1524->353|1538->359|1605->406|1634->407|3434->2180|3470->2200|3510->2202|3576->2240|3744->2381|3755->2383|3784->2391|4168->2744|4230->2778|4788->3306
                   LINES: 30->2|35->2|36->3|36->3|36->3|38->5|38->5|38->5|38->5|39->6|40->7|40->7|40->7|41->8|41->8|41->8|41->8|71->38|71->38|71->38|72->39|74->41|74->41|74->41|80->47|81->48|95->62
                   -- GENERATED --
               */

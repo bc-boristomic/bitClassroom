@@ -125,10 +125,10 @@ Seq[Any](format.raw/*1.24*/("""
 object newpost extends newpost_Scope0.newpost
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/posts/newpost.scala.html
-                  HASH: bcde15b0022fe032e6059dcb7d53983151778047
-                  MATRIX: 759->1|876->23|903->25|931->45|970->47|1002->54|1016->60|1172->207|1212->209|1249->220|4383->3327|4403->3338|4464->3377|4573->3456
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/posts/newpost.scala.html
+                  HASH: 0d661fcf9ce80054b4c45f3cc9087d4f6329f4dd
+                  MATRIX: 759->1|876->23|904->26|932->46|971->48|1005->57|1019->63|1175->210|1215->212|1255->226|4454->3398|4474->3409|4535->3448|4648->3531
                   LINES: 27->1|32->1|33->2|33->2|33->2|35->4|35->4|35->4|35->4|38->7|103->72|103->72|103->72|107->76
                   -- GENERATED --
               */

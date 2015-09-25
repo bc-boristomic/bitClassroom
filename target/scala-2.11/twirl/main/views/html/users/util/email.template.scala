@@ -59,9 +59,9 @@ Seq[Any](format.raw/*1.1*/("""<!DOCTYPE html>
 object email extends email_Scope0.email
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/users/util/email.scala.html
-                  HASH: 30c70a6762d0a6a4d6ec6dda78ac876664699135
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/users/util/email.scala.html
+                  HASH: 4e0a2565f738798259efb4d82733e2bfdcb9f8d6
                   MATRIX: 838->0
                   LINES: 32->1
                   -- GENERATED --

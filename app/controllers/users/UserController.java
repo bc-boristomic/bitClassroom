@@ -198,6 +198,7 @@ public class UserController extends Controller {
      * Also then he can send message other students, teacher and mentors.
      * @return - view of all students in the class
      */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result studentList() {
         List<CourseUser> students = CourseUser.all();
         User u = SessionHelper.currentUser(ctx());
@@ -212,12 +213,14 @@ public class UserController extends Controller {
         return redirect("/user/courses");
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result newMessage(Long id){
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
         return ok(message.render(sender, receiver));
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result sendMessage(Long id){
         DynamicForm form = Form.form().bindFromRequest();
 
@@ -234,6 +237,7 @@ public class UserController extends Controller {
         return redirect("/allMessage");
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result allMessage(){
 
         User u = SessionHelper.currentUser(ctx());
@@ -248,6 +252,7 @@ public class UserController extends Controller {
 
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result seeMessage(Long id) {
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }

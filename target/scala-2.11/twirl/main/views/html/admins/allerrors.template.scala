@@ -86,10 +86,10 @@ Seq[Any](format.raw/*1.29*/("""
 object allerrors extends allerrors_Scope0.allerrors
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/admins/allerrors.scala.html
-                  HASH: 5fb8ceeaa86574ccea47f1c14451f33ae3212582
-                  MATRIX: 768->1|890->28|917->30|956->61|995->63|1028->70|1491->506|1528->527|1568->529|1609->542|1675->581|1687->584|1719->595|1773->622|1785->625|1814->633|1941->733|1961->744|2035->796|2202->932|2238->941
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/admins/allerrors.scala.html
+                  HASH: c4d5d3b4136b9dfbc9ca527a494e2ca746582743
+                  MATRIX: 768->1|890->28|918->31|957->62|996->64|1032->74|1513->528|1550->549|1590->551|1632->565|1699->605|1711->608|1743->619|1798->647|1810->650|1839->658|1968->760|1988->771|2062->823|2233->963|2270->973
                   LINES: 27->1|32->1|33->2|33->2|33->2|36->5|54->23|54->23|54->23|55->24|56->25|56->25|56->25|57->26|57->26|57->26|59->28|59->28|59->28|63->32|64->33
                   -- GENERATED --
               */

@@ -1,5 +1,6 @@
 package controllers.course;
 
+import helpers.Authorization;
 import helpers.SessionHelper;
 
 import models.Post;
@@ -7,8 +8,7 @@ import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
-import play.mvc.Controller;
-import play.mvc.Result;
+import play.mvc.*;
 import views.html.courses.courseList;
 import views.html.courses.courseView;
 import views.html.courses.courseView;
@@ -29,6 +29,7 @@ public class CourseController extends Controller {
     /**
      * Shows on the page list of all courses
      */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result allCourses() {
 
         return ok(courseList.render(Course.findAll()));
@@ -37,6 +38,7 @@ public class CourseController extends Controller {
     /**
      * Shows on the page list of users who are going to the course
      */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result course(){
 
         List<CourseUser>  courUserList = CourseUser.all();

@@ -191,10 +191,10 @@ Seq[Any](format.raw/*2.14*/("""
 object profile extends profile_Scope0.profile_Scope1.profile
               /*
                   -- GENERATED --
-                  DATE: Wed Sep 23 19:50:14 CEST 2015
-                  SOURCE: /home/boris/Desktop/backupProject-2760526d3667371690d592920007b0ee39f1bccd/bitClassroom/app/views/users/profile.scala.html
-                  HASH: c29877a8bec3a5c610139b77ebb1de7a7b39ec00
-                  MATRIX: 807->26|914->38|941->40|976->67|1015->69|1047->76|1061->82|1222->234|1262->236|1300->248|1388->309|1401->313|1433->324|1615->479|1630->485|1717->550|8907->7712|8928->7723|8995->7767|9135->7876|9168->7878
+                  DATE: Thu Sep 24 11:57:17 CEST 2015
+                  SOURCE: C:/Users/prile/Desktop/bitClassroom/app/views/users/profile.scala.html
+                  HASH: 10d70457dc5c5fcdbba42af751d703a749ffea6d
+                  MATRIX: 807->27|914->39|942->42|977->69|1016->71|1050->80|1064->86|1225->238|1265->240|1307->256|1396->318|1409->322|1441->333|1627->492|1642->498|1729->563|9036->7842|9057->7853|9124->7897|9271->8013|9305->8016
                   LINES: 30->2|35->2|36->3|36->3|36->3|38->5|38->5|38->5|38->5|42->9|43->10|43->10|43->10|47->14|47->14|47->14|164->131|164->131|164->131|171->138|172->139
                   -- GENERATED --
               */

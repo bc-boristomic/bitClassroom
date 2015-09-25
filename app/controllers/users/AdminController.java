@@ -56,7 +56,7 @@ public class AdminController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
-
+    private final Form<Course> courseForm = Form.form(Course.class);
 
 
     /**
@@ -79,7 +79,7 @@ public class AdminController extends Controller {
         return ok(adduser.render(userForm));
     }
 
-    public Result listOfUser(){
+    public Result listOfUser() {
         return ok(userlist.render(User.findAll()));
     }
 
@@ -163,33 +163,61 @@ public class AdminController extends Controller {
         return ok("you are admin");
     }
 
-
+    /**
+     * Deletes user from database. When trashcan icon is pressed users id is send.
+     * Id is taken as parameter in method and used to find user and delete it.
+     *
+     * @param id <code>Long</code> type value of User id
+     * @return if user is deleted redirects to list of all users, othervise a bad request is sent
+     */
     public Result deleteUser(Long id) {
-
         if (User.deleteUser(id))
             return redirect("/admin/allusers");
         else
             return badRequest("Can't delete last admin");
-
     }
 
-    public Result deleteError(Long id){
-
+    /**
+     * Deletes error when trashcan icon is pressed. Id of error is send to this method
+     * ErrorLog is found by id and then deleted.
+     *
+     * @param id <code>Long</code> type value of ErrorLog id
+     * @return redirects to list of errors
+     */
+    public Result deleteError(Long id) {
         ErrorLog.findErrorById(id).delete();
         return redirect("/admin/errors");
     }
 
-    public Result deleteReport(Long id){
-
+    /**
+     * Deletes daily report from database. When delete button is pressed daily
+     * report id is sent to this method. Daily report is then found and specific
+     * report is deleted from database.
+     *
+     * @param id <code>Long</code> type value of DailyReport id
+     * @return redirect to list of daily reports
+     */
+    public Result deleteReport(Long id) {
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
     }
 
-
+    /**
+     * Renders single field and button for admin so he/she can create additional
+     * fields for daily report. On the right side a live preview of current daily report is displayed.
+     *
+     * @return
+     */
     public Result genField() {
         return ok(setingsdailyraport.render(Field.getFinder().all()));
     }
 
+    /**
+     * Saves a field that admin has created to database. Field is later used so teacher
+     * can write daily report.
+     *
+     * @return redirects to page for creating additional field
+     */
     public Result saveField() {
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
@@ -200,12 +228,21 @@ public class AdminController extends Controller {
 
     }
 
-    private final Form<Course> courseForm = Form.form(Course.class);
-
+    /**
+     * Renders page for admin so he/she can create new course. Page have field for course name,
+     * description, selection of teacher and option to upload course image.
+     *
+     * @return
+     */
     public Result addCourse() {
         return ok(fillClassDetails.render(User.getFinder().all(), courseForm));
     }
 
+    /**
+     * Saves course to database.
+     *
+     * @return
+     */
     public Result saveCourse() {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
@@ -229,7 +266,6 @@ public class AdminController extends Controller {
 
                 try {
                     FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/courses/" + course.getName() + "/" + picName));
-                    Logger.info(Play.application().path() + "\\public\\images\\" + course.getName() + "/" + picName);
                     imageList.add(picName);
                 } catch (IOException e) {
                     Logger.info("Could not move file. " + e.getMessage());
@@ -241,8 +277,8 @@ public class AdminController extends Controller {
             }
         }
 
-        try{
-        course.save();
+        try {
+            course.save();
         } catch (PersistenceException e) {
             Ebean.save(new ErrorLog(e.getMessage()));
             flash("warning", "Something went wrong, course could not be saved to data base");
@@ -252,36 +288,44 @@ public class AdminController extends Controller {
         return redirect("/admin/createcourse");
     }
 
-    public Result approveStudent() {
+    /**
+     * Based on option pressed eg. approve or dissaprove, option value is send along with
+     * CourseUser id. CourseUser is found by id passed to this method, status is set and ok
+     * is send so page can be refreshed. Ajax is used in approveuser view.
+     *
+     * @param id <code>Long</code> type value of CourseUser id
+     * @return empty ok
+     */
+    public Result approveStudent(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
 
-        String courseUser = form.get("courseUser");
         String s = form.data().get("pressed");
-
-        if (courseUser != null) {
-            Long id = Long.valueOf(courseUser);
-            CourseUser cu = CourseUser.getFinder().byId(id);
-            if (s != null) {
-                cu.setStatus(Integer.parseInt(s));
-                cu.save();
-            }
+        CourseUser cu = CourseUser.getFinder().byId(id);
+        if (s != null) {
+            cu.setStatus(Integer.parseInt(s));
+            cu.save();
         }
         return ok("");
     }
 
+    /**
+     * List of students that applied for courses. Course name, student name and
+     * approve, dissaprove buttons are displayed in a row.
+     *
+     * @return
+     */
     public Result awaitList() {
         return ok(views.html.admins.approveuser.render(CourseUser.getFinder().all()));
     }
 
     /**
      * See tables of daily reports
+     *
      * @return
      */
-
     public Result listReport() {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
-
 
 
     /**
@@ -349,6 +393,14 @@ public class AdminController extends Controller {
         return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
     }
 
+    /**
+     * When trashcan icon is pressed, Mentorship id is sent to method. Mentorship is
+     * found by id and status is set as expired. Also student is found from mentorship proces
+     * and his/hers status is set as dont have mentor.
+     *
+     * @param id <code>Long</code> type value of Mentorship
+     * @return redirects to list of currently active mentorship process
+     */
     public Result deleteMentorship(Long id) {
         Mentorship men = Mentorship.getFinder().byId(id);
         men.setStatus(UserConstants.EXPIRED_MENTORSHIP);
