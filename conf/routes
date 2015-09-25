@@ -19,7 +19,7 @@ POST          /user/createprofile                   @controllers.users.UserContr
 GET           /user/editprofile                     @controllers.users.UserController.editProfile()
 POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
 
-# NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI 
+# SECURITY FOR FULLY ACTIVE USER ONLY
 GET           /user/message                         @controllers.users.UserController.studentList()
 GET           /message/:id                          @controllers.users.UserController.newMessage(id: Long)
 POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
@@ -81,7 +81,7 @@ POST          /daily/reportSubmit                   @controllers.users.TeacherCo
 POST          /student/joincourse                   @controllers.users.StudentController.joinCourse()
 POST          /student/joincourse/haveaccess        @controllers.users.StudentController.haveCourseAccess()
 
-# NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI NEMA SIGURNOSTI 
+# SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
 GET           /user/courses                         @controllers.course.CourseController.allCourses()
 GET           /user/class                           @controllers.course.CourseController.course()
