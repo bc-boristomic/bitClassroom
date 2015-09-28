@@ -257,6 +257,7 @@ public class UserController extends Controller {
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result publicProfile(Long id) {
         if (id != null) {
             User temp = User.getFinder().byId(id);
