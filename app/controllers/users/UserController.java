@@ -256,4 +256,16 @@ public class UserController extends Controller {
     public Result seeMessage(Long id) {
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }
+
+    public Result publicProfile(Long id) {
+        if (id != null) {
+            User temp = User.getFinder().byId(id);
+            if (temp != null) {
+                return ok(views.html.users.publicProfile.render(temp));
+            }
+            flash("warning", "User doesn't exist.");
+            return redirect("/");
+        }
+        return badRequest();
+    }
 }

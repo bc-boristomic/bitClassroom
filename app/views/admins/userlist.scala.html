@@ -26,9 +26,9 @@
                 <tbody>
                 @for(users <- userList) {
                     <tr class="info">
-                        <td>@users.getFirstName</td>
-                        <td>@users.getLastName</td>
-                        <td>@users.getEmail</td>
+                        <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)">@users.getFirstName</a></td>
+                        <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)">@users.getLastName</a></td>
+                        <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)">@users.getEmail</a></td>
                         @if(users.getRoles.size() > 0 && users.getRoles != null) {
                             @for(role <- users.getRoles) {
                                 @if(role.getId.equals(UserConstants.ADMIN)) {

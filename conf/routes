@@ -19,6 +19,9 @@ POST          /user/createprofile                   @controllers.users.UserContr
 GET           /user/editprofile                     @controllers.users.UserController.editProfile()
 POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
 
+# Route for seeing user's public profile
+GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
+
 # SECURITY FOR FULLY ACTIVE USER ONLY
 GET           /user/message                         @controllers.users.UserController.studentList()
 GET           /message/:id                          @controllers.users.UserController.newMessage(id: Long)
