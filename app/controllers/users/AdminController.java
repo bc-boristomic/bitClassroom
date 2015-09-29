@@ -230,7 +230,13 @@ public class AdminController extends Controller {
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
-        model.setName(name);
+        String s = name.substring(0, 1);
+        String s1 = s.toUpperCase();
+        String s2 = name.substring(1,name.length());
+
+
+        model.setName(s1 + s2);
+
         model.save();
         return redirect("/admin/createdaily");
 
