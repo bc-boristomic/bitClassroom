@@ -39,7 +39,7 @@ public class UserUtils {
         if (skype != null && skype.length() > 0) {
             user.setSkype(skype);
         }
-        if (facebook != null && facebook.toLowerCase().contains("facebook.com")) {
+        if (facebook != null && facebook.toLowerCase().contains("facebook.com") && facebook.length() >= 28) {
             user.setFacebook(facebook);
         }
         if (twitter != null && twitter.toLowerCase().contains("twitter.com")) {

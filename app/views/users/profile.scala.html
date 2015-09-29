@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label for="home-phone" class="col-lg-3 control-label">Home phone</label>
                     <div class="col-lg-9">
-                        <input name="home-phone" type="text" class="form-control" id="home-phone" onblur="checkPhone()" placeholder="Your home phone number +387-XX-XXX-XXX">
+                        <input name="home-phone" type="text" class="form-control" id="home-phone" onblur="checkPhone()" placeholder="Your home phone number +387XXXXXXXX">
                         <span id="phoneCheck" class="alert-warning" data-error-for="" ></span>
                     </div>
                 </div>
@@ -70,23 +70,23 @@
                 <div class="form-group">
                     <label for="mobile-phone" class="col-lg-3 control-label">Mobile phone <abbr class="req" title="Please provide your mobile phone number." style="color : red"> * </abbr></label>
                     <div class="col-lg-9">
-                        <input name="mobile-phone" type="text" class="form-control" id="mobile-phone" onblur="checkMobilePhone()" placeholder="Your mobile phone number +387-XX-XXX-XXX" required>
+                        <input name="mobile-phone" type="text" class="form-control" id="mobile-phone" onblur="checkMobilePhone()" placeholder="Your mobile phone number +387XXXXXXXX" required>
                         <span id="mobilePhoneCheck" class="alert-warning" data-error-for="" ></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="skype" class="col-lg-3 control-label">Skype <abbr class="req" title="Please provide your skype name." style="color : red">  </abbr></label>
+                    <label for="skype" class="col-lg-3 control-label">Skype <abbr class="req" title="Please provide your skype name." style="color : red"> * </abbr></label>
                     <div class="col-lg-9">
-                        <input name="skype" type="text" class="form-control" id="skype"  onblur="checkSkypeName()" placeholder="Your skype name" >
+                        <input name="skype" type="text" class="form-control" id="skype"  onblur="checkSkypeName()" placeholder="Your skype name" required>
                         <span id="skypeCheck" class="alert-warning" data-error-for="" ></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="facebook" class="col-lg-3 control-label">Facebook <abbr class="req" title="Please provide your facebook profile page." style="color : red">  </abbr></label>
+                    <label for="facebook" class="col-lg-3 control-label">Facebook <abbr class="req" title="Please provide your facebook profile page." style="color : red"> * </abbr></label>
                     <div class="col-lg-9">
-                        <input name="facebook" type="url" class="form-control" id="facebook"  onblur="checkFacebook()" placeholder="Your facebook profile" value="http://www.facebook.com/" >
+                        <input name="facebook" type="url" class="form-control" id="facebook"  pattern="http://www.facebook.com/[\w]{4,}" onblur="checkFacebook()" placeholder="Your facebook profile" value="http://www.facebook.com/" required>
                         <span id="facebookCheck" class="alert-warning" data-error-for="" ></span>
                     </div>
                 </div>

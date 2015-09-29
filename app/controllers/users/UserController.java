@@ -83,7 +83,9 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "/" + picName);
+            if (picName != null) {
+                temp.setProfilePicture(temp.getId() + "/" + picName);
+            }
         }
 
         String nickname = boundForm.bindFromRequest().field("nickname").value();
