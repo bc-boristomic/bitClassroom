@@ -40,6 +40,7 @@ public class UserController extends Controller {
 
     /**
      * Renders template for creating initial user profile with all information, once profile is created status of user is
+     *
      * @return
      */
     @Security.Authenticated(Authorization.InactiveUser.class)
@@ -198,6 +199,7 @@ public class UserController extends Controller {
      * Method for see all student in the class.
      * Current user must be added in the class first to see other student
      * Also then he can send message other students, teacher and mentors.
+     *
      * @return - view of all students in the class
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
@@ -216,14 +218,14 @@ public class UserController extends Controller {
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result newMessage(Long id){
+    public Result newMessage(Long id) {
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
         return ok(message.render(sender, receiver));
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result sendMessage(Long id){
+    public Result sendMessage(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
 
         User sender = SessionHelper.currentUser(ctx());
@@ -240,10 +242,10 @@ public class UserController extends Controller {
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result allMessage(){
+    public Result allMessage() {
 
         User u = SessionHelper.currentUser(ctx());
-        if(u == null) {
+        if (u == null) {
 
             return redirect("/");
         }
@@ -259,6 +261,16 @@ public class UserController extends Controller {
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }
 
+    /**
+     * Get's user by id passed in method param <code>Long</code> type value.
+     * If id is not <code>Long</code> value badRequest is sent.
+     * If user is foud by id, a public profile is rendered, otherwise site redirects
+     * to index page with warning message.
+     *
+     * @param id <code>Long</code> type value of user's id
+     * @return bad request if user's id is null, redirects to index page if user doesn't exist,
+     * renders user's profile if everything is ok.
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result publicProfile(Long id) {
         if (id != null) {
@@ -266,7 +278,7 @@ public class UserController extends Controller {
             if (temp != null) {
                 return ok(views.html.users.publicProfile.render(temp));
             }
-            flash("warning", "User doesn't exist.");
+            flash("warning", "User does not exist.");
             return redirect("/");
         }
         return badRequest();
