@@ -1,0 +1,34 @@
+@import models.course.Course
+@(courses: List[Course])
+@adminmain("Active courses") {
+
+  <div class="container">
+    <h4 class="page-head-line">Courses on bitClassroom</h4>
+  </div>
+
+  <div class="container">
+    <div class="table-responsive">
+
+      <table id="sort" class="table-condensed table-hover table">
+        <thead>
+          <tr class="information">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Archived by</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for(course <- courses) {
+          <tr class="info">
+            <td>@course.getName</td>
+            <td>@course.getDescription</td>
+            <td>@course.getUpdatedBy</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+}
