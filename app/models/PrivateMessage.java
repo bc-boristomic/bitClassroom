@@ -118,6 +118,15 @@ public class PrivateMessage extends Model {
         this.status = status;
     }
 
+    public static PrivateMessage findMessageById(Long id) {
+        return find
+                .where()
+                .eq("id", id)
+                .orderBy("id desc")
+                .findUnique();
+    }
+
+
     public static void deleteMsg(Long id){
 
         find.ref(id).delete();

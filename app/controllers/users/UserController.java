@@ -249,11 +249,16 @@ public class UserController extends Controller {
 
             return redirect("/");
         }
-        List<PrivateMessage> messagesReceived = PrivateMessage.getFind().where().eq("receiver.id", u.getId()).findList();
-        List<PrivateMessage> messagesSent = PrivateMessage.getFind().where().eq("sender.id", u.getId()).findList();
+        List<PrivateMessage> messagesReceived = PrivateMessage.getFind().where().eq("receiver.id", u.getId()).orderBy().desc("create_date").findList();
+        List<PrivateMessage> messagesSent = PrivateMessage.getFind().where().eq("sender.id", u.getId()).orderBy().desc("create_date").findList();
 
         return ok(allMessage.render(u, messagesReceived, messagesSent));
 
+    }
+
+    public Result deleteMessage(Long id) {
+        PrivateMessage.findMessageById(id).delete();
+        return redirect("/allMessage");
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
