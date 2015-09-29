@@ -40,9 +40,10 @@
                     <div class="tab-pane fade in active" id="home">
                     <table  class="table-condensed table-hover table table-bordered">
                     @for(message <- messagesReceived) {
+                        @if(message.getStatus == 0){
                         <div class="list-group">
                         <tr><td>
-                        <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open"> @message.getSender.getFirstName-@message.getSender.getLastName</span></a>
+                        <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open"> <strong>@message.getSender.getFirstName-@message.getSender.getLastName</strong></span><span>   </span><span class="label label-info">New</span></a>
                         <div class="list-group">
 
                             <a href="@controllers.users.routes.UserController.seeMessage(message.getId)" class="list-group-item">
@@ -53,8 +54,8 @@
                                 </div>
                                 <span class="glyphicon glyphicon-envelope"></span>
                                <span class="name" style="min-width: 120px;
-                            display: inline-block;"> @message.getSubject</span> <span class=""></span>
-                                <span class="text-muted" style="font-size: 12px;"> - @message.getContent ...</span> <span class="badge">@message.getCreationDate.getDayOfMonth : @message.getCreationDate.getMonthOfYear : @message.getCreationDate.getYear - @message.getCreationDate.toLocalTime.getHourOfDay : @message.getCreationDate.toLocalTime.getMinuteOfHour</span> <span class="pull-right"><span class="">
+                            display: inline-block;"><strong> @message.getSubject</strong></span> <span class=""></span>
+                                <span class="text-muted" style="font-size: 12px;"> - @message.getContent ...</span> <span class="badge">@message.getCreationDate.getDayOfMonth . @message.getCreationDate.getMonthOfYear . @message.getCreationDate.getYear - @message.getCreationDate.toLocalTime.getHourOfDay : @message.getCreationDate.toLocalTime.getMinuteOfHour</span> <span class="pull-right"><span class="">
                                 </span></span>
                         </a>
                         </div>
@@ -62,6 +63,30 @@
                             <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteMessage(message.getId)" role="button">
                                 <i class="glyphicon glyphicon-remove-circle"></i></a>
                         </td></tr></div>
+                        }@if(message.getStatus == 1){
+                            <div class="list-group" style="background-color: #a2aec7">
+                                <tr><td>
+                                    <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open">@message.getSender.getFirstName-@message.getSender.getLastName</span></a>
+                                    <div class="list-group">
+
+                                        <a href="@controllers.users.routes.UserController.seeMessage(message.getId)" class="list-group-item">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox">
+                                                </label>
+                                            </div>
+                                            <span class="glyphicon glyphicon-inbox"></span>
+                                            <span class="name" style="min-width: 120px;
+                                            display: inline-block;">@message.getSubject</span> <span class=""></span>
+                                            <span class="text-muted" style="font-size: 12px;"> - @message.getContent ...</span> <span class="badge">@message.getCreationDate.getDayOfMonth . @message.getCreationDate.getMonthOfYear . @message.getCreationDate.getYear - @message.getCreationDate.toLocalTime.getHourOfDay : @message.getCreationDate.toLocalTime.getMinuteOfHour</span> <span class="pull-right"><span class="">
+                                        </span></span>
+                                        </a>
+                                    </div>
+                                </td> <td>
+                                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteMessage(message.getId)" role="button">
+                                        <i class="glyphicon glyphicon-remove-circle"></i></a>
+                                </td></tr></div>
+                        }
                     }</table></div>
                     <div class="tab-pane fade in" id="profile">
                         <table  class="table-condensed table-hover table table-bordered">

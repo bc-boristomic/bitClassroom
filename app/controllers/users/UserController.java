@@ -1,5 +1,6 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.PrivateMessage;
@@ -263,6 +264,9 @@ public class UserController extends Controller {
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result seeMessage(Long id) {
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setStatus(1);
+        Ebean.save(msg);
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
     }
 
