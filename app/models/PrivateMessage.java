@@ -106,6 +106,10 @@ public class PrivateMessage extends Model {
         return find;
     }
 
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
     public Integer getStatus() {
         return status;
     }
