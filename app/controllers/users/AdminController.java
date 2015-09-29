@@ -202,6 +202,14 @@ public class AdminController extends Controller {
         return redirect("/listReport");
     }
 
+
+    public Result deleteField(Long id) {
+        Field.findFieldById(id).delete();
+        return redirect("/admin/createdaily");
+    }
+
+
+
     /**
      * Renders single field and button for admin so he/she can create additional
      * fields for daily report. On the right side a live preview of current daily report is displayed.

@@ -59,6 +59,7 @@ GET           /admin/awaitlist                      @controllers.users.AdminCont
 # Create report field
 GET           /admin/createdaily                    @controllers.users.AdminController.genField()
 POST          /admin/savefielddaily                 @controllers.users.AdminController.saveField()
+DELETE        /admin/deletefield/:id                @controllers.users.AdminController.deleteField(id: Long)
 
 # See submited daily reports
 GET           /listReport                           @controllers.users.AdminController.listReport()

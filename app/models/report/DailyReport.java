@@ -125,4 +125,6 @@ public final class DailyReport extends Model {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createdDate);
     }
+
+
 }

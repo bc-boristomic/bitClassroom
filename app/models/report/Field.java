@@ -2,6 +2,7 @@ package models.report;
 
 import com.avaje.ebean.Model;
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by enver on 9/12/15.
@@ -38,5 +39,14 @@ public final class Field extends Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static Field findFieldById(Long id) {
+
+        List<Field> field = finder.where().eq("id", id).findList();
+        if (field.size() == 0) {
+            return null;
+        }
+        return (Field) field.get(0);
     }
 }
