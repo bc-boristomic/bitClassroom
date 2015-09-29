@@ -1,0 +1,68 @@
+@import models.user.User
+@(user: User)
+@main(user.getFirstName + " " + user.getLastName + " public profile") {
+    <img src="">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">@user.getFirstName @user.getLastName</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")" class="img-circle img-responsive"> </div>
+
+                <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td>Nickname:</td>
+                                <td>@user.getNickName</td>
+                            </tr>
+
+                            <tr>
+                                <td>Year of Birth:</td>
+                                <td>@user.getYearOfBirth</td>
+                            </tr>
+
+                            <tr>
+                                <td>Gender</td>
+                                <td>@if(user.getGender.equals(1)) {Male} else {Female}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Location:</td>
+                                <td>@user.getLocation</td>
+                            </tr>
+
+                            <tr>
+                                <td>Cell phone:</td>
+                                <td>@user.getCellPhone</td>
+                            </tr>
+
+                            <tr>
+                                <td>Email:</td>
+                                <td><a href="mailto:@user.getEmail">@user.getEmail</a></td>
+                            </tr>
+
+                            <tr>
+                                <td>Skype:</td>
+                                <td>@user.getSkype</td>
+                            </tr>
+
+                            <tr>
+                                <td>Facebook:</td>
+                                <td><a href="@user.getFacebook">@user.getFacebook</a></td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+                    <a href="@controllers.users.routes.UserController.newMessage(user.getId)" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-envelope"></i> Send @user.getFirstName a message</a>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
