@@ -68,6 +68,7 @@ create table post (
   link                      varchar(255),
   files                     varchar(255),
   date                      varchar(255),
+  time                      varchar(255),
   create_date               datetime,
   user_id                   bigint,
   constraint pk_post primary key (id))
