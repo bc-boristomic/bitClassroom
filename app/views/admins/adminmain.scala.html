@@ -70,7 +70,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Classroom<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/user/courses">See all courses</a></li>
+                                    <li><a href="/admin/courses">See active courses</a></li>
+                                    <li><a href="/admin/courses/archived">See archived courses</a></li>
                                     <li><a href="/admin/createcourse">Add new course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
@@ -180,16 +181,16 @@
             $('#sort').DataTable();
             });
 
-            $(document).ready(function() {
-                    $.ajax({
-                    type: "post",
-                    url: "@routes.Application.getNotification()",
-                    data: ""
+            $(document).ready(setInterval(function(){
+                $.ajax({
+                        type: "post",
+                        url: "@routes.Application.getNotification()",
+                        data: ""
                 }).success(function(response) {
                     $('#notify').html(response);
                 })
+                }, 20000));
 
-            });
         </script>
 
 

@@ -106,6 +106,10 @@ public class PrivateMessage extends Model {
         return find;
     }
 
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -113,6 +117,15 @@ public class PrivateMessage extends Model {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public static PrivateMessage findMessageById(Long id) {
+        return find
+                .where()
+                .eq("id", id)
+                .orderBy("id desc")
+                .findUnique();
+    }
+
 
     public static void deleteMsg(Long id){
 

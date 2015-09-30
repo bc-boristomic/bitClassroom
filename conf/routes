@@ -28,6 +28,8 @@ GET           /message/:id                          @controllers.users.UserContr
 POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
 GET           /allMessage                           @controllers.users.UserController.allMessage()
 GET           /message/selected/:id                 @controllers.users.UserController.seeMessage(id: Long)
+GET           /message/delete/:id                   @controllers.users.UserController.deleteMessage(id: Long)
+DELETE        /message/delete/:id                   @controllers.users.UserController.deleteMessage(id: Long)
 
 #				:: ADMIN ROUTES BELLOW ::
 # Admin index page
@@ -72,6 +74,13 @@ POST          /admin/createcourse                   @controllers.users.AdminCont
 # List of all registered users and option to delete
 GET           /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
 DELETE        /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
+
+# List of active courses and option to delete or archieve
+GET           /admin/courses                        @controllers.users.AdminController.courseList()
+POST          /admin/courses/:id                    @controllers.users.AdminController.deleteOrArchiveCourse(id: Long)
+
+# List of archived courses
+GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
 
 
 #				:: TEACHER ROUTES BELLOW ::

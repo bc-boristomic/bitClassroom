@@ -12,7 +12,6 @@ import models.report.ReportField;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
-import models.report.Field;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -23,19 +22,11 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.CourseConstants;
 import utility.MD5Hash;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.adduser;
-import views.html.admins.adminindex;
-import views.html.admins.allerrors;
-import views.html.admins.userlist;
-
-import views.html.admins.setingsdailyraport;
-
-import views.html.admins.fillClassDetails;
-import views.html.admins.newTableDaily;
-
 
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -54,11 +45,8 @@ public class AdminController extends Controller {
     private final Form<Field> fieldForm = Form.form(Field.class);
 
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
-
-    private List<String> imageList = new ArrayList<>();
-
     private final Form<Course> courseForm = Form.form(Course.class);
-
+    private List<String> imageList = new ArrayList<>();
 
     /**
      * Admin index page.
@@ -67,7 +55,7 @@ public class AdminController extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        return ok(adminindex.render(temp));
+        return ok(views.html.admins.adminindex.render(temp));
     }
 
     /**
@@ -81,7 +69,7 @@ public class AdminController extends Controller {
     }
 
     public Result listOfUser() {
-        return ok(userlist.render(User.findAll()));
+        return ok(views.html.admins.userlist.render(User.findAll()));
     }
 
     /**
@@ -170,7 +158,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result seeErrors() {
-        return ok(allerrors.render(ErrorLog.findAllErrors()));
+        return ok(views.html.admins.allerrors.render(ErrorLog.findAllErrors()));
     }
 
 
@@ -224,7 +212,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result genField() {
-        return ok(setingsdailyraport.render(Field.getFinder().all()));
+        return ok(views.html.admins.setingsdailyraport.render(Field.getFinder().all()));
     }
 
     /**
@@ -250,7 +238,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result addCourse() {
-        return ok(fillClassDetails.render(User.getFinder().all(), courseForm));
+        return ok(views.html.admins.fillClassDetails.render(User.getFinder().all(), courseForm));
     }
 
     /**
@@ -339,7 +327,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result listReport() {
-        return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
 
@@ -427,6 +415,46 @@ public class AdminController extends Controller {
         men.getStudent().update();
         flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
         return redirect("/admin/activementors");
+    }
+
+    /**
+     * Renders view with table filled with all active courses and option to archive or delete course.
+     *
+     * @return
+     */
+    public Result courseList() {
+        return ok(views.html.admins.coursesAll.render(Course.getFinder().where().eq("status", CourseConstants.ACTIVE_COURSE).findList()));
+    }
+
+    /**
+     * Process ajax request, if pressed option 0 is passed course is automatically set as archived,
+     * if option 2 is sent course is deleted. Course is found by id passed in method params.
+     *
+     * @param id <code>Long</code> type value of Course id
+     * @return
+     */
+    public Result deleteOrArchiveCourse(Long id) {
+        DynamicForm form = Form.form().bindFromRequest();
+
+        String s = form.data().get("pressed");
+        Course course = Course.getFinder().byId(id);
+        if (s != null) {
+            course.setStatus(Integer.parseInt(s));
+            course.setUpdateDate(new DateTime());
+            course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+            course.save();
+        }
+        return ok();
+    }
+
+    /**
+     * Renders view with table filled with all archived courses. Course name, description and email of user who
+     * archived it is displayed,
+     *
+     * @return
+     */
+    public Result archivedCourses() {
+        return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
     }
 
 

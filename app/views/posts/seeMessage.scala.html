@@ -17,7 +17,7 @@
             <textarea rows="9" name="content" class="form-control" readonly>@message.getContent</textarea>
             <hr />
             <a class="col-xs-offset-11" href="@controllers.users.routes.UserController.newMessage(message.getSender.getId)">
-                Reply</a>
+                <span class="glyphicon glyphicon-send">...</span><span class="badge">Reply</span></a>
 
         </div>
 
