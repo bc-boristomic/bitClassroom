@@ -15,7 +15,7 @@ body {
     src: url(../fonts/lato/Lato-Semibold.ttf);
 }
 
-.welcomeNote{
+#welcomeNote{
    font-family: myFirstFont;
     color: #727A8B;
 }
