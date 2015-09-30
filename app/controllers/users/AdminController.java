@@ -25,6 +25,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.MD5Hash;
 import utility.UserConstants;
+import utility.database.Roles;
 import views.html.admins.adduser;
 import views.html.admins.adminindex;
 import views.html.admins.allerrors;
@@ -100,17 +101,35 @@ public class AdminController extends Controller {
         String lname = boundForm.bindFromRequest().field("lastname").value();
         String email = boundForm.bindFromRequest().field("email").value();
         String password = boundForm.bindFromRequest().field("password").value();
+        String admin = boundForm.bindFromRequest().field("admin").value();
+        String teacher = boundForm.bindFromRequest().field("teacher").value();
+        String mentor = boundForm.bindFromRequest().field("mentor").value();
+        String student = boundForm.bindFromRequest().field("student").value();
         String tmpRole = boundForm.bindFromRequest().field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
-        Long role = 1L;
+        List<Role> roles = new ArrayList<>();
+        Long role = null;
         if (tmpRole != null) {
-            if ("2".equals(tmpRole)) {
+            if("1".equals(tmpRole)){
+                role = 1L;
+                Role r = new Role(role, UserConstants.NAME_ADMIN);
+                roles.add(r);
+            }else if ("2".equals(tmpRole)) {
                 role = 2L;
+                Role r = new Role(role, UserConstants.NAME_TEACHER);
+                roles.add(r);
             } else if ("3".equals(tmpRole)) {
                 role = 3L;
+                Role r = new Role(role, UserConstants.NAME_MENTOR);
+                roles.add(r);
             } else if ("4".equals(tmpRole)) {
                 role = 4L;
+                Role r = new Role(role, UserConstants.NAME_STUDENT);
+                roles.add(r);
+            }else if("5".equals(tmpRole)){
+                roles.add(Roles.ADMIN);
+                roles.add(Roles.TEACHER);
             }
             try {
                 //role = Long.parseLong(tmpRole);
@@ -119,10 +138,6 @@ public class AdminController extends Controller {
             }
         }
 
-
-        Role r = new Role(role, UserConstants.NAME_ADMIN);
-        List<Role> roles = new ArrayList<>();
-        roles.add(r);
         User u = new User();
         u.setFirstName(fname);
         u.setLastName(lname);
