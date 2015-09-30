@@ -85,15 +85,15 @@ public class AdminController extends Controller {
             return redirect("register");
         }
 
-        String fname = boundForm.bindFromRequest().field("firstname").value();
-        String lname = boundForm.bindFromRequest().field("lastname").value();
-        String email = boundForm.bindFromRequest().field("email").value();
-        String password = boundForm.bindFromRequest().field("password").value();
-        String admin = boundForm.bindFromRequest().field("admin").value();
-        String teacher = boundForm.bindFromRequest().field("teacher").value();
-        String mentor = boundForm.bindFromRequest().field("mentor").value();
-        String student = boundForm.bindFromRequest().field("student").value();
-        String tmpRole = boundForm.bindFromRequest().field("type").value();
+        String fname = boundForm.field("firstname").value();
+        String lname = boundForm.field("lastname").value();
+        String email = boundForm.field("email").value();
+        String password = boundForm.field("password").value();
+        String admin = boundForm.field("admin").value();
+        String teacher = boundForm.field("teacher").value();
+        String mentor = boundForm.field("mentor").value();
+        String student = boundForm.field("student").value();
+        String tmpRole = boundForm.field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
         User u = new User();
@@ -251,9 +251,9 @@ public class AdminController extends Controller {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
 
-        String name = boundForm.bindFromRequest().field("name").value();
-        String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("type").value();
+        String name = boundForm.field("name").value();
+        String description = boundForm.field("description").value();
+        String teacher = boundForm.field("type").value();
 
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());

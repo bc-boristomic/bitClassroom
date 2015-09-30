@@ -81,6 +81,7 @@ create table private_message (
   sender_id                 bigint,
   receiver_id               bigint,
   status                    integer,
+  active_status             integer,
   create_date               datetime,
   constraint pk_private_message primary key (id))
 ;

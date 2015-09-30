@@ -60,8 +60,8 @@ public class UserController extends Controller {
             return redirect("/");
         }
 
-        String password1 = boundForm.bindFromRequest().field("password1").value();
-        String password2 = boundForm.bindFromRequest().field("password2").value();
+        String password1 = boundForm.field("password1").value();
+        String password2 = boundForm.field("password2").value();
         if (!password1.equals(password2)) {
             flash("warning", "Your passwords don't match.");
             return redirect("/user/createprofile");
@@ -90,17 +90,17 @@ public class UserController extends Controller {
             }
         }
 
-        String nickname = boundForm.bindFromRequest().field("nickname").value();
-        String birthDate = boundForm.bindFromRequest().field("birth-date").value();
-        String location = boundForm.bindFromRequest().field("location").value();
-        String homePhone = boundForm.bindFromRequest().field("home-phone").value();
-        String mobilePhone = boundForm.bindFromRequest().field("mobile-phone").value();
-        String website = boundForm.bindFromRequest().field("website").value();
-        String skype = boundForm.bindFromRequest().field("skype").value();
-        String facebook = boundForm.bindFromRequest().field("facebook").value();
-        String twitter = boundForm.bindFromRequest().field("twitter").value();
-        String youtube = boundForm.bindFromRequest().field("youtube").value();
-        String gender = boundForm.bindFromRequest().field("gender").value();
+        String nickname = boundForm.field("nickname").value();
+        String birthDate = boundForm.field("birth-date").value();
+        String location = boundForm.field("location").value();
+        String homePhone = boundForm.field("home-phone").value();
+        String mobilePhone = boundForm.field("mobile-phone").value();
+        String website = boundForm.field("website").value();
+        String skype = boundForm.field("skype").value();
+        String facebook = boundForm.field("facebook").value();
+        String twitter = boundForm.field("twitter").value();
+        String youtube = boundForm.field("youtube").value();
+        String gender = boundForm.field("gender").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
 
@@ -134,8 +134,8 @@ public class UserController extends Controller {
             return redirect("/");
         }
 
-        String password1 = boundForm.bindFromRequest().field("password1").value();
-        String password2 = boundForm.bindFromRequest().field("password2").value();
+        String password1 = boundForm.field("password1").value();
+        String password2 = boundForm.field("password2").value();
         if (!password1.equals(password2)) {
             flash("warning", "Your passwords don't match.");
             return redirect("/user/editprofile");
@@ -164,15 +164,15 @@ public class UserController extends Controller {
             }
         }
 
-        String nickname = boundForm.bindFromRequest().field("nickname").value();
-        String location = boundForm.bindFromRequest().field("location").value();
-        String homePhone = boundForm.bindFromRequest().field("home-phone").value();
-        String mobilePhone = boundForm.bindFromRequest().field("mobile-phone").value();
-        String website = boundForm.bindFromRequest().field("website").value();
-        String skype = boundForm.bindFromRequest().field("skype").value();
-        String facebook = boundForm.bindFromRequest().field("facebook").value();
-        String twitter = boundForm.bindFromRequest().field("twitter").value();
-        String youtube = boundForm.bindFromRequest().field("youtube").value();
+        String nickname = boundForm.field("nickname").value();
+        String location = boundForm.field("location").value();
+        String homePhone = boundForm.field("home-phone").value();
+        String mobilePhone = boundForm.field("mobile-phone").value();
+        String website = boundForm.field("website").value();
+        String skype = boundForm.field("skype").value();
+        String facebook = boundForm.field("facebook").value();
+        String twitter = boundForm.field("twitter").value();
+        String youtube = boundForm.field("youtube").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
 
@@ -277,8 +277,19 @@ public class UserController extends Controller {
      * @return - view of other message
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result deleteMessage(Long id) {
-        PrivateMessage.findMessageById(id).delete();
+    public Result deleteInboxMessage(Long id) {
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setActiveStatus(1);
+        Ebean.save(msg);
+        return redirect("/allMessage");
+    }
+
+    public Result deleteSendMessage(Long id){
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setActiveStatus(2);
+        Ebean.save(msg);
         return redirect("/allMessage");
     }
 
@@ -292,7 +303,7 @@ public class UserController extends Controller {
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setStatus(1);
         Ebean.save(msg);
-        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
+        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail()) || msg.getSender().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
         }
 
