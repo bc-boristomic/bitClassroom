@@ -96,6 +96,7 @@ public class AdminController extends Controller {
         String tmpRole = boundForm.bindFromRequest().field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
+        User u = new User();
         List<Role> roles = new ArrayList<>();
         Long role = null;
         if (tmpRole != null) {
@@ -115,6 +116,7 @@ public class AdminController extends Controller {
                 role = 4L;
                 Role r = new Role(role, UserConstants.NAME_STUDENT);
                 roles.add(r);
+                u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
             }else if("5".equals(tmpRole)){
                 roles.add(Roles.ADMIN);
                 roles.add(Roles.TEACHER);
@@ -126,7 +128,6 @@ public class AdminController extends Controller {
             }
         }
 
-        User u = new User();
         u.setFirstName(fname);
         u.setLastName(lname);
         u.setEmail(email);
@@ -339,7 +340,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result mentorship() {
-        return ok(views.html.admins.mentorship.render(User.findAll()));
+        return ok(views.html.admins.mentorship.render(User.findAll(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
     }
 
     /**
@@ -456,6 +457,5 @@ public class AdminController extends Controller {
     public Result archivedCourses() {
         return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
     }
-
 
 }
