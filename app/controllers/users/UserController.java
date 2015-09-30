@@ -278,7 +278,10 @@ public class UserController extends Controller {
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result deleteMessage(Long id) {
-        PrivateMessage.findMessageById(id).delete();
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setStatus(3);
+        Ebean.save(msg);
         return redirect("/allMessage");
     }
 
@@ -292,7 +295,7 @@ public class UserController extends Controller {
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setStatus(1);
         Ebean.save(msg);
-        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
+        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail()) || msg.getSender().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
         }
 
