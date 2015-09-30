@@ -8,10 +8,10 @@ import utility.UserConstants;
  */
 public class Roles {
 
-    protected static final Role ADMIN = new Role(UserConstants.ADMIN, UserConstants.NAME_ADMIN);
-    protected static final Role TEACHER = new Role(UserConstants.TEACHER, UserConstants.NAME_TEACHER);
-    protected static final Role MENTOR = new Role(UserConstants.MENTOR, UserConstants.NAME_MENTOR);
-    protected static final Role STUDENT = new Role(UserConstants.STUDENT, UserConstants.NAME_STUDENT);
+    public static final Role ADMIN = new Role(UserConstants.ADMIN, UserConstants.NAME_ADMIN);
+    public static final Role TEACHER = new Role(UserConstants.TEACHER, UserConstants.NAME_TEACHER);
+    public static final Role MENTOR = new Role(UserConstants.MENTOR, UserConstants.NAME_MENTOR);
+    public static final Role STUDENT = new Role(UserConstants.STUDENT, UserConstants.NAME_STUDENT);
 
     public static void saveAllRoles() {
         ADMIN.save();
