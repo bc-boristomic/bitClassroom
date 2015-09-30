@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group" style="margin: 25px">
                                 <label>Field Name</label>
-                                <input class="form-control" id="scriptName" name="scriptName" pattern="[\w ]{3,}" required>
+                                <input class="form-control" id="scriptName" name="scriptName" pattern="[\w ]{3,}" style="text-transform: capitalize" required>
                                 <input style="margin-top: 30px" type="submit" value="Add" onclick=""/>
                             </div>
                         </div>
@@ -32,13 +32,13 @@
                             </div>
                             <div style="margin: 25px">
                                 <div class="row top30">
-                                    <label class="col-md-offset-7 col-md-1">Date</label>
+                                    <label class="col-md-offset-6 col-md-1">Date</label>
                                     <div class=" col-md-4"><input class="form-control" disabled></div>
                                 </div>
 
                                 <div class="row top30">
                                     <label class="col-sm-5">Title</label>
-                                    <div class="col-sm-7"><input class="form-control" disabled></div>
+                                    <div class="col-sm-6"><input class="form-control" disabled></div>
                                 </div>
                                 @for(rf <- listField) {
                                     <div class="row top30" id="field">
@@ -56,7 +56,7 @@
                                 }
                                 <div class="row top30">
                                     <label class="col-sm-5 control-label">Report</label>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-6">
                                         <textarea class="form-control" rows="3" disabled></textarea>
                                     </div>
                                 </div>

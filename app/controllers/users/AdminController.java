@@ -6,9 +6,7 @@ import helpers.SessionHelper;
 import models.ErrorLog;
 import models.course.Course;
 import models.course.CourseUser;
-import models.report.DailyReport;
-import models.report.Field;
-import models.report.ReportField;
+import models.report.*;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
@@ -31,7 +29,7 @@ import views.html.admins.allerrors;
 import views.html.admins.userlist;
 
 import views.html.admins.setingsdailyraport;
-
+import views.html.admins.setingsweeklyreport;
 import views.html.admins.fillClassDetails;
 import views.html.admins.newTableDaily;
 
@@ -220,9 +218,9 @@ public class AdminController extends Controller {
         return ok(setingsdailyraport.render(Field.getFinder().all()));
     }
 
-//    public Result genFieldWeekly() {
-//        return ok(setingsweeklyraport.render(FieldWeekly.getFinder().all()));
-//    }
+    public Result genWeeklyField() {
+        return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
+    }
 
 
     /**
@@ -237,8 +235,26 @@ public class AdminController extends Controller {
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
         String name1 = AdminController.firstUpperCase(name);
         model.setName(name1);
-        model.save();
+        try {
+            model.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+        }
         return redirect("/admin/createdaily");
+    }
+
+    public Result saveWeeklyField() {
+        Form<WeeklyField> fieldWeeklyForm = Form.form(WeeklyField.class);
+        WeeklyField wf = new WeeklyField();
+        String n = fieldWeeklyForm.bindFromRequest().field("scriptWeeklyName").value();
+        String nameWF = AdminController.firstUpperCase(n);
+        wf.setName(nameWF);
+        try {
+            wf.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+        }
+        return redirect("/admin/createweekly");
     }
 
     public static String firstUpperCase(String name) {

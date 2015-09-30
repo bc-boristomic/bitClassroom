@@ -43,6 +43,7 @@ create table error_log (
 create table field (
   id                        bigint auto_increment not null,
   name                      varchar(255),
+  constraint uq_field_name unique (name),
   constraint pk_field primary key (id))
 ;
 
@@ -91,6 +92,14 @@ create table report_field (
   constraint pk_report_field primary key (id))
 ;
 
+create table report_weekly_field (
+  id                        bigint auto_increment not null,
+  value                     varchar(255),
+  weekly_report             bigint,
+  weekly_field              bigint,
+  constraint pk_report_weekly_field primary key (id))
+;
+
 create table role (
   id                        bigint auto_increment not null,
   name                      varchar(10),
@@ -125,6 +134,23 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+create table weekly_field (
+  id                        bigint auto_increment not null,
+  name                      varchar(255),
+  constraint uq_weekly_field_name unique (name),
+  constraint pk_weekly_field primary key (id))
+;
+
+create table weekly_report (
+  id                        bigint auto_increment not null,
+  create_date               datetime,
+  date                      varchar(255),
+  name                      varchar(255),
+  student                   varchar(255),
+  data                      varchar(255),
+  constraint pk_weekly_report primary key (id))
+;
+
 
 create table user_role (
   user_id                        bigint not null,
@@ -149,6 +175,10 @@ alter table report_field add constraint fk_report_field_dailyReport_8 foreign ke
 create index ix_report_field_dailyReport_8 on report_field (daly_id);
 alter table report_field add constraint fk_report_field_field_9 foreign key (field_id) references field (id) on delete restrict on update restrict;
 create index ix_report_field_field_9 on report_field (field_id);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyReport_10 foreign key (weekly_report) references weekly_report (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyReport_10 on report_weekly_field (weekly_report);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyField_11 foreign key (weekly_field) references weekly_field (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyField_11 on report_weekly_field (weekly_field);
 
 
 
@@ -178,11 +208,17 @@ drop table private_message;
 
 drop table report_field;
 
+drop table report_weekly_field;
+
 drop table role;
 
 drop table user;
 
 drop table user_role;
+
+drop table weekly_field;
+
+drop table weekly_report;
 
 SET FOREIGN_KEY_CHECKS=1;
 

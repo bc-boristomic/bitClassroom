@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by enver on 9/12/15.
+ * Created by enver.memic on 12/09/15.
  */
 @Entity
 @Table(name = "report_field")

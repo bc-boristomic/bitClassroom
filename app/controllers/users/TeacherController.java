@@ -48,8 +48,8 @@ public class TeacherController extends Controller {
         dailyReport.setCreatedDate(new DateTime());
         dailyReport.setData(dynamicForm.get("data"));
         dailyReport.setDate(dynamicForm.get("date"));
-
         dailyReport.save();
+
 
         for (Field field : fields) {
             ReportField reportField = new ReportField();

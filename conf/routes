@@ -68,9 +68,14 @@ GET           /listReport/:id                       @controllers.users.AdminCont
 # Create weekly report
 #==================================================== ENVER =================================================
 
-GET           /admin/createweekly                    @controllers.users.AdminController.genField()
-POST          /admin/savefieldweekly                 @controllers.users.AdminController.saveField()
-DELETE        /admin/deletefieldweekly/:id           @controllers.users.AdminController.deleteField(id: Long)
+GET           /admin/createweekly                    @controllers.users.AdminController.genWeeklyField()
+POST          /admin/savefieldweekly                 @controllers.users.AdminController.saveWeeklyField()
+#DELETE        /admin/deletefieldweekly/:id           @controllers.users.AdminController.deleteField(id: Long)
+#===============
+
+GET           /weekly/report                         @controllers.users.MentorController.weeklyReport()
+POST          /weekly/reportSubmit                   @controllers.users.MentorController.saveRaport()
+
 
 #============================================================================================================
 # Create course
