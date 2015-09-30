@@ -6,8 +6,8 @@
 @main("Welcome to bitClassroom") {
 
     @if(user == null) {
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/welcome.css")" />
 
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/welcome.css")" />
 
         <div class="container" style="text-align: center">
             <div class="col-md-12" style="margin-top: 15%;">
@@ -15,7 +15,7 @@
                     <img src="@routes.Assets.versioned("/images/header/logo.png")"/>
 
                     <br><br>
-                    <p class="welcomeNote">
+                    <p id="welcomeNote" class="text-center">
                         BITClassroom is mission control,<br>designed with teachers and students to<br>connect the class, track their progress and<br>achieve more together.
                     </p>
 
