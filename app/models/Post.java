@@ -37,6 +37,8 @@ public final class Post extends Model {
     private String files;
     @Column(name = "date")
     private String date;
+    @Column(name="time")
+    private String time;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
 
@@ -49,13 +51,14 @@ public final class Post extends Model {
     public Post() {
     }
 
-    public Post(String title, String content, Integer postType, Boolean visible, User user, String date) {
+    public Post(String title, String content, Integer postType, Boolean visible, User user, String date, String time) {
         this.title = title;
         this.content = content;
         this.postType = postType;
         this.visibleToMentors = visible;
         this.user = user;
         this.date = date;
+        this.time = time;
 
     }
 
@@ -168,8 +171,13 @@ public final class Post extends Model {
     public void setDate(String date) {this.date = date;}
 
     public String getDate() {
-        String[] parts = date.split("-");
-        return parts[2] + "." + parts[1] + "." + parts[0];
+        return date;
+    }
+
+    public void setTime(String time){this.time = time;}
+
+    public String getTime(){
+        return time;
     }
 
 }
