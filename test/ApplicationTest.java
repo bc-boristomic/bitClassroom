@@ -223,6 +223,51 @@ public class ApplicationTest {
         });
     }
 
+//    @Test
+//    public void testIsMessagesPrivate(){
+//        running(testServer(9000, fakeApplication(inMemoryDatabase())), new HtmlUnitDriver(), new Callback<TestBrowser>() {
+//            @Override
+//            public void invoke(TestBrowser testBrowser) throws Throwable {
+//                testBrowser.goTo("http://localhost:9000/login");
+//
+//                testBrowser.fill("#inputEmail").with("ajdin.brkic@bitcamp.ba");
+//                testBrowser.fill("#inputPassword").with("Student123");
+//                testBrowser.click("#login");
+//                testBrowser.goTo("http://localhost:9000/user/createprofile");
+//                testBrowser.fill("#nickname").with("Dado");
+//                testBrowser.fill("#birthdate").with("1997-01-01");
+//                testBrowser.fill("#password1").with("Student123");
+//                testBrowser.fill("#password2").with("Student123");
+//                testBrowser.fill("#location").with("Sarajevo");
+//                testBrowser.fill("#mobile-phone").with("+38762626262");
+//                testBrowser.fill("#skype").with("dado");
+//                testBrowser.fill("#facebook").with("http://www.facebook.com/dado");
+//                testBrowser.click("#SubmitProfile");
+//                testBrowser.goTo("http://localhost:9000");
+//                assertTrue(testBrowser.pageSource().contains("You successfuly updated your profile."));
+//
+//
+//                testBrowser.goTo("http://localhost:9000/user/courses");
+//
+//
+//                testBrowser.submit("#courseSumbit1");
+//
+//                testBrowser.goTo("http://localhost:9000/logout");
+//                testBrowser.goTo("http://localhost:9000/login");
+//
+//                testBrowser.fill("#inputEmail").with("becir.omerbasic@bitcamp.ba");
+//                testBrowser.fill("#inputPassword").with("Becir123");
+//                testBrowser.click("#login");
+//                testBrowser.goTo("http://localhost:9000/admin");
+//                testBrowser.goTo("http://localhost:9000/admin/awaitlist");
+//                testBrowser.click("#approved1");
+//
+//
+//
+//            }
+//        });
+//    }
+
 
     }
 
