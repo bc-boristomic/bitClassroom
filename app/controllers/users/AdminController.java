@@ -220,6 +220,11 @@ public class AdminController extends Controller {
         return ok(setingsdailyraport.render(Field.getFinder().all()));
     }
 
+//    public Result genFieldWeekly() {
+//        return ok(setingsweeklyraport.render(FieldWeekly.getFinder().all()));
+//    }
+
+
     /**
      * Saves a field that admin has created to database. Field is later used so teacher
      * can write daily report.
@@ -230,16 +235,18 @@ public class AdminController extends Controller {
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
+        String name1 = AdminController.firstUpperCase(name);
+        model.setName(name1);
+        model.save();
+        return redirect("/admin/createdaily");
+    }
+
+    public static String firstUpperCase(String name) {
         String s = name.substring(0, 1);
         String s1 = s.toUpperCase();
         String s2 = name.substring(1,name.length());
-
-
-        model.setName(s1 + s2);
-
-        model.save();
-        return redirect("/admin/createdaily");
-
+        String name1 = s1 + s2;
+        return name1;
     }
 
     /**
