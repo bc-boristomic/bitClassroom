@@ -1,4 +1,5 @@
 @import models.user.User
+@import utility.UserConstants
 @(user: User)
 @main(user.getFirstName + " " + user.getLastName + " public profile") {
     <img src="">
@@ -15,27 +16,33 @@
                         <tbody>
                             <tr>
                                 <td>Nickname:</td>
-                                <td>@user.getNickName</td>
+                                    <td>@user.getNickName</td>
                             </tr>
 
                             <tr>
                                 <td>Year of Birth:</td>
-                                <td>@user.getYearOfBirth</td>
+                                @if(user.getStatus.equals(UserConstants.FULLY_ACTIVE)) {
+                                    <td>@user.getYearOfBirth</td>
+                                } else { <td></td> }
                             </tr>
 
                             <tr>
                                 <td>Gender</td>
-                                <td>@if(user.getGender.equals(1)) {Male} else {Female}</td>
+                                @if(user.getStatus.equals(UserConstants.FULLY_ACTIVE)) {
+                                    <td>@if(user.getGender.equals(1)) {Male} else {Female}</td>
+                                } else {
+                                    <td></td>
+                                }
                             </tr>
 
                             <tr>
                                 <td>Location:</td>
-                                <td>@user.getLocation</td>
+                                    <td>@user.getLocation</td>
                             </tr>
 
                             <tr>
                                 <td>Cell phone:</td>
-                                <td>@user.getCellPhone</td>
+                                    <td>@user.getCellPhone</td>
                             </tr>
 
                             <tr>
@@ -45,7 +52,7 @@
 
                             <tr>
                                 <td>Skype:</td>
-                                <td>@user.getSkype</td>
+                                    <td>@user.getSkype</td>
                             </tr>
 
                             <tr>
@@ -57,7 +64,7 @@
                         </tbody>
                     </table>
 
-                    <a href="@controllers.users.routes.UserController.newMessage(user.getId)" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-envelope"></i> Send @user.getFirstName a message</a>
+                    <a href="@controllers.users.routes.UserController.newMessage(user.getId)" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-envelope" ></i> Send @user.getFirstName a message</a>
 
 
                 </div>

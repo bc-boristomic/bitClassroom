@@ -13,6 +13,7 @@ create table course (
   created_by                varchar(255),
   update_date               datetime,
   updated_by                varchar(255),
+  status                    integer,
   constraint pk_course primary key (id))
 ;
 
