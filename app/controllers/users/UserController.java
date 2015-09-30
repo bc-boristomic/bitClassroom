@@ -221,7 +221,7 @@ public class UserController extends Controller {
     /**
      * Method for write new message, with required Subject and content
      * @param id - long id of selected User for send message
-     * @return - 
+     * @return -
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result newMessage(Long id) {
@@ -292,7 +292,11 @@ public class UserController extends Controller {
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setStatus(1);
         Ebean.save(msg);
+        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
+        }
+
+          return  redirect("/");
     }
 
     /**
