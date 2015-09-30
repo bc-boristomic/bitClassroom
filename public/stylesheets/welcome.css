@@ -10,7 +10,12 @@ body {
     background-size: cover;
 }
 
+@font-face {
+    font-family: myFirstFont;
+    src: url(../fonts/lato/Lato-Semibold.ttf);
+}
 
-.logo{
-    background: url("../images/header/logo.png");
+.welcomeNote{
+   font-family: myFirstFont;
+    color: #727A8B;
 }
