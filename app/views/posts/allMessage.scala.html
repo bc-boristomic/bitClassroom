@@ -40,7 +40,7 @@
                     <div class="tab-pane fade in active" id="home">
                     <table  class="table-condensed table-hover table table-bordered">
                     @for(message <- messagesReceived) {
-                        @if(message.getStatus == 0 && message.getStatus != 3){
+                        @if(message.getStatus == 0 && message.getActiveStatus != 1){
                         <div class="list-group">
                         <tr><td>
                         <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open"> <strong>@message.getSender.getFirstName-@message.getSender.getLastName</strong></span><span>   </span><span class="label label-info">New</span></a>
@@ -60,10 +60,10 @@
                         </a>
                         </div>
                         </td> <td>
-                            <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteMessage(message.getId)" role="button">
+                            <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteInboxMessage(message.getId)" role="button">
                                 <i class="glyphicon glyphicon-remove-circle"></i></a>
                         </td></tr></div>
-                        }@if(message.getStatus == 1 && message.getStatus != 3){
+                        }@if(message.getStatus == 1 && message.getActiveStatus != 1){
                             <div class="list-group" style="background-color: #a2aec7">
                                 <tr><td>
                                     <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open">@message.getSender.getFirstName-@message.getSender.getLastName</span></a>
@@ -83,7 +83,7 @@
                                         </a>
                                     </div>
                                 </td> <td>
-                                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteMessage(message.getId)" role="button">
+                                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteInboxMessage(message.getId)" role="button">
                                         <i class="glyphicon glyphicon-remove-circle"></i></a>
                                 </td></tr></div>
                         }
@@ -91,7 +91,7 @@
                     <div class="tab-pane fade in" id="profile">
                         <table  class="table-condensed table-hover table table-bordered">
                     @for(message <- messagesSent) {
-                        @if(message.getStatus != 3){
+                        @if(message.getActiveStatus != 2){
                         <div class="list-group">
                             <tr><td>
                                 <div class="list-group">
@@ -110,7 +110,7 @@
                             </a></div>
                             </td>
                                 <td>
-                                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteMessage(message.getId)" role="button">
+                                    <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.UserController.deleteSendMessage(message.getId)" role="button">
                                         <i class="glyphicon glyphicon-remove-circle"></i></a>
                                 </td>
                             </tr>

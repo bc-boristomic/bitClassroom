@@ -277,10 +277,18 @@ public class UserController extends Controller {
      * @return - view of other message
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result deleteMessage(Long id) {
+    public Result deleteInboxMessage(Long id) {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
-        msg.setStatus(3);
+        msg.setActiveStatus(1);
+        Ebean.save(msg);
+        return redirect("/allMessage");
+    }
+
+    public Result deleteSendMessage(Long id){
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setActiveStatus(2);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
