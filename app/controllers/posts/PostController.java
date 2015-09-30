@@ -4,6 +4,7 @@ import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
+import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -15,6 +16,7 @@ import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 import views.html.posts.newpost;
 
 import java.io.File;
@@ -39,7 +41,7 @@ public class PostController extends Controller {
      * Adding post and refresh the page with added post
      */
     public Result addPost() {
-        return ok(newpost.render(postForm));
+        return ok(newpost.render(postForm, SessionHelper.currentUser(ctx())));
     }
 
     /**
@@ -55,8 +57,6 @@ public class PostController extends Controller {
         MultipartFormData data = request().body().asMultipartFormData();
         List<MultipartFormData.FilePart> files = data.getFiles();
 
-
-
         if (files != null) {
             String fName = null;
             for (Http.MultipartFormData.FilePart filePart : files) {
@@ -64,7 +64,7 @@ public class PostController extends Controller {
                 File file = filePart.getFile();
 
                 try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/files/users/" + user.getNickName() + "/" + fName));
+                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/files/users/" + user.getFirstName() + "/" + fName));
                     filesList.add(fName);
                 } catch (IOException e) {
                     Logger.info("Could not move file. " + e.getMessage());
@@ -72,34 +72,52 @@ public class PostController extends Controller {
                 }
             }
                 if(fName != null) {
-                    post.setFiles(user.getNickName() + "/" + fName);
+                    post.setFiles(user.getFirstName() + "/" + fName);
                 }
         }
 
-        String date = boundForm.bindFromRequest().field("date").value();
-        String title = boundForm.bindFromRequest().field("title").value();
-        String message = boundForm.bindFromRequest().field("content").value();
-        String mentor = boundForm.bindFromRequest().field("visible").value();
-        String type = boundForm.bindFromRequest().field("post-type").value();
-        String link = boundForm.bindFromRequest().field("link").value();
 
-        Boolean visible = false;
-        if ("on".equals(mentor)) {
-            visible = true;
+
+
+
+        String title = boundForm.field("title").value();
+        String message = boundForm.field("content").value();
+        String link = boundForm.field("link").value();
+
+        if(user != null && user.getRoles().size() > 0 && user.getRoles() != null){
+            for(Role r: user.getRoles()){
+                if(r.getId().equals(UserConstants.TEACHER)){
+                    String date = boundForm.field("date").value();
+                    String time = boundForm.field("time").value();
+                    String mentor = boundForm.field("visible").value();
+                    String type = boundForm.field("post-type").value();
+
+                    Boolean visible = false;
+                    if ("on".equals(mentor)) {
+                        visible = true;
+                    }
+
+
+                    //type 0 announcement
+                    Integer typeOfPost = 0;
+                    if (type.equals("1")) {
+                        typeOfPost = 1; //type 1 assignment
+                    }
+
+                    post.setPostType(typeOfPost);
+                    post.setVisibleToMentors(visible);
+                    post.setDate(date);
+                    post.setTime(time);
+
+                }
+            }
         }
-        //type 0 announcement
-        Integer typeOfPost = 0;
-        if (type.equals("1")) {
-            typeOfPost = 1; //type 1 assignment
-        }
+
 
         if (user != null) {
             post.setTitle(title);
             post.setContent(message);
-            post.setPostType(typeOfPost);
-            post.setVisibleToMentors(visible);
             post.setUser(user);
-            post.setDate(date);
             post.setLink(link);
             post.save();
             flash("success", "You successfully added new post.");
