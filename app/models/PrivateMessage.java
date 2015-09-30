@@ -37,6 +37,9 @@ public class PrivateMessage extends Model {
     @Column
     private Integer status;
 
+    @Column
+    private Integer activeStatus;
+
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
 
@@ -100,6 +103,14 @@ public class PrivateMessage extends Model {
 
     public Long getId() {
         return id;
+    }
+
+    public Integer getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(Integer activeStatus) {
+        this.activeStatus = activeStatus;
     }
 
     public static Finder<Long, PrivateMessage> getFind() {

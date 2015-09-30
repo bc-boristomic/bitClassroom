@@ -77,8 +77,8 @@ public class Application extends Controller {
             return redirect("login");
         }
 
-        String email = boundForm.bindFromRequest().field("email").value();
-        String password = boundForm.bindFromRequest().field("password").value();
+        String email = boundForm.field("email").value();
+        String password = boundForm.field("password").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
         User user = User.findByEmailAndPassword(email, passwordHashed);
 
@@ -124,6 +124,8 @@ public class Application extends Controller {
         int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
         return ok(notify + "");
     }
+
+
 
 
 }

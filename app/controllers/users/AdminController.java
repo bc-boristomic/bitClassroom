@@ -85,17 +85,18 @@ public class AdminController extends Controller {
             return redirect("register");
         }
 
-        String fname = boundForm.bindFromRequest().field("firstname").value();
-        String lname = boundForm.bindFromRequest().field("lastname").value();
-        String email = boundForm.bindFromRequest().field("email").value();
-        String password = boundForm.bindFromRequest().field("password").value();
-        String admin = boundForm.bindFromRequest().field("admin").value();
-        String teacher = boundForm.bindFromRequest().field("teacher").value();
-        String mentor = boundForm.bindFromRequest().field("mentor").value();
-        String student = boundForm.bindFromRequest().field("student").value();
-        String tmpRole = boundForm.bindFromRequest().field("type").value();
+        String fname = boundForm.field("firstname").value();
+        String lname = boundForm.field("lastname").value();
+        String email = boundForm.field("email").value();
+        String password = boundForm.field("password").value();
+        String admin = boundForm.field("admin").value();
+        String teacher = boundForm.field("teacher").value();
+        String mentor = boundForm.field("mentor").value();
+        String student = boundForm.field("student").value();
+        String tmpRole = boundForm.field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
+        User u = new User();
         List<Role> roles = new ArrayList<>();
         Long role = null;
         if (tmpRole != null) {
@@ -115,6 +116,7 @@ public class AdminController extends Controller {
                 role = 4L;
                 Role r = new Role(role, UserConstants.NAME_STUDENT);
                 roles.add(r);
+                u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
             }else if("5".equals(tmpRole)){
                 roles.add(Roles.ADMIN);
                 roles.add(Roles.TEACHER);
@@ -126,7 +128,6 @@ public class AdminController extends Controller {
             }
         }
 
-        User u = new User();
         u.setFirstName(fname);
         u.setLastName(lname);
         u.setEmail(email);
@@ -250,9 +251,9 @@ public class AdminController extends Controller {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
 
-        String name = boundForm.bindFromRequest().field("name").value();
-        String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("type").value();
+        String name = boundForm.field("name").value();
+        String description = boundForm.field("description").value();
+        String teacher = boundForm.field("type").value();
 
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
@@ -339,7 +340,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result mentorship() {
-        return ok(views.html.admins.mentorship.render(User.findAll()));
+        return ok(views.html.admins.mentorship.render(User.findAll(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
     }
 
     /**
@@ -456,6 +457,5 @@ public class AdminController extends Controller {
     public Result archivedCourses() {
         return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
     }
-
 
 }

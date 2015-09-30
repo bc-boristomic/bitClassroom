@@ -28,8 +28,10 @@ GET           /message/:id                          @controllers.users.UserContr
 POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
 GET           /allMessage                           @controllers.users.UserController.allMessage()
 GET           /message/selected/:id                 @controllers.users.UserController.seeMessage(id: Long)
-GET           /message/delete/:id                   @controllers.users.UserController.deleteMessage(id: Long)
-DELETE        /message/delete/:id                   @controllers.users.UserController.deleteMessage(id: Long)
+GET           /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
+DELETE        /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
+GET           /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
+DELETE        /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
 
 #				:: ADMIN ROUTES BELLOW ::
 # Admin index page
