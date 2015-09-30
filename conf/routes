@@ -114,6 +114,13 @@ GET           /mentor/test                          @controllers.users.MentorCon
 GET           /student/test                         @controllers.users.StudentController.test()
 
 
+# API routes
+GET           /api/user                             @controllers.api.UserAPIController.getUsers()
+GET           /api/user/:id                         @controllers.api.UserAPIController.getSpecificUser(id: Long)
+POST          /api/user                             @controllers.api.UserAPIController.createUser()
+PUT           /api/user/:id                         @controllers.api.UserAPIController.updateUser(id: Long)
+DELETE        /api/user/:id                         @controllers.api.UserAPIController.deleteUser(id: Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         @controllers.Assets.versioned(path="/public", file: Asset)
 

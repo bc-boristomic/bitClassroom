@@ -379,7 +379,10 @@ public final class User extends Model {
     }
 
     public String getYearOfBirth() {
-        return birthDate.split("\\.")[2];
+        if (birthDate != null) {
+            return birthDate.split("\\.")[2];
+        }
+        return birthDate;
     }
 
     public static boolean deleteUser(Long id) {
