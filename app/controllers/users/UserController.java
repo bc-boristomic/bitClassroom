@@ -218,6 +218,11 @@ public class UserController extends Controller {
         return redirect("/user/courses");
     }
 
+    /**
+     * Method for write new message, with required Subject and content
+     * @param id - long id of selected User for send message
+     * @return - 
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result newMessage(Long id) {
         User sender = SessionHelper.currentUser(ctx());
@@ -225,6 +230,11 @@ public class UserController extends Controller {
         return ok(message.render(sender, receiver));
     }
 
+    /**
+     * Method for send message to selected user from same Class
+     * @param id - Long id of selected user which message was send
+     * @return - view of all message, inbox and sent message
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result sendMessage(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
@@ -242,6 +252,10 @@ public class UserController extends Controller {
         return redirect("/allMessage");
     }
 
+    /**
+     * Method for see all message., received and sent message.
+     * @return - view of sent and inbox.
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result allMessage() {
 
@@ -257,11 +271,22 @@ public class UserController extends Controller {
 
     }
 
+    /**
+     * Method for delete message
+     * @param id - Long id of selected message for delte
+     * @return - view of other message
+     */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result deleteMessage(Long id) {
         PrivateMessage.findMessageById(id).delete();
         return redirect("/allMessage");
     }
 
+    /**
+     * Method for read recived message fr0om other user
+     * @param id - Long message id
+     * @return - view of message content
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result seeMessage(Long id) {
         PrivateMessage msg = PrivateMessage.findMessageById(id);
