@@ -81,8 +81,9 @@ DELETE        /admin/delete/:id                     @controllers.users.AdminCont
 GET           /admin/courses                        @controllers.users.AdminController.courseList()
 POST          /admin/courses/:id                    @controllers.users.AdminController.deleteOrArchiveCourse(id: Long)
 
-# List of archived courses
+# List of archived courses and option to activate
 GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
+POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
 
 
 #				:: TEACHER ROUTES BELLOW ::

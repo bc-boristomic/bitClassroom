@@ -38,7 +38,10 @@ public class PrivateMessage extends Model {
     private Integer status;
 
     @Column
-    private Integer activeStatus;
+    private Integer inboxStatus;
+
+    @Column
+    private Integer  sendStatus;
 
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
@@ -105,12 +108,20 @@ public class PrivateMessage extends Model {
         return id;
     }
 
-    public Integer getActiveStatus() {
-        return activeStatus;
+    public Integer getInboxStatus() {
+        return inboxStatus;
     }
 
-    public void setActiveStatus(Integer activeStatus) {
-        this.activeStatus = activeStatus;
+    public void setInboxStatus(Integer inboxStatus) {
+        this.inboxStatus = inboxStatus;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
     }
 
     public static Finder<Long, PrivateMessage> getFind() {
