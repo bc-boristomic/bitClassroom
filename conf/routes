@@ -65,19 +65,21 @@ DELETE        /admin/deletefield/:id                @controllers.users.AdminCont
 GET           /listReport                           @controllers.users.AdminController.listReport()
 DELETE        /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
+
+
+GET           /listWeeklyReport                     @controllers.users.AdminController.listWeeklyReport()
+DELETE        /listWeeklyReport/:id                 @controllers.users.AdminController.deleteWeeklyReport(id: Long)
+
+
 # Create weekly report
-#==================================================== ENVER =================================================
+GET           /admin/createweekly                   @controllers.users.AdminController.genWeeklyField()
+POST          /admin/savefieldweekly                @controllers.users.AdminController.saveWeeklyField()
+DELETE        /admin/deletefieldweekly/:id          @controllers.users.AdminController.deleteWeeklyField(id: Long)
 
-GET           /admin/createweekly                    @controllers.users.AdminController.genWeeklyField()
-POST          /admin/savefieldweekly                 @controllers.users.AdminController.saveWeeklyField()
-#DELETE        /admin/deletefieldweekly/:id           @controllers.users.AdminController.deleteField(id: Long)
-#===============
+# See submited weekly report
+GET           /weekly/report                        @controllers.users.MentorController.weeklyReport()
+POST          /weekly/reportSubmit                  @controllers.users.MentorController.saveRaport()
 
-GET           /weekly/report                         @controllers.users.MentorController.weeklyReport()
-POST          /weekly/reportSubmit                   @controllers.users.MentorController.saveRaport()
-
-
-#============================================================================================================
 # Create course
 GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
 POST          /admin/createcourse                   @controllers.users.AdminController.saveCourse()

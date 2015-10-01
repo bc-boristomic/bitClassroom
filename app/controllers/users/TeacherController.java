@@ -2,14 +2,12 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
-import models.course.Course;
 import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
 import models.user.User;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -17,7 +15,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import views.html.dailyreports.dailyraport;
 import views.html.index;
-
 import java.util.List;
 
 /**
@@ -44,26 +41,22 @@ public class TeacherController extends Controller {
         dynamicForm.bindFromRequest(request());
 
         DailyReport dailyReport = new DailyReport();
-        dailyReport.setName(dynamicForm.get("title"));
+
         dailyReport.setCreatedDate(new DateTime());
+        dailyReport.setName(dynamicForm.get("title"));
         dailyReport.setData(dynamicForm.get("data"));
         dailyReport.setDate(dynamicForm.get("date"));
         dailyReport.save();
 
-
         for (Field field : fields) {
             ReportField reportField = new ReportField();
             reportField.setDailyReport(dailyReport);
-
             String fieldId = dynamicForm.get(String.valueOf(field.getId()));
-
             reportField.setValue(fieldId);
             reportField.setField(field);
             reportField.save();
         }
         User u = SessionHelper.currentUser(ctx());
-       // List<Course> list = CourseUser.allUserCourses(u);
-        //CourseUser userc = CourseUser.findAll(u.getId()).get(0);
         List<CourseUser> userc = CourseUser.getFinder().all();
 
         return ok(index.render(u, userc));

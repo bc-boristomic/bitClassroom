@@ -1,13 +1,12 @@
 package controllers.users;
 
 import helpers.Authorization;
-
 import helpers.SessionHelper;
 import models.course.CourseUser;
-import models.report.Field;
+import models.report.ReportWeeklyField;
+import models.report.WeeklyField;
 import models.user.User;
 import models.report.WeeklyReport;
-
 import org.joda.time.DateTime;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -16,8 +15,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import views.html.dailyreports.weeklyreport;
 import views.html.index;
-
-
 import java.util.List;
 
 /**
@@ -33,14 +30,13 @@ public class MentorController extends Controller {
         dynamicForm.bindFromRequest(request());
         dynamicForm.get("1");
 
-        List<Field> fields = Field.getFinder().findList();
-        return ok(weeklyreport.render(reportForm));
+        List<WeeklyField> weeklyFields = WeeklyField.getFinder().findList();
+        return ok(weeklyreport.render(reportForm, weeklyFields));
 
     }
 
     public Result saveRaport() {
-
-//        List<Field> fields = Field.getFinder().findList();
+        List<WeeklyField> fields = WeeklyField.getFinder().findList();
         DynamicForm dynamicForm = Form.form().bindFromRequest();
         dynamicForm.bindFromRequest(request());
 
@@ -53,19 +49,15 @@ public class MentorController extends Controller {
         weeklyReport.setData(dynamicForm.get("data"));
         weeklyReport.save();
 
-//        for (Field field : fields) {
-//            ReportField reportField = new ReportField();
-//            reportField.setDailyReport(weeklyReport);
-//
-//            String fieldId = dynamicForm.get(String.valueOf(field.getId()));
-//
-//            reportField.setValue(fieldId);
-//            reportField.setField(field);
-//            reportField.save();
-//        }
+        for (WeeklyField field : fields) {
+            ReportWeeklyField reportField = new ReportWeeklyField();
+            reportField.setWeeklyReport(weeklyReport);
+            String fieldId = dynamicForm.get(String.valueOf(field.getId()));
+            reportField.setValue(fieldId);
+            reportField.setWeeklyField(field);
+            reportField.save();
+        }
         User u = SessionHelper.currentUser(ctx());
-        // List<Course> list = CourseUser.allUserCourses(u);
-        //CourseUser userc = CourseUser.findAll(u.getId()).get(0);
         List<CourseUser> userc = CourseUser.getFinder().all();
 
         return ok(index.render(u, userc));

@@ -32,7 +32,7 @@ import views.html.admins.setingsdailyraport;
 import views.html.admins.setingsweeklyreport;
 import views.html.admins.fillClassDetails;
 import views.html.admins.newTableDaily;
-
+import views.html.admins.newTableWeekly;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -199,13 +199,19 @@ public class AdminController extends Controller {
         DailyReport.findDailyReportById(id).delete();
         return redirect("/listReport");
     }
-
+    public Result deleteWeeklyReport(Long id) {
+        WeeklyReport.findWeeklyReportById(id).delete();
+        return redirect("/listWeeklyReport");
+    }
 
     public Result deleteField(Long id) {
         Field.findFieldById(id).delete();
         return redirect("/admin/createdaily");
     }
-
+    public Result deleteWeeklyField(Long id) {
+        WeeklyField.findFielWeeklydById(id).delete();
+        return redirect("/admin/createweekly");
+    }
 
 
     /**
@@ -260,7 +266,7 @@ public class AdminController extends Controller {
     public static String firstUpperCase(String name) {
         String s = name.substring(0, 1);
         String s1 = s.toUpperCase();
-        String s2 = name.substring(1,name.length());
+        String s2 = name.substring(1, name.length());
         String name1 = s1 + s2;
         return name1;
     }
@@ -363,7 +369,14 @@ public class AdminController extends Controller {
     public Result listReport() {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
-
+    /**
+     * See tables of weekly reports
+     *
+     * @return
+     */
+    public Result listWeeklyReport() {
+        return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
+    }
 
     /**
      * Renders page with two dropdown menus. One is for mentors and other is for

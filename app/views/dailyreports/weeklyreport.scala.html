@@ -1,11 +1,10 @@
-
 @import play.data.Form
 @import models.report.WeeklyReport
-@(raportForm: Form[WeeklyReport])
+@(raportForm: Form[WeeklyReport])(weeklyFields: List[report.WeeklyField])
 
-@*(fields: List[report.Field])*@
 
-@main("Raport Model") {
+
+@main("Raport Weekly Model") {
   @helper.form(action = controllers.users.routes.MentorController.saveRaport()) {
     <!-- custom css -->
     <link rel="stylesheets" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")">
@@ -29,10 +28,10 @@
               <div class="col-sm-10"><input class="form-control" name="student" value="" pattern="[\w ]{3,}" required></div>
             </div>
 
-          @*
+            @*===========================================================*@
             <div class="form-group top30">
 
-            @fields.map { field =>
+            @weeklyFields.map { field =>
               <div class="row top30">
                 <div class="col-sm-2">
                   <label for="field_@field.getId()" >@field.getName(): <abbr class="req" style="color: red" > * </abbr></label>
@@ -44,7 +43,7 @@
             }
 
             </div>
-        *@
+            @*============================================================= *@
             <div class="row top30">
               <label class="col-sm-2 control-label">Report: <abbr class="req" style="color: red" > * </abbr></label>
               <div class="col-sm-10">

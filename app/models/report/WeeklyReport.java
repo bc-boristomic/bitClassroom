@@ -1,13 +1,9 @@
 package models.report;
 
-
-
 import com.avaje.ebean.Model;
-import com.avaje.ebean.Model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +80,6 @@ public class WeeklyReport extends Model{
         this.id = id;
     }
 
-
     //Setters
     public void setCreateDate(DateTime createDate) {
         this.createDate = createDate;
@@ -102,8 +97,37 @@ public class WeeklyReport extends Model{
         this.data = data;
     }
 
+    public static WeeklyReport findWeeklyReportById(Long id) {
+        List<WeeklyReport> weeklyReport = weeklyFinder.where().eq("id", id).findList();
+        if (weeklyReport.size() == 0) {
+            return null;
+        }
+        return (WeeklyReport) weeklyReport.get(0);
+    }
 
-//    @OneToMany(mappedBy = "weeklyReport", cascade = CascadeType.ALL)
-//    private List<WeeklyField> fieldList = new ArrayList<>();
+    public String getFormattedCreationDate() {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+        return dtf.print(createDate);
+    }
 
+    @OneToMany(mappedBy = "weeklyReport", cascade = CascadeType.ALL)
+    private List<ReportWeeklyField> fieldWList = new ArrayList<>();
+
+    public boolean containsWeeklyField(WeeklyField field) {
+        for (ReportWeeklyField wf :fieldWList) {
+            if (wf.getWeeklyField().equals(field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ReportWeeklyField getWeeklyField(WeeklyField field) {
+        for (ReportWeeklyField wf : fieldWList) {
+            if (wf.getWeeklyField().equals(field)) {
+                return wf;
+            }
+        }
+        return null;
+    }
 }
