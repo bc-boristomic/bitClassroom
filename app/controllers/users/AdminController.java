@@ -340,7 +340,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result mentorship() {
-        return ok(views.html.admins.mentorship.render(User.findAll(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
+        return ok(views.html.admins.mentorship.render(User.getFinder().orderBy().asc("first_name").findList(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
     }
 
     /**
