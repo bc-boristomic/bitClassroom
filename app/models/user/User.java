@@ -378,6 +378,13 @@ public final class User extends Model {
         this.messages = messages;
     }
 
+    public String getYearOfBirth() {
+        if (birthDate != null) {
+            return birthDate.split("\\.")[2];
+        }
+        return birthDate;
+    }
+
     public static boolean deleteUser(Long id) {
 
         finder.deleteById(id);

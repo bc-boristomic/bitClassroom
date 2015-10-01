@@ -5,6 +5,7 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import utility.CourseConstants;
 import utility.UserConstants;
 
 import javax.persistence.*;
@@ -41,6 +42,8 @@ public final class Course extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
+    @Column(name = "status")
+    private Integer status = CourseConstants.ACTIVE_COURSE;
 
     /**
      * Empty constructor for Ebean
@@ -184,4 +187,11 @@ public final class Course extends Model {
         this.updateDate = updateDate;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

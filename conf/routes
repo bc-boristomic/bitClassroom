@@ -4,6 +4,7 @@
 
 # 				:: APPLICATION ROUTES BELLOW ::
 # Home page
+GET           /home                                 @controllers.Application.welcome()
 GET           /                                     @controllers.Application.index()
 GET           /about                                @controllers.Application.about()
 
@@ -19,12 +20,19 @@ POST          /user/createprofile                   @controllers.users.UserContr
 GET           /user/editprofile                     @controllers.users.UserController.editProfile()
 POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
 
+# Route for seeing user's public profile
+GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
+
 # SECURITY FOR FULLY ACTIVE USER ONLY
 GET           /user/message                         @controllers.users.UserController.studentList()
 GET           /message/:id                          @controllers.users.UserController.newMessage(id: Long)
 POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
 GET           /allMessage                           @controllers.users.UserController.allMessage()
 GET           /message/selected/:id                 @controllers.users.UserController.seeMessage(id: Long)
+GET           /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
+DELETE        /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
+GET           /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
+DELETE        /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
 
 #				:: ADMIN ROUTES BELLOW ::
 # Admin index page
@@ -56,11 +64,25 @@ GET           /admin/awaitlist                      @controllers.users.AdminCont
 # Create report field
 GET           /admin/createdaily                    @controllers.users.AdminController.genField()
 POST          /admin/savefielddaily                 @controllers.users.AdminController.saveField()
+DELETE        /admin/deletefield/:id                @controllers.users.AdminController.deleteField(id: Long)
 
 # See submited daily reports
 GET           /listReport                           @controllers.users.AdminController.listReport()
 DELETE        /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
+
+GET           /listWeeklyReport                     @controllers.users.AdminController.listWeeklyReport()
+DELETE        /listWeeklyReport/:id                 @controllers.users.AdminController.deleteWeeklyReport(id: Long)
+
+
+# Create weekly report
+GET           /admin/createweekly                   @controllers.users.AdminController.genWeeklyField()
+POST          /admin/savefieldweekly                @controllers.users.AdminController.saveWeeklyField()
+DELETE        /admin/deletefieldweekly/:id          @controllers.users.AdminController.deleteWeeklyField(id: Long)
+
+# See submited weekly report
+GET           /weekly/report                        @controllers.users.MentorController.weeklyReport()
+POST          /weekly/reportSubmit                  @controllers.users.MentorController.saveRaport()
 
 # Create course
 GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
@@ -69,6 +91,14 @@ POST          /admin/createcourse                   @controllers.users.AdminCont
 # List of all registered users and option to delete
 GET           /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
 DELETE        /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
+
+# List of active courses and option to delete or archieve
+GET           /admin/courses                        @controllers.users.AdminController.courseList()
+POST          /admin/courses/:id                    @controllers.users.AdminController.deleteOrArchiveCourse(id: Long)
+
+# List of archived courses and option to activate
+GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
+POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
 
 
 #				:: TEACHER ROUTES BELLOW ::
@@ -101,6 +131,13 @@ GET           /teacher/test                         @controllers.users.TeacherCo
 GET           /mentor/test                          @controllers.users.MentorController.test()
 GET           /student/test                         @controllers.users.StudentController.test()
 
+
+# API routes
+GET           /api/user                             @controllers.api.UserAPIController.getUsers()
+GET           /api/user/:id                         @controllers.api.UserAPIController.getSpecificUser(id: Long)
+POST          /api/user                             @controllers.api.UserAPIController.createUser()
+PUT           /api/user/:id                         @controllers.api.UserAPIController.updateUser(id: Long)
+DELETE        /api/user/:id                         @controllers.api.UserAPIController.deleteUser(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         @controllers.Assets.versioned(path="/public", file: Asset)

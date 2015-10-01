@@ -1,11 +1,12 @@
 @import models.user.User
 @import utility.UserConstants
+
 @(userList: List[User])
 @adminmain("Users ") {
 
 
     <div class="container">
-        <h4 class="page-head-line">Users:</h4>
+        <h4 class="page-head-line">Users</h4>
 
     </div>
 
@@ -15,10 +16,11 @@
             <table id="sort" class="table-condensed table-hover table table-bordered">
                 <thead>
                     <tr class="information">
-                        <th>First name:</th>
-                        <th>Last name:</th>
-                        <th>Email:</th>
-                        <th>Role:</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email</th>
+                        <th>Profile</th>
+                        <th>Role</th>
                         <th></th>
 
                     </tr>
@@ -29,35 +31,51 @@
                         <td>@users.getFirstName</td>
                         <td>@users.getLastName</td>
                         <td>@users.getEmail</td>
+                        <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)"><i class="glyphicon glyphicon-user"/></a></td>
                         @if(users.getRoles.size() > 0 && users.getRoles != null) {
-                            @for(role <- users.getRoles) {
-                                @if(role.getId.equals(UserConstants.ADMIN)) {
-                                    <td>Admin</td>
-                                    <td></td>
+                            @if(users.getRoles.size() == 1) {
+
+                                @for(role <- users.getRoles) {
+                                    @if(role.getId.equals(UserConstants.ADMIN)) {
+                                        <td>Admin</td>
+                                        <td></td>
+                                    }
+                                    @if(role.getId.equals(UserConstants.TEACHER)) {
+                                        <td>Teacher</td>
+                                        <td>
+                                            <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
+                                                <i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+
+                                    }
+                                    @if(role.getId.equals(UserConstants.MENTOR)) {
+                                        <td>Mentor</td>
+                                        <td>
+                                            <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
+                                                <i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+                                    }
+                                    @if(role.getId.equals(UserConstants.STUDENT)) {
+                                        <td>Student</td>
+                                        <td>
+                                            <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
+                                                <i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+                                    }
+
                                 }
-                                @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <td>Teacher</td>
-                                    <td>
-                                        <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
-                                            <i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
-                                }
-                                @if(role.getId.equals(UserConstants.MENTOR)) {
-                                    <td>Mentor</td>
-                                    <td>
-                                        <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
-                                            <i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
-                                }
-                                @if(role.getId.equals(UserConstants.STUDENT)) {
-                                    <td>Student</td>
-                                    <td>
-                                        <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteUser(users.getId)" role="button">
-                                            <i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
-                                }
+
+                            } else{
+                               @if(((users.getRoles.get(0).getId.equals(UserConstants.ADMIN)) || (users.getRoles.get(0).getId.equals(UserConstants.TEACHER))) && ((users.getRoles.get(1).getId.equals(UserConstants.ADMIN)) || (users.getRoles.get(1).getId.equals(UserConstants.TEACHER)))){
+                                   <td>Admin/Techer</td>
+                                   <td></td>
+
+                               }
                             }
+
+
                         }
+
                     </tr>
                 }
                 </tbody>

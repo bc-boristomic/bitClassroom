@@ -1,6 +1,6 @@
 @import models.user.User
 @import utility.UserConstants
-@(userList: List[User])
+@(userList: List[User])(active: Int)
 @adminmain("Assign mentor to students") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveMentorship(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
@@ -22,6 +22,7 @@
                 }
                 </select>
             </div>
+
             <label for="select" class="col-lg-2 control-label">Students</label>
             <div class="col-lg-4">
                 <select class="form-control" id="select" name="student">
@@ -36,12 +37,23 @@
                 }
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.saveMentorship()">
-                Asign</button>
+
+            @if(active > 0) {
+                <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.saveMentorship()">
+                    Assign</button>
+            } else {
+                <br>
+
+                <div class="alert alert-dismissible alert-info top50">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>All students have mentors.</strong>
+                    <div>
+                }
         </div>
 
-    }
 
+
+}
 
 }
 

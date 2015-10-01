@@ -6,13 +6,10 @@ import helpers.SessionHelper;
 import models.ErrorLog;
 import models.course.Course;
 import models.course.CourseUser;
-import models.report.DailyReport;
-import models.report.Field;
-import models.report.ReportField;
+import models.report.*;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
-import models.report.Field;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -23,18 +20,13 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.CourseConstants;
 import utility.MD5Hash;
 import utility.UserConstants;
+import utility.database.Roles;
 import views.html.admins.adduser;
-import views.html.admins.adminindex;
-import views.html.admins.allerrors;
-import views.html.admins.userlist;
-
-import views.html.admins.setingsdailyraport;
-
-import views.html.admins.fillClassDetails;
-import views.html.admins.newTableDaily;
-
+import views.html.admins.setingsweeklyreport;
+import views.html.admins.newTableWeekly;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -53,11 +45,8 @@ public class AdminController extends Controller {
     private final Form<Field> fieldForm = Form.form(Field.class);
 
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
-
-    private List<String> imageList = new ArrayList<>();
-
     private final Form<Course> courseForm = Form.form(Course.class);
-
+    private List<String> imageList = new ArrayList<>();
 
     /**
      * Admin index page.
@@ -66,7 +55,7 @@ public class AdminController extends Controller {
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
-        return ok(adminindex.render(temp));
+        return ok(views.html.admins.adminindex.render(temp));
     }
 
     /**
@@ -80,7 +69,7 @@ public class AdminController extends Controller {
     }
 
     public Result listOfUser() {
-        return ok(userlist.render(User.findAll()));
+        return ok(views.html.admins.userlist.render(User.findAll()));
     }
 
     /**
@@ -96,21 +85,41 @@ public class AdminController extends Controller {
             return redirect("register");
         }
 
-        String fname = boundForm.bindFromRequest().field("firstname").value();
-        String lname = boundForm.bindFromRequest().field("lastname").value();
-        String email = boundForm.bindFromRequest().field("email").value();
-        String password = boundForm.bindFromRequest().field("password").value();
-        String tmpRole = boundForm.bindFromRequest().field("type").value();
+        String fname = boundForm.field("firstname").value();
+        String lname = boundForm.field("lastname").value();
+        String email = boundForm.field("email").value();
+        String password = boundForm.field("password").value();
+        String admin = boundForm.field("admin").value();
+        String teacher = boundForm.field("teacher").value();
+        String mentor = boundForm.field("mentor").value();
+        String student = boundForm.field("student").value();
+        String tmpRole = boundForm.field("type").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
-        Long role = 1L;
+        User u = new User();
+        List<Role> roles = new ArrayList<>();
+        Long role = null;
         if (tmpRole != null) {
-            if ("2".equals(tmpRole)) {
+            if ("1".equals(tmpRole)) {
+                role = 1L;
+                Role r = new Role(role, UserConstants.NAME_ADMIN);
+                roles.add(r);
+            } else if ("2".equals(tmpRole)) {
                 role = 2L;
+                Role r = new Role(role, UserConstants.NAME_TEACHER);
+                roles.add(r);
             } else if ("3".equals(tmpRole)) {
                 role = 3L;
+                Role r = new Role(role, UserConstants.NAME_MENTOR);
+                roles.add(r);
             } else if ("4".equals(tmpRole)) {
                 role = 4L;
+                Role r = new Role(role, UserConstants.NAME_STUDENT);
+                roles.add(r);
+                u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+            } else if ("5".equals(tmpRole)) {
+                roles.add(Roles.ADMIN);
+                roles.add(Roles.TEACHER);
             }
             try {
                 //role = Long.parseLong(tmpRole);
@@ -119,11 +128,6 @@ public class AdminController extends Controller {
             }
         }
 
-
-        Role r = new Role(role, UserConstants.NAME_ADMIN);
-        List<Role> roles = new ArrayList<>();
-        roles.add(r);
-        User u = new User();
         u.setFirstName(fname);
         u.setLastName(lname);
         u.setEmail(email);
@@ -155,7 +159,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result seeErrors() {
-        return ok(allerrors.render(ErrorLog.findAllErrors()));
+        return ok(views.html.admins.allerrors.render(ErrorLog.findAllErrors()));
     }
 
 
@@ -209,7 +213,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result genField() {
-        return ok(setingsdailyraport.render(Field.getFinder().all()));
+        return ok(views.html.admins.setingsdailyraport.render(Field.getFinder().all()));
     }
 
     /**
@@ -222,8 +226,15 @@ public class AdminController extends Controller {
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
-        model.setName(name);
-        model.save();
+        String name1 = AdminController.firstUpperCase(name);
+        model.setName(name1);
+        try {
+            model.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+            return redirect("/admin/createdaily");
+        }
+        flash("success", "You added another field.");
         return redirect("/admin/createdaily");
 
     }
@@ -235,7 +246,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result addCourse() {
-        return ok(fillClassDetails.render(User.getFinder().all(), courseForm));
+        return ok(views.html.admins.fillClassDetails.render(User.getFinder().all(), courseForm));
     }
 
     /**
@@ -247,9 +258,9 @@ public class AdminController extends Controller {
         Form<Course> boundForm = courseForm.bindFromRequest();
 
 
-        String name = boundForm.bindFromRequest().field("name").value();
-        String description = boundForm.bindFromRequest().field("description").value();
-        String teacher = boundForm.bindFromRequest().field("type").value();
+        String name = boundForm.field("name").value();
+        String description = boundForm.field("description").value();
+        String teacher = boundForm.field("type").value();
 
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
@@ -324,7 +335,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result listReport() {
-        return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
 
@@ -336,7 +347,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result mentorship() {
-        return ok(views.html.admins.mentorship.render(User.findAll()));
+        return ok(views.html.admins.mentorship.render(User.getFinder().orderBy().asc("first_name").findList(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
     }
 
     /**
@@ -414,5 +425,116 @@ public class AdminController extends Controller {
         return redirect("/admin/activementors");
     }
 
+    /**
+     * Renders view with table filled with all active courses and option to archive or delete course.
+     *
+     * @return
+     */
+    public Result courseList() {
+        return ok(views.html.admins.coursesAll.render(Course.getFinder().where().eq("status", CourseConstants.ACTIVE_COURSE).findList()));
+    }
+
+    /**
+     * Process ajax request, if pressed option 0 is passed course is automatically set as archived,
+     * if option 2 is sent course is deleted. Course is found by id passed in method params.
+     *
+     * @param id <code>Long</code> type value of Course id
+     * @return
+     */
+    public Result deleteOrArchiveCourse(Long id) {
+        DynamicForm form = Form.form().bindFromRequest();
+
+        String s = form.data().get("pressed");
+        Course course = Course.getFinder().byId(id);
+        if (s != null) {
+            course.setStatus(Integer.parseInt(s));
+            course.setUpdateDate(new DateTime());
+            course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+            course.save();
+        }
+        return ok();
+    }
+
+    /**
+     * Renders view with table filled with all archived courses. Course name, description and email of user who
+     * archived it is displayed,
+     *
+     * @return
+     */
+    public Result archivedCourses() {
+        return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
+    }
+
+    /**
+     * Recieves <code>Long</code> type value of Course id, find's the course and set's
+     * status to active, find's course in relational table and only deletes all Users (set's them to null).
+     *
+     * @param id <code>Long</code> type value of Course id
+     * @return
+     */
+    public Result activateCourse(Long id) {
+        Course course = Course.getFinder().byId(id);
+        course.setStatus(CourseConstants.ACTIVE_COURSE);
+        course.setUpdateDate(new DateTime());
+        course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        course.update();
+
+        List<CourseUser> cu = CourseUser.getFinder().where().eq("course_id", id).findList();
+        for (CourseUser courseUser : cu) {
+            courseUser.setUser(null);
+            courseUser.update();
+        }
+        return ok();
+    }
+
+    public Result deleteWeeklyReport(Long id) {
+        WeeklyReport.findWeeklyReportById(id).delete();
+        return redirect("/listWeeklyReport");
+    }
+
+    public Result deleteField(Long id) {
+        Field.findFieldById(id).delete();
+        return redirect("/admin/createdaily");
+    }
+
+    public Result deleteWeeklyField(Long id) {
+        WeeklyField.findFielWeeklydById(id).delete();
+        return redirect("/admin/createweekly");
+    }
+
+    public Result genWeeklyField() {
+        return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
+    }
+
+    public Result saveWeeklyField() {
+        Form<WeeklyField> fieldWeeklyForm = Form.form(WeeklyField.class);
+        WeeklyField wf = new WeeklyField();
+        String n = fieldWeeklyForm.bindFromRequest().field("scriptWeeklyName").value();
+        String nameWF = AdminController.firstUpperCase(n);
+        wf.setName(nameWF);
+        try {
+            wf.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+        }
+        return redirect("/admin/createweekly");
+    }
+
+    public static String firstUpperCase(String name) {
+        String s = name.substring(0, 1);
+        String s1 = s.toUpperCase();
+        String s2 = name.substring(1, name.length());
+        String name1 = s1 + s2;
+        return name1;
+    }
+
+    /**
+     * See tables of weekly reports
+     *
+     * @return
+     */
+    public Result listWeeklyReport() {
+        return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
+    }
 
 }

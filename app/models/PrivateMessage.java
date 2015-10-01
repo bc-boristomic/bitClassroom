@@ -37,6 +37,12 @@ public class PrivateMessage extends Model {
     @Column
     private Integer status;
 
+    @Column
+    private Integer inboxStatus;
+
+    @Column
+    private Integer  sendStatus;
+
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
 
@@ -102,8 +108,28 @@ public class PrivateMessage extends Model {
         return id;
     }
 
+    public Integer getInboxStatus() {
+        return inboxStatus;
+    }
+
+    public void setInboxStatus(Integer inboxStatus) {
+        this.inboxStatus = inboxStatus;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+
     public static Finder<Long, PrivateMessage> getFind() {
         return find;
+    }
+
+    public DateTime getCreationDate() {
+        return creationDate;
     }
 
     public Integer getStatus() {
@@ -113,6 +139,15 @@ public class PrivateMessage extends Model {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public static PrivateMessage findMessageById(Long id) {
+        return find
+                .where()
+                .eq("id", id)
+                .orderBy("id desc")
+                .findUnique();
+    }
+
 
     public static void deleteMsg(Long id){
 

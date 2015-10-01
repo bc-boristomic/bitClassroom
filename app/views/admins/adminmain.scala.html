@@ -44,7 +44,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/"><strong>bitClassroom</strong></a>
+                        <a class="navbar-brand" href="/admin"><strong>bitClassroom</strong></a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                         <ul class="nav navbar-nav">
@@ -70,7 +70,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Classroom<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/user/courses">See all courses</a></li>
+                                    <li><a href="/admin/courses">See active courses</a></li>
+                                    <li><a href="/admin/courses/archived">See archived courses</a></li>
                                     <li><a href="/admin/createcourse">Add new course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
@@ -85,6 +86,15 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/admin/createdaily">Add new daily report</a></li>
                                     <li><a href="/listReport ">View daily report</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Weekly report<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                <li><a href="/admin/createweekly">Add new weekly report</a></li>
+                                <li><a href="/listWeeklyReport">View weekly report</a></li>
                                 </ul>
                             </li>
 
@@ -180,16 +190,16 @@
             $('#sort').DataTable();
             });
 
-            $(document).ready(function() {
-                    $.ajax({
-                    type: "post",
-                    url: "@routes.Application.getNotification()",
-                    data: ""
+            $(document).ready(setInterval(function(){
+                $.ajax({
+                        type: "post",
+                        url: "@routes.Application.getNotification()",
+                        data: ""
                 }).success(function(response) {
                     $('#notify').html(response);
                 })
+                }, 20000));
 
-            });
         </script>
 
 

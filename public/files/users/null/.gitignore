@@ -1,0 +1,23 @@
+logs
+target
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+
+
+#new files
+project/project
+project/target
+tmp
+.history
+dist
+/*.iml
+/out
+activator-launch-1.3.5.jar
+activator.bat
+README
+.gitignore~
+.DS_STORE

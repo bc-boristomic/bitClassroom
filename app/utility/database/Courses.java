@@ -13,6 +13,7 @@ public class Courses {
         javaL.setDescription("Lectures");
         javaL.setImage("java.png");
         javaL.setCreatedBy("Global.java");
+        javaL.setTeacher("Benjamin");
         javaL.save();
     }
 }

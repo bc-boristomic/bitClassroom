@@ -23,6 +23,7 @@ public final class ReportField extends Model {
     @JoinColumn(name = "daly_id", referencedColumnName = "id")
     private DailyReport dailyReport;
     @ManyToOne
+    @JoinColumn(name = "field_id", referencedColumnName = "id")
     private Field field;
 
     /**

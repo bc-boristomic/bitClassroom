@@ -1,5 +1,6 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.PrivateMessage;
@@ -40,6 +41,7 @@ public class UserController extends Controller {
 
     /**
      * Renders template for creating initial user profile with all information, once profile is created status of user is
+     *
      * @return
      */
     @Security.Authenticated(Authorization.InactiveUser.class)
@@ -58,8 +60,8 @@ public class UserController extends Controller {
             return redirect("/");
         }
 
-        String password1 = boundForm.bindFromRequest().field("password1").value();
-        String password2 = boundForm.bindFromRequest().field("password2").value();
+        String password1 = boundForm.field("password1").value();
+        String password2 = boundForm.field("password2").value();
         if (!password1.equals(password2)) {
             flash("warning", "Your passwords don't match.");
             return redirect("/user/createprofile");
@@ -83,20 +85,22 @@ public class UserController extends Controller {
                     flash("error", "Could not move file.");
                 }
             }
-            temp.setProfilePicture(temp.getId() + "/" + picName);
+            if (picName != null) {
+                temp.setProfilePicture(temp.getId() + "/" + picName);
+            }
         }
 
-        String nickname = boundForm.bindFromRequest().field("nickname").value();
-        String birthDate = boundForm.bindFromRequest().field("birth-date").value();
-        String location = boundForm.bindFromRequest().field("location").value();
-        String homePhone = boundForm.bindFromRequest().field("home-phone").value();
-        String mobilePhone = boundForm.bindFromRequest().field("mobile-phone").value();
-        String website = boundForm.bindFromRequest().field("website").value();
-        String skype = boundForm.bindFromRequest().field("skype").value();
-        String facebook = boundForm.bindFromRequest().field("facebook").value();
-        String twitter = boundForm.bindFromRequest().field("twitter").value();
-        String youtube = boundForm.bindFromRequest().field("youtube").value();
-        String gender = boundForm.bindFromRequest().field("gender").value();
+        String nickname = boundForm.field("nickname").value();
+        String birthDate = boundForm.field("birth-date").value();
+        String location = boundForm.field("location").value();
+        String homePhone = boundForm.field("home-phone").value();
+        String mobilePhone = boundForm.field("mobile-phone").value();
+        String website = boundForm.field("website").value();
+        String skype = boundForm.field("skype").value();
+        String facebook = boundForm.field("facebook").value();
+        String twitter = boundForm.field("twitter").value();
+        String youtube = boundForm.field("youtube").value();
+        String gender = boundForm.field("gender").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
 
@@ -130,8 +134,8 @@ public class UserController extends Controller {
             return redirect("/");
         }
 
-        String password1 = boundForm.bindFromRequest().field("password1").value();
-        String password2 = boundForm.bindFromRequest().field("password2").value();
+        String password1 = boundForm.field("password1").value();
+        String password2 = boundForm.field("password2").value();
         if (!password1.equals(password2)) {
             flash("warning", "Your passwords don't match.");
             return redirect("/user/editprofile");
@@ -160,15 +164,15 @@ public class UserController extends Controller {
             }
         }
 
-        String nickname = boundForm.bindFromRequest().field("nickname").value();
-        String location = boundForm.bindFromRequest().field("location").value();
-        String homePhone = boundForm.bindFromRequest().field("home-phone").value();
-        String mobilePhone = boundForm.bindFromRequest().field("mobile-phone").value();
-        String website = boundForm.bindFromRequest().field("website").value();
-        String skype = boundForm.bindFromRequest().field("skype").value();
-        String facebook = boundForm.bindFromRequest().field("facebook").value();
-        String twitter = boundForm.bindFromRequest().field("twitter").value();
-        String youtube = boundForm.bindFromRequest().field("youtube").value();
+        String nickname = boundForm.field("nickname").value();
+        String location = boundForm.field("location").value();
+        String homePhone = boundForm.field("home-phone").value();
+        String mobilePhone = boundForm.field("mobile-phone").value();
+        String website = boundForm.field("website").value();
+        String skype = boundForm.field("skype").value();
+        String facebook = boundForm.field("facebook").value();
+        String twitter = boundForm.field("twitter").value();
+        String youtube = boundForm.field("youtube").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
 
@@ -196,6 +200,7 @@ public class UserController extends Controller {
      * Method for see all student in the class.
      * Current user must be added in the class first to see other student
      * Also then he can send message other students, teacher and mentors.
+     *
      * @return - view of all students in the class
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
@@ -213,15 +218,25 @@ public class UserController extends Controller {
         return redirect("/user/courses");
     }
 
+    /**
+     * Method for write new message, with required Subject and content
+     * @param id - long id of selected User for send message
+     * @return -
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result newMessage(Long id){
+    public Result newMessage(Long id) {
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
         return ok(message.render(sender, receiver));
     }
 
+    /**
+     * Method for send message to selected user from same Class
+     * @param id - Long id of selected user which message was send
+     * @return - view of all message, inbox and sent message
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result sendMessage(Long id){
+    public Result sendMessage(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
 
         User sender = SessionHelper.currentUser(ctx());
@@ -237,23 +252,84 @@ public class UserController extends Controller {
         return redirect("/allMessage");
     }
 
+    /**
+     * Method for see all message., received and sent message.
+     * @return - view of sent and inbox.
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result allMessage(){
+    public Result allMessage() {
 
         User u = SessionHelper.currentUser(ctx());
-        if(u == null) {
+        if (u == null) {
 
             return redirect("/");
         }
-        List<PrivateMessage> messagesReceived = PrivateMessage.getFind().where().eq("receiver.id", u.getId()).findList();
-        List<PrivateMessage> messagesSent = PrivateMessage.getFind().where().eq("sender.id", u.getId()).findList();
+        List<PrivateMessage> messagesReceived = PrivateMessage.getFind().where().eq("receiver.id", u.getId()).orderBy().desc("create_date").findList();
+        List<PrivateMessage> messagesSent = PrivateMessage.getFind().where().eq("sender.id", u.getId()).orderBy().desc("create_date").findList();
 
         return ok(allMessage.render(u, messagesReceived, messagesSent));
 
     }
 
+    /**
+     * Method for delete message
+     * @param id - Long id of selected message for delte
+     * @return - view of other message
+     */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
+    public Result deleteInboxMessage(Long id) {
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setInboxStatus(1);
+        Ebean.save(msg);
+        return redirect("/allMessage");
+    }
+
+    public Result deleteSendMessage(Long id){
+
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setSendStatus(1);
+        Ebean.save(msg);
+        return redirect("/allMessage");
+    }
+
+    /**
+     * Method for read recived message fr0om other user
+     * @param id - Long message id
+     * @return - view of message content
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result seeMessage(Long id) {
+        PrivateMessage msg = PrivateMessage.findMessageById(id);
+        msg.setStatus(1);
+        Ebean.save(msg);
+        if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail()) || msg.getSender().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
+        }
+
+          return  redirect("/");
+    }
+
+    /**
+     * Get's user by id passed in method param <code>Long</code> type value.
+     * If id is not <code>Long</code> value badRequest is sent.
+     * If user is foud by id, a public profile is rendered, otherwise site redirects
+     * to index page with warning message.
+     *
+     * @param id <code>Long</code> type value of user's id
+     * @return bad request if user's id is null, redirects to index page if user doesn't exist,
+     * renders user's profile if everything is ok.
+     */
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
+    public Result publicProfile(Long id) {
+        if (id != null) {
+            User temp = User.getFinder().byId(id);
+            if (temp != null) {
+                return ok(views.html.users.publicProfile.render(temp));
+            }
+            flash("warning", "User does not exist.");
+            return redirect("/");
+        }
+        return badRequest();
     }
 }

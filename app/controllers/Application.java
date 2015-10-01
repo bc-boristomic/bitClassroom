@@ -1,7 +1,6 @@
 package controllers;
 
 import helpers.SessionHelper;
-import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
@@ -11,6 +10,7 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;
 import views.html.index;
+import views.html.newMain;
 import views.html.users.login;
 import views.html.users.util.email;
 
@@ -25,6 +25,12 @@ public class Application extends Controller {
      *
      * @return
      */
+
+
+    public Result welcome(){
+        return ok(newMain.render());
+    }
+
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
         //List<CourseUser> culist = CourseUser.findAll(temp.getId());
@@ -77,8 +83,8 @@ public class Application extends Controller {
             return redirect("login");
         }
 
-        String email = boundForm.bindFromRequest().field("email").value();
-        String password = boundForm.bindFromRequest().field("password").value();
+        String email = boundForm.field("email").value();
+        String password = boundForm.field("password").value();
         String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
         User user = User.findByEmailAndPassword(email, passwordHashed);
 
@@ -116,7 +122,7 @@ public class Application extends Controller {
     public Result logout() {
         session().clear();
         flash("success", "You successfuly signed out.");
-        return redirect("/login");
+        return redirect("/home");
     }
 
     public Result getNotification() {
@@ -124,6 +130,8 @@ public class Application extends Controller {
         int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
         return ok(notify + "");
     }
+
+
 
 
 }
