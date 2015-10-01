@@ -60,11 +60,11 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 
-                        @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
+                        @if(currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
                             @for(role <- currentUser.getRoles) {
                                 @if(role.getId.equals(UserConstants.ADMIN)) {
                                     <li><a href="/admin">Admin panel</a></li>
-
+                                }
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
                                     <li><a href="/allMessage">Messages</a></li>
 
@@ -98,8 +98,8 @@
                                             <li class="divider"></li>
                                             <li><a href="/user/message">Students</a></li>
                                         </ul>
-                                    </li>
-                                }}}}
+                                         </li>
+                                }}}
 
 
                             <li class="dropdown active">
