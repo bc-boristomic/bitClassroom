@@ -39,7 +39,10 @@ public class TeacherController extends Controller {
     }
 
     public Result saveRaport() {
+        User temp = SessionHelper.currentUser(ctx());
+
         List<Field> fields = Field.getFinder().findList();
+
         DynamicForm dynamicForm = Form.form().bindFromRequest();
         dynamicForm.bindFromRequest(request());
 
@@ -48,6 +51,7 @@ public class TeacherController extends Controller {
         dailyReport.setCreatedDate(new DateTime());
         dailyReport.setData(dynamicForm.get("data"));
         dailyReport.setDate(dynamicForm.get("date"));
+        dailyReport.setTeacher(temp.getFirstName() + " " + temp.getLastName());
 
         dailyReport.save();
 
