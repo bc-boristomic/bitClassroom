@@ -15,6 +15,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 import views.html.dailyreports.weeklyreport;
 import views.html.index;
 import java.util.List;
@@ -33,7 +34,7 @@ public class MentorController extends Controller {
         dynamicForm.get("1");
 
         List<WeeklyField> weeklyFields = WeeklyField.getFinder().findList();
-        List<Mentorship> mentorship = Mentorship.getFinder().where().eq("mentor_id", SessionHelper.currentUser(ctx()).getId()).findList();
+        List<Mentorship> mentorship = Mentorship.getFinder().where().eq("mentor_id", SessionHelper.currentUser(ctx()).getId()).eq("status", UserConstants.ACTIVE_MENTORSHIP).findList();
         return ok(weeklyreport.render(reportForm, weeklyFields, mentorship));
 
     }
