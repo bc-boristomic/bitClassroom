@@ -33,6 +33,10 @@ public class Application extends Controller {
 
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
+
+        if (temp == null){
+            return redirect("/home");
+        }
         //List<CourseUser> culist = CourseUser.findAll(temp.getId());
 
        // if (temp != null && culist.size()!= 0) {
