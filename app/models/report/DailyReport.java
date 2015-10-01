@@ -30,6 +30,8 @@ public final class DailyReport extends Model {
     private String data;
     @Column(name = "date")
     private String date;
+    @Column(name = "teacher")
+    private String teacher;
 
     /*
      * Default empty constructor for Ebean
@@ -70,7 +72,13 @@ public final class DailyReport extends Model {
 
     public void setDate(String date) { this.date = date;}
 
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
 
+    public String getTeacher() {
+        return teacher;
+    }
 
     public String getDate() {  return date;}
 

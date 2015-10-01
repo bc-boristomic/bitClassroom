@@ -31,6 +31,7 @@ create table daily_report (
   create_date               datetime,
   data                      varchar(4000),
   date                      varchar(255),
+  teacher                   varchar(255),
   constraint pk_daily_report primary key (id))
 ;
 
