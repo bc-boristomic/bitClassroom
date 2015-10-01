@@ -2,32 +2,35 @@
 @import utility.UserConstants
 @(user: User)
 @main(user.getFirstName + " " + user.getLastName + " public profile") {
-    <img src="">
+
+    <br><br>
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">@user.getFirstName @user.getLastName</h3>
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")" class="img-circle img-responsive"> </div>
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@routes.Assets.versioned("images/users/" + user.getProfilePicture + "")" class="img-circle img-responsive"> </div>
 
                 <div class=" col-md-9 col-lg-9 ">
                     <table class="table table-user-information">
                         <tbody>
                             <tr>
-                                <td>Nickname:</td>
-                                    <td>@user.getNickName</td>
+                                <td><strong>Nickname</strong></td>
+                                <td>@user.getNickName</td>
                             </tr>
 
                             <tr>
-                                <td>Year of Birth:</td>
+                                <td><strong>Year of Birth</strong></td>
                                 @if(user.getStatus.equals(UserConstants.FULLY_ACTIVE)) {
                                     <td>@user.getYearOfBirth</td>
-                                } else { <td></td> }
+                                } else {
+                                    <td></td>
+                                }
                             </tr>
 
                             <tr>
-                                <td>Gender</td>
+                                <td><strong>Gender</strong></td>
                                 @if(user.getStatus.equals(UserConstants.FULLY_ACTIVE)) {
                                     <td>@if(user.getGender.equals(1)) {Male} else {Female}</td>
                                 } else {
@@ -36,27 +39,33 @@
                             </tr>
 
                             <tr>
-                                <td>Location:</td>
-                                    <td>@user.getLocation</td>
+                                <td><strong>Location</strong></td>
+                                <td>@user.getLocation</td>
+                            </tr>
+
+
+                            <tr>
+                                <td><strong>Contact</strong></td>
+                                <td></td>
                             </tr>
 
                             <tr>
-                                <td>Cell phone:</td>
-                                    <td>@user.getCellPhone</td>
+                                <td><i class="fa fa-phone fa-2x"></i></td>
+                                <td>@user.getCellPhone</td>
                             </tr>
 
                             <tr>
-                                <td>Email:</td>
+                                <td><i class="fa fa-envelope fa-2x"></i></td>
                                 <td><a href="mailto:@user.getEmail">@user.getEmail</a></td>
                             </tr>
 
                             <tr>
-                                <td>Skype:</td>
-                                    <td>@user.getSkype</td>
+                                <td><i class="fa fa-skype fa-2x "></i></td>
+                                <td>@user.getSkype</td>
                             </tr>
 
                             <tr>
-                                <td>Facebook:</td>
+                                <td><i class="fa fa-facebook fa-2x"></i></td>
                                 <td><a href="@user.getFacebook">@user.getFacebook</a></td>
                             </tr>
 
@@ -64,7 +73,8 @@
                         </tbody>
                     </table>
 
-                    <a href="@controllers.users.routes.UserController.newMessage(user.getId)" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-envelope" ></i> Send @user.getFirstName a message</a>
+                    <a href="@controllers.users.routes.UserController.newMessage(user.getId)" class="btn btn-info pull-right"><i class="glyphicon glyphicon-envelope" ></i>
+                        Send @user.getFirstName a message</a>
 
 
                 </div>

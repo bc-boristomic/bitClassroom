@@ -63,6 +63,11 @@ public class Users {
 			whatUser.setStatus(UserConstants.FULLY_ACTIVE);
 			whatUser.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.ADMIN })));
 			whatUser.setCreatedBy("Global.java");
+			if (i == 0) {
+				whatUser.setGender(0);
+			} else {
+				whatUser.setGender(1);
+			}
 			whatUser.save();
 		}
 
