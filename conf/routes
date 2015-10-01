@@ -122,6 +122,7 @@ POST          /post/                                @controllers.posts.PostContr
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
+GET           /msgntif                              @controllers.Application.unreadMessages()
 
 
 # FOR TESTING ONLY
