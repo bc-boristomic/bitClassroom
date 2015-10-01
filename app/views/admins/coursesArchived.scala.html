@@ -1,6 +1,6 @@
 @import models.course.Course
 @(courses: List[Course])
-@adminmain("Active courses") {
+@adminmain("Archived courses") {
 
   <div class="container">
     <h4 class="page-head-line">Courses on bitClassroom</h4>
@@ -15,6 +15,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Archived by</th>
+            <th>Reactivate</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,25 @@
             <td>@course.getName</td>
             <td>@course.getDescription</td>
             <td>@course.getUpdatedBy</td>
+            <td><a id="activate@course.getId" class="btn btn-info btn-xs" data-role="delete@course.getId" data-delete-parent="tr"><i class="glyphicon glyphicon-folder-close"></i></a></td>
+
+            <script>
+              $(document).ready(function() {
+                $("#activate@course.getId").click(function() {
+                  $toDelete = $(this);
+                  var conf = bootbox.confirm("Are you sure you want to activate course @course.getName?", function(result){
+                    if(result != false){
+                      $.ajax({
+                        type: "post",
+                        url: "@controllers.users.routes.AdminController.activateCourse(course.getId)",
+                      }).success(function(response) {
+                        $toDelete.parents($toDelete.attr("data-delete-parent")).remove();
+                      })
+                    }
+                  });
+                });
+              });
+            </script>
           </tr>
         }
         </tbody>
