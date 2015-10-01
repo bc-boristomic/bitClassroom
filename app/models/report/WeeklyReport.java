@@ -35,7 +35,7 @@ public class WeeklyReport extends Model{
     @Column(name = "student")
     private String student;
 
-    @Column(name = "data")
+    @Column(name = "data", length = 4000)
     private String data;
 
     //Constructior

@@ -147,7 +147,7 @@ create table weekly_report (
   date                      varchar(255),
   name                      varchar(255),
   student                   varchar(255),
-  data                      varchar(255),
+  data                      varchar(4000),
   constraint pk_weekly_report primary key (id))
 ;
 
