@@ -6,9 +6,7 @@ import helpers.SessionHelper;
 import models.ErrorLog;
 import models.course.Course;
 import models.course.CourseUser;
-import models.report.DailyReport;
-import models.report.Field;
-import models.report.ReportField;
+import models.report.*;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
@@ -27,6 +25,8 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.adduser;
+import views.html.admins.setingsweeklyreport;
+import views.html.admins.newTableWeekly;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -226,8 +226,15 @@ public class AdminController extends Controller {
         Form<Field> fieldModelForm = Form.form(Field.class);
         Field model = new Field();
         String name = fieldModelForm.bindFromRequest().field("scriptName").value();
-        model.setName(name);
-        model.save();
+        String name1 = AdminController.firstUpperCase(name);
+        model.setName(name1);
+        try {
+            model.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+            return redirect("/admin/createdaily");
+        }
+        flash("success", "You added another field.");
         return redirect("/admin/createdaily");
 
     }
@@ -478,6 +485,56 @@ public class AdminController extends Controller {
             courseUser.update();
         }
         return ok();
+    }
+
+    public Result deleteWeeklyReport(Long id) {
+        WeeklyReport.findWeeklyReportById(id).delete();
+        return redirect("/listWeeklyReport");
+    }
+
+    public Result deleteField(Long id) {
+        Field.findFieldById(id).delete();
+        return redirect("/admin/createdaily");
+    }
+
+    public Result deleteWeeklyField(Long id) {
+        WeeklyField.findFielWeeklydById(id).delete();
+        return redirect("/admin/createweekly");
+    }
+
+    public Result genWeeklyField() {
+        return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
+    }
+
+    public Result saveWeeklyField() {
+        Form<WeeklyField> fieldWeeklyForm = Form.form(WeeklyField.class);
+        WeeklyField wf = new WeeklyField();
+        String n = fieldWeeklyForm.bindFromRequest().field("scriptWeeklyName").value();
+        String nameWF = AdminController.firstUpperCase(n);
+        wf.setName(nameWF);
+        try {
+            wf.save();
+        }catch (PersistenceException e){
+            flash("warning", "Name field already exist");
+        }
+        return redirect("/admin/createweekly");
+    }
+
+    public static String firstUpperCase(String name) {
+        String s = name.substring(0, 1);
+        String s1 = s.toUpperCase();
+        String s2 = name.substring(1, name.length());
+        String name1 = s1 + s2;
+        return name1;
+    }
+
+    /**
+     * See tables of weekly reports
+     *
+     * @return
+     */
+    public Result listWeeklyReport() {
+        return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
 }

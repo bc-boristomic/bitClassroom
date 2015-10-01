@@ -4,8 +4,8 @@
 
 # 				:: APPLICATION ROUTES BELLOW ::
 # Home page
-GET           /                                     @controllers.Application.welcome()
-GET           /index                                @controllers.Application.index()
+GET           /home                                 @controllers.Application.welcome()
+GET           /                                     @controllers.Application.index()
 GET           /about                                @controllers.Application.about()
 
 GET           /login                                @controllers.Application.login()
@@ -64,11 +64,25 @@ GET           /admin/awaitlist                      @controllers.users.AdminCont
 # Create report field
 GET           /admin/createdaily                    @controllers.users.AdminController.genField()
 POST          /admin/savefielddaily                 @controllers.users.AdminController.saveField()
+DELETE        /admin/deletefield/:id                @controllers.users.AdminController.deleteField(id: Long)
 
 # See submited daily reports
 GET           /listReport                           @controllers.users.AdminController.listReport()
 DELETE        /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
 GET           /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
+
+GET           /listWeeklyReport                     @controllers.users.AdminController.listWeeklyReport()
+DELETE        /listWeeklyReport/:id                 @controllers.users.AdminController.deleteWeeklyReport(id: Long)
+
+
+# Create weekly report
+GET           /admin/createweekly                   @controllers.users.AdminController.genWeeklyField()
+POST          /admin/savefieldweekly                @controllers.users.AdminController.saveWeeklyField()
+DELETE        /admin/deletefieldweekly/:id          @controllers.users.AdminController.deleteWeeklyField(id: Long)
+
+# See submited weekly report
+GET           /weekly/report                        @controllers.users.MentorController.weeklyReport()
+POST          /weekly/reportSubmit                  @controllers.users.MentorController.saveRaport()
 
 # Create course
 GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
