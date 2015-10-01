@@ -3,15 +3,12 @@
 @import models.report.DailyReport
 @(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
 
-@adminmain("NEW List") {
-
-
+@adminmain("Daily List") {
     <form>
         <div style="margin-top: 110px">
             <h3 class="page-head-line"> Table of daily reports </h3>
         </div>
-
-        <table id="sort" class="table-bordered" style="background: papayawhip">
+        <table id="sort" class="table-bordered" style="background: #B0BED9">
             <div style="margin: 40px 30px 0px 30px" >
                 <thead>
                     <tr> <th>Date</th>
@@ -26,11 +23,9 @@
                 @for(ldr <- listDailyReport) {
                     <tbody>
                         <div>
-                            <tr class="success" style="background: #81d186">
+                            <tr class="success" style="background: lightgreen">
                                 <td>@ldr.getDate</td>
                                 <td>@ldr.getName</td>
-
-
                                 @for(field <- listField) {
                                     @if(ldr.containsField(field) == true) {
                                         <td>@ldr.getField(field).getValue()</td>
@@ -50,5 +45,4 @@
             </div>
         </table>
     </form>
-
 }
