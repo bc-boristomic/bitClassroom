@@ -4,7 +4,8 @@
 
 # 				:: APPLICATION ROUTES BELLOW ::
 # Home page
-GET           /                                     @controllers.Application.index()
+GET           /                                     @controllers.Application.welcome()
+GET           /index                                @controllers.Application.index()
 GET           /about                                @controllers.Application.about()
 
 GET           /login                                @controllers.Application.login()

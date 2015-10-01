@@ -9,6 +9,7 @@ import play.mvc.Result;
 import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;
+import views.html.index;
 import views.html.newMain;
 import views.html.users.login;
 import views.html.users.util.email;
@@ -25,10 +26,10 @@ public class Application extends Controller {
      * @return
      */
 
-//
-//    public Result welcome(){
-//        return ok(newMain.render());
-//    }
+
+    public Result welcome(){
+        return ok(newMain.render());
+    }
 
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
@@ -39,7 +40,7 @@ public class Application extends Controller {
          //   List<Course> list = CourseUser.allUserCourses(temp);
             List<CourseUser> userc = CourseUser.getFinder().all();
 
-            return ok(newMain.render());
+            return ok(index.render(temp, userc));
        // } else {
 
        //     return ok(temp);
