@@ -40,89 +40,83 @@
             <!-- END OF HEADER IMAGE -->
 
 
-            <!-- COLAPSABLE NAVIGATION BAR -->
+            <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">bitClassroom</a>
+                </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/about">About</a>
+                        </li>
 
-        @if(currentUser != null) {
-            <div class="col-lg-offset-1 col-lg-10" >
-                <nav class="navbar navbar-inverse" style="background-color : #65DBF1; font-family: myFirstFont; font-size: 20px">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="/"><strong>bitClassroom</strong></a>
-                        </div>
-
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                            <ul class="nav navbar-nav">
-                                <li><a href="/about">About</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
-                                    @for(role <- currentUser.getRoles) {
-                                        @if(role.getId.equals(UserConstants.ADMIN)) {
-                                            <li><a href="/admin">Admin panel</a></li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.TEACHER)) {
-                                            <li><a href="/allMessage">Messages</a></li>
-                                            <li class="dropdown ">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                                    Go to classroom<span class="caret"></span></a>
-                                                <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                                    <li><a href="/user/courses">Courses</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/post/new">Add post</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/daily/report">Write daily report</a></li>
-
-                                                </ul>
-                                            </li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.MENTOR)) {
-
-                                            <li><a href="/allMessage">Messages</a></li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.STUDENT)) {
-                                            <li><a href="/post/new">Add post</a></li>
-                                            <li><a href="/allMessage">Messages</a></li>
-                                            <li class="dropdown active">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                                    Course <span class="caret"></span></a>
-                                                <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                                    <li><a href="/user/courses">Join course</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/user/message">Students</a></li>
-                                                </ul>
-                                            </li>
-
-
-                                        }
-                                    }
+                        @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
+                            @for(role <- currentUser.getRoles) {
+                                @if(role.getId.equals(UserConstants.ADMIN)) {
+                                    <li><a href="/admin">Admin panel</a></li>
                                 }
-                                @if(currentUser != null) {
-                                    <li class="dropdown active">
+                                @if(role.getId.equals(UserConstants.TEACHER)) {
+                                    <li><a href="/allMessage">Messages</a></li>
+                                    <li class="dropdown ">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                            @currentUser.getFirstName() <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                            <li><a href="/user/editprofile">Edit profile</a></li>
+                                            Go to classroom<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                            <li><a href="/user/courses">Courses</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="/logout">Sign out</a></li>
+                                            <li><a href="/post/new">Add post</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/daily/report">Write daily report</a></li>
+
                                         </ul>
                                     </li>
                                 }
+                                @if(role.getId.equals(UserConstants.MENTOR)) {
 
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                                    <li><a href="/allMessage">Messages</a></li>
+                                }
+                                @if(role.getId.equals(UserConstants.STUDENT)) {
+                                    <li><a href="/post/new">Add post</a></li>
+                                    <li><a href="/allMessage">Messages</a></li>
+                                    <li class="dropdown active">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            Course <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                            <li><a href="/user/courses">Join course</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/user/message">Students</a></li>
+                                        </ul>
+                                    </li>
+                                }}}
+
+                        @if(currentUser != null) {
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    @currentUser.getFirstName() <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                    <li><a href="/user/editprofile">Edit profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Sign out</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+                    <!-- /.navbar-collapse -->
             </div>
+                <!-- /.container -->
+        </nav>
 
-        }
-
-            <!-- END OF NAVIGATION BAR -->
 
 
         <div class="col-lg-12">
