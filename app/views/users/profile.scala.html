@@ -2,6 +2,10 @@
 @(user: User)
 @main("Update your profile") {
 
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/profilePicture.css")" />
+    <script src="@routes.Assets.versioned("javascripts/profilePicture.js")"></script>
+
+
     @helper.form(action = controllers.users.routes.UserController.updateProfile(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
 
 
@@ -9,12 +13,12 @@
         <div class="col-lg-11 col-lg-offset-0">
             <legend>@user.getEmail()</legend>
 
-            <div class="col-md-4">
-                <div class="text-center">
-                    <img class="center-block img-responsive" src="@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")"/>
-                    <input type="file" name="profile-picture" accept="image/*" class="form-control" id="profile-picture">
 
-                </div>
+            <div class="col-md-4 text-center">
+                <div id="img-preview-block" class="img-circle avatar avatar-original center-block" style="background-size:cover;
+                background-image:url(@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")?size=200x200)"></div>
+                <br>
+                <span class="btn btn-link btn-file">Edit profile picture<input type="file" name="profile-picture" accept="image/*" id="upload-img"></span>
             </div>
 
                 <!-- edit form column -->

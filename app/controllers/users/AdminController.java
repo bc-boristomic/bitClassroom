@@ -100,11 +100,11 @@ public class AdminController extends Controller {
         List<Role> roles = new ArrayList<>();
         Long role = null;
         if (tmpRole != null) {
-            if("1".equals(tmpRole)){
+            if ("1".equals(tmpRole)) {
                 role = 1L;
                 Role r = new Role(role, UserConstants.NAME_ADMIN);
                 roles.add(r);
-            }else if ("2".equals(tmpRole)) {
+            } else if ("2".equals(tmpRole)) {
                 role = 2L;
                 Role r = new Role(role, UserConstants.NAME_TEACHER);
                 roles.add(r);
@@ -117,7 +117,7 @@ public class AdminController extends Controller {
                 Role r = new Role(role, UserConstants.NAME_STUDENT);
                 roles.add(r);
                 u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
-            }else if("5".equals(tmpRole)){
+            } else if ("5".equals(tmpRole)) {
                 roles.add(Roles.ADMIN);
                 roles.add(Roles.TEACHER);
             }
@@ -340,7 +340,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result mentorship() {
-        return ok(views.html.admins.mentorship.render(User.findAll(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
+        return ok(views.html.admins.mentorship.render(User.getFinder().orderBy().asc("first_name").findList(), User.getFinder().where().eq("student_status", UserConstants.DONT_HAVE_MENTOR).findRowCount()));
     }
 
     /**
@@ -456,6 +456,28 @@ public class AdminController extends Controller {
      */
     public Result archivedCourses() {
         return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
+    }
+
+    /**
+     * Recieves <code>Long</code> type value of Course id, find's the course and set's
+     * status to active, find's course in relational table and only deletes all Users (set's them to null).
+     *
+     * @param id <code>Long</code> type value of Course id
+     * @return
+     */
+    public Result activateCourse(Long id) {
+        Course course = Course.getFinder().byId(id);
+        course.setStatus(CourseConstants.ACTIVE_COURSE);
+        course.setUpdateDate(new DateTime());
+        course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
+        course.update();
+
+        List<CourseUser> cu = CourseUser.getFinder().where().eq("course_id", id).findList();
+        for (CourseUser courseUser : cu) {
+            courseUser.setUser(null);
+            courseUser.update();
+        }
+        return ok();
     }
 
 }
