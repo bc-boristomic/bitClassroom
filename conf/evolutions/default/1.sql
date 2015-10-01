@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table course (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(50),
   description               varchar(2000),
   teacher                   varchar(50),
@@ -18,7 +18,7 @@ create table course (
 ;
 
 create table course_user (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   status                    integer(1),
   user_id                   bigint,
   course_id                 bigint,
@@ -26,7 +26,7 @@ create table course_user (
 ;
 
 create table daily_report (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   create_date               datetime,
   data                      varchar(4000),
@@ -35,20 +35,20 @@ create table daily_report (
 ;
 
 create table error_log (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   message                   varchar(500),
   loged_date                datetime,
   constraint pk_error_log primary key (id))
 ;
 
 create table field (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   constraint pk_field primary key (id))
 ;
 
 create table mentorship (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   mentor_id                 bigint,
   student_id                bigint,
   status                    integer(1),
@@ -60,11 +60,11 @@ create table mentorship (
 ;
 
 create table post (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   title                     varchar(255),
   content                   text,
   post_type                 integer,
-  visible_mentors           boolean,
+  visible_mentors           tinyint(1) default 0,
   link                      varchar(255),
   files                     varchar(255),
   date                      varchar(255),
@@ -75,19 +75,20 @@ create table post (
 ;
 
 create table private_message (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   subject                   varchar(255),
   content                   varchar(255),
   sender_id                 bigint,
   receiver_id               bigint,
   status                    integer,
-  active_status             integer,
+  inbox_status              integer,
+  send_status               integer,
   create_date               datetime,
   constraint pk_private_message primary key (id))
 ;
 
 create table report_field (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   value                     varchar(255),
   daly_id                   bigint,
   field_id                  bigint,
@@ -95,13 +96,13 @@ create table report_field (
 ;
 
 create table role (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(10),
   constraint pk_role primary key (id))
 ;
 
 create table user (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   email                     varchar(100),
   password                  varchar(100),
   first_name                varchar(100),
@@ -134,28 +135,6 @@ create table user_role (
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
-create sequence course_seq;
-
-create sequence course_user_seq;
-
-create sequence daily_report_seq;
-
-create sequence error_log_seq;
-
-create sequence field_seq;
-
-create sequence mentorship_seq;
-
-create sequence post_seq;
-
-create sequence private_message_seq;
-
-create sequence report_field_seq;
-
-create sequence role_seq;
-
-create sequence user_seq;
-
 alter table course_user add constraint fk_course_user_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_course_user_user_1 on course_user (user_id);
 alter table course_user add constraint fk_course_user_course_2 foreign key (course_id) references course (id) on delete restrict on update restrict;
@@ -183,53 +162,31 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists course;
+drop table course;
 
-drop table if exists course_user;
+drop table course_user;
 
-drop table if exists daily_report;
+drop table daily_report;
 
-drop table if exists error_log;
+drop table error_log;
 
-drop table if exists field;
+drop table field;
 
-drop table if exists mentorship;
+drop table mentorship;
 
-drop table if exists post;
+drop table post;
 
-drop table if exists private_message;
+drop table private_message;
 
-drop table if exists report_field;
+drop table report_field;
 
-drop table if exists role;
+drop table role;
 
-drop table if exists user;
+drop table user;
 
-drop table if exists user_role;
+drop table user_role;
 
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists course_seq;
-
-drop sequence if exists course_user_seq;
-
-drop sequence if exists daily_report_seq;
-
-drop sequence if exists error_log_seq;
-
-drop sequence if exists field_seq;
-
-drop sequence if exists mentorship_seq;
-
-drop sequence if exists post_seq;
-
-drop sequence if exists private_message_seq;
-
-drop sequence if exists report_field_seq;
-
-drop sequence if exists role_seq;
-
-drop sequence if exists user_seq;
+SET FOREIGN_KEY_CHECKS=1;
 
