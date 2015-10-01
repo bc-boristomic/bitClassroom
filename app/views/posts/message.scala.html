@@ -13,11 +13,11 @@
                 <div class="panel-body">
 
                     <label>Subject :  </label>
-                    <input type="text" name="subject" class="form-control" required />
+                    <input type="text" id="subjectMessage" name="subject" class="form-control" required />
                     <label>Text Message : </label>
-                    <textarea rows="9" name="content" class="form-control" required></textarea>
+                    <textarea rows="9" id="subjectArea" name="content" class="form-control" required></textarea>
                     <hr />
-                    <button type="submit" class="btn btn-success glyphicon-envelope" href="@controllers.users.routes.UserController.sendMessage(receiver.getId)">
+                    <button type="submit" id="sendMessage" class="btn btn-success glyphicon-envelope" href="@controllers.users.routes.UserController.sendMessage(receiver.getId)">
                         Send Message</button>
                 </div>
                 <div class="panel-footer text-muted">
