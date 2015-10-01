@@ -280,7 +280,7 @@ public class UserController extends Controller {
     public Result deleteInboxMessage(Long id) {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
-        msg.setActiveStatus(1);
+        msg.setInboxStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
@@ -288,7 +288,7 @@ public class UserController extends Controller {
     public Result deleteSendMessage(Long id){
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
-        msg.setActiveStatus(2);
+        msg.setSendStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
