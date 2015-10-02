@@ -31,7 +31,7 @@ public class Global extends GlobalSettings {
             Users.saveUsers();
         }
         if (Course.getFinder().findRowCount() == 0) {
-            Courses.saveCourses();
+            //Courses.saveCourses();
         }
 
 
