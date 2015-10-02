@@ -49,7 +49,6 @@ public class StudentControllerTest {
             @Override
             public void invoke(TestBrowser testBrowser) throws Throwable {
                 testBrowser.goTo("http://localhost:9000/login");
-
                 testBrowser.fill("#inputEmail").with("amra.sabic@bitcamp.ba");
                 testBrowser.fill("#inputPassword").with("Student123");
                 testBrowser.click("#login");
@@ -65,16 +64,11 @@ public class StudentControllerTest {
                 testBrowser.click("#SubmitProfile");
                 testBrowser.goTo("http://localhost:9000");
                 testBrowser.goTo("http://localhost:9000/user/courses");
-
                 String disabled = testBrowser.find("#courseSubmit1").getAttribute("disabled");
-
                 assertEquals("true", disabled);
-
             }
         });
     }
-
-
     @Test
     public void createProfile(){
         running(testServer(8000, fakeApplication(inMemoryDatabase())), new HtmlUnitDriver(), new Callback<TestBrowser>() {
@@ -82,13 +76,9 @@ public class StudentControllerTest {
             public void invoke(TestBrowser testBrowser) throws Throwable {
                 loginAndCreatingProfileAjdinBrkic(testBrowser);
                 assertTrue(testBrowser.pageSource().contains("You successfuly updated your profile."));
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
-
                 assertTrue(testBrowser.pageSource().contains("You successfuly signed out."));
-
-
             }
         });
     }
@@ -101,29 +91,21 @@ public class StudentControllerTest {
             public void invoke(TestBrowser testBrowser) throws Throwable {
                 loginAndCreatingProfileAjdinBrkic(testBrowser);
                 assertTrue(testBrowser.pageSource().contains("You successfuly updated your profile."));
-
                 joinCourseJavaMethod(testBrowser);
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
-
                 loginAndCreatingProfileSemirSahman(testBrowser);
                 joinCourseJavaMethod(testBrowser);
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
                 assertTrue(testBrowser.pageSource().contains("You successfuly signed out."));
-
                 loginAsAdmin(testBrowser);
-
                 testBrowser.goTo("http://localhost:9000/admin");
                 testBrowser.goTo("http://localhost:9000/admin/awaitlist");
                 testBrowser.find("#approved1").click();
                 testBrowser.find("#approved2").click();
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
-
                 loginAsAjdinBrkic(testBrowser);
                 assertTrue(testBrowser.pageSource().contains("Java"));
                 assertTrue(testBrowser.pageSource().contains("Benjamin"));
@@ -142,7 +124,6 @@ public class StudentControllerTest {
             }
         });
     }
-
     @Test
     public void approveJoinRequests(){
         running(testServer(8000, fakeApplication(inMemoryDatabase())), new HtmlUnitDriver(), new Callback<TestBrowser>() {
@@ -150,26 +131,19 @@ public class StudentControllerTest {
             public void invoke(TestBrowser testBrowser) throws Throwable {
                 loginAndCreatingProfileAjdinBrkic(testBrowser);
                 assertTrue(testBrowser.pageSource().contains("You successfuly updated your profile."));
-
                 joinCourseJavaMethod(testBrowser);
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
-
                 loginAndCreatingProfileSemirSahman(testBrowser);
                 joinCourseJavaMethod(testBrowser);
-
                 testBrowser.goTo("http://localhost:8000/logout");
                 testBrowser.goTo("http://localhost:8000/login");
                 assertTrue(testBrowser.pageSource().contains("You successfuly signed out."));
-
                 loginAsAdmin(testBrowser);
-
                 testBrowser.goTo("http://localhost:9000/admin");
                 testBrowser.goTo("http://localhost:9000/admin/awaitlist");
                 testBrowser.find("#approved1").click();
                 testBrowser.find("#approved2").click();
-
                 testBrowser.click("approved1");
             }
         });

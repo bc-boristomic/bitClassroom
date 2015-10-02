@@ -15,20 +15,27 @@
 
         <div class="col-lg-3">
 
+            <br>
+            <br>
+            <br>
+
             <div class="container">
                 <div class="card card-container">
-                        <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
                     <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                     <p id="profile-name" class="profile-name-card"></p>
                     <form class="form-signin">
                         <span id="reauth-email" class="reauth-email"></span>
                         <input type="email" name="email" value="@userForm.bindFromRequest().field("email").value()" onblur="checkEmail()" id="inputEmail" class="form-control" placeholder="name.surname&#64;bitcamp.ba" required autofocus>
+                        <span id="emailError" class="alert-warning " data-error-for="" ></span>
+
                         <input type="password" name="password" value="@userForm.bindFromRequest().field("password").value()" id="inputPassword" class="form-control" placeholder="Password must be strong eg. [A-Z, a-z, 0-9]." required>
                         <div id="remember" class="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me"> Remember me
                             </label>
                         </div>
+                        <br>
+                        <br>
                         <button class="btn btn-lg btn-primary btn-block btn-signin" id="login" type="submit" href="@routes.Application.checkLogin()">Sign in</button>
                     </form><!-- /form -->
                     <a href="popupex.html" onclick="return popitup('@routes.Application.sendEmail()')" class="forgot-password">
@@ -40,6 +47,7 @@
        </div>
         <div class="col-lg-7"></div>
         </div>
+            </div>
 
         <script type="text/javascript">
             function popitup(url) {

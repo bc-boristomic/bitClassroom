@@ -1,7 +1,7 @@
 package controllers;
 
 import helpers.SessionHelper;
-import models.course.Course;
+import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
@@ -11,6 +11,7 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;
 import views.html.index;
+import views.html.newMain;
 import views.html.users.login;
 import views.html.users.util.email;
 
@@ -25,20 +26,30 @@ public class Application extends Controller {
      *
      * @return
      */
+
+
+    public Result welcome() {
+        return ok(newMain.render());
+    }
+
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
+
+        if (temp == null) {
+            return redirect("/home");
+        }
         //List<CourseUser> culist = CourseUser.findAll(temp.getId());
 
-       // if (temp != null && culist.size()!= 0) {
+        // if (temp != null && culist.size()!= 0) {
 
-         //   List<Course> list = CourseUser.allUserCourses(temp);
-            List<CourseUser> userc = CourseUser.getFinder().all();
+        //   List<Course> list = CourseUser.allUserCourses(temp);
+        List<CourseUser> userc = CourseUser.getFinder().all();
 
-            return ok(index.render(temp, userc));
-       // } else {
+        return ok(index.render(temp, userc));
+        // } else {
 
-       //     return ok(temp);
-       // }
+        //     return ok(temp);
+        // }
 
     }
 
@@ -116,16 +127,30 @@ public class Application extends Controller {
     public Result logout() {
         session().clear();
         flash("success", "You successfuly signed out.");
-        return redirect("/login");
+        return redirect("/home");
     }
 
+    /**
+     * Notification for applied students awaiting approval.
+     *
+     * @return
+     */
     public Result getNotification() {
-        User temp = SessionHelper.currentUser(ctx());
         int notify = CourseUser.getFinder().where().eq("status", 0).findRowCount();
         return ok(notify + "");
     }
 
-
+    /**
+     * Notification for unread messages for current user.
+     * Notification is shown in main view.
+     *
+     * @return
+     */
+    public Result unreadMessages() {
+        User u = SessionHelper.currentUser(ctx());
+        int notify = PrivateMessage.getFind().where().eq("receiver_id", u.getId()).eq("status", 0).findRowCount();
+        return ok(String.valueOf(notify));
+    }
 
 
 }

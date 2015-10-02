@@ -18,7 +18,7 @@
  * Card component
  */
 .card {
-    background-color: #F7F7F7;
+    background-color: white;
     /* just in case there no content*/
     padding: 20px 25px 30px;
     margin: 0px auto 25px;
@@ -117,7 +117,7 @@
 .btn.btn-signin:hover,
 .btn.btn-signin:active,
 .btn.btn-signin:focus {
-    background-color: #65DBF1;
+    background-color: #1187D4;
 }
 
 .forgot-password {

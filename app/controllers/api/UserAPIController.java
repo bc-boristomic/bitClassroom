@@ -42,5 +42,4 @@ public class UserAPIController extends Controller {
         return noContent();
     }
 
-
 }

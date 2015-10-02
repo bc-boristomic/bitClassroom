@@ -27,105 +27,102 @@
         <!-- custom icon -->
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/header/logo.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
+
         <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
-            <!--css for jquery-ui-->
+
+        <!--css for jquery-ui-->
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
 
     </head>
         <!-- END OF HEAD TAG -->
 
-    <body>
+    <body style="background-color: #f7f7f7">
             <!-- HEADER WITH IMAGE ONLY -->
         <header class="header-panel">
         </header>
             <!-- END OF HEADER IMAGE -->
 
 
-            <!-- COLAPSABLE NAVIGATION BAR -->
+            @if(currentUser != null){
+            <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="font-family: myFirstFont; color: white;font-size: 25px" href="/">bitClassroom</a>
+                </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
 
-        @if(currentUser != null) {
-            <div class="col-lg-offset-1 col-lg-10" >
-                <nav class="navbar navbar-inverse" style="background-color : #65DBF1; font-family: myFirstFont; font-size: 20px">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="/"><strong>bitClassroom</strong></a>
-                        </div>
-
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                            <ul class="nav navbar-nav">
-                                <li><a href="/about">About</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
-                                    @for(role <- currentUser.getRoles) {
-                                        @if(role.getId.equals(UserConstants.ADMIN)) {
-                                            <li><a href="/admin">Admin panel</a></li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.TEACHER)) {
-                                            <li><a href="/allMessage">Messages</a></li>
-                                            <li class="dropdown ">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                                    Go to classroom<span class="caret"></span></a>
-                                                <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                                    <li><a href="/user/courses">Courses</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/post/new">Add post</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/daily/report">Write daily report</a></li>
-
-                                                </ul>
-                                            </li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.MENTOR)) {
-
-                                            <li><a href="/allMessage">Messages</a></li>
-                                            <li><a href="/weekly/report">Weekly report</a></li>
-                                        }
-                                        @if(role.getId.equals(UserConstants.STUDENT)) {
-                                            <li><a href="/post/new">Add post</a></li>
-                                            <li><a href="/allMessage">Messages</a></li>
-                                            <li class="dropdown active">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                                    Course <span class="caret"></span></a>
-                                                <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                                    <li><a href="/user/courses">Join course</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="/user/message">Students</a></li>
-                                                </ul>
-                                            </li>
-
-
-                                        }
-                                    }
+                        @if(currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
+                            @for(role <- currentUser.getRoles) {
+                                @if(role.getId.equals(UserConstants.ADMIN)) {
+                                    <li><a href="/admin">Admin panel</a></li>
                                 }
-                                @if(currentUser != null) {
-                                    <li class="dropdown active">
+                                @if(role.getId.equals(UserConstants.TEACHER)) {
+                                    <li><a href="/allMessage">Messages <span class="badge" id="notify"></span></a></li>
+
+                                    <li class="dropdown ">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                            @currentUser.getFirstName() <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" role="menu" style="background-color : transparent">
-                                            <li><a href="/user/editprofile">Edit profile</a></li>
+                                            Go to classroom<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                            <li><a href="/user/courses">Courses</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="/logout">Sign out</a></li>
+                                            <li><a href="/post/new">Add post</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/daily/report">Write daily report</a></li>
+
                                         </ul>
                                     </li>
                                 }
+                                @if(role.getId.equals(UserConstants.MENTOR)) {
 
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                                    <li><a href="/allMessage">Messages <span class="badge" id="notify"></span></a>></li>
+                                    <li><a href="/weekly/report">Weekly report</a></li>
+
+                                }
+                                @if(role.getId.equals(UserConstants.STUDENT)) {
+                                    <li><a href="/post/new">Add post</a></li>
+                                    <li><a href="/allMessage">Messages <span class="badge" id="notify"></span></a></li>
+                                    <li class="dropdown active">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            Course <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                            <li><a href="/user/courses">Join course</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/user/message">Students</a></li>
+                                        </ul>
+                                         </li>
+                                }}}</ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    @currentUser.getFirstName() <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                    <li><a href="/user/editprofile">Edit profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Sign out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+
+                        }
+
+
+                </div>
+                    <!-- /.navbar-collapse -->
             </div>
-
-        }
-
-            <!-- END OF NAVIGATION BAR -->
+                <!-- /.container -->
+        </nav>
 
 
         <div class="col-lg-12">
@@ -170,7 +167,7 @@
         </div>
             <!-- END OF CONTAINER WITH CONTENT -->
 
-
+        <br><br>
             <!-- FOOTER ALWAYS FIXED AT BOTTOM OF PAGE -->
         <div class="row top50">
             <footer class="panel-footer navbar-fixed-bottom"><div class="text-center">Copyright &copy;
@@ -181,12 +178,12 @@
 
 
             <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED -->
-        <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("/javascripts/tablesorter.min.js")"></script>
-        <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
-        <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
+  <!--   @*   <script src="@routes.Assets.versioned("javascripts/jquery-1.11.1.js")"></script> *@-->
         <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
 
         <script type="text/javascript">
@@ -200,6 +197,20 @@
           $(function () {
              $('#date').datepicker({ minDate: 0 });
               });
+
+           </script>
+
+        <script type="text/javascript">
+            $(document).ready(setInterval(function(){
+                $.ajax({
+                        type: "get",
+                        url: "@routes.Application.unreadMessages()"
+                }).success(function(response) {
+                    if("0"!=response){
+                        $('#notify').html(response);
+                    }
+                })
+            }, 4000));
         </script>
 
         
