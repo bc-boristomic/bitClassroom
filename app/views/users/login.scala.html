@@ -26,6 +26,8 @@
                     <form class="form-signin">
                         <span id="reauth-email" class="reauth-email"></span>
                         <input type="email" name="email" value="@userForm.bindFromRequest().field("email").value()" onblur="checkEmail()" id="inputEmail" class="form-control" placeholder="name.surname&#64;bitcamp.ba" required autofocus>
+                        <span id="emailError" class="alert-warning " data-error-for="" ></span>
+
                         <input type="password" name="password" value="@userForm.bindFromRequest().field("password").value()" id="inputPassword" class="form-control" placeholder="Password must be strong eg. [A-Z, a-z, 0-9]." required>
                         <div id="remember" class="checkbox">
                             <label>
