@@ -11,6 +11,27 @@
         <div class="form-group">
 
             <div class="form-group">
+
+                @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
+                    @for(role <- currentUser.getRoles) {
+                        @if(role.getId.equals(UserConstants.TEACHER)) {
+                            <div>
+                                <label  class="col-lg-2 control-label">Due date</label>
+
+                                <div class="col-lg-2">
+                                    <input name="date" type="text"  max="9999-01-01" class="form-control" id="date" placeholder="Select date" style="cursor: pointer">
+                                </div>
+                                <label  class="col-lg-2 control-label">Due time</label>
+                                <div class="col-lg-2">
+                                    <input name="time" type="time" class="form-control" id="time" style="cursor: pointer" >
+                                </div>
+                            </div>
+                        }
+                    }
+
+                }
+            </div>
+            <div class="form-group">
                 <label for="title" class="col-lg-2 control-label">
                     Title<abbr class="req" title="Please select due date." style="color : red"> * </abbr></label>
                 <div class="col-lg-6">
@@ -19,29 +40,10 @@
             </div>
 
 
-            <div class="form-group">
-
-            @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
-                @for(role <- currentUser.getRoles) {
-                    @if(role.getId.equals(UserConstants.TEACHER)) {
-                    <div>
-                        <label  class="col-lg-2 control-label">Due date</label>
-
-                        <div class="col-lg-2">
-                            <input name="date" type="text"  max="9999-01-01" class="form-control" id="date" placeholder="Select date" style="cursor: pointer">
-                        </div>
-
-                        <div class="col-lg-2">
-                            <input name="time" type="time" class="form-control" id="time" style="cursor: pointer" >
-                        </div>
-                    </div>
-                    }
-                }
-
-            }
 
 
-            </div>
+
+
 
             <div class="form-group">
                 <label for="textArea" class="col-lg-2 control-label">
@@ -60,8 +62,8 @@
 
             <div class="form-group">
                 <label for="files" class="col-lg-2 control-label">Add files</label>
-                <div class="col-lg-4">
-                    <input type="file" name="files" accept="" multiple class="form-control" id="files">
+                <div class="col-lg-8">
+                    <input type="file" name="files" accept="" style="width: 74%" multiple class="form-control" id="files">
                 </div>
             </div>
 
