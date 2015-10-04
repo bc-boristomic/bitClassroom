@@ -260,7 +260,11 @@ public class AdminController extends Controller {
 
         String name = boundForm.field("name").value();
         String description = boundForm.field("description").value();
-        String teacher = boundForm.field("type").value();
+        String getTeacher = boundForm.field("type").value();
+        String teacher = getTeacher.split(" ")[0] + " " + getTeacher.split(" ")[1];
+        
+        String teacherId = getTeacher.split(" ")[2];
+
 
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
@@ -295,6 +299,20 @@ public class AdminController extends Controller {
             flash("warning", "Something went wrong, course could not be saved to data base");
             return redirect("/admin/createcourse");
         }
+
+        CourseUser cu = new CourseUser();
+        cu.setCourse(course);
+        cu.setStatus(User.findById(Long.parseLong(teacherId)).getStatus());
+        cu.setUser(User.findById(Long.parseLong(teacherId)));
+
+        try {
+            cu.save();
+        } catch (PersistenceException e) {
+            Ebean.save(new ErrorLog(e.getMessage()));
+            flash("warning", "Something went wrong, course teacher could not be saved to data base");
+            return redirect("/admin/createcourse");
+        }
+
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
     }
