@@ -10,11 +10,15 @@
 
     </div>
 
-    @for(temp <- userListCourse){
+
+    @for(temp <- userListCourse ){
 
         @if(temp.getStatus == 2){
 
+
             @for(post <- temp.getUser.getPosts){
+
+
 
                 <div class="container">
 
@@ -59,7 +63,12 @@
                                     }
 
                                     <div class="panel-footer">
-                                        <span class="label label-default">@if(post.getPostType == 0){Assigment} Announcement </span> <span class="label label-default">@post.getCreateDate</span>
+                                        @if(post.getPostType == 1){
+                                            <span class="label label-default">Assigment </span> <span class="label label-default">@post.getCreateDate</span>
+                                        }else{
+                                            <span class="label label-default">Announcement </span> <span class="label label-default">@post.getCreateDate</span>
+                                        }
+
                                         <span class="label label-default">Updates</span>
                                     </div>
                                 </div>
@@ -71,5 +80,7 @@
         }else{
 
         }
+
+
     }
-}
+    }
