@@ -121,7 +121,7 @@ GET           /user/class/:id                           @controllers.course.Cour
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post/:id                                @controllers.posts.PostController.savePost(id : Long)
+POST          /post                                @controllers.posts.PostController.savePost()
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
