@@ -1,9 +1,11 @@
 package controllers.posts;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
+import models.course.CourseUser;
 import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
@@ -49,7 +51,7 @@ public class PostController extends Controller {
      * Getting user from session
      * Saving post in database
      */
-    public Result savePost() {
+    public Result savePost(Long id) {
         Form<Post> boundForm = postForm.bindFromRequest();
         User user = SessionHelper.currentUser(ctx());
 
@@ -115,11 +117,14 @@ public class PostController extends Controller {
 
 
         if (user != null) {
+            Course course = Course.findById(id);
             post.setTitle(title);
             post.setContent(message);
             post.setUser(user);
             post.setLink(link);
+            post.setCourse(course);
             post.save();
+            course.getPosts().add(post);
             flash("success", "You successfully added new post.");
             return redirect("/"); // TODO add call to route for listing posts
         }

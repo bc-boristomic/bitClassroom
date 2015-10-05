@@ -39,10 +39,9 @@ public class CourseController extends Controller {
      * Shows on the page list of users who are going to the course
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result course(){
-
-        List<CourseUser>  courUserList = CourseUser.all();
-        return ok(courseView.render(courUserList));
+    public Result course(Long id){
+        Course c = Course.findById(id);
+        return ok(courseView.render(c));
 
     }
 

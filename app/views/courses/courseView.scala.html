@@ -1,7 +1,7 @@
 
-@import models.course.CourseUser
+@import models.course.Course
 
-@(userListCourse: List[CourseUser])
+@(course : Course)
 @main("Classroom") {
 
     <div class="container">
@@ -10,11 +10,7 @@
     </div>
 
 
-    @for(temp <- userListCourse ){
-
-     @if(temp.getStatus == 2 ){
-
-            @for(post <- temp.getUser.getPosts){
+            @for(post <- course.getPosts()){
 
                 <div class="container">
 
@@ -72,11 +68,6 @@
                         </div>
                     </div>
                 </div>
-            }
-        }else{
-
-        }
-
     }
 
     }
