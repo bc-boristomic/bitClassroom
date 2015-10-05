@@ -7,6 +7,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import play.Logger;
 import play.Play;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.ws.WSClient;
 import play.mvc.Controller;
@@ -19,21 +20,16 @@ import javax.inject.Inject;
  * Created by gordan.masic on 05/10/15.
  */
 public class Emails extends Controller {
-    private static Form<Email> mailForm = Form.form(Email.class);
+    private static Form<Email> mailForm1 = Form.form(Email.class);
 
     @Inject WSClient ws;
     public Result sendMail() {
-        Form<Email> boundForm = mailForm.bindFromRequest();
-        if(boundForm.hasErrors()){
-            return badRequest(newMain.render(boundForm));
-        }
-        String userName = mailForm.bindFromRequest().field("userName").value();
-        String mail = mailForm.bindFromRequest().field("mail").value();
-        String subject = mailForm.bindFromRequest().field("subject").value();
-        String message = mailForm.bindFromRequest().field("message").value();
-
-        String recaptcha = mailForm.bindFromRequest().field("g-recaptcha-response").value();
-
+        DynamicForm mailForm = Form.form().bindFromRequest();
+        String userName = mailForm.get("name");
+        String mail = mailForm.get("mail");
+        String subject = mailForm.get("subject");
+        String message = mailForm.get("message");
+        String recaptcha = mailForm.get("g-recaptcha-response");
         Boolean verify = GoogleRecaptcha.verifyGoogleRecaptcha(ws, recaptcha);
 
         if (verify) {

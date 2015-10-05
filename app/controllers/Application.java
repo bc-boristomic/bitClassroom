@@ -31,7 +31,7 @@ public class Application extends Controller {
 
 
     public Result welcome() {
-        return ok(newMain.render(emailForm));
+        return ok(newMain.render());
     }
 
     public Result index() {
