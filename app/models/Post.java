@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.course.Course;
 import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -41,6 +42,8 @@ public final class Post extends Model {
     private String time;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
+    @ManyToOne
+    private Course course;
 
     @ManyToOne
     private User user;
@@ -98,6 +101,13 @@ public final class Post extends Model {
         return find.orderBy("id desc").findList();
     }
 
+    public static List<Post> findAllCoursePost(Long courseId) {
+        return find
+                .where()
+                .eq("id", courseId)
+                .orderBy("id asc")
+                .findList();
+    }
 
     public String getContent() {
         return content;
@@ -116,6 +126,14 @@ public final class Post extends Model {
     }
 
     public User getUser() {return user;}
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public void setUser(User user) {
         this.user = user;

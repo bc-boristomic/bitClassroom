@@ -117,11 +117,11 @@ POST          /student/joincourse/haveaccess        @controllers.users.StudentCo
 # SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
 GET           /user/courses                         @controllers.course.CourseController.allCourses()
-GET           /user/class                           @controllers.course.CourseController.course()
+GET           /user/class/:id                           @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post/                                @controllers.posts.PostController.savePost()
+POST          /post/:id                                @controllers.posts.PostController.savePost(id : Long)
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
