@@ -17,7 +17,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import views.html.dailyreports.dailyraport;
 import views.html.index;
-
+import views.html.posts.teacherListsAssignment;
 import java.util.List;
 
 /**
@@ -77,5 +77,12 @@ public class TeacherController extends Controller {
 
     public Result test() {
         return ok("you are teacher");
+    }
+
+    public Result listAssignment() {
+        User user = SessionHelper.currentUser(ctx());
+        Logger.info("User => " + user.getLastName() + " " + user.getFirstName() + " Post => " + user.getPosts().get(0));
+
+        return ok(teacherListsAssignment.render(user.getPosts()));
     }
 }

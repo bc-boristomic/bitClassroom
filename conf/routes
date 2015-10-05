@@ -105,6 +105,10 @@ POST          /admin/courses/archived/:id           @controllers.users.AdminCont
 
 
 #				:: TEACHER ROUTES BELLOW ::
+# Teacher list assignment
+
+GET           /teacher/listAssignment               @controllers.users.TeacherController.listAssignment()
+
 # Daily report for teachers
 GET           /daily/report                         @controllers.users.TeacherController.dailyReport()
 POST          /daily/reportSubmit                   @controllers.users.TeacherController.saveRaport()
@@ -117,11 +121,11 @@ POST          /student/joincourse/haveaccess        @controllers.users.StudentCo
 # SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
 GET           /user/courses                         @controllers.course.CourseController.allCourses()
-GET           /user/class/:id                           @controllers.course.CourseController.course(id: Long)
+GET           /user/class/:id                       @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post                                @controllers.posts.PostController.savePost()
+POST          /post                                 @controllers.posts.PostController.savePost()
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
