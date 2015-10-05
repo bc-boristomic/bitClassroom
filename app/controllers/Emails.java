@@ -11,6 +11,7 @@ import play.data.Form;
 import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.newMain;
 
 import javax.inject.Inject;
 
@@ -22,15 +23,14 @@ public class Emails extends Controller {
 
     @Inject WSClient ws;
     public Result sendMail() {
-
-        String user_name = mailForm.bindFromRequest().field("user_name").value();
-        Logger.info("-----"+user_name+"-------");
+        Form<Email> boundForm = mailForm.bindFromRequest();
+        if(boundForm.hasErrors()){
+            return badRequest(newMain.render(boundForm));
+        }
+        String userName = mailForm.bindFromRequest().field("userName").value();
         String mail = mailForm.bindFromRequest().field("mail").value();
-        Logger.info("-----"+mail+"-------");
         String subject = mailForm.bindFromRequest().field("subject").value();
-        Logger.info("-----"+subject+"-------");
         String message = mailForm.bindFromRequest().field("message").value();
-        Logger.info("-----"+message+"-------");
 
         String recaptcha = mailForm.bindFromRequest().field("g-recaptcha-response").value();
 
@@ -47,7 +47,7 @@ public class Emails extends Controller {
                 email.setDebug(true);
                 email.addTo(Play.application().configuration().getString("mail.smtp.user"));
                 email.setSubject(subject);
-                email.setMsg(user_name + "\n" + mail + "\n\n"+subject +"\n" + message);
+                email.setMsg(userName + "\n" + mail + "\n\n"+subject +"\n" + message);
 
                 email.send();
             } catch (EmailException e) {

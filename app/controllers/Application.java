@@ -1,6 +1,7 @@
 package controllers;
 
 import helpers.SessionHelper;
+import models.Email;
 import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Application extends Controller {
 
     private Form<User> userForm = Form.form(User.class);
+    private Form<Email> emailForm = Form.form(Email.class);
 
     /**
      * Renders index page, front page of website
@@ -29,7 +31,7 @@ public class Application extends Controller {
 
 
     public Result welcome() {
-        return ok(newMain.render());
+        return ok(newMain.render(emailForm));
     }
 
     public Result index() {
