@@ -508,22 +508,23 @@ public class AdminController extends Controller {
      */
     public Result deleteOrArchiveCourse(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
-
-        String s = form.data().get("pressed");
         Course course = Course.getFinder().byId(id);
+        String s = form.data().get("pressed");
+        if( Integer.parseInt(s) == 2){
+            List<User> users = CourseUser.allUserFromCourse(id);
+            for (int i = 0; i < users.size(); i++){
+                sendAutoMessage(users.get(i).getId(), course);
+            }
+
+        }
+
         if (s != null) {
             course.setStatus(Integer.parseInt(s));
             course.setUpdateDate(new DateTime());
             course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
             course.save();
 
-            if( course.getStatus() == 2){
-               List<User> users = CourseUser.allUserFromCourse(id);
-                for (int i = 0; i < users.size(); i++){
-                    sendAutoMessage(users.get(i).getId());
-                }
 
-            }
         }
         return ok();
     }
@@ -534,12 +535,12 @@ public class AdminController extends Controller {
      * @param id - User id.
      * @return
      */
-    public Result sendAutoMessage(Long id) {
+    public Result sendAutoMessage(Long id, Course course) {
 
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
         String subject = "Information";
-        String content = "Course is deleted";
+        String content = "Course " + course.getName()  + " is deleted by admin " + sender.getFirstName() +" " + sender.getLastName() +".";
 
         PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
         privMessage.setStatus(0);

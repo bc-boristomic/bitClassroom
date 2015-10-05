@@ -281,6 +281,7 @@ public class UserController extends Controller {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setInboxStatus(1);
+        msg.setStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
@@ -290,6 +291,7 @@ public class UserController extends Controller {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setSendStatus(1);
+        msg.setStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
