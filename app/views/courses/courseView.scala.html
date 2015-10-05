@@ -4,7 +4,6 @@
 @(userListCourse: List[CourseUser])
 @main("Classroom") {
 
-
     <div class="container">
         <h4 class="page-head-line">Your wall</h4>
 
@@ -14,7 +13,6 @@
     @for(temp <- userListCourse ){
 
      @if(temp.getStatus == 2 ){
-
 
             @for(post <- temp.getUser.getPosts){
 

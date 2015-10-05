@@ -43,9 +43,9 @@ public class Application extends Controller {
         // if (temp != null && culist.size()!= 0) {
 
         //   List<Course> list = CourseUser.allUserCourses(temp);
-        List<CourseUser> userc = CourseUser.getFinder().all();
+        List<CourseUser> user = CourseUser.getFinder().all();
 
-        return ok(index.render(temp, userc));
+        return ok(index.render(temp, user));
         // } else {
 
         //     return ok(temp);
