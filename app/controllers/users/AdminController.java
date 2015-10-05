@@ -72,13 +72,27 @@ public class AdminController extends Controller {
         return ok(views.html.admins.userlist.render(User.findAll()));
     }
 
+
+    /**
+     * Method for set users new type of role.
+     * @param id - Long user id, used for find selected User
+     */
+    public Result editUserRole(Long id){
+        User user = User.findById(id);
+        return ok(views.html.admins.editUserRole.render(userForm, user));
+    }
+
     /**
      * Registers new user to the site.
      *
      * @return
      */
-    public Result saveNewUser() {
+    public Result saveNewUser(String type) {
         Form<User> boundForm = userForm.bindFromRequest();
+
+        String email = "";
+        String passwordHashed = "";
+        User u = null;
 
         if (boundForm.hasErrors()) {
             flash("warning", "Please correct the form.");
@@ -87,69 +101,101 @@ public class AdminController extends Controller {
 
         String fname = boundForm.field("firstname").value();
         String lname = boundForm.field("lastname").value();
-        String email = boundForm.field("email").value();
-        String password = boundForm.field("password").value();
+        if (type.equals("save")) {
+            email = boundForm.field("email").value();
+            String password = boundForm.field("password").value();
+            passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
+        }
         String admin = boundForm.field("admin").value();
         String teacher = boundForm.field("teacher").value();
         String mentor = boundForm.field("mentor").value();
         String student = boundForm.field("student").value();
         String tmpRole = boundForm.field("type").value();
-        String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
-        User u = new User();
-        List<Role> roles = new ArrayList<>();
-        Long role = null;
-        if (tmpRole != null) {
-            if ("1".equals(tmpRole)) {
-                role = 1L;
-                Role r = new Role(role, UserConstants.NAME_ADMIN);
-                roles.add(r);
-            } else if ("2".equals(tmpRole)) {
-                role = 2L;
-                Role r = new Role(role, UserConstants.NAME_TEACHER);
-                roles.add(r);
-            } else if ("3".equals(tmpRole)) {
-                role = 3L;
-                Role r = new Role(role, UserConstants.NAME_MENTOR);
-                roles.add(r);
-            } else if ("4".equals(tmpRole)) {
-                role = 4L;
-                Role r = new Role(role, UserConstants.NAME_STUDENT);
-                roles.add(r);
-                u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
-            } else if ("5".equals(tmpRole)) {
-                roles.add(Roles.ADMIN);
-                roles.add(Roles.TEACHER);
+            List<Role> roles = new ArrayList<>();
+            Long role = null;
+            if (tmpRole != null) {
+                if ("1".equals(tmpRole)) {
+                    role = 1L;
+                    Role r = new Role(role, UserConstants.NAME_ADMIN);
+                    roles.add(r);
+                } else if ("2".equals(tmpRole)) {
+                    role = 2L;
+                    Role r = new Role(role, UserConstants.NAME_TEACHER);
+                    roles.add(r);
+                } else if ("3".equals(tmpRole)) {
+                    role = 3L;
+                    Role r = new Role(role, UserConstants.NAME_MENTOR);
+                    roles.add(r);
+                } else if ("4".equals(tmpRole)) {
+                    role = 4L;
+                    Role r = new Role(role, UserConstants.NAME_STUDENT);
+                    roles.add(r);
+                    if(type.equals("save")) {
+                        u = new User();
+                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+                    }else {
+                        u = User.findByNick(type);
+                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+                    }
+                } else if ("5".equals(tmpRole)) {
+                    roles.add(Roles.ADMIN);
+                    roles.add(Roles.TEACHER);
+                }
+                try {
+                    //role = Long.parseLong(tmpRole);
+                } catch (NumberFormatException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                }
             }
-            try {
-                //role = Long.parseLong(tmpRole);
-            } catch (NumberFormatException e) {
-                Ebean.save(new ErrorLog(e.getMessage()));
+
+        if(type.equals("save")){
+            u = new User();
+            u.setFirstName(fname);
+            u.setLastName(lname);
+            u.setEmail(email);
+            u.setPassword(passwordHashed);
+            u.setRoles(roles);
+            u.setCreationDate(new DateTime());
+            u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
+
+            if (u != null) {
+                try {
+                    u.save();
+                } catch (PersistenceException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                    flash("warning", "Something went wrong, user could not be saved to database.");
+                    return redirect("/admin");
+                }
+
+                flash("success", String.format("User %s successfully added to database", u.getFirstName()));
+                return redirect("/admin/adduser");
             }
+            flash("warning", "Something went wrong, user could not be saved to database.");
+            Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
+            return redirect("/admin");
+        }else{
+
+            User tmp = User.findByNick(type);
+            tmp.setNickName(fname);
+            tmp.setRoles(roles);
+            if (tmp != null) {
+                try {
+                    tmp.save();
+                } catch (PersistenceException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                    flash("warning", "Something went wrong, user could not be saved to database.");
+                    return redirect("/admin");
+                }
+
+                flash("success", String.format("User %s is successfully edit", tmp.getFirstName()));
+                return redirect("/admin/allusers");
+            }
+            flash("warning", "Something went wrong, user could not be saved to database.");
+            Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
+            return redirect("/admin");
+
         }
-
-        u.setFirstName(fname);
-        u.setLastName(lname);
-        u.setEmail(email);
-        u.setPassword(passwordHashed);
-        u.setRoles(roles);
-        u.setCreationDate(new DateTime());
-        u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
-
-        if (u != null) {
-            try {
-                u.save();
-            } catch (PersistenceException e) {
-                Ebean.save(new ErrorLog(e.getMessage()));
-                flash("warning", "Something went wrong, user could not be saved to database.");
-                return redirect("/admin");
-            }
-            flash("success", String.format("User %s successfully added to database", u.getFirstName()));
-            return redirect("/admin/adduser");
-        }
-        flash("warning", "Something went wrong, user could not be saved to database.");
-        Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
-        return redirect("/admin");
     }
 
     /**
@@ -554,5 +600,6 @@ public class AdminController extends Controller {
     public Result listWeeklyReport() {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
+
 
 }

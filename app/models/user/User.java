@@ -116,6 +116,11 @@ public final class User extends Model {
         return finder.where().eq("email", email.toLowerCase()).eq("password", password).findUnique();
     }
 
+
+    public static User findByNick(String nick){
+        return finder.where().eq("nickName", nick).findUnique();
+    }
+
     /**
      * Returns User from database for inputed id
      *

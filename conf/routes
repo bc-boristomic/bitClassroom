@@ -40,7 +40,8 @@ GET           /admin                                @controllers.users.AdminCont
 
 # Routes for registering new user
 GET           /admin/adduser                        @controllers.users.AdminController.addNewUser()
-POST          /admin/adduser                        @controllers.users.AdminController.saveNewUser()
+POST          /admin/adduser                        @controllers.users.AdminController.saveNewUser(role: String)
+GET           /admin/setrole/:id                    @controllers.users.AdminController.editUserRole(id: Long)
 
 # Route for seeing all users
 GET           /admin/allusers                       @controllers.users.AdminController.listOfUser()

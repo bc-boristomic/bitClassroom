@@ -21,7 +21,8 @@
                         <th>Email</th>
                         <th>Profile</th>
                         <th>Role</th>
-                        <th></th>
+                        <th>Registered</th>
+                        <th>Delete</th>
 
                     </tr>
                 </thead>
@@ -32,6 +33,11 @@
                         <td>@users.getLastName</td>
                         <td>@users.getEmail</td>
                         <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)"><i class="glyphicon glyphicon-user"/></a></td>
+                        @if(users.getStatus == UserConstants.FULLY_ACTIVE){
+                        <td><a href="@controllers.users.routes.AdminController.editUserRole(users.getId)"><i class="glyphicon glyphicon-edit">  Edit</i></a></td>
+                        }else{
+                            <td><span class="badge">Waiting</span> </td>
+                        }
                         @if(users.getRoles.size() > 0 && users.getRoles != null) {
                             @if(users.getRoles.size() == 1) {
 
