@@ -65,8 +65,21 @@ public final class CourseUser extends Model {
         return courseByUserList;
     }
 
+    public static List<User> allUserFromCourse (Long id){
 
+        List<User> courseUsers = new ArrayList<>();
+        List<CourseUser> list = finder.all();
+        Course course = Course.findById(id);
 
+        for ( int i = 0; i < list.size(); i++){
+            if( list.get(i).getId() == id ){
+
+                courseUsers.add((list.get(i).getUser()));
+            }
+        }
+
+        return courseUsers;
+    }
 
     /**
      * Find all course_user

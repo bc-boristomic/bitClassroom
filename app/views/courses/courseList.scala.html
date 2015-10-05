@@ -4,6 +4,7 @@
 @main("Course") {
 
     @for(course <- courseList) {
+        @if(course.getStatus != 2){
         <form action="@controllers.users.routes.StudentController.joinCourse()" method="post">
 
             <div class="col-sm-3" id="courseDiv">
@@ -43,6 +44,8 @@
                 })
             });
         </script>
+    }
+
     }
 
 }

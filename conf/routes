@@ -101,6 +101,8 @@ POST          /admin/courses/:id                    @controllers.users.AdminCont
 GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
 POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
 
+# Auto send message for user from deleted course
+
 
 #				:: TEACHER ROUTES BELLOW ::
 # Daily report for teachers

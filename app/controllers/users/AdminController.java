@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.*;
@@ -515,8 +516,37 @@ public class AdminController extends Controller {
             course.setUpdateDate(new DateTime());
             course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
             course.save();
+
+            if( course.getStatus() == 2){
+               List<User> users = CourseUser.allUserFromCourse(id);
+                for (int i = 0; i < users.size(); i++){
+                    sendAutoMessage(users.get(i).getId());
+                }
+
+            }
         }
         return ok();
+    }
+
+
+    /**
+     * Method for auto send message to User when course is deleted
+     * @param id - User id.
+     * @return
+     */
+    public Result sendAutoMessage(Long id) {
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = User.findById(id);
+        String subject = "Information";
+        String content = "Course is deleted";
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+
+        return redirect("admin/allusers");
     }
 
     /**
