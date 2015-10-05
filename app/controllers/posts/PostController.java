@@ -43,7 +43,7 @@ public class PostController extends Controller {
      * Adding post and refresh the page with added post
      */
     public Result addPost() {
-        return ok(newpost.render(postForm, SessionHelper.currentUser(ctx())));
+        return ok(newpost.render(postForm, SessionHelper.currentUser(ctx()), CourseUser.allUserCourses(SessionHelper.currentUser(ctx()))));
     }
 
     /**
@@ -51,8 +51,9 @@ public class PostController extends Controller {
      * Getting user from session
      * Saving post in database
      */
-    public Result savePost(Long id) {
+    public Result savePost() {
         Form<Post> boundForm = postForm.bindFromRequest();
+        String selectedCourse = boundForm.bindFromRequest().field("course").value();
         User user = SessionHelper.currentUser(ctx());
 
         Post post = new Post();
@@ -117,7 +118,7 @@ public class PostController extends Controller {
 
 
         if (user != null) {
-            Course course = Course.findById(id);
+            Course course = Course.findById(Long.parseLong(selectedCourse));
             post.setTitle(title);
             post.setContent(message);
             post.setUser(user);
