@@ -290,8 +290,7 @@ public class UserController extends Controller {
     }
 
     public Result sendStartMessage() {
-        flash("succes", "Evo me");
-        Logger.info("uso");
+
         DynamicForm form = Form.form().bindFromRequest();
         String postId = form.data().get("postId");
         String courseId = form.data().get("courseId");
@@ -299,10 +298,8 @@ public class UserController extends Controller {
         Logger.info(c.getName());
         Logger.info(c.getTeacher());
         Post p = Post.findPostById(Long.parseLong(postId));
-        Logger.info(p.getTitle());
         flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
-        Logger.info(sender.getFirstName());
         User receiver = Mentorship.findMentorByUser(sender);
         User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
         //User receiver = User.findById(7L);

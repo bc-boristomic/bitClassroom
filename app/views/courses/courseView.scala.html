@@ -80,10 +80,8 @@
         <script>
 
                 function callAjax(postId){
-                    alert(postId);
-                    var button = document.getElementById("sendStartedMessage" + postId);
-                    alert(@course.getId);
 
+                    var button = document.getElementById("sendStartedMessage" + postId);
                     $.ajax({
                     type: "post",
                     url : "@controllers.users.routes.UserController.sendStartMessage()",
