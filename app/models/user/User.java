@@ -141,6 +141,12 @@ public final class User extends Model {
         return finder.where().eq("email", email).findUnique();
     }
 
+
+    public static User findByName(String name){
+
+        return finder.where().eq("firstName", name).findUnique();
+    }
+
     /**
      * Returns finder on User model
      *
@@ -173,6 +179,7 @@ public final class User extends Model {
         sb.append("STATUS ").append(status);
         return sb.toString();
     }
+
 
 
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */

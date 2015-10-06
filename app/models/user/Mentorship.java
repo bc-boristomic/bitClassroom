@@ -2,6 +2,7 @@ package models.user;
 
 import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
+import utility.UserConstants;
 
 import javax.persistence.*;
 
@@ -39,6 +40,12 @@ public final class Mentorship extends Model {
 
     public static Finder<Long, Mentorship> getFinder() {
         return finder;
+    }
+
+    public static User findMentorByUser(User u){
+       Mentorship m = finder.where().eq("student_id", u.getId()).eq("status", UserConstants.ACTIVE_MENTORSHIP).findUnique();
+        return m.getMentor();
+
     }
 
     public Long getId() {

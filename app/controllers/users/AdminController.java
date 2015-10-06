@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
@@ -576,6 +577,7 @@ public class AdminController extends Controller {
 
         return redirect("admin/allusers");
     }
+
 
     /**
      * Renders view with table filled with all archived courses. Course name, description and email of user who

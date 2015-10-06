@@ -31,6 +31,14 @@
                                                         <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
                                                     </h4>
                                                 </div>
+                                                @if(post.getPostType == 1 ) {
+                                                    <div class="col-sm-3">
+                                                        <h4 class="pull-right">
+                                                            <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+                                                                Start</button>
+                                                        </h4>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -69,5 +77,22 @@
                     </div>
                 </div>
     }
+        <script>
 
+                function callAjax(postId){
+                    alert(postId);
+                    var button = document.getElementById("sendStartedMessage" + postId);
+                    alert(@course.getId);
+
+                    $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.UserController.sendStartMessage()",
+                    data : "postId=" + postId + "&courseId=" + @course.getId
+                });
+                }
+
+
+
+
+        </script>
     }

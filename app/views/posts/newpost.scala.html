@@ -111,7 +111,7 @@
             <div class="col-lg-4">
                 <select class="form-control" id="selectCourse" name="course">
                 @for(course <- userCourses) {
-                        <option value="@course.getId">@course.getName</option>
+                        <option value="@course.getId">@course.getName - @course.getDescription</option>
                 }
                 </select>
             </div>
