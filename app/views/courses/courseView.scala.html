@@ -22,15 +22,31 @@
                                     <div class="panel-heading">
                                         <div class="text-center">
                                             <div class="row">
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-8">
                                                     <h3 class="pull-left">@post.getTitle</h3>
-                                                    <h5 class="pull-right" style="font-family: Arial" y><em>@post.getDate</em></h5>
+                                                   <!-- <h5 class="pull-right" style="font-family: Arial" y><em>@post.getDate</em></h5> -->
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <h4 class="pull-right">
-                                                        <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
+                                                    @if(post.getPostType == 1){
+                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
+                                                    }
                                                     </h4>
                                                 </div>
+                                                <div class="col-sm-4">
+                                                    <h4 class="pull-right">
+                                                    @if(post.getPostType == 1){
+                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
+                                                    }
+                                                    </h4>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h4 class="pull-right">
+                                                        <button type="submit" class="btn btn-primary focus" href="@controllers.routes.Application.savePost()">Publish</button>
+                                                    </h4>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>

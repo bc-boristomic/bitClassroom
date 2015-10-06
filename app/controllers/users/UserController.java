@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by boris on 9/12/15.
  */
-public class UserController extends Controller {
+public class aUserController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
