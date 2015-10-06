@@ -26,6 +26,7 @@ import utility.MD5Hash;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.adduser;
+import views.html.admins.inactMentors;
 import views.html.admins.setingsweeklyreport;
 import views.html.admins.newTableWeekly;
 
@@ -467,6 +468,22 @@ public class AdminController extends Controller {
      */
     public Result seeMentorsAndStudents() {
         return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
+    }
+
+
+    /**
+     * Method for get list of inactive mentors
+     */
+    public Result inactiveMentors(){
+
+        List<PrivateMessage>  message = PrivateMessage.findAllMessage();
+        List<User> inactiveMentors = new ArrayList<>();
+        for( int i = 0; i < message.size(); i++){
+            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+                inactiveMentors.add(message.get(i).getReceiver());
+            }
+        }
+        return ok(inactMentors.render(inactiveMentors));
     }
 
     /**
