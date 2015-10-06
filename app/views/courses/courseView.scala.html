@@ -86,7 +86,7 @@
 
                     $.ajax({
                     type: "post",
-                    url : "@controllers.users.routes.AdminController.sendStartMessage()",
+                    url : "@controllers.users.routes.UserController.sendStartMessage()",
                     data : "postId=" + postId + "&courseId=" + @course.getId
                 });
                 }

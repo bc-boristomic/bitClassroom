@@ -3,8 +3,11 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Post;
 import models.PrivateMessage;
+import models.course.Course;
 import models.course.CourseUser;
+import models.user.Mentorship;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -284,6 +287,50 @@ public class UserController extends Controller {
         msg.setStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
+    }
+
+    public Result sendStartMessage() {
+        flash("succes", "Evo me");
+        Logger.info("uso");
+        DynamicForm form = Form.form().bindFromRequest();
+        String postId = form.data().get("postId");
+        String courseId = form.data().get("courseId");
+        Course c = Course.findById(Long.parseLong(courseId));
+        Logger.info(c.getName());
+        Logger.info(c.getTeacher());
+        Post p = Post.findPostById(Long.parseLong(postId));
+        Logger.info(p.getTitle());
+        flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
+        User sender = SessionHelper.currentUser(ctx());
+        Logger.info(sender.getFirstName());
+        User receiver = Mentorship.findMentorByUser(sender);
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
+        //User receiver = User.findById(7L);
+        Logger.info(receiverTeacher.getFirstName());
+        //  if(receiver != null) {
+        String subject = "Announcement";
+        String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+
+        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
+        teacherMessage.setStatus(0);
+        receiverTeacher.getMessages().add(teacherMessage);
+        receiverTeacher.save();
+
+
+        //}
+
+       /* PrivateMessage privMessage1 = PrivateMessage.create(subject, content, sender, );
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+        */
+
+        return redirect("/");
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)

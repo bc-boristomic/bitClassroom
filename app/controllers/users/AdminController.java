@@ -551,41 +551,6 @@ public class AdminController extends Controller {
         return redirect("admin/allusers");
     }
 
-    public Result sendStartMessage() {
-        flash("succes", "Evo me");
-        Logger.info("uso");
-        DynamicForm form = Form.form().bindFromRequest();
-        String postId = form.data().get("postId");
-        String courseId = form.data().get("courseId");
-        Course c = Course.findById(Long.parseLong(courseId));
-        Logger.info(c.getName());
-        Logger.info(c.getTeacher());
-        Post p = Post.findPostById(Long.parseLong(postId));
-        Logger.info(p.getTitle());
-        flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
-        User sender = SessionHelper.currentUser(ctx());
-        Logger.info(sender.getFirstName());
-        User receiver = Mentorship.findMentorByUser(sender);
-        //User receiver = User.findById(7L);
-        Logger.info(receiver.getFirstName());
-      //  if(receiver != null) {
-            String subject = "Announcement";
-            String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
-
-            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
-            privMessage.setStatus(0);
-            receiver.getMessages().add(privMessage);
-            receiver.save();
-       //}
-
-       /* PrivateMessage privMessage1 = PrivateMessage.create(subject, content, sender, );
-        privMessage.setStatus(0);
-        receiver.getMessages().add(privMessage);
-        receiver.save();
-        */
-
-        return redirect("/");
-    }
 
     /**
      * Renders view with table filled with all archived courses. Course name, description and email of user who
