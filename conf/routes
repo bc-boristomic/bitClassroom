@@ -57,6 +57,7 @@ POST          /admin/mentorship                     @controllers.users.AdminCont
 # See active mentorships and delete it
 GET           /admin/activementors                  @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id              @controllers.users.AdminController.deleteMentorship(id: Long)
+GET           /admin/inactivementors                @controllers.users.AdminController.inactiveMentors()
 
 # Routes for admin approval of user to join certain course
 POST          /admin/approvestudent/:id             @controllers.users.AdminController.approveStudent(id: Long)
@@ -117,11 +118,11 @@ POST          /student/joincourse/haveaccess        @controllers.users.StudentCo
 # SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
 GET           /user/courses                         @controllers.course.CourseController.allCourses()
-GET           /user/class/:id                           @controllers.course.CourseController.course(id: Long)
+GET           /user/class/:id                       @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post                                @controllers.posts.PostController.savePost()
+POST          /post                                 @controllers.posts.PostController.savePost()
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
@@ -147,6 +148,12 @@ GET           /api/user/:id                         @controllers.api.UserAPICont
 GET           /assets/*file                         @controllers.Assets.versioned(path="/public", file: Asset)
 
 #Sending email
+
 POST        /user/sendMail                        @controllers.Emails.sendMail()
 POST        /user/sendStartMail                   @controllers.users.UserController.sendStartMessage()
+
+
+POST          /user/sendMmail                       @controllers.Emails.sendMail()
+
+
 

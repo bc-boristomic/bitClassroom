@@ -3,25 +3,27 @@
 @main("Message") {
 
 <br> <br> <br>
+    @helper.form(action = controllers.users.routes.UserController.allMessage(), 'role -> "form") {
+        <div class="Compose-Message">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    From: @message.getSender.getFirstName @message.getSender.getLastName
+                </div>
+                <div class="panel-body">
 
-<div class="Compose-Message">
-    <div class="panel panel-success">
-        <div class="panel-heading">
-        From: @message.getSender.getFirstName @message.getSender.getLastName
+                    <label>Subject :  </label>
+                    <input type="text" name="subject" class="form-control" readonly value="@message.getSubject" />
+                    <label>Text Message : </label>
+                    <textarea rows="9" name="content" class="form-control" readonly>@message.getContent</textarea>
+                    <button type="submit"  class="glyphicon glyphicon-hand-left" href="@controllers.users.routes.UserController.allMessage()">
+                        <span class="badge">Back</span></button>
+                    <a class="col-xs-offset-11" href="@controllers.users.routes.UserController.newMessage(message.getSender.getId)">
+                        <span class="glyphicon glyphicon-send">...</span><span class="badge">Reply</span></a>
+
+                </div>
+
+            </div>
         </div>
-        <div class="panel-body">
-
-            <label>Subject :  </label>
-            <input type="text" name="subject" class="form-control" readonly value="@message.getSubject" />
-            <label>Text Message : </label>
-            <textarea rows="9" name="content" class="form-control" readonly>@message.getContent</textarea>
-            <hr />
-            <a class="col-xs-offset-11" href="@controllers.users.routes.UserController.newMessage(message.getSender.getId)">
-                <span class="glyphicon glyphicon-send">...</span><span class="badge">Reply</span></a>
-
-        </div>
-
-    </div>
-</div>
+    }
 
 }

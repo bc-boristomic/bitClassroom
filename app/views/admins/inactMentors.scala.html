@@ -1,0 +1,40 @@
+@import models.user.Mentorship
+@import models.user.User
+@(mentorship: List[User])
+@adminmain("Mentors") {
+
+  <div class="container">
+    <h4 class="page-head-line">Inactive mentors</h4>
+
+  </div>
+  
+  <div class="container">
+    <div class="table-responsive">
+
+      <table id="sort" class="table-condensed table-hover table table-bordered">
+        <thead>
+          <tr class="success">
+            <th>Mentor</th>
+            <th>E-mail</th>
+            <th>Info</th>
+            <th>Send message</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for(men <- mentorship) {
+          <tr class="info">
+            <td>@men.getFirstName @men.getLastName</td>
+            <td>@men.getEmail</td>
+            <td>@men.getCellPhone</td>
+            <td><a href="@controllers.users.routes.UserController.newMessage(men.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+   document.getElementById("demo").innerHTML = Date();
+  </script>
+
+}
