@@ -7,10 +7,12 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import play.Logger;
 import play.Play;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.newMain;
 
 import javax.inject.Inject;
 
@@ -18,22 +20,16 @@ import javax.inject.Inject;
  * Created by gordan.masic on 05/10/15.
  */
 public class Emails extends Controller {
-    private static Form<Email> mailForm = Form.form(Email.class);
+    private static Form<Email> mailForm1 = Form.form(Email.class);
 
     @Inject WSClient ws;
     public Result sendMail() {
-
-        String user_name = mailForm.bindFromRequest().field("user_name").value();
-        Logger.info("-----"+user_name+"-------");
-        String mail = mailForm.bindFromRequest().field("mail").value();
-        Logger.info("-----"+mail+"-------");
-        String subject = mailForm.bindFromRequest().field("subject").value();
-        Logger.info("-----"+subject+"-------");
-        String message = mailForm.bindFromRequest().field("message").value();
-        Logger.info("-----"+message+"-------");
-
-        String recaptcha = mailForm.bindFromRequest().field("g-recaptcha-response").value();
-
+        DynamicForm mailForm = Form.form().bindFromRequest();
+        String userName = mailForm.get("name");
+        String mail = mailForm.get("mail");
+        String subject = mailForm.get("subject");
+        String message = mailForm.get("message");
+        String recaptcha = mailForm.get("g-recaptcha-response");
         Boolean verify = GoogleRecaptcha.verifyGoogleRecaptcha(ws, recaptcha);
 
         if (verify) {
@@ -47,7 +43,7 @@ public class Emails extends Controller {
                 email.setDebug(true);
                 email.addTo(Play.application().configuration().getString("mail.smtp.user"));
                 email.setSubject(subject);
-                email.setMsg(user_name + "\n" + mail + "\n\n"+subject +"\n" + message);
+                email.setMsg(userName + "\n" + mail + "\n\n"+subject +"\n" + message);
 
                 email.send();
             } catch (EmailException e) {
