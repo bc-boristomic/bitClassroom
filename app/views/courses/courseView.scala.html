@@ -31,6 +31,12 @@
                                                         <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
                                                     </h4>
                                                 </div>
+
+                                                <div class="col-sm-3">
+                                                    <h4 class="pull-right">
+                                                        <button id="sendStartMessage">Start</button>
+                                                    </h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -69,5 +75,16 @@
                     </div>
                 </div>
     }
+        <script>
+            $(document).ready(function(){
+                $("#sendStartMessage").click(function(){
+                     $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.AdminController.sendStartMessage(course.getId)",
+                });
+                })
 
+
+            });
+        </script>
     }

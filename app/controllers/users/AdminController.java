@@ -550,6 +550,21 @@ public class AdminController extends Controller {
         return redirect("admin/allusers");
     }
 
+    public Result sendStartMessage(Long courseId) {
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = sender;
+        String subject = "Information";
+        String content = "Course "  + " is deleted by admin " + sender.getFirstName() +" " + sender.getLastName() +".";
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+
+        return redirect("admin/allusers");
+    }
+
     /**
      * Renders view with table filled with all archived courses. Course name, description and email of user who
      * archived it is displayed,
