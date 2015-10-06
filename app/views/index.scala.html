@@ -2,6 +2,7 @@
 @import models.user.User
 @import models.course.Course
 @import models.course.CourseUser
+@import utility.UserConstants
 @(user: User)(courseUser: List[CourseUser])
 @main("Welcome to bitClassroom") {
 
@@ -10,8 +11,8 @@
             <h4>Welcome back @user.getFirstName @user.getLastName</h4>
         </div>
         @for(cU <- courseUser) {
-            @if(cU.getUser.getId == user.getId) {
-                @if(cU.getStatus == 2 && cU.getCourse.getStatus != 2) {
+            @if(cU.getUser.getId == user.getId || user.getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)) {
+                @if(cU.getStatus == 2 && cU.getCourse.getStatus != 2 ) {
                     <div class="col-sm-3" id="courseDiv">
                         <div class="thumbnail" style="max-height: 700px; max-width: 300px">
                             <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="" style="width:280px; height: 200px">
