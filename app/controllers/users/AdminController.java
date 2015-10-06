@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
@@ -550,19 +551,40 @@ public class AdminController extends Controller {
         return redirect("admin/allusers");
     }
 
-    public Result sendStartMessage(Long courseId) {
-
+    public Result sendStartMessage() {
+        flash("succes", "Evo me");
+        Logger.info("uso");
+        DynamicForm form = Form.form().bindFromRequest();
+        String postId = form.data().get("postId");
+        String courseId = form.data().get("courseId");
+        Course c = Course.findById(Long.parseLong(courseId));
+        Logger.info(c.getName());
+        Logger.info(c.getTeacher());
+        Post p = Post.findPostById(Long.parseLong(postId));
+        Logger.info(p.getTitle());
+        flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
-        User receiver = sender;
-        String subject = "Information";
-        String content = "Course "  + " is deleted by admin " + sender.getFirstName() +" " + sender.getLastName() +".";
+        Logger.info(sender.getFirstName());
+        User receiver = Mentorship.findMentorByUser(sender);
+        //User receiver = User.findById(7L);
+        Logger.info(receiver.getFirstName());
+      //  if(receiver != null) {
+            String subject = "Announcement";
+            String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
 
-        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+            privMessage.setStatus(0);
+            receiver.getMessages().add(privMessage);
+            receiver.save();
+       //}
+
+       /* PrivateMessage privMessage1 = PrivateMessage.create(subject, content, sender, );
         privMessage.setStatus(0);
         receiver.getMessages().add(privMessage);
         receiver.save();
+        */
 
-        return redirect("admin/allusers");
+        return redirect("/");
     }
 
     /**

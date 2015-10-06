@@ -148,5 +148,5 @@ GET           /assets/*file                         @controllers.Assets.versione
 
 #Sending email
 POST        /user/sendMail                        @controllers.Emails.sendMail()
-POST        /user/sendStartMail/:courseId                    @controllers.users.AdminController.sendStartMessage(courseId: Long)
+POST        /user/sendStartMail                   @controllers.users.AdminController.sendStartMessage()
 
