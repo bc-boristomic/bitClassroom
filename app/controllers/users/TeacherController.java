@@ -81,8 +81,6 @@ public class TeacherController extends Controller {
 
     public Result listAssignment() {
         User user = SessionHelper.currentUser(ctx());
-        Logger.info("User => " + user.getLastName() + " " + user.getFirstName() + " Post => " + user.getPosts().get(0));
-
         return ok(teacherListsAssignment.render(user.getPosts()));
     }
 }
