@@ -77,16 +77,23 @@
                     </div>
                 </div>
     }
+        <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
         <script>
 
                 function callAjax(postId){
 
-                    var button = document.getElementById("sendStartedMessage" + postId);
+                    var button = document.getElementById("sendStartMessage" + postId);
+                    alert(button.value);
+                    //$("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                    $("#sendStartMessage"+postId).hide( "scale", 500 );
                     $.ajax({
                     type: "post",
-                    url : "@controllers.users.routes.UserController.sendStartMessage()",
+                    url : "@controllers.users.routes.StudentController.sendStartMessage()",
                     data : "postId=" + postId + "&courseId=" + @course.getId
                 });
+
+
+
                 }
 
 

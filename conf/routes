@@ -150,7 +150,7 @@ GET           /assets/*file                         @controllers.Assets.versione
 #Sending email
 
 POST        /user/sendMail                        @controllers.Emails.sendMail()
-POST        /user/sendStartMail                   @controllers.users.UserController.sendStartMessage()
+POST        /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
 
 
 POST          /user/sendMmail                       @controllers.Emails.sendMail()

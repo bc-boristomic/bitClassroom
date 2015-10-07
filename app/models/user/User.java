@@ -67,6 +67,8 @@ public final class User extends Model {
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false, length = 50)
     private String createdBy;
+    @Column(name = "homework_status")
+    private Integer homeworkStatus;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
@@ -308,6 +310,14 @@ public final class User extends Model {
     public String getFormattedUpdateDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(updateDate);
+    }
+
+    public Integer getHomeworkStatus() {
+        return homeworkStatus;
+    }
+
+    public void setHomeworkStatus(Integer homeworkStatus) {
+        this.homeworkStatus = homeworkStatus;
     }
 
     public void setCreationDate(DateTime creationDate) {
