@@ -117,7 +117,7 @@ public class PostController extends Controller {
         }
 
 
-        if (user != null) {
+        if (user != null && selectedCourse!= null) {
             Course course = Course.findById(Long.parseLong(selectedCourse));
             post.setTitle(title);
             post.setContent(message);
@@ -130,7 +130,7 @@ public class PostController extends Controller {
             return redirect("/"); // TODO add call to route for listing posts
         }
         flash("warning", "Could not save your post.");
-        return redirect("/");
+        return redirect("/admin");
 
     }
 
