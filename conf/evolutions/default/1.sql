@@ -134,7 +134,7 @@ create table user (
   student_status            integer(1),
   create_date               datetime,
   created_by                varchar(50),
-  homework_status           integer,
+  homework_status           integer(1),
   update_date               datetime,
   updated_by                varchar(50),
   constraint uq_user_email unique (email),

@@ -86,10 +86,10 @@ public class StudentController extends Controller {
         User sender = SessionHelper.currentUser(ctx());
         User receiver = Mentorship.findMentorByUser(sender);
         User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
-        sender.setHomeworkStatus(1);
-        sender.save();
+
         //User receiver = User.findById(7L);
         Logger.info(receiverTeacher.getFirstName());
+        Logger.info(sender.getFirstName());
         //  if(receiver != null) {
         String subject = "Announcement";
         String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
@@ -104,14 +104,9 @@ public class StudentController extends Controller {
         receiverTeacher.getMessages().add(teacherMessage);
         receiverTeacher.save();
 
+        sender.setHomeworkStatus(1);
+        sender.save();
 
-        //}
-
-       /* PrivateMessage privMessage1 = PrivateMessage.create(subject, content, sender, );
-        privMessage.setStatus(0);
-        receiver.getMessages().add(privMessage);
-        receiver.save();
-        */
 
         return redirect("/");
     }
