@@ -1,9 +1,11 @@
 @(listPost: List[Post])
 @main("List assignment") {
-    <h1>List assignment</h1>
+ <br>
+    <br>
 
     @for(lp <- listPost) {
     @if(lp.getPostType == 1){
+        <a href="@controllers.posts.routes.PostController.assignmentDetails(lp.getId)">
         <div class="container">
             <div class="row">
                 <div class="col-md-1"></div>
@@ -61,6 +63,7 @@
                 </div>
             </div>
         </div>
+        </a>
     }
     }
 }

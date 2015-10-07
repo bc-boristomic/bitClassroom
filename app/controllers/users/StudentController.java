@@ -14,6 +14,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 
 import java.util.List;
 
@@ -82,27 +83,28 @@ public class StudentController extends Controller {
         Logger.info(c.getName());
         Logger.info(c.getTeacher());
         Post p = Post.findPostById(Long.parseLong(postId));
-        flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
+        flash("succes", c.getName() + "  " + c.getTeacher() + "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
-        User receiver = Mentorship.findMentorByUser(sender);
-        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
-
-        //User receiver = User.findById(7L);
-        Logger.info(receiverTeacher.getFirstName());
-        Logger.info(sender.getFirstName());
-        //  if(receiver != null) {
         String subject = "Announcement";
         String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
 
-        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
-        privMessage.setStatus(0);
-        receiver.getMessages().add(privMessage);
-        receiver.save();
 
-        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
-        teacherMessage.setStatus(0);
-        receiverTeacher.getMessages().add(teacherMessage);
-        receiverTeacher.save();
+            User receiver = Mentorship.findMentorByUser(sender);
+        if ( receiver != null) {
+            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+            privMessage.setStatus(0);
+            receiver.getMessages().add(privMessage);
+            receiver.save();
+        }
+
+            User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
+            Logger.info(receiverTeacher.getFirstName());
+            Logger.info(sender.getFirstName());
+
+            PrivateMessage teacherMessage = PrivateMessage.create(subject, content, sender, receiverTeacher);
+            teacherMessage.setStatus(0);
+            receiverTeacher.getMessages().add(teacherMessage);
+            receiverTeacher.save();
 
         sender.setHomeworkStatus(1);
         sender.save();

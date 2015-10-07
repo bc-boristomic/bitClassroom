@@ -19,6 +19,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
+import views.html.posts.assignmentView;
 import views.html.posts.newpost;
 
 import java.io.File;
@@ -44,6 +45,14 @@ public class PostController extends Controller {
      */
     public Result addPost() {
         return ok(newpost.render(postForm, SessionHelper.currentUser(ctx()), CourseUser.allUserCourses(SessionHelper.currentUser(ctx()))));
+    }
+
+    public Result assignmentDetails(Long id){
+
+        Post post = Post.findPostById(id);
+
+        return ok(assignmentView.render(post));
+
     }
 
     /**

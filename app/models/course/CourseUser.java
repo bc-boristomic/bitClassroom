@@ -71,7 +71,7 @@ public final class CourseUser extends Model {
         List<CourseUser> list = finder.all();
 
         for ( int i = 0; i < list.size(); i++){
-            if( list.get(i).getId() == id ){
+            if( list.get(i).getCourse().getId() == id ){
 
                 courseUsers.add(list.get(i).getUser());
             }

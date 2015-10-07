@@ -1,0 +1,38 @@
+@import models.user.User
+@(userList: List[User])(post :Post)
+@main("Students") {
+
+  <div class="container">
+    <h4 class="page-head-line">Students:</h4>
+  </div>
+  <div class="container">
+    <div class="table-responsive">
+      <table id="sort" class="table-condensed table-hover table table-bordered">
+        <thead>
+          <tr class="information">
+            <th>Name:</th>
+            <th>Email</th>
+            <th>Assignment</th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+        @for(users <- userList){
+
+            <tr class="info">
+              <td>@users.getFirstName @users.getLastName</td>
+              <td>@users.getEmail</td>
+              <td>@post.getTitle</td>
+              <td><a href="@controllers.users.routes.UserController.newMessage(users.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
+            </tr>
+
+        }
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+}
