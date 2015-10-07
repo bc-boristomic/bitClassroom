@@ -44,6 +44,9 @@ public final class Mentorship extends Model {
 
     public static User findMentorByUser(User u){
        Mentorship m = finder.where().eq("student_id", u.getId()).eq("status", UserConstants.ACTIVE_MENTORSHIP).findUnique();
+        if(m == null){
+            return null;
+        }
         return m.getMentor();
 
     }
