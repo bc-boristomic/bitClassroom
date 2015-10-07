@@ -24,7 +24,7 @@
                                             <div class="row">
                                                 <div class="col-sm-8">
                                                     <h3 class="pull-left">@post.getTitle</h3>
-                                                   <!-- <h5 class="pull-right" style="font-family: Arial" y><em>@post.getDate</em></h5> -->
+                                                   
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <h4 class="pull-right">
@@ -33,20 +33,15 @@
                                                     }
                                                     </h4>
                                                 </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="pull-right">
-                                                    @if(post.getPostType == 1){
-                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
-                                                    }
-                                                    </h4>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="pull-right">
-                                                        <button type="submit" class="btn btn-primary focus" href="@controllers.routes.Application.savePost()">Publish</button>
-                                                    </h4>
-                                                </div>
 
-
+                                                @if(post.getPostType == 1 ) {
+                                                    <div class="col-sm-3">
+                                                        <h4 class="pull-right">
+                                                            <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+                                                                Start</button>
+                                                        </h4>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -85,5 +80,25 @@
                     </div>
                 </div>
     }
+        <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
+        <script>
 
+                function callAjax(postId){
+
+                    var button = document.getElementById("sendStartMessage" + postId);
+                   $("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                   $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.StudentController.sendStartMessage()",
+                    data : "postId=" + postId + "&courseId=" + @course.getId
+                });
+
+
+
+                }
+
+
+
+
+        </script>
     }

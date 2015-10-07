@@ -3,8 +3,11 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Post;
 import models.PrivateMessage;
+import models.course.Course;
 import models.course.CourseUser;
+import models.user.Mentorship;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -285,6 +288,8 @@ public class aUserController extends Controller {
         Ebean.save(msg);
         return redirect("/allMessage");
     }
+
+
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result deleteSendMessage(Long id){

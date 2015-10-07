@@ -67,6 +67,8 @@ public final class User extends Model {
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false, length = 50)
     private String createdBy;
+    @Column(name = "homework_status", length = 1)
+    private Integer homeworkStatus;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
@@ -141,6 +143,12 @@ public final class User extends Model {
         return finder.where().eq("email", email).findUnique();
     }
 
+
+    public static User findByName(String name){
+
+        return finder.where().eq("firstName", name).findUnique();
+    }
+
     /**
      * Returns finder on User model
      *
@@ -173,6 +181,7 @@ public final class User extends Model {
         sb.append("STATUS ").append(status);
         return sb.toString();
     }
+
 
 
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */
@@ -301,6 +310,14 @@ public final class User extends Model {
     public String getFormattedUpdateDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(updateDate);
+    }
+
+    public Integer getHomeworkStatus() {
+        return homeworkStatus;
+    }
+
+    public void setHomeworkStatus(Integer homeworkStatus) {
+        this.homeworkStatus = homeworkStatus;
     }
 
     public void setCreationDate(DateTime creationDate) {

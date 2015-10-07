@@ -89,7 +89,6 @@ public final class Post extends Model {
         return find
                 .where()
                 .eq("id", id)
-                .orderBy("id desc")
                 .findUnique();
     }
 
