@@ -136,7 +136,7 @@ public class PostController extends Controller {
             post.save();
             course.getPosts().add(post);
             flash("success", "You successfully added new post.");
-            return redirect("/"); // TODO add call to route for listing posts
+            return redirect("/user/class/" + Long.parseLong(selectedCourse)); // TODO add call to route for listing posts
         }
         flash("warning", "Could not save your post.");
         return redirect("/admin");

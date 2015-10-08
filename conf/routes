@@ -155,8 +155,14 @@ GET           /assets/*file                         @controllers.Assets.versione
 
 #Sending email
 
+
+POST        /user/sendMail                        @controllers.Emails.sendMail()
+POST        /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+POST        /user/sendFinishMail                   @controllers.users.StudentController.sendFinishMessage()
+
 POST          /user/sendMail                        @controllers.Emails.sendMail()
 POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+
 
 
 POST          /user/sendMmail                       @controllers.Emails.sendMail()

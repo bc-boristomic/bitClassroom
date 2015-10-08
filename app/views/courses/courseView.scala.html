@@ -1,6 +1,9 @@
 
 @import models.course.Course
+@import models.user.User
 
+@import utility.UserConstants
+@import helpers.SessionHelper
 @(course : Course)
 @main("Classroom") {
 
@@ -22,16 +25,19 @@
                                     <div class="panel-heading">
                                         <div class="text-center">
                                             <div class="row">
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-8">
                                                     <h3 class="pull-left">@post.getTitle</h3>
-                                                    <h5 class="pull-right" style="font-family: Arial" y><em>@post.getDate</em></h5>
+
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <h4 class="pull-right">
-                                                        <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
+                                                    @if(post.getPostType == 1){
+                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
+                                                    }
                                                     </h4>
                                                 </div>
-                                                @if(post.getPostType == 1 ) {
+                                                <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
+                                                @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getId != 2 ) {
                                                     <div class="col-sm-3">
                                                         <h4 class="pull-right">
                                                             <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
@@ -84,6 +90,26 @@
 
                     var button = document.getElementById("sendStartMessage" + postId);
                    $("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                   var div = $("#sendStartMessage"+postId).parent();
+
+                   $("#sendStartMessage"+postId).remove();
+                   var label = document.createElement('label');
+                   label.innerText = "STARTED";
+                   var attr = document.createAttribute("id");
+                   attr.value = "label";
+                   label.setAttributeNode(attr);
+                   var button = document.createElement('button');
+                   button.innerText = "Finish";
+                   var at = document.createAttribute("id");
+                   at.value = "sendFinishMessage" + postId;
+                   button.setAttributeNode(at);
+                   div.append(label);
+                   var att = document.createAttribute("onclick");
+                   att.value = "callSecondAjax("+postId+")";
+                   button.setAttributeNode(att);
+
+                   div.append(button);
+
                    $.ajax({
                     type: "post",
                     url : "@controllers.users.routes.StudentController.sendStartMessage()",
@@ -92,6 +118,17 @@
 
 
 
+                }
+
+                function callSecondAjax(postId){
+                    document.getElementById("label").innerText = "DONE";
+                    $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                    $("#sendFinishMessage"+postId).remove();
+                    $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.StudentController.sendFinishMessage()",
+                    data : "postId=" + postId + "&courseId=" + @course.getId
+                });
                 }
 
 

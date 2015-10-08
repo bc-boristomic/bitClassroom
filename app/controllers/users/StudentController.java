@@ -80,41 +80,65 @@ public class StudentController extends Controller {
         String postId = form.data().get("postId");
         String courseId = form.data().get("courseId");
         Course c = Course.findById(Long.parseLong(courseId));
-        Logger.info(c.getName());
-        Logger.info(c.getTeacher());
         Post p = Post.findPostById(Long.parseLong(postId));
-        flash("succes", c.getName() + "  " + c.getTeacher() + "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
-        String subject = "Announcement";
-        String content = "I'm started task " + p.getTitle() + "on the course " + c.getName();
+        User receiver = Mentorship.findMentorByUser(sender);
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
 
-
-            User receiver = Mentorship.findMentorByUser(sender);
-        if ( receiver != null) {
-            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
-            privMessage.setStatus(0);
-            receiver.getMessages().add(privMessage);
-            receiver.save();
-        }
-
-            User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
-            Logger.info(receiverTeacher.getFirstName());
-            Logger.info(sender.getFirstName());
-
-            PrivateMessage teacherMessage = PrivateMessage.create(subject, content, sender, receiverTeacher);
-            teacherMessage.setStatus(0);
-            receiverTeacher.getMessages().add(teacherMessage);
-            receiverTeacher.save();
+              String subject = "Announcement";
+              String content = "I'm started task " + p.getTitle() + " on the course " + c.getName();
+        if(receiver != null) {
+              PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+              privMessage.setStatus(0);
+              receiver.getMessages().add(privMessage);
+              receiver.save();
+          }
+        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
+        teacherMessage.setStatus(0);
+        receiverTeacher.getMessages().add(teacherMessage);
+        receiverTeacher.save();
 
         sender.setHomeworkStatus(1);
         sender.save();
 
 
-        return redirect("/");
+        return redirect("/user/class/"+courseId);
     }
 
+    public Result sendFinishMessage() {
 
+        DynamicForm form = Form.form().bindFromRequest();
+        String postId = form.data().get("postId");
+        String courseId = form.data().get("courseId");
+        Course c = Course.findById(Long.parseLong(courseId));
+        // Logger.info(c.getName());
+        // Logger.info(c.getTeacher());
+        Post p = Post.findPostById(Long.parseLong(postId));
+        //flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = Mentorship.findMentorByUser(sender);
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
+        String subject = "Announcement";
+        String content = "I'm finished task " + p.getTitle() + " on the course " + c.getName();
 
+        if ( receiver != null) {
+
+            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+            privMessage.setStatus(0);
+            receiver.getMessages().add(privMessage);
+            receiver.save();
+        }
+        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
+        teacherMessage.setStatus(0);
+        receiverTeacher.getMessages().add(teacherMessage);
+        receiverTeacher.save();
+
+        sender.setHomeworkStatus(2);
+        sender.save();
+
+        return redirect("/user/class/"+courseId);
+    }
+    
     public Result test() {
         return ok("you are student");
     }
