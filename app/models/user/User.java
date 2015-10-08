@@ -68,7 +68,7 @@ public final class User extends Model {
     @Column(name = "created_by", updatable = false, length = 50)
     private String createdBy;
     @Column(name = "homework_status", length = 1)
-    private Integer homeworkStatus;
+    private Integer homeworkStatus = 0;
 
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;

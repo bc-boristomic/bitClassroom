@@ -35,7 +35,7 @@
                                                 </div>
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
                                                 @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
-                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1 && post.getHomeworkPostStatus == null){
+                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 0 && post.getHomeworkPostStatus == null){
                                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">

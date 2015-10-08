@@ -121,7 +121,7 @@ public class TeacherController extends Controller {
         if( status.equals("Not")) {
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && users.get(i).getHomeworkStatus() == null) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && users.get(i).getHomeworkStatus() == 0) {
 
                     students.add(users.get(i));
                 }
