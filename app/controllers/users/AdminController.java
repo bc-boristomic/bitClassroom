@@ -589,6 +589,11 @@ public class AdminController extends Controller {
         return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
     }
 
+
+    public Result deletedCourses() {
+        return ok(views.html.admins.coursesDeleted.render(Course.getFinder().where().eq("status", CourseConstants.DELETED_COURSE).findList()));
+    }
+
     /**
      * Recieves <code>Long</code> type value of Course id, find's the course and set's
      * status to active, find's course in relational table and only deletes all Users (set's them to null).

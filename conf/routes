@@ -102,6 +102,10 @@ POST          /admin/courses/:id                    @controllers.users.AdminCont
 GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
 POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
 
+# List of deleted courses
+GET           /admin/courses/deleted                @controllers.users.AdminController.deletedCourses()
+
+
 # Auto send message for user from deleted course
 
 
@@ -156,9 +160,9 @@ GET           /assets/*file                         @controllers.Assets.versione
 #Sending email
 
 
-POST        /user/sendMail                        @controllers.Emails.sendMail()
-POST        /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
-POST        /user/sendFinishMail                   @controllers.users.StudentController.sendFinishMessage()
+POST          /user/sendMail                        @controllers.Emails.sendMail()
+POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+POST          /user/sendFinishMail                  @controllers.users.StudentController.sendFinishMessage()
 
 POST          /user/sendMail                        @controllers.Emails.sendMail()
 POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()

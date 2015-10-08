@@ -1,8 +1,10 @@
 package controllers;
 
 
+import com.avaje.ebean.Ebean;
 import helpers.GoogleRecaptcha;
 import models.Email;
+import models.ErrorLog;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import play.Logger;
@@ -47,6 +49,7 @@ public class Emails extends Controller {
 
                 email.send();
             } catch (EmailException e) {
+                Ebean.save(new ErrorLog(e.getMessage()));
                 e.printStackTrace();
             }
             return redirect(routes.Application.index());
