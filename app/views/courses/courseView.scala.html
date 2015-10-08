@@ -35,13 +35,47 @@
                                                 </div>
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
                                                 @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
-                                                    <div class="col-sm-3">
-                                                        <h4 class="pull-right">
-                                                            <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
-                                                                Start</button>
-                                                        </h4>
-                                                    </div>
+                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1 && post.getHomeworkPostStatus == null){
+                                                        <div class="col-sm-3">
+                                                            <h4 class="pull-right">
+                                                                <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
+                                                                    Start</button>
+                                                            </h4>
+                                                        </div>
+                                                    }
+
+                                                    @if(post.getHomeworkPostStatus == 1) {
+                                                        <div class="col-sm-3">
+                                                            <h4 class="pull-right">
+                                                                <label id="label@post.getId">STARTED</label>
+                                                            </h4>
+                                                            <br>
+                                                            <h4 class="pull-right">
+                                                                <button id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)">
+                                                                    Finish</button>
+                                                            </h4>
+                                                        </div>
+                                                    }
+
+                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == null) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && post.getHomeworkPostStatus == null){
+                                                        <div class="col-sm-3">
+                                                            <h4 class="pull-right">
+                                                                <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+                                                                    Start</button>
+                                                            </h4>
+                                                        </div>
+                                                    }
+
+                                                    @if(post.getHomeworkPostStatus == 2){
+                                                            <div class="col-sm-3">
+                                                                <h4 class="pull-right">
+                                                                    <label id="label@post.getId">DONE</label>
+                                                                </h4>
+                                                            </div>
+                                                    }
+
                                                 }
+
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +127,7 @@
                    var label = document.createElement('label');
                    label.innerText = "STARTED";
                    var attr = document.createAttribute("id");
-                   attr.value = "label";
+                   attr.value = "label" + postId;
                    label.setAttributeNode(attr);
                    var button = document.createElement('button');
                    button.innerText = "Finish";
@@ -107,6 +141,7 @@
 
                    div.append(button);
 
+
                    $.ajax({
                     type: "post",
                     url : "@controllers.users.routes.StudentController.sendStartMessage()",
@@ -118,7 +153,8 @@
                 }
 
                 function callSecondAjax(postId){
-                    document.getElementById("label").innerText = "DONE";
+
+                    document.getElementById("label" + postId).innerText = "DONE";
                     $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                     $("#sendFinishMessage"+postId).remove();
                     $.ajax({

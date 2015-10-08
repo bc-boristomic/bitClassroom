@@ -99,6 +99,8 @@ public class StudentController extends Controller {
         receiverTeacher.save();
 
         sender.setHomeworkStatus(1);
+        p.setHomeworkPostStatus(1);
+        p.save();
         sender.save();
 
 
@@ -135,6 +137,9 @@ public class StudentController extends Controller {
 
         sender.setHomeworkStatus(2);
         sender.save();
+        p.setHomeworkPostStatus(2);
+        p.save();
+
 
         return redirect("/user/class/"+courseId);
     }
