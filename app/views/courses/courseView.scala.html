@@ -11,10 +11,7 @@
         <h4 class="page-head-line">Your wall</h4>
 
     </div>
-
-
             @for(post <- course.getPosts()){
-
                 <div class="container">
 
                     <div class="row">
@@ -37,7 +34,7 @@
                                                     </h4>
                                                 </div>
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
-                                                @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getId != 2 ) {
+                                                @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
                                                     <div class="col-sm-3">
                                                         <h4 class="pull-right">
                                                             <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
