@@ -127,6 +127,8 @@ GET           /user/class/:id                       @controllers.course.CourseCo
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
 POST          /post                                 @controllers.posts.PostController.savePost()
+GET           /post/assignment/:id                  @controllers.posts.PostController.assignmentDetails(id: Long)
+GET           /assignment/details/:id               @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
@@ -153,9 +155,15 @@ GET           /assets/*file                         @controllers.Assets.versione
 
 #Sending email
 
+
 POST        /user/sendMail                        @controllers.Emails.sendMail()
 POST        /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
 POST        /user/sendFinishMail                   @controllers.users.StudentController.sendFinishMessage()
+
+POST          /user/sendMail                        @controllers.Emails.sendMail()
+POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+
+
 
 POST          /user/sendMmail                       @controllers.Emails.sendMail()
 
