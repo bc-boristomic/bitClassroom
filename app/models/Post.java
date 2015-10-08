@@ -44,7 +44,8 @@ public final class Post extends Model {
     private DateTime createdDate = new DateTime();
     @ManyToOne
     private Course course;
-
+    @Column(name = "homework_post_status", length = 1)
+    private Integer homeworkPostStatus;
     @ManyToOne
     private User user;
 
@@ -183,6 +184,14 @@ public final class Post extends Model {
 
     public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Integer getHomeworkPostStatus() {
+        return homeworkPostStatus;
+    }
+
+    public void setHomeworkPostStatus(Integer homeworkPostStatus) {
+        this.homeworkPostStatus = homeworkPostStatus;
     }
 
     public void setDate(String date) {this.date = date;}

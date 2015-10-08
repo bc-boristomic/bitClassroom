@@ -69,6 +69,7 @@ public final class User extends Model {
     private String createdBy;
     @Column(name = "homework_status", length = 1)
     private Integer homeworkStatus;
+
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
@@ -319,6 +320,7 @@ public final class User extends Model {
     public void setHomeworkStatus(Integer homeworkStatus) {
         this.homeworkStatus = homeworkStatus;
     }
+
 
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;

@@ -73,6 +73,7 @@ create table post (
   time                      varchar(255),
   create_date               datetime,
   course_id                 bigint,
+  homework_post_status      integer(1),
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;
