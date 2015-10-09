@@ -15,10 +15,13 @@
 
 
             <div class="col-md-4 text-center">
-                <div id="img-preview-block" class="img-circle avatar avatar-original center-block" style="background-size:cover;
-                background-image:url(@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")?size=200x200)"></div>
+                @if(user.getProfilePicture.size() != 0 && user.getProfilePicture != null){
+                    <img src="@user.getProfilePicture.get(user.getProfilePicture.size()-1).getSize(300,300)"/>
+                }else{
+                    <img src="http://placehold.it/300x300"/>
+                }
                 <br>
-                <span class="btn btn-link btn-file">Edit profile picture<input type="file" name="profile-picture" accept="image/*" id="upload-img"></span>
+                <input type="file" name="image" accept="image/*" id="upload-img"/>
             </div>
 
                 <!-- edit form column -->
