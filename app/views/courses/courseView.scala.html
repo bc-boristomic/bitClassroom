@@ -114,8 +114,7 @@
                                             <form action="">
                                                 <div class="form-control">
                                                     <label class="col-lg-2">Homework link:</label>
-                                                    <input type="text" name="link" class="col-md-9 panel" required >
-                                                    <input type="submit" class="col-md-1" href="@controllers.users.routes.StudentController.sendFinishMessage()" value="Done">
+                                                    <input type="text" id="homework-link" name="link" class="col-md-9 panel" required >
                                                 </div>
                                             </form>
                                         }
@@ -167,13 +166,14 @@
 
                 function callSecondAjax(postId){
 
+                    var links = document.getElementById("homework-link");
                     document.getElementById("label" + postId).innerText = "DONE";
                     $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                     $("#sendFinishMessage"+postId).remove();
                     $.ajax({
                     type: "post",
                     url : "@controllers.users.routes.StudentController.sendFinishMessage()",
-                    data : "postId=" + postId + "&courseId=" + @course.getId
+                    data : "postId=" + postId + "&courseId=" + @course.getId + "&linkId=" + links
                 });
                 }
 
