@@ -45,7 +45,7 @@ public final class Post extends Model {
     @ManyToOne
     private Course course;
     @Column(name = "homework_post_status", length = 1)
-    private Integer homeworkPostStatus;
+    private Integer homeworkPostStatus = 0;
     @ManyToOne
     private User user;
 

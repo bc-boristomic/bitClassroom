@@ -7,6 +7,7 @@
 @(course : Course)
 @main("Classroom") {
 
+    @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
         <h4 class="page-head-line">Your wall</h4>
 
@@ -35,7 +36,7 @@
                                                 </div>
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
                                                 @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
-                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 0 && post.getHomeworkPostStatus == null){
+                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1 && post.getHomeworkPostStatus == 0){
                                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
@@ -57,7 +58,7 @@
                                                         </div>
                                                     }
 
-                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == null) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && post.getHomeworkPostStatus == null){
+                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && post.getHomeworkPostStatus == 0){
                                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
@@ -98,7 +99,6 @@
                                             <a href="@routes.Assets.versioned("/files/users/" + post.getFiles)">@post.getFiles</a>
                                         </div>
                                     }
-
                                     <div class="panel-footer">
                                         @if(post.getPostType == 1){
                                             <span class="label label-default">Assigment </span> <span class="label label-default">@post.getCreateDate</span>
@@ -107,6 +107,19 @@
                                         }
 
                                         <span class="label label-default">Updates</span>
+
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT)){
+                                        <br>
+                                        <br>
+                                            <form action="">
+                                                <div class="form-control">
+                                                    <label class="col-lg-2">Homework link:</label>
+                                                    <input type="text" name="link" class="col-md-9 panel" required >
+                                                    <input type="submit" class="col-md-1" href="@controllers.users.routes.StudentController.sendFinishMessage()" value="Done">
+                                                </div>
+                                            </form>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
@@ -168,4 +181,5 @@
 
 
         </script>
+    }
     }

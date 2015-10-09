@@ -119,9 +119,11 @@ public class StudentController extends Controller {
         //flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
         User receiver = Mentorship.findMentorByUser(sender);
-        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
+        String link = form.get("link");
+        Logger.info(link);
         String subject = "Announcement";
-        String content = "I'm finished task " + p.getTitle() + " on the course " + c.getName();
+        String content = "I'm finished task " + p.getTitle() + " on the course " + c.getName() + " link : " + link;
 
         if ( receiver != null) {
 

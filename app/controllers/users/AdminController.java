@@ -356,7 +356,7 @@ public class AdminController extends Controller {
 
         CourseUser  adminCourse = new CourseUser();
         adminCourse.setCourse(course);
-        adminCourse.setStatus(CourseConstants.ACTIVE_COURSE);
+        adminCourse.setStatus(2);
         adminCourse.setUser(SessionHelper.currentUser(ctx()));
         try {
             cu.save();
