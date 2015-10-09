@@ -1,6 +1,7 @@
 package models.user;
 
 import com.avaje.ebean.Model;
+import models.Image;
 import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
@@ -57,8 +58,8 @@ public final class User extends Model {
     private String twitter;
     @Column(name = "youtube")
     private String youtube;
-    @Column(name = "picture")
-    private String profilePicture = "default.jpg";
+    @OneToMany
+    private List<Image> images;
     @Column(name = "status", length = 1)
     private Integer status = UserConstants.INACTIVE;
     @Column(name = "student_status", length = 1)
@@ -97,6 +98,7 @@ public final class User extends Model {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.images = new ArrayList<>();
     }
 
     /**
@@ -279,12 +281,10 @@ public final class User extends Model {
         this.website = website;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
-    }
+    public List<Image> getProfilePicture(){return images;}
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePicture(Image profilePicture) {
+        this.images.add(profilePicture);
     }
 
     public Integer getStatus() {
