@@ -4,8 +4,6 @@ import com.avaje.ebean.Model;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
-import models.course.Course;
-import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -70,7 +68,8 @@ public final class User extends Model {
     private String createdBy;
     @Column(name = "homework_status", length = 1)
     private Integer homeworkStatus = 0;
-
+    @Column(unique = true)
+    private String token;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
@@ -425,4 +424,12 @@ public final class User extends Model {
         return true;
     }
 
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

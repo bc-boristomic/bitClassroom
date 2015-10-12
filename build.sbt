@@ -18,7 +18,9 @@ libraryDependencies ++= Seq(
   "org.apache.directory.studio" % "org.apache.commons.io" % "2.4",
   "junit" % "junit" % "4.11",
   "org.apache.commons" % "commons-email" % "1.3.3",
-  "com.cloudinary" % "cloudinary" % "1.0.14"
+  "com.cloudinary" % "cloudinary" % "1.0.14",
+  "com.typesafe.play" %% "play-mailer" % "2.4.1"
+
 
 )
 
