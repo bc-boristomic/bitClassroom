@@ -5,7 +5,6 @@ import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
 import models.Image;
-import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
@@ -14,9 +13,7 @@ import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
-import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -26,18 +23,19 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.CourseConstants;
 import utility.MD5Hash;
+import utility.MailHelper;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.adduser;
 import views.html.admins.inactMentors;
-import views.html.admins.setingsweeklyreport;
 import views.html.admins.newTableWeekly;
+import views.html.admins.setingsweeklyreport;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boris on 9/12/15.
@@ -52,7 +50,7 @@ public class AdminController extends Controller {
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
     private final Form<Course> courseForm = Form.form(Course.class);
     private List<String> imageList = new ArrayList<>();
-
+    private static String url = Play.application().configuration().getString("url");
     /**
      * Admin index page.
      *
@@ -173,6 +171,10 @@ public class AdminController extends Controller {
                     return redirect("/admin");
                 }
 
+                u.setToken(UUID.randomUUID().toString());
+                u.update();
+                String host = url + "validate/" + u.getToken();
+                MailHelper.send(u.getEmail(), host);
                 flash("success", String.format("User %s successfully added to database", u.getFirstName()));
                 return redirect("/admin/adduser");
             }
