@@ -107,6 +107,7 @@ public class TeacherController extends Controller {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 2 && users.get(i).getHomeworkStatus() == 2) {
 
+
                     students.add(users.get(i));
                 }
             }

@@ -125,7 +125,7 @@ public class StudentController extends Controller {
         User sender = SessionHelper.currentUser(ctx());
         User receiver = Mentorship.findMentorByUser(sender);
         User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
-        String link = form.field("link").value();
+        String link = form.field("linkId").value();
         Logger.info(link);
         String subject = "Announcement";
         String content = "I'm finished task " + p.getTitle() + " on the course " + c.getName() + " link : " + link;

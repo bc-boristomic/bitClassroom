@@ -61,8 +61,9 @@
                                                         </div>
                                                     }
 
+
                                                     @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
-                                                        <div class="col-sm-3">
+                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
                                                                     Start</button>
@@ -70,7 +71,9 @@
                                                         </div>
                                                     }
 
+
                                                     @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
+
                                                             <div class="col-sm-3">
                                                                 <h4 class="pull-right">
                                                                     <label id="label@post.getId">DONE</label>
@@ -169,7 +172,8 @@
 
                 function callSecondAjax(postId){
 
-                    var links = document.getElementById("homework-link");
+                    var links = $("#homework-link").val();
+                    console.log(links);
                     document.getElementById("label" + postId).innerText = "DONE";
                     $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                     $("#sendFinishMessage"+postId).remove();
