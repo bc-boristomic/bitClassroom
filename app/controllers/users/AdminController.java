@@ -393,6 +393,15 @@ public class AdminController extends Controller {
 
         }
 
+        User u = Mentorship.findMentorByUser(cu.getUser());
+        if(u != null){
+            CourseUser cc = new CourseUser();
+            cc.setCourse(cu.getCourse());
+            cc.setStatus(Integer.parseInt(s));
+            cc.setUser(u);
+            cc.save();
+        }
+
 
 
         return ok("");
@@ -470,8 +479,53 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
+
+
+            List<Course> courses = CourseUser.allUserCourses(student);
+            for(int i = 0; i < courses.size(); i++){
+                CourseUser courseUser = CourseUser.findCourseUser(mentor, courses.get(i));
+                if(courseUser == null){
+                    CourseUser cc = new CourseUser();
+                    cc.setCourse(courses.get(i));
+                    cc.setStatus(2);
+                    cc.setUser(mentor);
+                    cc.save();
+                }
+
+
+            }
+
+
+
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
+    }
+
+    public Result addTeacher(){
+        DynamicForm form = Form.form().bindFromRequest();
+        String teacher = form.get("teacher");
+        String course = form.get("course");
+        Long tea = null;
+        Long cou = null;
+        if (teacher != null && course != null) {
+            try {
+                tea = Long.parseLong(teacher);
+                cou = Long.parseLong(course);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse teachers Id: " + e.getMessage()));
+                flash("warning", "Something went wrong, could not add teacher to course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+        CourseUser cu = new CourseUser();
+        cu.setCourse(Course.findById(cou));
+        cu.setUser(User.findById(tea));
+        cu.setStatus(2);
+        cu.save();
+
+
+
     }
 
     /**
