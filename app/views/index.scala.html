@@ -16,7 +16,11 @@
                 @if(cU.getStatus == 2 && cU.getCourse.getStatus != 2 ) {
                     <div class="col-sm-3" id="courseDiv">
                         <div class="thumbnail" style="max-height: 700px; max-width: 300px">
-                            <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="" style="width:280px; height: 200px">
+                            @if(cU.getCourse.getImage != null){
+                                <img src="@cU.getCourse.getImage.getSize(300,300)"/>
+                            }else{
+                            <img src="http://placehold.it/300x300"/>
+                            }
                             <div class="caption">
                                 <a href="@controllers.course.routes.CourseController.course(cU.getCourse.getId)"><h2>@cU.getCourse.getName</h2>
                                 <h4>@cU.getCourse.getDescription</h4></a>

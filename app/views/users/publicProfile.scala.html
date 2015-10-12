@@ -10,7 +10,13 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@routes.Assets.versioned("images/users/" + user.getProfilePicture + "")" class="img-circle img-responsive"> </div>
+                <div class="col-md-3 col-lg-3 " align="center">
+                    @if(user.getProfilePicture.size() != 0) {
+                        <img src="@user.getProfilePicture.get(user.getProfilePicture.size() - 1).getSize(200, 200)"/>
+                    }else {
+                        <img src="http://placehold.it/200x200"/>
+                    }
+                </div>
 
                 <div class=" col-md-9 col-lg-9 ">
                     <table class="table table-user-information">
