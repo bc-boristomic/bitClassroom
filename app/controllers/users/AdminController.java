@@ -4,6 +4,7 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.Image;
 import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
@@ -320,26 +321,7 @@ public class AdminController extends Controller {
         course.setUpdateDate(new DateTime());
 
         Http.MultipartFormData data = request().body().asMultipartFormData();
-        List<Http.MultipartFormData.FilePart> pictures = data.getFiles();
-
-        if (pictures != null) {
-            String picName = null;
-            for (Http.MultipartFormData.FilePart picture : pictures) {
-                picName = picture.getFilename();
-                File file = picture.getFile();
-
-                try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/courses/" + course.getName() + "/" + picName));
-                    imageList.add(picName);
-                } catch (IOException e) {
-                    Logger.info("Could not move file. " + e.getMessage());
-                    flash("error", "Could not move file.");
-                }
-            }
-            if (picName != null) {
-                course.setImage(course.getName() + "/" + picName);
-            }
-        }
+        Http.MultipartFormData.FilePart filePart = data.getFile("image");
 
         try {
             course.save();
@@ -347,6 +329,14 @@ public class AdminController extends Controller {
             Ebean.save(new ErrorLog(e.getMessage()));
             flash("warning", "Something went wrong, course could not be saved to data base");
             return redirect("/admin/createcourse");
+        }
+
+        if (filePart != null) {
+            File file = filePart.getFile();
+            Image image = Image.createCourseImage(file, course.getId());
+            image.save();
+            course.setImage(image);
+            course.update();
         }
 
         CourseUser cu = new CourseUser();

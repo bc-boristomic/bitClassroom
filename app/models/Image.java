@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import helpers.SessionHelper;
+import models.course.Course;
 import models.user.User;
 import play.Logger;
 import play.mvc.Http;
@@ -39,6 +40,9 @@ public class Image extends Model {
     @ManyToOne
     public User user;
 
+    @OneToOne
+    Course course;
+
 
     public static Image create(String public_id, String image_url, String secret_image_url) {
         Image img = new Image();
@@ -58,6 +62,30 @@ public class Image extends Model {
             e.printStackTrace();
         }
         return null;
+    }
+    public static Image createCourseImage(File image, Long id) {
+        Map result;
+        try {
+            result = cloudinary.uploader().upload(image, null);
+            return courseImage(result, id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Image courseImage(Map uploadResult,Long id){
+        Image img = new Image();
+        img.public_id = (String) uploadResult.get("public_id");
+        Logger.debug(img.public_id);
+        img.image_url = (String) uploadResult.get("url");
+        Logger.debug(img.image_url);
+        img.secret_image_url = (String) uploadResult.get("secure_url");
+        Logger.debug(img.secret_image_url);
+        Course course = Course.findById(id);
+        img.course = course;
+        img.save();
+        return img;
     }
 
     public static Image create(Map uploadResult, Long id) {
