@@ -84,7 +84,7 @@
         <div class="form-group">
           <label for="facebook" class="col-lg-3 control-label">Facebook</label>
           <div class="col-lg-9">
-            <input name="facebook" type="text" class="form-control" onblur="checkFacebook()" id="facebook" pattern="http://www.facebook.com/[\w]{4,}" placeholder="Your facebook profile" value="@user.getFacebook">
+            <input name="facebook" type="text" class="form-control" onblur="checkFacebook()" id="facebook" pattern="https?://www.facebook.com/[\w]{4,}" placeholder="Your facebook profile" value="@user.getFacebook">
             <span id="facebookCheck" class="alert-warning" data-error-for="" ></span>
           </div>
         </div>
