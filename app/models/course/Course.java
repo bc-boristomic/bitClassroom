@@ -1,6 +1,7 @@
 package models.course;
 
 import com.avaje.ebean.Model;
+import models.Post;
 import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -44,6 +45,9 @@ public final class Course extends Model {
     private String updatedBy;
     @Column(name = "status")
     private Integer status = CourseConstants.ACTIVE_COURSE;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+
 
     /**
      * Empty constructor for Ebean
@@ -193,5 +197,13 @@ public final class Course extends Model {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<Post> getPosts() {
+        List<Post> newPosts = new ArrayList<>();
+        for(int i = posts.size()-1; i >= 0; i--){
+            newPosts.add(posts.get(i));
+        }
+        return newPosts;
     }
 }

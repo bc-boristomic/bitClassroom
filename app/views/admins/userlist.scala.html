@@ -20,8 +20,9 @@
                         <th>Last name</th>
                         <th>Email</th>
                         <th>Profile</th>
+                        <th>Registered</th>
                         <th>Role</th>
-                        <th></th>
+                        <th>Delete</th>
 
                     </tr>
                 </thead>
@@ -32,6 +33,11 @@
                         <td>@users.getLastName</td>
                         <td>@users.getEmail</td>
                         <td><a href="@controllers.users.routes.UserController.publicProfile(users.getId)"><i class="glyphicon glyphicon-user"/></a></td>
+                        @if(users.getStatus == UserConstants.FULLY_ACTIVE){
+                        <td><a href="@controllers.users.routes.AdminController.editUserRole(users.getId)"><i class="glyphicon glyphicon-edit">  Edit</i></a></td>
+                        }else{
+                            <td><span class="badge">Waiting</span> </td>
+                        }
                         @if(users.getRoles.size() > 0 && users.getRoles != null) {
                             @if(users.getRoles.size() == 1) {
 
@@ -67,7 +73,7 @@
 
                             } else{
                                @if(((users.getRoles.get(0).getId.equals(UserConstants.ADMIN)) || (users.getRoles.get(0).getId.equals(UserConstants.TEACHER))) && ((users.getRoles.get(1).getId.equals(UserConstants.ADMIN)) || (users.getRoles.get(1).getId.equals(UserConstants.TEACHER)))){
-                                   <td>Admin/Techer</td>
+                                   <td>Admin/Teacher</td>
                                    <td></td>
 
                                }

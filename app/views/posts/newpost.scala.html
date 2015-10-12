@@ -1,7 +1,8 @@
 @import models.user.User
 @import utility.UserConstants
 @import helpers.SessionHelper
-@(postForm: Form[Post])(currentUser: User)
+@import models.course.Course
+@(postForm: Form[Post])(currentUser: User)(userCourses : List[Course])
 @main("Publish post") {
 
     @helper.form(action = controllers.posts.routes.PostController.savePost(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
@@ -19,11 +20,13 @@
                                 <label  class="col-lg-2 control-label">Due date</label>
 
                                 <div class="col-lg-2">
-                                    <input name="date" type="text"  max="9999-01-01" class="form-control" id="date" placeholder="mm/dd/yyyy" style="cursor: pointer">
+
+                                    <input name="date" type="text"  max="9999-01-01" class="form-control" id="date" placeholder="mm/dd/yyyy" style="cursor: pointer" disabled="true">
                                 </div>
                                 <label  class="col-lg-2 control-label">Due time</label>
                                 <div class="col-lg-2">
-                                    <input name="time" type="time" class="form-control" id="time" style="cursor: pointer" >
+                                    <input name="time" type="time" class="form-control" id="time" disabled="true" style="cursor: pointer" >
+
                                 </div>
                             </div>
                         }
@@ -35,7 +38,9 @@
                 <label for="title" class="col-lg-2 control-label">
                     Title<abbr class="req" title="Please select due date." style="color : red"> * </abbr></label>
                 <div class="col-lg-6">
-                    <input name="title" type="text" pattern="[\w\d]{3,}" class="form-control" id="title" placeholder="Write post title here." required>
+
+                    <input name="title" type="text" pattern="[\w\d ]{3,}" class="form-control" id="title" placeholder="Write post title here."  required>
+
                 </div>
             </div>
 
@@ -77,12 +82,12 @@
                         <div class="col-lg-6">
                             <div class="radio">
                                 <label>
-                                    <input name="post-type" type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked required>
+                                    <input name="post-type" type="radio" name="optionsRadios" id="optionsRadios1" value="0" onclick="dueDate()" checked="true" required>
                                     Announcement
                                 </label>
 
                                 <label class="col-lg-offset-1">
-                                    <input name="post-type" type="radio" name="optionsRadios" id="optionsRadios2" value="1" required>
+                                    <input name="post-type" type="radio" name="optionsRadios" id="optionsRadios2" value="1" onclick="dueDate()"  required>
                                     Assignment
                                 </label>
                             </div>
@@ -103,7 +108,18 @@
     }
 
     }
+        <div class="form-group">
+            <label for="title" class="col-lg-2 control-label">
+                Select course<abbr class="req" title="Select course" style="color : red"> * </abbr></label>
 
+            <div class="col-lg-4">
+                <select class="form-control" id="selectCourse" name="course">
+                @for(course <- userCourses) {
+                        <option value="@course.getId">@course.getName - @course.getDescription</option>
+                }
+                </select>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
@@ -113,7 +129,30 @@
             </div>
         </div>
     }
+    <script >
+        function dueDate(){
+            var radio1 = document.getElementById("optionsRadios1");
+            var radio2 = document.getElementById("optionsRadios2");
+            if(radio1.checked === true && radio2.checked === false){
 
+              //  radio1.checked = false;
+              //  radio2.checked = true;
+                date.disabled = true;
+                time.disabled = true;
+            }else if(radio1.checked === false && radio2.checked === true){
+
+               // radio1.checked = true;
+               // radio2.checked = false;
+                date.disabled = false;
+                time.disabled = false;
+            }
+        }
+
+     //   var radio1 = document.getElementById("optionsRadios1");
+     //   var radio2 = document.getElementById("optionsRadios2");
+        var time = document.getElementById("time");
+        var date = document.getElementById("date");
+    </script>
 }
 
 

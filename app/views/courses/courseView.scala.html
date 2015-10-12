@@ -1,21 +1,19 @@
 
-@import models.course.CourseUser
+@import models.course.Course
+@import models.user.User
 
-@(userListCourse: List[CourseUser])
+@import utility.UserConstants
+@import helpers.SessionHelper
+@import models.user.Assignment
+@(course : Course)
 @main("Classroom") {
 
-
+    @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
         <h4 class="page-head-line">Your wall</h4>
 
     </div>
-
-    @for(temp <- userListCourse){
-
-        @if(temp.getStatus == 2){
-
-            @for(post <- temp.getUser.getPosts){
-
+            @for(post <- course.getPosts()){
                 <div class="container">
 
                     <div class="row">
@@ -26,15 +24,62 @@
                                     <div class="panel-heading">
                                         <div class="text-center">
                                             <div class="row">
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-8">
                                                     <h3 class="pull-left">@post.getTitle</h3>
-                                                    <h5 class="pull-right" style="font-family: Arial" y><em>@post.getDate</em></h5>
+
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <h4 class="pull-right">
-                                                        <a href="#"><small style="color:blue"><em>@post.getUser.getEmail<br></em></small></a>
+                                                    @if(post.getPostType == 1){
+                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
+                                                    }
                                                     </h4>
                                                 </div>
+                                                <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
+                                                @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
+                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
+                                                        @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus != 1) {
+                                                            <div class="col-sm-3">
+                                                                <h4 class="pull-right">
+                                                                    <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
+                                                                        Start</button>
+                                                                </h4>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
+                                                        <div class="col-sm-3">
+                                                            <h4 class="pull-right">
+                                                                <label id="label@post.getId">STARTED</label>
+                                                            </h4>
+                                                            <br>
+                                                            <h4 class="pull-right">
+                                                                <button id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)">
+                                                                    Finish</button>
+                                                            </h4>
+                                                        </div>
+                                                    }
+
+                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
+                                                        <div class="col-sm-3">
+                                                            <h4 class="pull-right">
+                                                                <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+                                                                    Start</button>
+                                                            </h4>
+                                                        </div>
+                                                    }
+
+                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
+                                                            <div class="col-sm-3">
+                                                                <h4 class="pull-right">
+                                                                    <label id="label@post.getId">DONE</label>
+                                                                </h4>
+                                                            </div>
+                                                    }
+
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -57,19 +102,87 @@
                                             <a href="@routes.Assets.versioned("/files/users/" + post.getFiles)">@post.getFiles</a>
                                         </div>
                                     }
-
                                     <div class="panel-footer">
-                                        <span class="label label-default">@if(post.getPostType == 0){Assigment} Announcement </span> <span class="label label-default">@post.getCreateDate</span>
+                                        @if(post.getPostType == 1){
+                                            <span class="label label-default">Assigment </span> <span class="label label-default">@post.getCreateDate</span>
+                                        }else{
+                                            <span class="label label-default">Announcement </span> <span class="label label-default">@post.getCreateDate</span>
+                                        }
+
                                         <span class="label label-default">Updates</span>
+
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT)){
+                                        <br>
+                                        <br>
+                                            <form action="">
+                                                <div class="form-control">
+                                                    <label class="col-lg-2">Homework link:</label>
+                                                    <input type="text" id="homework-link" name="link" class="col-md-9 panel" required >
+                                                </div>
+                                            </form>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        }else{
-
-        }
     }
-}
+        <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
+        <script>
+
+                function callAjax(postId){
+
+                    var button = document.getElementById("sendStartMessage" + postId);
+                   $("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                   var div = $("#sendStartMessage"+postId).parent();
+
+                   $("#sendStartMessage"+postId).remove();
+                   var label = document.createElement('label');
+                   label.innerText = "STARTED";
+                   var attr = document.createAttribute("id");
+                   attr.value = "label" + postId;
+                   label.setAttributeNode(attr);
+                   var button = document.createElement('button');
+                   button.innerText = "Finish";
+                   var at = document.createAttribute("id");
+                   at.value = "sendFinishMessage" + postId;
+                   button.setAttributeNode(at);
+                   div.append(label);
+                   var att = document.createAttribute("onclick");
+                   att.value = "callSecondAjax("+postId+")";
+                   button.setAttributeNode(att);
+
+                   div.append(button);
+                 
+
+                   $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.StudentController.sendStartMessage()",
+                    data : "postId=" + postId + "&courseId=" + @course.getId
+                });
+
+
+
+                }
+
+                function callSecondAjax(postId){
+
+                    var links = document.getElementById("homework-link");
+                    document.getElementById("label" + postId).innerText = "DONE";
+                    $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+                    $("#sendFinishMessage"+postId).remove();
+                    $.ajax({
+                    type: "post",
+                    url : "@controllers.users.routes.StudentController.sendFinishMessage()",
+                    data : "postId=" + postId + "&courseId=" + @course.getId + "&linkId=" + links
+                });
+                }
+
+
+
+
+        </script>
+    }
+    }

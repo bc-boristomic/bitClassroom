@@ -1,6 +1,8 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.course.Course;
+import models.user.Assignment;
 import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -8,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,9 +44,13 @@ public final class Post extends Model {
     private String time;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
-
+    @ManyToOne
+    private Course course;
     @ManyToOne
     private User user;
+    @OneToMany
+    private List<Assignment> assigments = new ArrayList<>();
+
 
     /**
      * Empty constructor for Ebean
@@ -86,7 +93,6 @@ public final class Post extends Model {
         return find
                 .where()
                 .eq("id", id)
-                .orderBy("id desc")
                 .findUnique();
     }
 
@@ -98,6 +104,13 @@ public final class Post extends Model {
         return find.orderBy("id desc").findList();
     }
 
+    public static List<Post> findAllCoursePost(Long courseId) {
+        return find
+                .where()
+                .eq("id", courseId)
+                .orderBy("id asc")
+                .findList();
+    }
 
     public String getContent() {
         return content;
@@ -116,6 +129,14 @@ public final class Post extends Model {
     }
 
     public User getUser() {return user;}
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -179,5 +200,15 @@ public final class Post extends Model {
     public String getTime(){
         return time;
     }
+    public Assignment getAssignment(User u, Post p) {
+        return Assignment.findCurrentAssignment(u, p);
+    }
 
+    public List<Assignment> getAssigments() {
+        return assigments;
+    }
+
+    public void setAssigments(List<Assignment> assigments) {
+        this.assigments = assigments;
+    }
 }

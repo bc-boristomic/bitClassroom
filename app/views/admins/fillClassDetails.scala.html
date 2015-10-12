@@ -30,7 +30,7 @@
                         @if(user.getRoles != null && user.getRoles.size() > 0) {
                             @for(role <- user.getRoles) {
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <option value="@user.getFirstName">@user.getFirstName</option>
+                                    <option value="@user.getFirstName @user.getLastName @user.getId">@user.getFirstName @user.getLastName</option>
                                 }
 
                             }

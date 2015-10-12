@@ -1,6 +1,9 @@
 package controllers;
 
 import helpers.SessionHelper;
+
+import models.Email;
+
 import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
@@ -20,6 +23,7 @@ import java.util.List;
 public class Application extends Controller {
 
     private Form<User> userForm = Form.form(User.class);
+    private Form<Email> emailForm = Form.form(Email.class);
 
     /**
      * Renders index page, front page of website
@@ -43,9 +47,11 @@ public class Application extends Controller {
         // if (temp != null && culist.size()!= 0) {
 
         //   List<Course> list = CourseUser.allUserCourses(temp);
-        List<CourseUser> userc = CourseUser.getFinder().all();
 
-        return ok(index.render(temp, userc));
+        List<CourseUser> user = CourseUser.getFinder().all();
+
+        return ok(index.render(temp, user));
+
         // } else {
 
         //     return ok(temp);

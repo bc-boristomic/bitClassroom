@@ -68,6 +68,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/admin/mentorship">Assign new mentors</a></li>
                                     <li><a href="/admin/activementors">See active mentors</a></li>
+                                    <li><a href="/admin/inactivementors">Check mentors</a></li>
                                 </ul>
                             </li>
 
@@ -77,6 +78,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/admin/courses">See active courses</a></li>
                                     <li><a href="/admin/courses/archived">See archived courses</a></li>
+                                    <li><a href="/admin/courses/deleted">See deleted courses</a></li>
                                     <li><a href="/admin/createcourse">Add new course</a></li>
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
@@ -200,7 +202,7 @@
                 }).success(function(response) {
                     $('#notify').html(response);
                 })
-                }, 20000));
+                }, 2000));
 
         </script>
 

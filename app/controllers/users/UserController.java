@@ -3,8 +3,12 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Image;
+import models.Post;
 import models.PrivateMessage;
+import models.course.Course;
 import models.course.CourseUser;
+import models.user.Mentorship;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -67,28 +71,6 @@ public class UserController extends Controller {
             return redirect("/user/createprofile");
         }
 
-        MultipartFormData data = request().body().asMultipartFormData();
-        List<MultipartFormData.FilePart> pictures = data.getFiles();
-
-        if (pictures != null) {
-            String picName = null;
-            for (FilePart picture : pictures) {
-                picName = picture.getFilename();
-                File file = picture.getFile();
-
-                try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/users/" + temp.getId() + "/" + picName));
-                    Logger.info(Play.application().path() + "\\public\\images\\" + temp.getId() + "/" + picName);
-                    imageList.add(picName);
-                } catch (IOException e) {
-                    Logger.info("Could not move file. " + e.getMessage());
-                    flash("error", "Could not move file.");
-                }
-            }
-            if (picName != null) {
-                temp.setProfilePicture(temp.getId() + "/" + picName);
-            }
-        }
 
         String nickname = boundForm.field("nickname").value();
         String birthDate = boundForm.field("birth-date").value();
@@ -103,14 +85,27 @@ public class UserController extends Controller {
         String gender = boundForm.field("gender").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, birthDate, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, gender);
+        temp.save();
+
+        MultipartFormData data = request().body().asMultipartFormData();
+        MultipartFormData.FilePart filePart = data.getFile("image");
+
+        if (filePart != null) {
+            File file = filePart.getFile();
+            Image image = Image.create(file, temp.getId());
+            image.save();
+            temp.setProfilePicture(image);
+            temp.save();
+        }
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
             temp.setUpdatedBy(temp.getEmail());
-            temp.update();
             flash("success", "You successfuly updated your profile.");
             return redirect("/");
         }
+
+        temp.save();
 
         flash("warning", "Your profile could not be updated. Please contact site administrator.");
         return redirect("/");
@@ -141,28 +136,6 @@ public class UserController extends Controller {
             return redirect("/user/editprofile");
         }
 
-        MultipartFormData data = request().body().asMultipartFormData();
-        List<MultipartFormData.FilePart> pictures = data.getFiles();
-
-        if (pictures != null) {
-            String picName = null;
-            for (FilePart picture : pictures) {
-                picName = picture.getFilename();
-                File file = picture.getFile();
-
-                try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/users/" + temp.getId() + "/" + picName));
-                    Logger.info(Play.application().path() + "\\public\\images\\" + temp.getId() + "/" + picName);
-                    imageList.add(picName);
-                } catch (IOException e) {
-                    Logger.info("Could not move file. " + e.getMessage());
-                    flash("error", "Could not move file.");
-                }
-            }
-            if (picName != null) {
-                temp.setProfilePicture(temp.getId() + "/" + picName);
-            }
-        }
 
         String nickname = boundForm.field("nickname").value();
         String location = boundForm.field("location").value();
@@ -175,11 +148,23 @@ public class UserController extends Controller {
         String youtube = boundForm.field("youtube").value();
 
         temp = UserUtils.ckeckUserProfileDetails(temp, nickname, null, password1, location, homePhone, mobilePhone, website, skype, facebook, twitter, youtube, null);
+        temp.update();
+
+        MultipartFormData data = request().body().asMultipartFormData();
+        MultipartFormData.FilePart filePart = data.getFile("image");
+
+        if (filePart != null) {
+            File file = filePart.getFile();
+            Image image = Image.create(file, temp.getId());
+            temp.setProfilePicture(image);
+            temp.save();
+        }
+
 
         if (temp != null) {
             temp.setUpdateDate(new DateTime());
             temp.setUpdatedBy(temp.getEmail());
-            temp.update();
+            temp.save();
             flash("success", "You successfuly updated your profile.");
             return redirect("/");
         }
@@ -281,6 +266,7 @@ public class UserController extends Controller {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setInboxStatus(1);
+        msg.setStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }
@@ -290,6 +276,7 @@ public class UserController extends Controller {
 
         PrivateMessage msg = PrivateMessage.findMessageById(id);
         msg.setSendStatus(1);
+        msg.setStatus(1);
         Ebean.save(msg);
         return redirect("/allMessage");
     }

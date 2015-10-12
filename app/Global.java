@@ -1,9 +1,12 @@
+import com.cloudinary.Cloudinary;
+import models.Image;
 import models.course.Course;
 import models.user.Role;
 import models.user.User;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
+import play.Play;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -24,6 +27,8 @@ public class Global extends GlobalSettings {
 
     @Override
     public void onStart(Application application) {
+        Image.cloudinary = new Cloudinary("cloudinary://" + Play.application().configuration().getString("cloudinary.string"));
+
         if (Role.getFinder().findRowCount() == 0) {
             Roles.saveAllRoles();
         }

@@ -1,9 +1,12 @@
 package controllers.posts;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
+import models.course.CourseUser;
+import models.user.Assignment;
 import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
@@ -17,6 +20,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
+import views.html.posts.assignmentView;
 import views.html.posts.newpost;
 
 import java.io.File;
@@ -41,7 +45,15 @@ public class PostController extends Controller {
      * Adding post and refresh the page with added post
      */
     public Result addPost() {
-        return ok(newpost.render(postForm, SessionHelper.currentUser(ctx())));
+        return ok(newpost.render(postForm, SessionHelper.currentUser(ctx()), CourseUser.allUserCourses(SessionHelper.currentUser(ctx()))));
+    }
+
+    public Result assignmentDetails(Long id){
+
+        Post post = Post.findPostById(id);
+
+        return ok(assignmentView.render(post));
+
     }
 
     /**
@@ -51,6 +63,7 @@ public class PostController extends Controller {
      */
     public Result savePost() {
         Form<Post> boundForm = postForm.bindFromRequest();
+        String selectedCourse = boundForm.bindFromRequest().field("course").value();
         User user = SessionHelper.currentUser(ctx());
 
         Post post = new Post();
@@ -104,6 +117,10 @@ public class PostController extends Controller {
                         typeOfPost = 1; //type 1 assignment
                     }
 
+
+
+
+
                     post.setPostType(typeOfPost);
                     post.setVisibleToMentors(visible);
                     post.setDate(date);
@@ -114,17 +131,30 @@ public class PostController extends Controller {
         }
 
 
-        if (user != null) {
+        if (user != null && selectedCourse!= null) {
+            Course course = Course.findById(Long.parseLong(selectedCourse));
             post.setTitle(title);
             post.setContent(message);
             post.setUser(user);
             post.setLink(link);
+            post.setCourse(course);
             post.save();
+            course.getPosts().add(post);
+
+            if (post.getPostType().equals(1)) {
+                for (int i = 0; i < CourseUser.allUserFromCourse(course.getId()).size(); i++) {
+                    Assignment a = new Assignment();
+                    a.setUser(CourseUser.allUserFromCourse(course.getId()).get(i));
+                    a.setPost(post);
+                    a.setHomeworkPostStatus(0);
+                    a.save();
+                }
+            }
             flash("success", "You successfully added new post.");
-            return redirect("/"); // TODO add call to route for listing posts
+            return redirect("/user/class/" + Long.parseLong(selectedCourse)); // TODO add call to route for listing posts
         }
         flash("warning", "Could not save your post.");
-        return redirect("/");
+        return redirect("/admin");
 
     }
 

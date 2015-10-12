@@ -14,6 +14,7 @@
                     <tr class="information">
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Overview</th>
                         <th>Archive</th>
                         <th>Delete</th>
                     </tr>
@@ -23,6 +24,7 @@
                     <tr class="info">
                         <td>@course.getName</td>
                         <td>@course.getDescription</td>
+                        <td><a href="/user/class/@course.getId"><i class="glyphicon glyphicon-list"></i></a></td>
                         <td><a id="archive@course.getId" class="btn btn-success btn-xs" data-role="delete@course.getId" data-delete-parent="tr"><i class="glyphicon glyphicon-folder-open"></i></a></td>
                         <td><a id="delete@course.getId" class="btn btn-danger btn-xs" data-role="delete@course.getId" data-delete-parent="tr"><i class="glyphicon glyphicon-trash"></i></a></td>
 

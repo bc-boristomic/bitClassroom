@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by NN on 20.9.2015.
@@ -146,6 +147,11 @@ public class PrivateMessage extends Model {
                 .eq("id", id)
                 .orderBy("id desc")
                 .findUnique();
+    }
+
+    public static List<PrivateMessage> findAllMessage(){
+
+        return find.all();
     }
 
 
