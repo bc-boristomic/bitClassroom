@@ -6,6 +6,7 @@ import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
+import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.User;
 import play.Logger;
@@ -52,6 +53,9 @@ public class StudentController extends Controller {
         if (courseUser != null) {
             courseUser.save();
         }
+
+
+
         flash("success", "You successfuly applied to " + c.getName());
         return redirect("/user/courses");
     }
@@ -99,8 +103,9 @@ public class StudentController extends Controller {
         receiverTeacher.save();
 
         sender.setHomeworkStatus(1);
-        p.setHomeworkPostStatus(1);
-        p.save();
+        Assignment a = p.getAssignment(sender, p);
+        a.setHomeworkPostStatus(1);
+        a.save();
         sender.save();
 
 
@@ -139,8 +144,9 @@ public class StudentController extends Controller {
 
         sender.setHomeworkStatus(2);
         sender.save();
-        p.setHomeworkPostStatus(2);
-        p.save();
+        Assignment a = p.getAssignment(sender, p);
+        a.setHomeworkPostStatus(2);
+        a.save();
 
 
         return redirect("/user/class/"+courseId);

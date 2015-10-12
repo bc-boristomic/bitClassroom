@@ -8,6 +8,7 @@ import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
+import models.user.Assignment;
 import models.user.User;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -104,7 +105,7 @@ public class TeacherController extends Controller {
         if( status.equals("Done")) {
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && post.getHomeworkPostStatus() == 2 && users.get(i).getHomeworkStatus() == 2) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 2 && users.get(i).getHomeworkStatus() == 2) {
 
                     students.add(users.get(i));
                 }
@@ -112,7 +113,7 @@ public class TeacherController extends Controller {
         }else if(status.equals("Working")){
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && post.getHomeworkPostStatus() == 1 && users.get(i).getHomeworkStatus() == 1) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 1 && users.get(i).getHomeworkStatus() == 1) {
 
                     students.add(users.get(i));
                 }
@@ -121,7 +122,7 @@ public class TeacherController extends Controller {
         if( status.equals("Not")) {
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && post.getHomeworkPostStatus() == 0 && users.get(i).getHomeworkStatus() == 0) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 0 && users.get(i).getHomeworkStatus() == 0) {
 
                     students.add(users.get(i));
                 }

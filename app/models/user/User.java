@@ -81,6 +81,8 @@ public final class User extends Model {
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy="sender", cascade=CascadeType.ALL)
     private List<PrivateMessage> messages = new ArrayList<>();
+    @OneToMany
+    private List<Assignment> assigments = new ArrayList<>();
 
 
     /**
@@ -400,6 +402,14 @@ public final class User extends Model {
 
     public void setMessages(List<PrivateMessage> messages) {
         this.messages = messages;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assigments;
+    }
+
+    public void setCourseUsers(List<Assignment> assigments) {
+        this.assigments = assigments;
     }
 
     public String getYearOfBirth() {

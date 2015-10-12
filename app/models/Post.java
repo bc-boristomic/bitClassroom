@@ -2,6 +2,7 @@ package models;
 
 import com.avaje.ebean.Model;
 import models.course.Course;
+import models.user.Assignment;
 import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -9,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,10 +46,11 @@ public final class Post extends Model {
     private DateTime createdDate = new DateTime();
     @ManyToOne
     private Course course;
-    @Column(name = "homework_post_status", length = 1)
-    private Integer homeworkPostStatus = 0;
     @ManyToOne
     private User user;
+    @OneToMany
+    private List<Assignment> assigments = new ArrayList<>();
+
 
     /**
      * Empty constructor for Ebean
@@ -186,14 +189,6 @@ public final class Post extends Model {
         this.createdDate = createdDate;
     }
 
-    public Integer getHomeworkPostStatus() {
-        return homeworkPostStatus;
-    }
-
-    public void setHomeworkPostStatus(Integer homeworkPostStatus) {
-        this.homeworkPostStatus = homeworkPostStatus;
-    }
-
     public void setDate(String date) {this.date = date;}
 
     public String getDate() {
@@ -205,5 +200,15 @@ public final class Post extends Model {
     public String getTime(){
         return time;
     }
+    public Assignment getAssignment(User u, Post p) {
+        return Assignment.findCurrentAssignment(u, p);
+    }
 
+    public List<Assignment> getAssigments() {
+        return assigments;
+    }
+
+    public void setAssigments(List<Assignment> assigments) {
+        this.assigments = assigments;
+    }
 }

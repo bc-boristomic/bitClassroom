@@ -2,6 +2,8 @@ package models.course;
 
 import com.avaje.ebean.Model;
 import helpers.SessionHelper;
+import models.Post;
+import models.user.Assignment;
 import models.user.User;
 
 import javax.persistence.*;
@@ -29,6 +31,9 @@ public final class CourseUser extends Model {
     private User user;
     @ManyToOne
     private Course course;
+
+
+
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
@@ -121,6 +126,8 @@ public final class CourseUser extends Model {
     public static Finder<Long, CourseUser> getFinder() {
         return finder;
     }
+
+
 
     @Override
     public String toString() {
