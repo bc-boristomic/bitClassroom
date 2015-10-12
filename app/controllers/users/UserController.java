@@ -271,8 +271,6 @@ public class UserController extends Controller {
         return redirect("/allMessage");
     }
 
-
-
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result deleteSendMessage(Long id){
 

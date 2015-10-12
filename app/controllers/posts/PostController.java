@@ -6,6 +6,7 @@ import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
 import models.course.CourseUser;
+import models.user.Assignment;
 import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
@@ -116,6 +117,10 @@ public class PostController extends Controller {
                         typeOfPost = 1; //type 1 assignment
                     }
 
+
+
+
+
                     post.setPostType(typeOfPost);
                     post.setVisibleToMentors(visible);
                     post.setDate(date);
@@ -135,6 +140,16 @@ public class PostController extends Controller {
             post.setCourse(course);
             post.save();
             course.getPosts().add(post);
+
+            if (post.getPostType().equals(1)) {
+                for (int i = 0; i < CourseUser.allUserFromCourse(course.getId()).size(); i++) {
+                    Assignment a = new Assignment();
+                    a.setUser(CourseUser.allUserFromCourse(course.getId()).get(i));
+                    a.setPost(post);
+                    a.setHomeworkPostStatus(0);
+                    a.save();
+                }
+            }
             flash("success", "You successfully added new post.");
             return redirect("/user/class/" + Long.parseLong(selectedCourse)); // TODO add call to route for listing posts
         }

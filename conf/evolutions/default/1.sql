@@ -3,6 +3,14 @@
 
 # --- !Ups
 
+create table assignment (
+  id                        bigint auto_increment not null,
+  user_id                   bigint,
+  post_id                   bigint,
+  homework_post_status      integer(1),
+  constraint pk_assignment primary key (id))
+;
+
 create table course (
   id                        bigint auto_increment not null,
   name                      varchar(50),
@@ -85,7 +93,6 @@ create table post (
   time                      varchar(255),
   create_date               datetime,
   course_id                 bigint,
-  homework_post_status      integer(1),
   user_id                   bigint,
   constraint pk_post primary key (id))
 ;
@@ -177,6 +184,18 @@ create table user_role (
   role_id                        bigint not null,
   constraint pk_user_role primary key (user_id, role_id))
 ;
+
+alter table assignment add constraint fk_assignment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_assignment_user_1 on assignment (user_id);
+alter table assignment add constraint fk_assignment_post_2 foreign key (post_id) references post (id) on delete restrict on update restrict;
+create index ix_assignment_post_2 on assignment (post_id);
+alter table course_user add constraint fk_course_user_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_course_user_user_3 on course_user (user_id);
+alter table course_user add constraint fk_course_user_course_4 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_course_user_course_4 on course_user (course_id);
+alter table image add constraint fk_image_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_image_user_5 on image (user_id);
+
 alter table course add constraint fk_course_image_1 foreign key (image_id) references image (id) on delete restrict on update restrict;
 create index ix_course_image_1 on course (image_id);
 alter table course_user add constraint fk_course_user_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
@@ -187,6 +206,7 @@ alter table image add constraint fk_image_user_4 foreign key (user_id) reference
 create index ix_image_user_4 on image (user_id);
 alter table image add constraint fk_image_course_5 foreign key (course_id) references course (id) on delete restrict on update restrict;
 create index ix_image_course_5 on image (course_id);
+>>>>>>> develop
 alter table mentorship add constraint fk_mentorship_mentor_6 foreign key (mentor_id) references user (id) on delete restrict on update restrict;
 create index ix_mentorship_mentor_6 on mentorship (mentor_id);
 alter table mentorship add constraint fk_mentorship_student_7 foreign key (student_id) references user (id) on delete restrict on update restrict;
@@ -217,6 +237,8 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
+
+drop table assignment;
 
 drop table course;
 

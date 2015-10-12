@@ -10,6 +10,7 @@ import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.*;
+import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
@@ -378,6 +379,22 @@ public class AdminController extends Controller {
             cu.setStatus(Integer.parseInt(s));
             cu.save();
         }
+
+
+        Course c = cu.getCourse();
+        for(int i = 0; i < c.getPosts().size(); i++){
+            if(c.getPosts().get(i).getPostType() == 1){
+                Assignment a = new Assignment();
+                a.setUser(cu.getUser());
+                a.setPost(c.getPosts().get(i));
+                a.setHomeworkPostStatus(0);
+                a.save();
+            }
+
+        }
+
+
+
         return ok("");
     }
 

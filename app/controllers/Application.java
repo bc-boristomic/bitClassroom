@@ -1,7 +1,9 @@
 package controllers;
 
 import helpers.SessionHelper;
+
 import models.Email;
+
 import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
@@ -45,9 +47,11 @@ public class Application extends Controller {
         // if (temp != null && culist.size()!= 0) {
 
         //   List<Course> list = CourseUser.allUserCourses(temp);
+
         List<CourseUser> user = CourseUser.getFinder().all();
 
         return ok(index.render(temp, user));
+
         // } else {
 
         //     return ok(temp);

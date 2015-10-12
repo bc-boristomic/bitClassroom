@@ -4,6 +4,7 @@
 
 @import utility.UserConstants
 @import helpers.SessionHelper
+@import models.user.Assignment
 @(course : Course)
 @main("Classroom") {
 
@@ -36,16 +37,18 @@
                                                 </div>
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
                                                 @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
-                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1 && post.getHomeworkPostStatus == 0){
-                                                        <div class="col-sm-3">
-                                                            <h4 class="pull-right">
-                                                                <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
-                                                                    Start</button>
-                                                            </h4>
-                                                        </div>
+                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
+                                                        @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus != 1) {
+                                                            <div class="col-sm-3">
+                                                                <h4 class="pull-right">
+                                                                    <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
+                                                                        Start</button>
+                                                                </h4>
+                                                            </div>
+                                                        }
                                                     }
 
-                                                    @if(post.getHomeworkPostStatus == 1) {
+                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
                                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <label id="label@post.getId">STARTED</label>
@@ -58,8 +61,9 @@
                                                         </div>
                                                     }
 
-                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0))){
-                                                        <div class="col-sm-3">
+
+                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
+                                         <div class="col-sm-3">
                                                             <h4 class="pull-right">
                                                                 <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
                                                                     Start</button>
@@ -67,7 +71,9 @@
                                                         </div>
                                                     }
 
-                                                    @if(post.getHomeworkPostStatus == 2 && SessionHelper.currentUser(ctx()).getHomeworkStatus == 2){
+
+                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
+
                                                             <div class="col-sm-3">
                                                                 <h4 class="pull-right">
                                                                     <label id="label@post.getId">DONE</label>
@@ -152,7 +158,7 @@
                    button.setAttributeNode(att);
 
                    div.append(button);
-
+                 
 
                    $.ajax({
                     type: "post",

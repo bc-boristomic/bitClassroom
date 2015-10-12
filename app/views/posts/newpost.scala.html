@@ -10,7 +10,6 @@
 
         <legend>Create new post</legend>
 
-
         @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
             @for(role <- currentUser.getRoles) {
                 @if(role.getId.equals(UserConstants.TEACHER)) {
