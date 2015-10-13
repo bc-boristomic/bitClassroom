@@ -469,8 +469,29 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
+        mentorshipNotification(mentor,student);
+
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
+    }
+
+
+    public Result mentorshipNotification(User mentor, User student){
+
+        User sender = SessionHelper.currentUser(ctx());
+        String subject = "Mentorship";
+        String content = mentor.getFirstName() + " " + mentor.getLastName()  + " has been assigned as your new mentor.";
+        String mentorContent = "You are assigned " + student.getFirstName() + " " + student.getLastName() + " as his new mentor";
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+        PrivateMessage mentorMessage = PrivateMessage.create(subject,mentorContent,sender,mentor);
+        mentorMessage.setStatus(0);
+        mentor.getMessages().add(mentorMessage);
+        mentor.save();
+
+        return redirect("admin/mentorship");
     }
 
     /**
@@ -600,7 +621,6 @@ public class AdminController extends Controller {
 
         return redirect("admin/allusers");
     }
-
 
     /**
      * Renders view with table filled with all archived courses. Course name, description and email of user who
