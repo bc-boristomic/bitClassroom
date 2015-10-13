@@ -296,7 +296,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result addCourse() {
-        return ok(views.html.admins.fillClassDetails.render(User.getFinder().all(), courseForm));
+        return ok(views.html.admins.fillClassDetails.render(User.getFinder().orderBy().asc("first_name").findList(), courseForm));
     }
 
     /**
