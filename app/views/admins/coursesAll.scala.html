@@ -1,4 +1,6 @@
 @import models.course.Course
+@import models.course.CourseUser
+@import utility.UserConstants
 @(courses: List[Course])
 @adminmain("Active courses") {
 
@@ -14,6 +16,7 @@
                     <tr class="information">
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Teachers</th>
                         <th>Overview</th>
                         <th>Archive</th>
                         <th>Delete</th>
@@ -24,6 +27,20 @@
                     <tr class="info">
                         <td>@course.getName</td>
                         <td>@course.getDescription</td>
+
+                        <td><h6>
+                        @for(user <- CourseUser.allUserFromCourse(course.getId)){
+
+                            @if(user.getRoles != null && user.getRoles.size() > 0) {
+                                @for(role <- user.getRoles) {
+                                    @if(role.getId.equals(UserConstants.TEACHER)) {
+                                        @user.getFirstName @user.getLastName
+                                    }
+                                }
+                            }
+
+                        }
+                        </h6></td>
                         <td><a href="/user/class/@course.getId"><i class="glyphicon glyphicon-list"></i></a></td>
                         <td><a id="archive@course.getId" class="btn btn-success btn-xs" data-role="delete@course.getId" data-delete-parent="tr"><i class="glyphicon glyphicon-folder-open"></i></a></td>
                         <td><a id="delete@course.getId" class="btn btn-danger btn-xs" data-role="delete@course.getId" data-delete-parent="tr"><i class="glyphicon glyphicon-trash"></i></a></td>

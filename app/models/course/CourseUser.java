@@ -85,6 +85,10 @@ public final class CourseUser extends Model {
         return courseUsers;
     }
 
+    public static CourseUser findCourseUser(User u , Course c){
+        return finder.where().eq("user_id", u.getId()).eq("course_id", c.getId()).findUnique();
+    }
+
     /**
      * Find all course_user
      * @return List

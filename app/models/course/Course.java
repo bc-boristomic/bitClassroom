@@ -82,6 +82,7 @@ public final class Course extends Model {
      * @return <code>Course</code> type object
      */
     public static Course findById(Long id) {
+
         return finder.byId(id);
     }
 

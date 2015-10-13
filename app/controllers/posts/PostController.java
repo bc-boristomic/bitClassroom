@@ -125,7 +125,7 @@ public class PostController extends Controller {
                     post.setVisibleToMentors(visible);
                     post.setDate(date);
                     post.setTime(time);
-
+                    post.setCreator(user);
                 }
             }
         }

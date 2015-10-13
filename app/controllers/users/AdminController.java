@@ -392,6 +392,15 @@ public class AdminController extends Controller {
 
         }
 
+        User u = Mentorship.findMentorByUser(cu.getUser());
+        if(u != null){
+            CourseUser cc = new CourseUser();
+            cc.setCourse(cu.getCourse());
+            cc.setStatus(Integer.parseInt(s));
+            cc.setUser(u);
+            cc.save();
+        }
+
 
 
         return ok("");
@@ -469,29 +478,86 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
-        mentorshipNotification(mentor,student);
+            List<Course> courses = CourseUser.allUserCourses(student);
+            for(int i = 0; i < courses.size(); i++){
+                CourseUser courseUser = CourseUser.findCourseUser(mentor, courses.get(i));
+                if(courseUser == null){
+                    CourseUser cc = new CourseUser();
+                    cc.setCourse(courses.get(i));
+                    cc.setStatus(2);
+                    cc.setUser(mentor);
+                    cc.save();
+                }
+
+
+            }
+
 
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
     }
 
 
-    public Result mentorshipNotification(User mentor, User student){
+
+    public Result mentorshipNotification(User mentor, User student) {
 
         User sender = SessionHelper.currentUser(ctx());
         String subject = "Mentorship";
-        String content = mentor.getFirstName() + " " + mentor.getLastName()  + " has been assigned as your new mentor.";
+        String content = mentor.getFirstName() + " " + mentor.getLastName() + " has been assigned as your new mentor.";
         String mentorContent = "You are assigned " + student.getFirstName() + " " + student.getLastName() + " as his new mentor";
         PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
         privMessage.setStatus(0);
         student.getMessages().add(privMessage);
         student.save();
-        PrivateMessage mentorMessage = PrivateMessage.create(subject,mentorContent,sender,mentor);
+        PrivateMessage mentorMessage = PrivateMessage.create(subject, mentorContent, sender, mentor);
         mentorMessage.setStatus(0);
         mentor.getMessages().add(mentorMessage);
         mentor.save();
 
         return redirect("admin/mentorship");
+    }
+
+    public Result teachers(){
+        return ok(views.html.admins.addteacher.render(User.getFinder().orderBy().asc("first_name").findList(), Course.getFinder().where().eq("status", 1).findList()));
+    }
+
+    public Result addTeacher(){
+        DynamicForm form = Form.form().bindFromRequest();
+        String teacher = form.get("teacher");
+        String course = form.get("course");
+        Long tea = null;
+        Long cou = null;
+        if (teacher != null && course != null) {
+            try {
+                tea = Long.parseLong(teacher);
+                cou = Long.parseLong(course);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse teachers Id: " + e.getMessage()));
+                flash("warning", "Something went wrong, could not add teacher to course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+        List<User> courseUsers = CourseUser.allUserFromCourse(Course.findById(cou).getId());
+        for(int i = 0; i < courseUsers.size(); i++){
+            if(courseUsers.get(i).getId() == User.findById(tea).getId()){
+                flash("warning", "Teacher is already teaching on the course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+
+
+        CourseUser cu = new CourseUser();
+        cu.setCourse(Course.findById(cou));
+        cu.setUser(User.findById(tea));
+        cu.setStatus(2);
+        cu.save();
+
+
+        flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
+        return redirect("/admin/mentorship");
+
     }
 
     /**
