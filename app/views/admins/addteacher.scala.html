@@ -1,13 +1,13 @@
 @import models.user.User
 @import utility.UserConstants
 @import models.course.Course
-@(userList: List[User])(coursesList: List[Course])(active: Int)
+@(userList: List[User])(coursesList: List[Course])
 @adminmain("Add teacher to the course") {
 
-    @helper.form(action = controllers.users.routes.AdminController.saveMentorship(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+    @helper.form(action = controllers.users.routes.AdminController.addTeacher(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
         <legend>Adding teacher</legend>
         <div class="form-group">
-            <label for="select" class="col-lg-2 control-label">Mentors</label>
+            <label for="select" class="col-lg-2 control-label">Teachers</label>
             <div class="col-lg-4">
                 <select class="form-control" id="select" name="teacher">
                 @for(user <- userList) {
@@ -22,7 +22,7 @@
                 </select>
             </div>
 
-            <label for="select" class="col-lg-2 control-label">Students</label>
+            <label for="select" class="col-lg-2 control-label">Courses</label>
             <div class="col-lg-4">
                 <select class="form-control" id="select" name="course">
                 @for(course <- coursesList) {
@@ -33,17 +33,13 @@
                 </select>
             </div>
 
-            @if(active > 0) {
-                <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.saveMentorship()">
-                    Add teacher</button>
-            } else {
-                <br>
-
-                <div class="alert alert-dismissible alert-info top50">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <strong>All students have mentors.</strong>
-                    <div>
-                    }
+                @if(coursesList.size > 0) {
+                    <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.addTeacher()">
+                        Add teacher</button>
+                }else {
+                    <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.addTeacher()" disabled="true">
+                        Add teacher</button>
+                }
         </div>
     }
 }

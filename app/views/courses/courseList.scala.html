@@ -1,5 +1,6 @@
 @import models.course.Course
-
+@import models.course.CourseUser
+@import utility.UserConstants
 @(courseList: List[Course])
 @main("Course") {
     @for(course <- courseList) {
@@ -15,7 +16,21 @@
                         <a href="#"><h2>@course.getName</h2>
                             <h4>@course.getDescription</h4></a>
                         <br>
-                        <h6>@course.getTeacher</h6>
+
+
+                            @for(user <- CourseUser.allUserFromCourse(course.getId)){
+
+                                @if(user.getRoles != null && user.getRoles.size() > 0) {
+                                    @for(role <- user.getRoles) {
+                                        @if(role.getId.equals(UserConstants.TEACHER)) {
+                                            <h6>@user.getFirstName @user.getLastName</h6>
+                                        }
+                                    }
+                                }
+
+                            }
+
+
                         <input type="submit" class="btn btn-success" id="courseSubmit@course.getId" href="@controllers.users.routes.StudentController.joinCourse()" value="Join" disabled="false"/>
                     </div>
                 </div>

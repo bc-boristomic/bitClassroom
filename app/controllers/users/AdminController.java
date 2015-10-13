@@ -501,6 +501,10 @@ public class AdminController extends Controller {
         return redirect("/admin/mentorship");
     }
 
+    public Result teachers() {
+        return ok(views.html.admins.addteacher.render(User.getFinder().orderBy().asc("first_name").findList(), Course.getFinder().where().eq("status", 1).findList()));
+    }
+
     public Result addTeacher(){
         DynamicForm form = Form.form().bindFromRequest();
         String teacher = form.get("teacher");
@@ -518,6 +522,16 @@ public class AdminController extends Controller {
             }
         }
 
+        List<User> courseUsers = CourseUser.allUserFromCourse(Course.findById(cou).getId());
+        for(int i = 0; i < courseUsers.size(); i++){
+            if(courseUsers.get(i).getId() == User.findById(tea).getId()){
+                flash("warning", "Teacher is already teaching on the course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+
+
         CourseUser cu = new CourseUser();
         cu.setCourse(Course.findById(cou));
         cu.setUser(User.findById(tea));
@@ -525,7 +539,8 @@ public class AdminController extends Controller {
         cu.save();
 
 
-
+        flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
+        return redirect("/admin/mentorship");
     }
 
     /**

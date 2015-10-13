@@ -90,6 +90,7 @@ POST          /weekly/reportSubmit                  @controllers.users.MentorCon
 GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
 POST          /admin/createcourse                   @controllers.users.AdminController.saveCourse()
 
+GET           /admin/addnewteacher                  @controllers.users.AdminController.teachers()
 POST          /admin/addnewteacher                  @controllers.users.AdminController.addTeacher()
 
 # List of all registered users and option to delete
