@@ -110,7 +110,7 @@ public class PostController extends Controller {
                         visible = true;
                     }
 
-
+                   // Logger.info("jebo te caca =============== " + post.getPostType() + " i cjeli post: " + post.toString());
                     //type 0 announcement
                     Integer typeOfPost = 0;
                     if (type.equals("1")) {
@@ -132,6 +132,7 @@ public class PostController extends Controller {
 
 
         if (user != null && selectedCourse!= null) {
+
             Course course = Course.findById(Long.parseLong(selectedCourse));
             post.setTitle(title);
             post.setContent(message);
