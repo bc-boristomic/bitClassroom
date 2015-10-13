@@ -76,7 +76,7 @@ public final class User extends Model {
     private String updatedBy;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy="user")
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy="sender", cascade=CascadeType.ALL)
     private List<PrivateMessage> messages = new ArrayList<>();
