@@ -26,10 +26,7 @@ import utility.MD5Hash;
 import utility.MailHelper;
 import utility.UserConstants;
 import utility.database.Roles;
-import views.html.admins.adduser;
-import views.html.admins.inactMentors;
-import views.html.admins.newTableWeekly;
-import views.html.admins.setingsweeklyreport;
+import views.html.admins.*;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -483,6 +480,23 @@ public class AdminController extends Controller {
      */
     public Result seeMentorsAndStudents() {
         return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
+    }
+
+    /**
+     * Method for get list of all mentors in the classroom.
+     * @return
+     */
+    public Result  seeAllMentors(){
+
+        List<User> users = User.findAll();
+        List<User> mentors = new ArrayList<>();
+
+        for( int i = 0; i < users.size(); i++){
+            if( users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+                mentors.add(users.get(i));
+            }
+        }
+        return ok(allMentors.render(mentors));
     }
 
 

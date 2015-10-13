@@ -58,6 +58,7 @@ POST          /admin/mentorship                     @controllers.users.AdminCont
 GET           /admin/activementors                  @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id              @controllers.users.AdminController.deleteMentorship(id: Long)
 GET           /admin/inactivementors                @controllers.users.AdminController.inactiveMentors()
+GET           /admin/mentors                        @controllers.users.AdminController.seeAllMentors()
 
 # Routes for admin approval of user to join certain course
 POST          /admin/approvestudent/:id             @controllers.users.AdminController.approveStudent(id: Long)
