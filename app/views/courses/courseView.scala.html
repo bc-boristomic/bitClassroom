@@ -58,7 +58,7 @@
                                                             </h4>
                                                             <br>
                                                             <h4 class="pull-right">
-                                                                <button id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)">
+                                                                <button id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
                                                                     Finish</button>
                                                             </h4>
                                                         </div>
@@ -117,13 +117,13 @@
 
                                         <span class="label label-default">Updates</span>
 
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT)){
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1){
                                         <br>
                                         <br>
                                             <form action="">
                                                 <div class="form-control">
                                                     <label class="col-lg-2">Homework link:</label>
-                                                    <input type="text" id="homework-link" name="link" class="col-md-9 panel" required >
+                                                    <input type="link" id="homework-link" name="link" class="col-md-9 panel" onblur="enableLink(@post.getId)" >
                                                 </div>
                                             </form>
                                         }
@@ -172,7 +172,9 @@
                     type: "post",
                     url : "@controllers.users.routes.StudentController.sendStartMessage()",
                     data : "postId=" + postId + "&courseId=" + @course.getId
-                });
+                }).success(function(){
+                    location.reload();
+                })
 
 
 
@@ -189,10 +191,15 @@
                     type: "post",
                     url : "@controllers.users.routes.StudentController.sendFinishMessage()",
                     data : "postId=" + postId + "&courseId=" + @course.getId + "&linkId=" + links
-                });
+                }).success(function(){
+                    location.reload();
+                })
                 }
 
-
+                function enableLink(postId){
+                   var button = document.getElementById("sendFinishMessage" + postId);
+                   button.disabled = false;
+                }
 
 
         </script>
