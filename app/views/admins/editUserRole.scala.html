@@ -1,0 +1,39 @@
+@import models.user.User
+@(userForm: Form[User])(user: User)
+@adminmain("Add new user") {
+
+  @helper.form(action = controllers.users.routes.AdminController.saveNewUser(user.getNickName), 'class -> "form-horizontal", 'role -> "form") {
+    <div class="col-lg-offset-2" style="border: 5px #134fb8">
+      <legend>Edit @user.getFirstName @user.getLastName</legend>
+      <div class="form-group">
+        <label for="fname" class="col-lg-2 control-label">
+          Nick name <abbr title="Edit users nick name"></abbr></label>
+        <div class="col-lg-6">
+          <input  type="text" name="firstname" class="form-control" id="inputName" onblur="checkNameInput()" placeholder="Nick name" value="@user.getNickName">
+          <span id="nameError" class="alert-warning" data-error-for="" ></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-lg-2 control-label">Role</label>
+        <div class="col-lg-6">
+          <select id="selection" name="type">
+            <option value="1">Admin</option>
+            <option value="5">Admin/Teacher</option>
+            <option value="2">Teacher</option>
+            <option value="3">Mentor</option>
+            <option value="4">Student</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-5">
+          <button type="reset" class="btn btn-default"> Clear</button>
+          <button type="submit" id="login" class="btn btn-primary" href="@controllers.users.routes.AdminController.saveNewUser( user.getNickName)">
+            Save</button>
+        </div>
+      </div>
+    </div>
+  }
+}

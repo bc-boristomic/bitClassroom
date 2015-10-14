@@ -2,6 +2,8 @@
 @import models.user.User
 @import models.course.Course
 @import models.course.CourseUser
+@import utility.UserConstants
+@import utility.CourseConstants
 @(user: User)(courseUser: List[CourseUser])
 @main("Welcome to bitClassroom") {
 
@@ -11,15 +13,29 @@
         </div>
         @for(cU <- courseUser) {
             @if(cU.getUser.getId == user.getId) {
-                @if(cU.getStatus == 2) {
+                @if(cU.getStatus == 2 && cU.getCourse.getStatus != 2 ) {
                     <div class="col-sm-3" id="courseDiv">
                         <div class="thumbnail" style="max-height: 700px; max-width: 300px">
-                            <img src="@routes.Assets.versioned("/images/courses/" + cU.getCourse.getImage)" alt="" style="width:280px; height: 200px">
+                            @if(cU.getCourse.getImage != null){
+                                <img src="@cU.getCourse.getImage.getSize(300,300)"/>
+                            }else{
+                            <img src="http://placehold.it/300x300"/>
+                            }
                             <div class="caption">
-                                <a href="/user/class"><h2>@cU.getCourse.getName</h2>
+                                <a href="@controllers.course.routes.CourseController.course(cU.getCourse.getId)"><h2>@cU.getCourse.getName</h2>
                                 <h4>@cU.getCourse.getDescription</h4></a>
                                 <br>
-                                <h6>@cU.getCourse.getTeacher</h6>
+
+
+                                    @if(cU.getUser.getRoles != null && cU.getUser.getRoles.size() > 0) {
+                                        @for(role <- cU.getUser.getRoles) {
+                                            @if(role.getId.equals(UserConstants.TEACHER)) {
+                                                <h6>@cU.getUser.getFirstName @cU.getUser.getLastName</h6>
+                                            }
+                                        }
+                                    }
+
+
 
                             </div>
 

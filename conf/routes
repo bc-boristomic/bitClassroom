@@ -40,7 +40,8 @@ GET           /admin                                @controllers.users.AdminCont
 
 # Routes for registering new user
 GET           /admin/adduser                        @controllers.users.AdminController.addNewUser()
-POST          /admin/adduser                        @controllers.users.AdminController.saveNewUser()
+POST          /admin/adduser                        @controllers.users.AdminController.saveNewUser(role: String)
+GET           /admin/setrole/:id                    @controllers.users.AdminController.editUserRole(id: Long)
 
 # Route for seeing all users
 GET           /admin/allusers                       @controllers.users.AdminController.listOfUser()
@@ -56,6 +57,8 @@ POST          /admin/mentorship                     @controllers.users.AdminCont
 # See active mentorships and delete it
 GET           /admin/activementors                  @controllers.users.AdminController.seeMentorsAndStudents()
 DELETE        /admin/activementors/:id              @controllers.users.AdminController.deleteMentorship(id: Long)
+GET           /admin/inactivementors                @controllers.users.AdminController.inactiveMentors()
+GET           /admin/mentors                        @controllers.users.AdminController.seeAllMentors()
 
 # Routes for admin approval of user to join certain course
 POST          /admin/approvestudent/:id             @controllers.users.AdminController.approveStudent(id: Long)
@@ -88,6 +91,9 @@ POST          /weekly/reportSubmit                  @controllers.users.MentorCon
 GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
 POST          /admin/createcourse                   @controllers.users.AdminController.saveCourse()
 
+GET           /admin/addnewteacher                  @controllers.users.AdminController.teachers()
+POST          /admin/addnewteacher                  @controllers.users.AdminController.addTeacher()
+
 # List of all registered users and option to delete
 GET           /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
 DELETE        /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
@@ -100,8 +106,18 @@ POST          /admin/courses/:id                    @controllers.users.AdminCont
 GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
 POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
 
+# List of deleted courses
+GET           /admin/courses/deleted                @controllers.users.AdminController.deletedCourses()
+
+
+# Auto send message for user from deleted course
+
 
 #				:: TEACHER ROUTES BELLOW ::
+# Teacher list assignment
+
+GET           /teacher/listAssignment               @controllers.users.TeacherController.listAssignment()
+
 # Daily report for teachers
 GET           /daily/report                         @controllers.users.TeacherController.dailyReport()
 POST          /daily/reportSubmit                   @controllers.users.TeacherController.saveRaport()
@@ -114,11 +130,13 @@ POST          /student/joincourse/haveaccess        @controllers.users.StudentCo
 # SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
 GET           /user/courses                         @controllers.course.CourseController.allCourses()
-GET           /user/class                           @controllers.course.CourseController.course()
+GET           /user/class/:id                       @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post/                                @controllers.posts.PostController.savePost()
+POST          /post                                 @controllers.posts.PostController.savePost()
+GET           /post/assignment/:id                  @controllers.posts.PostController.assignmentDetails(id: Long)
+GET           /assignment/details/:id               @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
@@ -142,6 +160,20 @@ GET           /api/user/:id                         @controllers.api.UserAPICont
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         @controllers.Assets.versioned(path="/public", file: Asset)
+
+#Sending email
+
+
+POST          /user/sendMail                        @controllers.Emails.sendMail()
+POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+POST          /user/sendFinishMail                  @controllers.users.StudentController.sendFinishMessage()
+
+POST          /user/sendMail                        @controllers.Emails.sendMail()
+POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+
+
+
+POST          /user/sendMmail                       @controllers.Emails.sendMail()
 
 
 

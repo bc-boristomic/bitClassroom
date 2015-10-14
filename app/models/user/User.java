@@ -1,10 +1,9 @@
 package models.user;
 
 import com.avaje.ebean.Model;
+import models.Image;
 import models.Post;
 import models.PrivateMessage;
-import models.course.Course;
-import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -57,8 +56,8 @@ public final class User extends Model {
     private String twitter;
     @Column(name = "youtube")
     private String youtube;
-    @Column(name = "picture")
-    private String profilePicture = "default.jpg";
+    @OneToMany
+    private List<Image> images;
     @Column(name = "status", length = 1)
     private Integer status = UserConstants.INACTIVE;
     @Column(name = "student_status", length = 1)
@@ -67,16 +66,22 @@ public final class User extends Model {
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false, length = 50)
     private String createdBy;
+    @Column(name = "homework_status", length = 1)
+    private Integer homeworkStatus = 0;
+    @Column(unique = true)
+    private String token;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
     private String updatedBy;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy="user")
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy="sender", cascade=CascadeType.ALL)
     private List<PrivateMessage> messages = new ArrayList<>();
+    @OneToMany
+    private List<Assignment> assigments = new ArrayList<>();
 
 
     /**
@@ -94,6 +99,7 @@ public final class User extends Model {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.images = new ArrayList<>();
     }
 
     /**
@@ -116,6 +122,11 @@ public final class User extends Model {
         return finder.where().eq("email", email.toLowerCase()).eq("password", password).findUnique();
     }
 
+
+    public static User findByNick(String nick){
+        return finder.where().eq("nickName", nick).findUnique();
+    }
+
     /**
      * Returns User from database for inputed id
      *
@@ -134,6 +145,12 @@ public final class User extends Model {
      */
     public static User findByEmail(String email) {
         return finder.where().eq("email", email).findUnique();
+    }
+
+
+    public static User findByName(String name){
+
+        return finder.where().eq("firstName", name).findUnique();
     }
 
     /**
@@ -168,6 +185,7 @@ public final class User extends Model {
         sb.append("STATUS ").append(status);
         return sb.toString();
     }
+
 
 
     /* ONLY GETTERS AND SETTERS FOR USER CLASS BELLOW */
@@ -264,12 +282,10 @@ public final class User extends Model {
         this.website = website;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
-    }
+    public List<Image> getProfilePicture(){return images;}
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePicture(Image profilePicture) {
+        this.images.add(profilePicture);
     }
 
     public Integer getStatus() {
@@ -297,6 +313,15 @@ public final class User extends Model {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(updateDate);
     }
+
+    public Integer getHomeworkStatus() {
+        return homeworkStatus;
+    }
+
+    public void setHomeworkStatus(Integer homeworkStatus) {
+        this.homeworkStatus = homeworkStatus;
+    }
+
 
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;
@@ -378,6 +403,14 @@ public final class User extends Model {
         this.messages = messages;
     }
 
+    public List<Assignment> getAssignments() {
+        return assigments;
+    }
+
+    public void setCourseUsers(List<Assignment> assigments) {
+        this.assigments = assigments;
+    }
+
     public String getYearOfBirth() {
         if (birthDate != null) {
             return birthDate.split("\\.")[2];
@@ -391,4 +424,12 @@ public final class User extends Model {
         return true;
     }
 
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

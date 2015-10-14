@@ -15,10 +15,13 @@
 
 
             <div class="col-md-4 text-center">
-                <div id="img-preview-block" class="img-circle avatar avatar-original center-block" style="background-size:cover;
-                background-image:url(@routes.Assets.versioned("images/users/"  + user.getProfilePicture + "")?size=200x200)"></div>
+                @if(user.getProfilePicture.size() != 0 && user.getProfilePicture != null){
+                    <img src="@user.getProfilePicture.get(user.getProfilePicture.size()-1).getSize(300,300)"/>
+                }else{
+                    <img src="http://placehold.it/300x300"/>
+                }
                 <br>
-                <span class="btn btn-link btn-file">Edit profile picture<input type="file" name="profile-picture" accept="image/*" id="upload-img"></span>
+                <input type="file" name="image" accept="image/*" id="upload-img"/>
             </div>
 
                 <!-- edit form column -->
@@ -90,7 +93,7 @@
                 <div class="form-group">
                     <label for="facebook" class="col-lg-3 control-label">Facebook <abbr class="req" title="Please provide your facebook profile page." style="color : red"> * </abbr></label>
                     <div class="col-lg-9">
-                        <input name="facebook" type="url" class="form-control" id="facebook"  pattern="http://www.facebook.com/[\w]{4,}" onblur="checkFacebook()" placeholder="Your facebook profile" value="http://www.facebook.com/" required>
+                        <input name="facebook" type="url" class="form-control" id="facebook"  pattern="https?://www.facebook.com/[\w]{4,}" onblur="checkFacebook()" placeholder="Your facebook profile" value="https://www.facebook.com/" required>
                         <span id="facebookCheck" class="alert-warning" data-error-for="" ></span>
                     </div>
                 </div>

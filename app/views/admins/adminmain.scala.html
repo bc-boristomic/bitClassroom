@@ -67,7 +67,9 @@
                                     Mentorship<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/admin/mentorship">Assign new mentors</a></li>
-                                    <li><a href="/admin/activementors">See active mentors</a></li>
+                                    <li><a href="/admin/activementors">Active mentors</a></li>
+                                    <li><a href="/admin/inactivementors">Check mentors</a></li>
+                                    <li><a href="@controllers.users.routes.AdminController.seeAllMentors()">Mentors</a></li>
                                 </ul>
                             </li>
 
@@ -75,9 +77,14 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Classroom<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/admin/courses">See active courses</a></li>
-                                    <li><a href="/admin/courses/archived">See archived courses</a></li>
                                     <li><a href="/admin/createcourse">Add new course</a></li>
+
+                                    <li><a href="/admin/courses">Active courses</a></li>
+                                    <li><a href="/admin/courses/archived">Archived courses</a></li>
+                                    <li><a href="/admin/courses/deleted">Deleted courses</a></li>
+
+                                    <li><a href="/admin/addnewteacher">Add teacher to the course</a></li>
+
                                     <li><a href="/post/new"></a></li>
                                     <li class="divider"></li>
                                     <li><a href="/admin/awaitlist">Users awaiting approval <span class="badge" id="notify"></span></a></li>
@@ -200,7 +207,7 @@
                 }).success(function(response) {
                     $('#notify').html(response);
                 })
-                }, 20000));
+                }, 2000));
 
         </script>
 

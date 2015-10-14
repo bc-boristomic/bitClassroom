@@ -30,7 +30,7 @@
                         @if(user.getRoles != null && user.getRoles.size() > 0) {
                             @for(role <- user.getRoles) {
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <option value="@user.getFirstName">@user.getFirstName</option>
+                                    <option value="@user.getFirstName @user.getLastName @user.getId">@user.getFirstName @user.getLastName</option>
                                 }
 
                             }
@@ -46,7 +46,7 @@
                 <div class="col-lg-6">
 
                     <label>Insert course background image</label>
-                    <input type="file" name="course-image" accept="image/*" class="form-control" id="course-image">
+                    <input type="file" name="image" accept="image/*" id="upload-img"/>
                 </div>
             </div>
 

@@ -2,11 +2,13 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Post;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
+import models.user.Assignment;
 import models.user.User;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -15,9 +17,14 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 import views.html.dailyreports.dailyraport;
 import views.html.index;
+import views.html.posts.assignmentView;
+import views.html.posts.teacherListsAssignment;
+import views.html.users.studentsHomeworkStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,7 +82,53 @@ public class TeacherController extends Controller {
     }
 
 
+
     public Result test() {
         return ok("you are teacher");
+    }
+
+    public Result listAssignment() {
+        User user = SessionHelper.currentUser(ctx());
+        return ok(teacherListsAssignment.render(user.getPosts()));
+    }
+
+
+    public Result studentAssignmentStatus(Long id, String status){
+
+        Logger.info(id + "");
+        Post post = Post.findPostById(id);
+        Course course = post.getCourse();
+        Logger.info(course.getName());
+        List<User> users = CourseUser.allUserFromCourse(course.getId());
+        List<User> students = new ArrayList<>();
+
+        if( status.equals("Done")) {
+            for (int i = 0; i < users.size(); i++) {
+
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 2 && users.get(i).getHomeworkStatus() == 2) {
+
+
+                    students.add(users.get(i));
+                }
+            }
+        }else if(status.equals("Working")){
+            for (int i = 0; i < users.size(); i++) {
+
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 1 && users.get(i).getHomeworkStatus() == 1) {
+
+                    students.add(users.get(i));
+                }
+            }
+        }
+        if( status.equals("Not")) {
+            for (int i = 0; i < users.size(); i++) {
+
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus() == 0 && users.get(i).getHomeworkStatus() == 0) {
+
+                    students.add(users.get(i));
+                }
+            }
+        }
+        return ok(studentsHomeworkStatus.render(students, post));
     }
 }

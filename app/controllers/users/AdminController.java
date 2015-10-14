@@ -4,15 +4,16 @@ import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.ErrorLog;
+import models.Image;
+import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.*;
+import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
-import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -22,17 +23,16 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.CourseConstants;
 import utility.MD5Hash;
+import utility.MailHelper;
 import utility.UserConstants;
 import utility.database.Roles;
-import views.html.admins.adduser;
-import views.html.admins.setingsweeklyreport;
-import views.html.admins.newTableWeekly;
+import views.html.admins.*;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boris on 9/12/15.
@@ -47,7 +47,7 @@ public class AdminController extends Controller {
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
     private final Form<Course> courseForm = Form.form(Course.class);
     private List<String> imageList = new ArrayList<>();
-
+    private static String url = Play.application().configuration().getString("url");
     /**
      * Admin index page.
      *
@@ -72,13 +72,27 @@ public class AdminController extends Controller {
         return ok(views.html.admins.userlist.render(User.findAll()));
     }
 
+
+    /**
+     * Method for set users new type of role.
+     * @param id - Long user id, used for find selected User
+     */
+    public Result editUserRole(Long id){
+        User user = User.findById(id);
+        return ok(views.html.admins.editUserRole.render(userForm, user));
+    }
+
     /**
      * Registers new user to the site.
      *
      * @return
      */
-    public Result saveNewUser() {
+    public Result saveNewUser(String type) {
         Form<User> boundForm = userForm.bindFromRequest();
+
+        String email = "";
+        String passwordHashed = "";
+        User u = null;
 
         if (boundForm.hasErrors()) {
             flash("warning", "Please correct the form.");
@@ -87,69 +101,105 @@ public class AdminController extends Controller {
 
         String fname = boundForm.field("firstname").value();
         String lname = boundForm.field("lastname").value();
-        String email = boundForm.field("email").value();
-        String password = boundForm.field("password").value();
+        if (type.equals("save")) {
+            email = boundForm.field("email").value();
+            String password = boundForm.field("password").value();
+            passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
+        }
         String admin = boundForm.field("admin").value();
         String teacher = boundForm.field("teacher").value();
         String mentor = boundForm.field("mentor").value();
         String student = boundForm.field("student").value();
         String tmpRole = boundForm.field("type").value();
-        String passwordHashed = MD5Hash.getEncriptedPasswordMD5(password);
 
-        User u = new User();
-        List<Role> roles = new ArrayList<>();
-        Long role = null;
-        if (tmpRole != null) {
-            if ("1".equals(tmpRole)) {
-                role = 1L;
-                Role r = new Role(role, UserConstants.NAME_ADMIN);
-                roles.add(r);
-            } else if ("2".equals(tmpRole)) {
-                role = 2L;
-                Role r = new Role(role, UserConstants.NAME_TEACHER);
-                roles.add(r);
-            } else if ("3".equals(tmpRole)) {
-                role = 3L;
-                Role r = new Role(role, UserConstants.NAME_MENTOR);
-                roles.add(r);
-            } else if ("4".equals(tmpRole)) {
-                role = 4L;
-                Role r = new Role(role, UserConstants.NAME_STUDENT);
-                roles.add(r);
-                u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
-            } else if ("5".equals(tmpRole)) {
-                roles.add(Roles.ADMIN);
-                roles.add(Roles.TEACHER);
+            List<Role> roles = new ArrayList<>();
+            Long role = null;
+            if (tmpRole != null) {
+                if ("1".equals(tmpRole)) {
+                    role = 1L;
+                    Role r = new Role(role, UserConstants.NAME_ADMIN);
+                    roles.add(r);
+                } else if ("2".equals(tmpRole)) {
+                    role = 2L;
+                    Role r = new Role(role, UserConstants.NAME_TEACHER);
+                    roles.add(r);
+                } else if ("3".equals(tmpRole)) {
+                    role = 3L;
+                    Role r = new Role(role, UserConstants.NAME_MENTOR);
+                    roles.add(r);
+                } else if ("4".equals(tmpRole)) {
+                    role = 4L;
+                    Role r = new Role(role, UserConstants.NAME_STUDENT);
+                    roles.add(r);
+                    if(type.equals("save")) {
+                        u = new User();
+                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+                    }else {
+                        u = User.findByNick(type);
+                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+                    }
+                } else if ("5".equals(tmpRole)) {
+                    roles.add(Roles.ADMIN);
+                    roles.add(Roles.TEACHER);
+                }
+                try {
+                    //role = Long.parseLong(tmpRole);
+                } catch (NumberFormatException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                }
             }
-            try {
-                //role = Long.parseLong(tmpRole);
-            } catch (NumberFormatException e) {
-                Ebean.save(new ErrorLog(e.getMessage()));
+
+        if(type.equals("save")){
+            u = new User();
+            u.setFirstName(fname);
+            u.setLastName(lname);
+            u.setEmail(email);
+            u.setPassword(passwordHashed);
+            u.setRoles(roles);
+            u.setCreationDate(new DateTime());
+            u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
+
+            if (u != null) {
+                try {
+                    u.save();
+                } catch (PersistenceException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                    flash("warning", "Something went wrong, user could not be saved to database.");
+                    return redirect("/admin");
+                }
+
+                u.setToken(UUID.randomUUID().toString());
+                u.update();
+                String host = url + "validate/" + u.getToken();
+                MailHelper.send(u.getEmail(), host);
+                flash("success", String.format("User %s successfully added to database", u.getFirstName()));
+                return redirect("/admin/adduser");
             }
+            flash("warning", "Something went wrong, user could not be saved to database.");
+            Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
+            return redirect("/admin");
+        }else{
+
+            User tmp = User.findByNick(type);
+            tmp.setNickName(fname);
+            tmp.setRoles(roles);
+            if (tmp != null) {
+                try {
+                    tmp.save();
+                } catch (PersistenceException e) {
+                    Ebean.save(new ErrorLog(e.getMessage()));
+                    flash("warning", "Something went wrong, user could not be saved to database.");
+                    return redirect("/admin");
+                }
+
+                flash("success", String.format("User %s is successfully edit", tmp.getFirstName()));
+                return redirect("/admin/allusers");
+            }
+            flash("warning", "Something went wrong, user could not be saved to database.");
+            Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
+            return redirect("/admin");
+
         }
-
-        u.setFirstName(fname);
-        u.setLastName(lname);
-        u.setEmail(email);
-        u.setPassword(passwordHashed);
-        u.setRoles(roles);
-        u.setCreationDate(new DateTime());
-        u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
-
-        if (u != null) {
-            try {
-                u.save();
-            } catch (PersistenceException e) {
-                Ebean.save(new ErrorLog(e.getMessage()));
-                flash("warning", "Something went wrong, user could not be saved to database.");
-                return redirect("/admin");
-            }
-            flash("success", String.format("User %s successfully added to database", u.getFirstName()));
-            return redirect("/admin/adduser");
-        }
-        flash("warning", "Something went wrong, user could not be saved to database.");
-        Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
-        return redirect("/admin");
     }
 
     /**
@@ -246,7 +296,7 @@ public class AdminController extends Controller {
      * @return
      */
     public Result addCourse() {
-        return ok(views.html.admins.fillClassDetails.render(User.getFinder().all(), courseForm));
+        return ok(views.html.admins.fillClassDetails.render(User.getFinder().orderBy().asc("first_name").findList(), courseForm));
     }
 
     /**
@@ -260,33 +310,18 @@ public class AdminController extends Controller {
 
         String name = boundForm.field("name").value();
         String description = boundForm.field("description").value();
-        String teacher = boundForm.field("type").value();
+        String getTeacher = boundForm.field("type").value();
+        String teacher = getTeacher.split(" ")[0] + " " + getTeacher.split(" ")[1];
+        
+        String teacherId = getTeacher.split(" ")[2];
+
 
         Course course = new Course(name, description, teacher);
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
         course.setUpdateDate(new DateTime());
 
         Http.MultipartFormData data = request().body().asMultipartFormData();
-        List<Http.MultipartFormData.FilePart> pictures = data.getFiles();
-
-        if (pictures != null) {
-            String picName = null;
-            for (Http.MultipartFormData.FilePart picture : pictures) {
-                picName = picture.getFilename();
-                File file = picture.getFile();
-
-                try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/images/courses/" + course.getName() + "/" + picName));
-                    imageList.add(picName);
-                } catch (IOException e) {
-                    Logger.info("Could not move file. " + e.getMessage());
-                    flash("error", "Could not move file.");
-                }
-            }
-            if (picName != null) {
-                course.setImage(course.getName() + "/" + picName);
-            }
-        }
+        Http.MultipartFormData.FilePart filePart = data.getFile("image");
 
         try {
             course.save();
@@ -295,6 +330,33 @@ public class AdminController extends Controller {
             flash("warning", "Something went wrong, course could not be saved to data base");
             return redirect("/admin/createcourse");
         }
+
+        if (filePart != null) {
+            File file = filePart.getFile();
+            Image image = Image.createCourseImage(file, course.getId());
+            image.save();
+            course.setImage(image);
+            course.update();
+        }
+
+        CourseUser cu = new CourseUser();
+        cu.setCourse(course);
+        cu.setStatus(User.findById(Long.parseLong(teacherId)).getStatus());
+        cu.setUser(User.findById(Long.parseLong(teacherId)));
+
+        CourseUser  adminCourse = new CourseUser();
+        adminCourse.setCourse(course);
+        adminCourse.setStatus(2);
+        adminCourse.setUser(SessionHelper.currentUser(ctx()));
+        try {
+            cu.save();
+            adminCourse.save();
+        } catch (PersistenceException e) {
+            Ebean.save(new ErrorLog(e.getMessage()));
+            flash("warning", "Something went wrong, course teacher could not be saved to data base");
+            return redirect("/admin/createcourse");
+        }
+
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
     }
@@ -316,6 +378,31 @@ public class AdminController extends Controller {
             cu.setStatus(Integer.parseInt(s));
             cu.save();
         }
+
+
+        Course c = cu.getCourse();
+        for(int i = 0; i < c.getPosts().size(); i++){
+            if(c.getPosts().get(i).getPostType() == 1){
+                Assignment a = new Assignment();
+                a.setUser(cu.getUser());
+                a.setPost(c.getPosts().get(i));
+                a.setHomeworkPostStatus(0);
+                a.save();
+            }
+
+        }
+
+        User u = Mentorship.findMentorByUser(cu.getUser());
+        if(u != null){
+            CourseUser cc = new CourseUser();
+            cc.setCourse(cu.getCourse());
+            cc.setStatus(Integer.parseInt(s));
+            cc.setUser(u);
+            cc.save();
+        }
+
+
+
         return ok("");
     }
 
@@ -391,8 +478,86 @@ public class AdminController extends Controller {
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
         mentorship.save();
 
+            List<Course> courses = CourseUser.allUserCourses(student);
+            for(int i = 0; i < courses.size(); i++){
+                CourseUser courseUser = CourseUser.findCourseUser(mentor, courses.get(i));
+                if(courseUser == null){
+                    CourseUser cc = new CourseUser();
+                    cc.setCourse(courses.get(i));
+                    cc.setStatus(2);
+                    cc.setUser(mentor);
+                    cc.save();
+                }
+
+
+            }
+
+
         flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
         return redirect("/admin/mentorship");
+    }
+
+
+
+    public Result mentorshipNotification(User mentor, User student) {
+
+        User sender = SessionHelper.currentUser(ctx());
+        String subject = "Mentorship";
+        String content = mentor.getFirstName() + " " + mentor.getLastName() + " has been assigned as your new mentor.";
+        String mentorContent = "You are assigned " + student.getFirstName() + " " + student.getLastName() + " as his new mentor";
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+        PrivateMessage mentorMessage = PrivateMessage.create(subject, mentorContent, sender, mentor);
+        mentorMessage.setStatus(0);
+        mentor.getMessages().add(mentorMessage);
+        mentor.save();
+
+        return redirect("admin/mentorship");
+    }
+
+    public Result teachers(){
+        return ok(views.html.admins.addteacher.render(User.getFinder().orderBy().asc("first_name").findList(), Course.getFinder().where().eq("status", 1).findList()));
+    }
+
+    public Result addTeacher(){
+        DynamicForm form = Form.form().bindFromRequest();
+        String teacher = form.get("teacher");
+        String course = form.get("course");
+        Long tea = null;
+        Long cou = null;
+        if (teacher != null && course != null) {
+            try {
+                tea = Long.parseLong(teacher);
+                cou = Long.parseLong(course);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog("Could not parse teachers Id: " + e.getMessage()));
+                flash("warning", "Something went wrong, could not add teacher to course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+        List<User> courseUsers = CourseUser.allUserFromCourse(Course.findById(cou).getId());
+        for(int i = 0; i < courseUsers.size(); i++){
+            if(courseUsers.get(i).getId() == User.findById(tea).getId()){
+                flash("warning", "Teacher is already teaching on the course");
+                return redirect("/admin/addnewteacher");
+            }
+        }
+
+
+
+        CourseUser cu = new CourseUser();
+        cu.setCourse(Course.findById(cou));
+        cu.setUser(User.findById(tea));
+        cu.setStatus(2);
+        cu.save();
+
+
+        flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
+        return redirect("/admin/mentorship");
+
     }
 
     /**
@@ -402,6 +567,43 @@ public class AdminController extends Controller {
      */
     public Result seeMentorsAndStudents() {
         return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
+    }
+
+    /**
+     * Method for get list of all mentors in the classroom.
+     * @return
+     */
+    public Result  seeAllMentors(){
+
+        List<User> users = User.findAll();
+        List<User> mentors = new ArrayList<>();
+
+        for( int i = 0; i < users.size(); i++){
+            if( users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+                mentors.add(users.get(i));
+            }
+        }
+        return ok(allMentors.render(mentors));
+    }
+
+
+    /**
+     * Method for get list of inactive mentors
+     */
+    public Result inactiveMentors(){
+
+        List<PrivateMessage>  message = PrivateMessage.findAllMessage();
+        List<User> inactiveMentors = new ArrayList<>();
+        for( int i = 0; i < message.size(); i++){
+            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+                DateTime start = new DateTime();
+                Long result = start.getMillis() - message.get(i).getCreationDate().getMillis();
+                if(result > 60000) {
+                    inactiveMentors.add(message.get(i).getReceiver());
+                }
+            }
+        }
+        return ok(inactMentors.render(inactiveMentors));
     }
 
     /**
@@ -442,17 +644,48 @@ public class AdminController extends Controller {
      * @return
      */
     public Result deleteOrArchiveCourse(Long id) {
-        DynamicForm form = Form.form().bindFromRequest();
 
-        String s = form.data().get("pressed");
+        DynamicForm form = Form.form().bindFromRequest();
         Course course = Course.getFinder().byId(id);
+        String s = form.data().get("pressed");
+        if( Integer.parseInt(s) == 2){
+            List<User> users = CourseUser.allUserFromCourse(id);
+            for (int i = 0; i < users.size(); i++){
+                sendAutoMessage(users.get(i).getId(), course);
+            }
+
+        }
+
         if (s != null) {
             course.setStatus(Integer.parseInt(s));
             course.setUpdateDate(new DateTime());
             course.setUpdatedBy(SessionHelper.currentUser(ctx()).getEmail());
             course.save();
+
+
         }
         return ok();
+    }
+
+
+    /**
+     * Method for auto send message to User when course is deleted
+     * @param id - User id.
+     * @return
+     */
+    public Result sendAutoMessage(Long id, Course course) {
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = User.findById(id);
+        String subject = "Information";
+        String content = "Course " + course.getName()  + " is deleted by admin " + sender.getFirstName() +" " + sender.getLastName() +".";
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+
+        return redirect("admin/allusers");
     }
 
     /**
@@ -463,6 +696,11 @@ public class AdminController extends Controller {
      */
     public Result archivedCourses() {
         return ok(views.html.admins.coursesArchived.render(Course.getFinder().where().eq("status", CourseConstants.ARCHIVED_COURSE).findList()));
+    }
+
+
+    public Result deletedCourses() {
+        return ok(views.html.admins.coursesDeleted.render(Course.getFinder().where().eq("status", CourseConstants.DELETED_COURSE).findList()));
     }
 
     /**
@@ -536,5 +774,6 @@ public class AdminController extends Controller {
     public Result listWeeklyReport() {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
+
 
 }

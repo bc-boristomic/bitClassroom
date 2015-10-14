@@ -13,13 +13,13 @@ import java.util.Arrays;
  */
 public class Users {
 
-	private static final String[] FIRST_NAME_TEAM = { "Medina", "Nidal", "Enver", "Becir", "Senadin", "Boris" };
-	private static final String[] LAST_NAME_TEAM = { "Banjic", "Salkic", "Memic", "Omerbasic", "Botic", "Tomic" };
+	private static final String[] FIRST_NAME_TEAM = { "Medina", "Nidal", "Enver", "Becir", "Senadin", "Boris", "Dinko", "Gordan" };
+	private static final String[] LAST_NAME_TEAM = { "Banjic", "Salkic", "Memic", "Omerbasic", "Botic", "Tomic", "Hodzic", "Masic" };
 	private static final String[] EMAIL_TEAM = { "medina.banjic@bitcamp.ba", "nidal.salkic@bitcamp.ba",
 			"enver.memic@bitcamp.ba", "becir.omerbasic@bitcamp.ba", "senadin.botic@bitcamp.ba",
-			"boris.tomic@bitcamp.ba" };
+			"boris.tomic@bitcamp.ba", "dinko.hodzic@bitcamp.ba", "gordan.masic@bitcamp.ba" };
 	private static final String[] PASSWORD_TEAM = { "Medina123", "Nidal123", "Enver123", "Becir123", "Senadin123",
-			"Boris123" };
+			"Boris123", "Dinko123", "Gordan123" };
 
 	private static final String[] FIRST_NAME_TEACHERS = { "Benjamin", "Vedad", "Tarik", "Emir", "Elmedin", "Damir",
 			"Zaid" };
@@ -29,16 +29,16 @@ public class Users {
 			"tarik.celik@bitcamp.ba", "emir.arnautovic@bitcamp.ba", "elmedin.selmanovic@bitcamp.ba",
 			"damir.zekic@bitcamp.ba", "zaid.zerdo@bitcamp.ba" };
 
-	private static final String[] FIRST_NAME_STUDENTS = { "Adis", "Adnan", "Ajdin", "Ajla", "Alen", "Amra", "Dinko",
-			"Edin", "Edvin", "Emina", "Gordan", "Hajrudin", "Kerim", "Kristina", "Mladen", "Narena", "Ognjen", "Semir",
+	private static final String[] FIRST_NAME_STUDENTS = { "Adis", "Adnan", "Ajdin", "Ajla", "Alen", "Amra",
+			"Edin", "Edvin", "Emina","Hajrudin", "Kerim", "Kristina", "Mladen", "Narena", "Ognjen", "Semir",
 			"Tomislav", "Zeljko" };
 	private static final String[] LAST_NAME_STUDENTS = { "Cehajic", "Lapendic", "Brkic", "El Tabari", "Bumbulovic",
-			"Sabic", "Hodzic", "Pilavdzic", "Mulabdic", "Arapcic", "Masic", "Sehic", "Dragolj", "Pupavac", "Teofilovic",
+			"Sabic", "Pilavdzic", "Mulabdic", "Arapcic", "Sehic", "Dragolj", "Pupavac", "Teofilovic",
 			"Ibrisimovic", "Cetkovic", "Sahman", "Trifunovic", "Miljevic" };
 	private static final String[] EMAIL_STUDENTS = { "adis.cehajic@bitcamp.ba", "adnan.lapendic@bitcamp.ba",
 			"ajdin.brkic@bitcamp.ba", "ajla.eltabari@bitcamp.ba", "alen.bumbulovic@bitcamp.ba", "amra.sabic@bitcamp.ba",
-			"dinko.hodzic@bitcamp.ba", "edin.pilavdzic@bitcamp.ba", "edvin.mulabdic@bitcamp.ba",
-			"emina.arapcic@bitcamp.ba", "gordan.masic@bitcamp.ba", "hajrudin.sehic@bitcamp.ba",
+			"edin.pilavdzic@bitcamp.ba", "edvin.mulabdic@bitcamp.ba",
+			"emina.arapcic@bitcamp.ba", "hajrudin.sehic@bitcamp.ba",
 			"kerim.dragolj@bitcamp.ba", "kristina.pupavac@bitcamp.ba", "mladen.teofilovic@bitcamp.ba",
 			"narena.ibrisimovic@bitcamp.ba", "ognjen.cetkovic@bitcamp.ba", "semir.sahman@bitcamp.ba",
 			"tomislav.trifunovic@bitcamp.ba", "zeljko.miljevic@bitcamp.ba" };
@@ -61,6 +61,7 @@ public class Users {
 			whatUser.setFirstName(FIRST_NAME_TEAM[i]);
 			whatUser.setLastName(LAST_NAME_TEAM[i]);
 			whatUser.setStatus(UserConstants.FULLY_ACTIVE);
+			whatUser.setNickName("Nick" + i);
 			whatUser.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.ADMIN })));
 			whatUser.setCreatedBy("Global.java");
 			if (i == 0) {
@@ -90,6 +91,7 @@ public class Users {
 			student.setLastName(LAST_NAME_STUDENTS[i]);
 			student.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.STUDENT })));
 			student.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+			student.setHomeworkStatus(0);
 			student.setCreatedBy("Global.java");
 			student.save();
 		}

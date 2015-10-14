@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         @for(users <- userList){
-          @if(users.getStatus == 2 && !users.getUser.getEmail.equals(SessionHelper.currentUser(ctx()).getEmail)){
+          @if(users.getStatus == 2 && !users.getUser.getEmail.equals(SessionHelper.currentUser(ctx()).getEmail) && users.getCourse.getStatus != 2){
             <tr class="info">
               <td>@users.getUser.getEmail</td>
               <td>@users.getCourse.getName -  @users.getCourse.getDescription</td>

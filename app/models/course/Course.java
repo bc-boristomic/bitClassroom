@@ -1,12 +1,12 @@
 package models.course;
 
 import com.avaje.ebean.Model;
-import models.user.User;
+import models.Image;
+import models.Post;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import utility.CourseConstants;
-import utility.UserConstants;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,8 +32,6 @@ public final class Course extends Model {
     private String description;
     @Column(name = "teacher", length = 50)
     private String teacher;
-    @Column(name = "image")
-    private String image;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false)
@@ -44,6 +42,10 @@ public final class Course extends Model {
     private String updatedBy;
     @Column(name = "status")
     private Integer status = CourseConstants.ACTIVE_COURSE;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+    @OneToOne
+    private Image image;
 
     /**
      * Empty constructor for Ebean
@@ -80,6 +82,7 @@ public final class Course extends Model {
      * @return <code>Course</code> type object
      */
     public static Course findById(Long id) {
+
         return finder.byId(id);
     }
 
@@ -149,11 +152,11 @@ public final class Course extends Model {
         this.teacher = teacher;
     }
 
-    public String getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
@@ -193,5 +196,13 @@ public final class Course extends Model {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<Post> getPosts() {
+        List<Post> newPosts = new ArrayList<>();
+        for(int i = posts.size()-1; i >= 0; i--){
+            newPosts.add(posts.get(i));
+        }
+        return newPosts;
     }
 }

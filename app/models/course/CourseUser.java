@@ -2,6 +2,8 @@ package models.course;
 
 import com.avaje.ebean.Model;
 import helpers.SessionHelper;
+import models.Post;
+import models.user.Assignment;
 import models.user.User;
 
 import javax.persistence.*;
@@ -29,6 +31,9 @@ public final class CourseUser extends Model {
     private User user;
     @ManyToOne
     private Course course;
+
+
+
 
     private static Finder<Long, CourseUser> finder = new Finder<>(CourseUser.class);
 
@@ -65,8 +70,24 @@ public final class CourseUser extends Model {
         return courseByUserList;
     }
 
+    public static List<User> allUserFromCourse (Long id){
 
+        List<User> courseUsers = new ArrayList<>();
+        List<CourseUser> list = finder.all();
 
+        for ( int i = 0; i < list.size(); i++){
+            if( list.get(i).getCourse().getId() == id ){
+
+                courseUsers.add(list.get(i).getUser());
+            }
+        }
+
+        return courseUsers;
+    }
+
+    public static CourseUser findCourseUser(User u , Course c){
+        return finder.where().eq("user_id", u.getId()).eq("course_id", c.getId()).findUnique();
+    }
 
     /**
      * Find all course_user
@@ -109,6 +130,8 @@ public final class CourseUser extends Model {
     public static Finder<Long, CourseUser> getFinder() {
         return finder;
     }
+
+
 
     @Override
     public String toString() {

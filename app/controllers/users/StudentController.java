@@ -2,8 +2,12 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Post;
+import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
+import models.user.Assignment;
+import models.user.Mentorship;
 import models.user.User;
 import play.Logger;
 import play.data.DynamicForm;
@@ -11,6 +15,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.UserConstants;
 
 import java.util.List;
 
@@ -48,6 +53,9 @@ public class StudentController extends Controller {
         if (courseUser != null) {
             courseUser.save();
         }
+
+
+
         flash("success", "You successfuly applied to " + c.getName());
         return redirect("/user/courses");
     }
@@ -70,6 +78,80 @@ public class StudentController extends Controller {
         return ok("2");
     }
 
+    public Result sendStartMessage() {
+
+        DynamicForm form = Form.form().bindFromRequest();
+        String postId = form.data().get("postId");
+        String courseId = form.data().get("courseId");
+        Course c = Course.findById(Long.parseLong(courseId));
+        Post p = Post.findPostById(Long.parseLong(postId));
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = Mentorship.findMentorByUser(sender);
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ')+ 1));
+
+              String subject = "Announcement";
+              String content = "I'm started task " + p.getTitle() + " on the course " + c.getName();
+        if(receiver != null) {
+              PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+              privMessage.setStatus(0);
+              receiver.getMessages().add(privMessage);
+              receiver.save();
+          }
+        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
+        teacherMessage.setStatus(0);
+        receiverTeacher.getMessages().add(teacherMessage);
+        receiverTeacher.save();
+
+        sender.setHomeworkStatus(1);
+        Assignment a = p.getAssignment(sender, p);
+        a.setHomeworkPostStatus(1);
+        a.save();
+        sender.save();
+
+
+        return redirect("/user/class/"+courseId);
+    }
+
+    public Result sendFinishMessage() {
+
+        DynamicForm form = Form.form().bindFromRequest();
+        String postId = form.data().get("postId");
+        String courseId = form.data().get("courseId");
+        Course c = Course.findById(Long.parseLong(courseId));
+        // Logger.info(c.getName());
+        // Logger.info(c.getTeacher());
+        Post p = Post.findPostById(Long.parseLong(postId));
+        //flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = Mentorship.findMentorByUser(sender);
+        User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
+        String link = form.field("linkId").value();
+        Logger.info(link);
+        String subject = "Announcement";
+        String content = "I'm finished task " + p.getTitle() + " on the course " + c.getName() + " link : " + link;
+
+        if ( receiver != null) {
+
+            PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+            privMessage.setStatus(0);
+            receiver.getMessages().add(privMessage);
+            receiver.save();
+        }
+        PrivateMessage teacherMessage = PrivateMessage.create(subject,content,sender,receiverTeacher);
+        teacherMessage.setStatus(0);
+        receiverTeacher.getMessages().add(teacherMessage);
+        receiverTeacher.save();
+
+        sender.setHomeworkStatus(2);
+        sender.save();
+        Assignment a = p.getAssignment(sender, p);
+        a.setHomeworkPostStatus(2);
+        a.save();
+
+
+        return redirect("/user/class/"+courseId);
+    }
+    
     public Result test() {
         return ok("you are student");
     }
