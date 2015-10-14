@@ -10,10 +10,13 @@
 
     @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
-        <h4 class="page-head-line">Your wall</h4>
+        <h4 class="page-head-line">@course.getName  @course.getDescription</h4>
 
     </div>
             @for(post <- course.getPosts()){
+                @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_MENTOR) && !post.getVisibleToMentors){
+
+                }else{
                 <div class="container">
 
                     <div class="row">
@@ -125,6 +128,7 @@
                                             </form>
                                         }
 
+
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +136,8 @@
                     </div>
                 </div>
     }
+            }
+
         <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
         <script>
 
