@@ -46,13 +46,13 @@
             @for(role <- currentUser.getRoles) {
                 @if(role.getId.equals(UserConstants.TEACHER)) {
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Due date</label>
+                        <label class="col-md-3 control-label">Due date <abbr class="req" title="Please select due date."> * </abbr></label>
                         <div class="col-md-2">
-                            <input name="date" type="text" max="9999-01-01" class="form-control" id="date" placeholder="mm/dd/yyyy" style="cursor : pointer" disabled="true">
+                            <input name="date" type="text" max="9999-01-01" class="form-control" id="date" placeholder="mm/dd/yyyy" style="cursor : pointer" disabled="true" required>
                         </div>
-                        <label class="col-md-2 control-label">Due time</label>
+                        <label class="col-md-2 control-label">Due time <abbr class="req" title="Please select due date."> * </abbr></label>
                         <div class="col-md-2">
-                            <input name="time" type="time" class="form-control" id="time" disabled="true" style="cursor : pointer" >
+                            <input name="time" type="time" class="form-control" id="time" disabled="true" style="cursor : pointer" required>
                         </div>
                     </div>
                 }

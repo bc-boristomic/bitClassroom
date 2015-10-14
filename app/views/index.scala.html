@@ -25,17 +25,17 @@
                                 <a href="@controllers.course.routes.CourseController.course(cU.getCourse.getId)"><h2>@cU.getCourse.getName</h2>
                                 <h4>@cU.getCourse.getDescription</h4></a>
                                 <br>
-                                @for(cUser <- courseUser){
 
-                                    @if(cUser.getUser.getRoles != null && cUser.getUser.getRoles.size() > 0) {
-                                        @for(role <- cUser.getUser.getRoles) {
+
+                                    @if(cU.getUser.getRoles != null && cU.getUser.getRoles.size() > 0) {
+                                        @for(role <- cU.getUser.getRoles) {
                                             @if(role.getId.equals(UserConstants.TEACHER)) {
-                                                <h6>@cUser.getUser.getFirstName @cUser.getUser.getLastName</h6>
+                                                <h6>@cU.getUser.getFirstName @cU.getUser.getLastName</h6>
                                             }
                                         }
                                     }
 
-                                }
+
 
                             </div>
 
