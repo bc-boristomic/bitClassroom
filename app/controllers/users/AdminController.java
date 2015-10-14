@@ -170,7 +170,7 @@ public class AdminController extends Controller {
 
                 u.setToken(UUID.randomUUID().toString());
                 u.update();
-                String host = url + "validate/" + u.getToken();
+                String host = url + "login";
                 MailHelper.send(u.getEmail(), host);
                 flash("success", String.format("User %s successfully added to database", u.getFirstName()));
                 return redirect("/admin/adduser");

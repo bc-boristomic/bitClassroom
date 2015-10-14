@@ -23,7 +23,7 @@ public class MailHelper {
             mail.setHtmlMsg(String
                     .format("<html><body><strong> %s </strong> <p> %s </p> <p> %s </p> </body></html>",
                             "Thanks for signing up to bitClassroom!",
-                            "Please confirm your Email adress :).", message));
+                            "Please confirm your Email address.\nYour password is: Student123", message));
             mail.setHostName("smtp.gmail.com");
             mail.setStartTLSEnabled(true);
             mail.setSSLOnConnect(true);
