@@ -9,7 +9,7 @@
 
     @if(user != null) {
         <div class="text-center">
-            <h4>Welcome back @user.getFirstName @user.getLastName</h4>
+           <br><br>
         </div>
         @for(cU <- courseUser) {
             @if(cU.getUser.getId == user.getId) {

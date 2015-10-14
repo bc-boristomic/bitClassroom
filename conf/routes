@@ -24,7 +24,7 @@ POST          /user/editprofile                     @controllers.users.UserContr
 GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
 
 # SECURITY FOR FULLY ACTIVE USER ONLY
-GET           /user/message                         @controllers.users.UserController.studentList()
+GET           /user/classmates                      @controllers.users.UserController.studentList(id: Long)
 GET           /message/:id                          @controllers.users.UserController.newMessage(id: Long)
 POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
 GET           /allMessage                           @controllers.users.UserController.allMessage()
