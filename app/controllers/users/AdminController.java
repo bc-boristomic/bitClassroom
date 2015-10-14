@@ -498,7 +498,12 @@ public class AdminController extends Controller {
     }
 
 
-
+    /**
+     * MEthod for send auto message to mentor and student,
+     * @param mentor
+     * @param student
+     * @return
+     */
     public Result mentorshipNotification(User mentor, User student) {
 
         User sender = SessionHelper.currentUser(ctx());

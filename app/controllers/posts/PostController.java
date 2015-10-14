@@ -5,6 +5,7 @@ import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
+import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.Assignment;
 import models.user.Role;
@@ -19,12 +20,15 @@ import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.twirl.api.Html;
 import utility.UserConstants;
 import views.html.posts.assignmentView;
 import views.html.posts.newpost;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +66,7 @@ public class PostController extends Controller {
      * Saving post in database
      */
     public Result savePost() {
+
         Form<Post> boundForm = postForm.bindFromRequest();
         String selectedCourse = boundForm.bindFromRequest().field("course").value();
         User user = SessionHelper.currentUser(ctx());
@@ -151,12 +156,40 @@ public class PostController extends Controller {
                     a.save();
                 }
             }
+
+            List<User> classmates = CourseUser.allUserFromCourse(Long.parseLong(selectedCourse));
+            for ( int i = 0; i < classmates.size(); i++){
+                postNotification(classmates.get(i),post,course);
+            }
+
+
             flash("success", "You successfully added new post.");
             return redirect("/user/class/" + Long.parseLong(selectedCourse)); // TODO add call to route for listing posts
         }
         flash("warning", "Could not save your post.");
         return redirect("/admin");
 
+    }
+
+    public Result postNotification(User student, Post post, Course course) {
+
+        String type;
+        if(post.getPostType() == 1){
+            type = "Assignment";
+        }else{
+            type = "Announcement";
+
+        }
+
+        User sender = SessionHelper.currentUser(ctx());
+        String subject = course.getName() +" " + course.getDescription()+ " " + type;
+        String content = sender.getFirstName() +" " + sender.getLastName() + " posted " + type +" to " + course.getName()+"." ;
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+
+        return redirect("/user/class/" + course.getId());
     }
 
 }

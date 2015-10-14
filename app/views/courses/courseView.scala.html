@@ -127,7 +127,7 @@
 
                                         <span class="label label-default">Updates</span>
 
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1){
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT)){
                                         <br>
                                         <br>
                                             <form action="">
