@@ -1,4 +1,5 @@
 @import models.user.User
+@import helpers.SessionHelper
 @(userList: List[User])
 @main("Students") {
 
@@ -19,12 +20,14 @@
         </thead>
         <tbody>
         @for(users <- userList){
+          @if(users.getId != SessionHelper.currentUser(ctx()).getId) {
             <tr class="info">
               <td>@users.getFirstName @users.getLastName</td>
               <td>@users.getEmail</td>
               <td>@users.getRoles.get(0)</td>
               <td><a href="@controllers.users.routes.UserController.newMessage(users.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
             </tr>
+          }
 
         }
 </tbody>
