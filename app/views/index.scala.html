@@ -27,7 +27,7 @@
                                 <br>
 
 
-                                    @if(cU.getUser.getRoles != null && cU.getUser.getRoles.size() > 0) {
+                                   @* @if(cU.getUser.getRoles != null && cU.getUser.getRoles.size() > 0) {
                                         @for(role <- cU.getUser.getRoles) {
                                             @if(role.getId.equals(UserConstants.TEACHER)) {
                                                 <h6>@cU.getUser.getFirstName @cU.getUser.getLastName</h6>
@@ -35,7 +35,20 @@
                                         }
                                     }
 
+                                    *@
 
+                                @for(cUser <- courseUser){
+                                    @if(cUser.getCourse.getId == cU.getCourse.getId){
+                                        @if(cUser.getUser.getRoles != null && cUser.getUser.getRoles.size() > 0) {
+                                            @for(role <- cUser.getUser.getRoles) {
+                                                @if(role.getId.equals(UserConstants.TEACHER)) {
+                                                    <h6>@cUser.getUser.getFirstName @cUser.getUser.getLastName</h6>
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
 
                             </div>
 
