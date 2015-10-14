@@ -44,8 +44,6 @@ public final class Post extends Model {
     private String time;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
-    @Column (name = "creator")
-    private User creator;
     @ManyToOne
     private Course course;
     @ManyToOne
@@ -214,11 +212,4 @@ public final class Post extends Model {
         this.assigments = assigments;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
 }
