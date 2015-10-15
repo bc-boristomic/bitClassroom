@@ -10,9 +10,19 @@
 
     @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
-        <h4 class="page-head-line">@course.getName  @course.getDescription</h4>
+        <h3 class="page-head-line">@course.getName  @course.getDescription</h3>
+        <li class="navbar-right">
+            <a href="@controllers.users.routes.UserController.studentList(course.getId)">
+                <span class="btn btn-primary navbar-btn"> <span class="glyphicon glyphicon-user"></span> Classmate</span>
+            </a>
+
+        </li>
+
+
 
     </div>
+
+        <br>
             @for(post <- course.getPosts()){
                 @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_MENTOR) && !post.getVisibleToMentors){
 
@@ -117,13 +127,19 @@
 
                                         <span class="label label-default">Updates</span>
 
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1 && post.getPostType == 1){
+
+                                       @* @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1 && post.getPostType == 1){ *@
+
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT)){
+
                                         <br>
                                         <br>
                                             <form action="">
                                                 <div class="form-control">
                                                     <label class="col-lg-2">Homework link:</label>
+
                                                     <input type="link" id="homework-link" name="link" class="col-md-9 panel" pattern="(www.)?(https?://(www.)?)?[a-z]{3,}\.[\w]{2,6}(/[\w\.\?\!\=\:\%\#/-]+)?" onblur="enableLink(@post.getId)" >
+
                                                 </div>
                                             </form>
                                         }

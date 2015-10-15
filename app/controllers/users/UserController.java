@@ -188,19 +188,10 @@ public class UserController extends Controller {
      *
      * @return - view of all students in the class
      */
-    @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result studentList() {
-        List<CourseUser> students = CourseUser.all();
-        User u = SessionHelper.currentUser(ctx());
-        for (CourseUser student : students) {
-            if (student.getUser().getEmail().equals(u.getEmail())) {
-                if (student.getStatus() == UserConstants.FULLY_ACTIVE) {
-                    return ok(studentList.render(students));
-                }
-            }
 
-        }
-        return redirect("/user/courses");
+    public Result studentList(Long id) {
+        List<User> students = CourseUser.allUserFromCourse(id);
+        return ok(studentList.render(students));
     }
 
     /**
