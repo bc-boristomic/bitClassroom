@@ -484,6 +484,7 @@ public class AdminController extends Controller {
             }
         }
         User mentor = User.findById(ment);
+        mentor.setStatus(UserConstants.ACTIVE_MENTOR);
         User student = User.findById(stud);
         student.setStudentStatus(UserConstants.HAVE_MENTOR);
         student.update();
@@ -613,6 +614,15 @@ public class AdminController extends Controller {
      * Method for get list of inactive mentors
      */
     public Result inactiveMentors(){
+
+        List<User> mentors = new ArrayList<>();
+        List<User> users = User.findAll();
+        for ( int i = 0; i < users.size(); i++){
+            if(users.get(i).getStatus().equals(UserConstants.ACTIVE_MENTOR)){
+                mentors.add(users.get(i));
+            }
+        }
+
 
         List<PrivateMessage>  message = PrivateMessage.findAllMessage();
         List<User> inactiveMentors = new ArrayList<>();

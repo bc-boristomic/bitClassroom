@@ -4,6 +4,8 @@ import com.avaje.ebean.Model;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
+import models.course.Course;
+import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -80,7 +82,7 @@ public final class User extends Model {
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy="sender", cascade=CascadeType.ALL)
     private List<PrivateMessage> messages = new ArrayList<>();
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Assignment> assigments = new ArrayList<>();
 
 
@@ -420,6 +422,11 @@ public final class User extends Model {
 
     public static boolean deleteUser(Long id) {
 
+        List<Course> course = CourseUser.allUserCourses(User.findById(id));
+        for ( int i = 0; i < course.size(); i++){
+
+            course.get(i).delete();
+        }
         finder.deleteById(id);
         return true;
     }
