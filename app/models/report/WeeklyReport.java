@@ -141,4 +141,9 @@ public class WeeklyReport extends Model{
         }
         return null;
     }
+
+    public List<WeeklyReport> findAllReport(){
+
+        return weeklyFinder.findList();
+    }
 }
