@@ -127,16 +127,18 @@
 
                                         <span class="label label-default">Updates</span>
 
+
+                                       @* @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1 && post.getPostType == 1){ *@
+
                                         @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT)){
+
                                         <br>
                                         <br>
                                             <form action="">
                                                 <div class="form-control">
                                                     <label class="col-lg-2">Homework link:</label>
 
-
-
-                                                    <input type="link" id="homework-link" name="link" class="col-md-9 panel" onblur="enableLink(@post.getId)" >
+                                                    <input type="link" id="homework-link" name="link" class="col-md-9 panel" pattern="(www.)?(https?://(www.)?)?[a-z]{3,}\.[\w]{2,6}(/[\w\.\?\!\=\:\%\#/-]+)?" onblur="enableLink(@post.getId)" >
 
                                                 </div>
                                             </form>
@@ -211,8 +213,13 @@
                 }
 
                 function enableLink(postId){
-                   var button = document.getElementById("sendFinishMessage" + postId);
-                   button.disabled = false;
+                   var link = $("#homework-link").val();
+                   var pattern = /^(www.)?(https?://(www.)?)?[a-z]{3,}\.[\w]{2,6}(/[\w\.\?\!\=\:\%\#/-]+)?$/;
+                   if(link.match(pattern)){
+                   alert("hello");
+                        var button = document.getElementById("sendFinishMessage" + postId);
+                        button.disabled = false;
+                   }
                 }
 
 
