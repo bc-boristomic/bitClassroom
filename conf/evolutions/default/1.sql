@@ -154,6 +154,7 @@ create table user (
   create_date               datetime,
   created_by                varchar(50),
   homework_status           integer(1),
+  weekly_status             integer(1),
   token                     varchar(255),
   update_date               datetime,
   updated_by                varchar(50),

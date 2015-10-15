@@ -70,6 +70,8 @@ public final class User extends Model {
     private String createdBy;
     @Column(name = "homework_status", length = 1)
     private Integer homeworkStatus = 0;
+    @Column(name = "weekly_status", length = 1)
+    private Integer weeklyReportStatus = 0;
     @Column(unique = true)
     private String token;
     @Column(name = "update_date", columnDefinition = "datetime")
@@ -292,6 +294,14 @@ public final class User extends Model {
 
     public Integer getStatus() {
         return status;
+    }
+
+    public Integer getWeeklyReportStatus() {
+        return weeklyReportStatus;
+    }
+
+    public void setWeeklyReportStatus(Integer weeklyReportStatus) {
+        this.weeklyReportStatus = weeklyReportStatus;
     }
 
     public void setStatus(Integer status) {

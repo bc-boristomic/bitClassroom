@@ -41,6 +41,8 @@ public class MentorController extends Controller {
 
     public Result saveRaport() {
         User temp = SessionHelper.currentUser(ctx());
+        temp.setWeeklyReportStatus(2);
+        temp.save();
         List<WeeklyField> fields = WeeklyField.getFinder().findList();
         DynamicForm dynamicForm = Form.form().bindFromRequest();
         dynamicForm.bindFromRequest(request());

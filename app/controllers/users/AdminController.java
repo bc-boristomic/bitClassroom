@@ -14,6 +14,7 @@ import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -33,6 +34,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 /**
  * Created by boris on 9/12/15.
@@ -467,7 +469,8 @@ public class AdminController extends Controller {
             }
         }
         User mentor = User.findById(ment);
-        mentor.setStatus(UserConstants.ACTIVE_MENTOR);
+        mentor.setStudentStatus(UserConstants.ACTIVE_MENTOR);
+        mentor.update();
         User student = User.findById(stud);
         student.setStudentStatus(UserConstants.HAVE_MENTOR);
         student.update();
@@ -598,11 +601,24 @@ public class AdminController extends Controller {
      */
     public Result inactiveMentors(){
 
+        Logger.info(DateTime.now().dayOfWeek().getAsShortText());
         List<User> mentors = new ArrayList<>();
         List<User> users = User.findAll();
         for ( int i = 0; i < users.size(); i++){
-            if(users.get(i).getStatus().equals(UserConstants.ACTIVE_MENTOR)){
+            if( users.get(i).getStudentStatus() != null && users.get(i).getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
                 mentors.add(users.get(i));
+            }
+        }
+        for(int i = 0; i < mentors.size(); i++){
+            if( mentors.get(i).getWeeklyReportStatus() != 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Fri")){
+
+                sendMentorNotification(mentors.get(i));
+
+            }else if( mentors.get(i).getWeeklyReportStatus() == 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Sat")){
+
+                mentors.get(i).setWeeklyReportStatus(1);
+                mentors.get(i).update();
+
             }
         }
 
@@ -701,6 +717,20 @@ public class AdminController extends Controller {
         receiver.save();
 
         return redirect("admin/allusers");
+    }
+
+
+    public void sendMentorNotification (User user){
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = user;
+        String subject = "Weekly report";
+        String content = "Please write a weekly report";
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
     }
 
     /**
