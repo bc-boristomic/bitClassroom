@@ -503,7 +503,7 @@ public class AdminController extends Controller {
                     cc.setCourse(courses.get(i));
                     cc.setStatus(2);
                     cc.setUser(mentor);
-                    cc.save();
+                    cc.save();  
                 }
 
 
