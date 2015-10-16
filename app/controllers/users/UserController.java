@@ -317,7 +317,7 @@ public class UserController extends Controller {
     public Result refusedUser(String token){
         User user = User.findUserByToken(token);
         if(user == null){
-            return ok(views.html.refuseduserfdbck.render());
+            return ok(views.html.fornaidarefuseduser.render());
         }else {
             User.getFinder().deleteById(user.getId());
             return ok(views.html.refuseduserfdbck.render());
