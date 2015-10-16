@@ -404,9 +404,11 @@ public class AdminController extends Controller {
         User u = Mentorship.findMentorByUser(cu.getUser());
         List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
 
-        for(int i = 0; i < courseUsers.size(); i++){
-            if(courseUsers.get(i).getId() == u.getId()){
-                return ok("");
+        if( u != null) {
+            for (int i = 0; i < courseUsers.size(); i++) {
+                if (courseUsers.get(i).getId() == u.getId()) {
+                    return ok("");
+                }
             }
         }
 
