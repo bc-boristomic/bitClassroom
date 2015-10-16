@@ -544,7 +544,7 @@ public class AdminController extends Controller {
             }
 
 
-        flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
+        flash("success", String.format("Successfully assigned %s %s to %s %s.", mentor.getFirstName(),mentor.getLastName(), student.getFirstName(),student.getLastName()));
         return redirect("/admin/mentorship");
     }
 

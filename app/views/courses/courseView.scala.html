@@ -120,15 +120,15 @@
                                     }
                                     <div class="panel-footer">
                                         @if(post.getPostType == 1){
-                                            <span class="label label-default">Assigment </span> <span class="label label-default">@post.getCreateDate</span>
+                                            <span class="label label-default">Assigment </span> <span class="label label-default"> @post.getCreateDate</span>
                                         }else{
                                             <span class="label label-default">Announcement </span> <span class="label label-default">@post.getCreateDate</span>
                                         }
 
-                                        <span class="label label-default">Updates</span>
 
 
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT)){
+
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT) && post.getPostType == 2){
 
                                         <br>
                                         <br>
@@ -136,7 +136,7 @@
                                                 <div class="form-control">
                                                     <label class="col-lg-2 ">Link:</label>
 
-                                                    <input type="link" id="homework-link" name="link" class="col-md-11 panel pull-right" onblur="enableLink(@post.getId)">
+                                                    <input type="link" id="homework-link" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
 
                                                 </div>
                                             </form>
