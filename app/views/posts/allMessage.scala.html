@@ -43,7 +43,7 @@
                         @if(message.getStatus == 0 && message.getInboxStatus != 1){
                         <div class="list-group">
                         <tr><td>
-                        <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open"> <strong>@message.getSender.getFirstName-@message.getSender.getLastName</strong></span><span>   </span><span class="label label-info">New</span></a>
+                        <a href="@controllers.users.routes.UserController.publicProfile(message.getSender.getId)" class="list-group-item"><span class="glyphicon glyphicon-eye-open"> <strong>@message.getSender.getFirstName </strong><strong>@message.getSender.getLastName</strong></span><span>   </span><span class="label label-info">New</span></a>
                         <div class="list-group">
 
                             <a href="@controllers.users.routes.UserController.seeMessage(message.getId)" class="list-group-item">

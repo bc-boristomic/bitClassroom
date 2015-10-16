@@ -323,7 +323,7 @@ public class AdminController extends Controller {
 
         List<Course> courses =  Course.findAll();
         for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description)){
+            if(courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description) && courses.get(i).getStatus() != 2){
                 flash("warning", "Course already exist");
                 return redirect("/admin/createcourse");
             }
@@ -394,6 +394,8 @@ public class AdminController extends Controller {
             cu.save();
         }
 
+        approvedNotification(cu.getCourse(), cu.getUser());
+
 
         Course c = cu.getCourse();
         for(int i = 0; i < c.getPosts().size(); i++){
@@ -406,6 +408,9 @@ public class AdminController extends Controller {
             }
 
         }
+
+
+
 
         User u = Mentorship.findMentorByUser(cu.getUser());
         List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
@@ -427,8 +432,25 @@ public class AdminController extends Controller {
         }
 
 
-
         return ok("");
+    }
+
+    /**
+     * Send notification when admin approved user in the class
+     * @param course
+     * @param student
+     */
+    public void approvedNotification ( Course course, User student){
+
+        String subject = "Course information";
+        String content = "Your application for access to the course" + course.getName() + " is accepted";
+
+        User sender = SessionHelper.currentUser(ctx());
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+
     }
 
     /**
@@ -590,7 +612,7 @@ public class AdminController extends Controller {
 
 
         flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
-        return redirect("/admin/mentorship");
+        return redirect("/admin/addnewteacher");
 
     }
 
@@ -745,6 +767,10 @@ public class AdminController extends Controller {
     }
 
 
+    /**
+     * Method for send notification to mentor when due time pass for weekly report
+     * @param user
+     */
     public void sendMentorNotification (User user){
 
         User sender = SessionHelper.currentUser(ctx());

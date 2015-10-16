@@ -159,7 +159,9 @@ public class PostController extends Controller {
 
             List<User> classmates = CourseUser.allUserFromCourse(Long.parseLong(selectedCourse));
             for ( int i = 0; i < classmates.size(); i++){
-                postNotification(classmates.get(i),post,course);
+                if(classmates.get(i).getId() != SessionHelper.currentUser(ctx()).getId()) {
+                    postNotification(classmates.get(i), post, course);
+                }
             }
 
 
