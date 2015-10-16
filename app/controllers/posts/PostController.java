@@ -101,19 +101,21 @@ public class PostController extends Controller {
         String title = boundForm.field("title").value();
         String message = boundForm.field("content").value();
         String link = boundForm.field("link").value();
+        String mentor = boundForm.field("visible").value();
+        String type = boundForm.field("post-type").value();
+
+        Boolean visible = false;
+        if ("on".equals(mentor)) {
+            visible = true;
+        }
+
 
         if(user != null && user.getRoles().size() > 0 && user.getRoles() != null){
             for(Role r: user.getRoles()){
                 if(r.getId().equals(UserConstants.TEACHER)){
                     String date = boundForm.field("date").value();
                     String time = boundForm.field("time").value();
-                    String mentor = boundForm.field("visible").value();
-                    String type = boundForm.field("post-type").value();
-
-                    Boolean visible = false;
-                    if ("on".equals(mentor)) {
-                        visible = true;
-                    }
+                   // String mentor = boundForm.field("visible").value();
 
                    // Logger.info("jebo te caca =============== " + post.getPostType() + " i cjeli post: " + post.toString());
                     //type 0 announcement
@@ -123,11 +125,7 @@ public class PostController extends Controller {
                     }
 
 
-
-
-
                     post.setPostType(typeOfPost);
-                    post.setVisibleToMentors(visible);
                     post.setDate(date);
                     post.setTime(time);
 
@@ -143,6 +141,7 @@ public class PostController extends Controller {
             post.setContent(message);
             post.setUser(user);
             post.setLink(link);
+            post.setVisibleToMentors(visible);
             post.setCourse(course);
             post.save();
             course.getPosts().add(post);

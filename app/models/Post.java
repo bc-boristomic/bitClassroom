@@ -182,7 +182,7 @@ public final class Post extends Model {
 
     public String getFiles() {return files;}
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createdDate); }
 
     public void setCreatedDate(DateTime createdDate) {

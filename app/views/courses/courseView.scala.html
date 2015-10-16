@@ -51,7 +51,7 @@
                                                 <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
                                                 @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
                                                     @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
-                                                        @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus != 1) {
+                                                        @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
                                                             <div class="col-sm-3">
                                                                 <h4 class="pull-right">
                                                                     <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
@@ -120,15 +120,15 @@
                                     }
                                     <div class="panel-footer">
                                         @if(post.getPostType == 1){
-                                            <span class="label label-default">Assigment </span> <span class="label label-default">@post.getCreateDate</span>
+                                            <span class="label label-default">Assignment </span> <span class="label label-default pull-right"> @post.getCreateDate</span>
                                         }else{
-                                            <span class="label label-default">Announcement </span> <span class="label label-default">@post.getCreateDate</span>
+                                            <span class="label label-default">Announcement </span> <span class="label label-default pull-right">@post.getCreateDate</span>
                                         }
 
-                                        <span class="label label-default">Updates</span>
 
 
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT)){
+
+                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT) && post.getPostType == 1 && SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
 
                                         <br>
                                         <br>
@@ -136,7 +136,7 @@
                                                 <div class="form-control">
                                                     <label class="col-lg-2 ">Link:</label>
 
-                                                    <input type="link" id="homework-link" name="link" class="col-md-11 panel pull-right" onblur="enableLink(@post.getId)">
+                                                    <input type="link" id="homework-link" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
 
                                                 </div>
                                             </form>
@@ -213,11 +213,9 @@
                 function enableLink(postId){
                    var link = $("#homework-link").val();
 
-                   if(link.match(pattern)){
-                   alert("hello");
                         var button = document.getElementById("sendFinishMessage" + postId);
                         button.disabled = false;
-                   }
+
                 }
 
 
