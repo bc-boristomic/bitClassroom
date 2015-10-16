@@ -31,9 +31,9 @@ public final class Post extends Model {
     @Constraints.Required
     private String content;
     @Column(name="post_type")
-    private Integer postType;
+    private Integer postType = 0;
     @Column(name="visible_mentors")
-    private Boolean visibleToMentors;
+    private Boolean visibleToMentors = false;
     @Column(name = "link")
     private String link;
     @Column(name="files")

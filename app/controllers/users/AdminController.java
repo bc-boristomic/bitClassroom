@@ -498,6 +498,8 @@ public class AdminController extends Controller {
         student.setStudentStatus(UserConstants.HAVE_MENTOR);
         student.update();
 
+        mentorshipNotification(mentor , student);
+
         Mentorship mentorship = new Mentorship();
         mentorship.setMentor(mentor);
         mentorship.setStudent(student);
