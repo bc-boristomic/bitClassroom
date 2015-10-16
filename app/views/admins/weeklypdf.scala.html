@@ -19,7 +19,9 @@
             <table class="table-bordered" style="background : #B0BED9">
                 <div style="margin : 40 px 30 px 0 px 30 px" >
                     <thead>
-                        <tr> <th>Date</th>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Date</th>
                             <th>Title</th>
                             <th>Mentor</th>
                             <th>Student</th>
@@ -27,13 +29,13 @@
                                 <th>@rwf.getName</th>
                             }
                             <th>Report</th>
-                            <th>Delete</th>
                         </tr>
                     </thead>
                     @for(lwr <- listWeeklyReport) {
                         <tbody>
                             <div>
                                 <tr class="success" style="background : lightgreen">
+                                    <td>@lwr.getCreateDate</td>
                                     <td>@lwr.getDate</td>
                                     <td>@lwr.getName</td>
                                     <td>@lwr.getMentor</td>
@@ -46,11 +48,6 @@
                                         }
                                     }
                                     <td>@lwr.getData</td>
-                                    <td>
-                                        <a data-role="delete" data-delete-parent="tr"
-                                        href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
-                                            <i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
                                 </tr>
                             </div>
                         </tbody>

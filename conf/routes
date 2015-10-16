@@ -177,4 +177,8 @@ POST          /user/sendMmail                       @controllers.Emails.sendMail
 
 GET           /pdf                                  @controllers.users.AdminController.pdf()
 
+# Open weekly reports
 
+GET           /openReport                           @controllers.users.AdminController.openReport(id: Long)
+GET           /open+Report/:id                       @controllers.users.AdminController.openNextReport(id: Long)
+GET           /open-Report/:id                       @controllers.users.AdminController.openPreviousReport(id: Long)

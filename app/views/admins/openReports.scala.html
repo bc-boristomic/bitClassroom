@@ -1,0 +1,69 @@
+@import models.report.DailyReport
+@import models.report.ReportField
+@import controllers.users.AdminController
+@(dr: DailyReport, listReportField: List[ReportField])
+@adminmain("Open report") {
+
+    <form>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+                <div class="row top30">
+                    <div class="col-md-3">
+                        <label class="control-label">Title</label>
+                    </div>
+
+                    <textarea class="col-md-9" rows="1" disabled>@dr.getName</textarea>
+                </div>
+                <div class="row top17">
+                    <div class="col-md-3">
+                        <label>Timestamp</label>
+                    </div>
+                    <textarea class="col-md-3" rows="1" disabled>@dr.getCreateDate</textarea>
+                    <div class="col-md-1 col-md-offset-2">
+                        <label>Date</label>
+                    </div>
+                    <textarea class="col-md-3" rows="1" disabled>@AdminController.formaterDate(dr.getDate)</textarea>
+                </div>
+                <div class="row top17">
+                    <div class="col-md-3">
+                        <label>Teacher</label>
+                    </div>
+                    <textarea class="col-md-8" rows="1" disabled>@dr.getTeacher</textarea>
+                    <div class="col-md-1">
+                        <a href="#"> <i class="glyphicon glyphicon-envelope"></i></a>
+                    </div>
+                </div>
+                @for(lrf <- listReportField) {
+                    @if(lrf.getDailyReport.getId.equals(dr.getId)) {
+                        <div class="row top17">
+                            <div class="col-md-3">
+                                <label>@lrf.getField.getName</label>
+                            </div>
+                            <textarea class="col-md-9" rows="1" disabled>@lrf.getValue</textarea>
+                        </div>
+                    }
+                }
+                <div class="row top17">
+                    <div class="col-md-3">
+                        <label>Report</label>
+                    </div>
+                    <textarea class="col-md-9" rows="8" disabled>@dr.getData</textarea>
+                </div>
+                <div class="row top17">
+                    <div class="col-md-9 col-md-offset-3">
+                        <ul class="pager">
+                            <li class="previous"><a href="@controllers.users.routes.AdminController.openPreviousReport(dr.getId)"><span aria-hidden="true">&larr;</span>
+                                Previous Report</a></li>
+                            <li><a href="/listReport ">Back to Table</a></li>
+                            <li class="next"><a href="@controllers.users.routes.AdminController.openNextReport(dr.getId)">
+                                Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </form>
+}

@@ -31,7 +31,9 @@ import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.*;
 import views.html.admins.adduser;
-
+import views.html.admins.newTableWeekly;
+import views.html.admins.weeklypdf;
+import views.html.admins.openReports;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -872,7 +874,50 @@ public class AdminController extends Controller {
     }
 
     public Result pdf() {
-        return pdfGenerator.ok(views.html.admins.weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+    public static String formaterDate(String date) {
+        String[] parts = date.split("-");
+        String year = parts[0];
+        String month = parts[1];
+        String day = parts[2];
+        return day + "/" + month + "/" + year;
     }
 
+    public Result openReport(Long id) {
+        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+    }
+    public Result openNextReport(Long l) {
+        Long id;
+        l++;
+        id = l;
+        if(DailyReport.findDailyReportById(id) == null){
+            flash("success", "The last report from the table");
+            l--;
+            id = l;
+            return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+
+        }
+        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+    }
+    public Result openPreviousReport(Long l) {
+        Long id;
+        l--;
+        id = l;
+        if(DailyReport.findDailyReportById(id) == null){
+            flash("success", "The first report of the table");
+            l++;
+            id = l;
+            return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+
+        }
+        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+    }
+    public static String cutText(String text, int length){
+        if (text.length() > length) {
+            text = text.substring(0, length);
+            return text + "..." ;
+        }
+        return text;
+    }
 }

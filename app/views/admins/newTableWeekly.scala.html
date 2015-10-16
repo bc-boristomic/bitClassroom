@@ -1,4 +1,4 @@
- @import models.report.WeeklyField
+@import models.report.WeeklyField
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
 @(listReportWeeklyField: List[ReportWeeklyField],
@@ -6,51 +6,54 @@
         listWeeklyField: List[WeeklyField])
 
 @adminmain("Weekly List") {
-  <form>
-    <div style="margin-top: 110px">
-      <h3 class="page-head-line"> table of weekly reports </h3>
-      <a href="@controllers.users.routes.AdminController.pdf">Download PDF</a>
-    </div>
-    <table id="sort" class="table-bordered" style="background: #B0BED9">
-      <div style="margin: 40px 30px 0px 30px" >
-        <thead>
-          <tr> <th>Date</th>
-            <th>Title</th>
-            <th>Mentor</th>
-            <th>Student</th>
-            @for(rwf <- listWeeklyField) {
-              <th>@rwf.getName</th>
-            }
-            <th>Report</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        @for(lwr <- listWeeklyReport) {
-          <tbody>
-            <div>
-              <tr class="success" style="background: lightgreen">
-                <td>@lwr.getDate</td>
-                <td>@lwr.getName</td>
-                <td>@lwr.getMentor</td>
-                <td>@lwr.getStudent</td>
-                @for(field <- listWeeklyField) {
-                  @if(lwr.containsWeeklyField(field) == true) {
-                    <td>@lwr.getWeeklyField(field).getValue()</td>
-                  } else {
-                    <td>/</td>
-                  }
+    <form>
+        <div style="margin-top : 110 px">
+            <h3 class="page-head-line"> table of weekly reports </h3>
+            <a href="@controllers.users.routes.AdminController.pdf">Download PDF</a>
+        </div>
+        <table id="sort" class="table-bordered" style="background : #B0BED9">
+            <div style="margin : 40 px 30 px 0 px 30 px" >
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Mentor</th>
+                        <th>Student</th>
+                        @for(rwf <- listWeeklyField) {
+                            <th>@rwf.getName</th>
+                        }
+                        <th>Report</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                @for(lwr <- listWeeklyReport) {
+                    <tbody>
+                        <div>
+                            <tr class="success" style="background : lightgreen">
+                                <td>@lwr.getCreateDate</td>
+                                <td>@lwr.getDate</td>
+                                <td>@lwr.getName</td>
+                                <td>@lwr.getMentor</td>
+                                <td>@lwr.getStudent</td>
+                                @for(field <- listWeeklyField) {
+                                    @if(lwr.containsWeeklyField(field) == true) {
+                                        <td>@lwr.getWeeklyField(field).getValue()</td>
+                                    } else {
+                                        <td>/</td>
+                                    }
+                                }
+                                <td>@lwr.getData</td>
+                                <td>
+                                    <a data-role="delete" data-delete-parent="tr"
+                                    href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
+                                        <i class="glyphicon glyphicon-trash"></i></a>
+                                </td>
+                            </tr>
+                        </div>
+                    </tbody>
                 }
-                <td>@lwr.getData</td>
-                <td>
-                  <a data-role="delete" data-delete-parent="tr"
-                  href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
-                    <i class="glyphicon glyphicon-trash"></i></a>
-                </td>
-              </tr>
             </div>
-          </tbody>
-        }
-      </div>
-    </table>
-  </form>
+        </table>
+    </form>
 }
