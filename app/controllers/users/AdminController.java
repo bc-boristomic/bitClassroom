@@ -673,7 +673,7 @@ public class AdminController extends Controller {
         List<PrivateMessage>  message = PrivateMessage.findAllMessage();
         List<User> inactiveMentors = new ArrayList<>();
         for( int i = 0; i < message.size(); i++){
-            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR) && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
                 DateTime start = new DateTime();
                 Long result = start.getMillis() - message.get(i).getCreationDate().getMillis();
                 if(result > 60000) {
@@ -701,6 +701,7 @@ public class AdminController extends Controller {
 
         men.getStudent().setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
         men.getStudent().update();
+        men.getMentor().setStudentStatus(0);
         flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
         return redirect("/admin/activementors");
     }
