@@ -3,6 +3,7 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import it.innove.play.pdf.PdfGenerator;
 import models.ErrorLog;
 import models.Image;
 import models.PrivateMessage;
@@ -14,6 +15,7 @@ import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
+import play.Configuration;
 import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
@@ -28,7 +30,9 @@ import utility.MailHelper;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.*;
+import views.html.admins.adduser;
 
+import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +45,8 @@ import java.util.UUID;
  */
 @Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
+    @Inject
+    public PdfGenerator pdfGenerator;
 
     private final Form<User> userForm = Form.form(User.class);
 
@@ -837,5 +843,8 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
+    public Result pdf() {
+        return pdfGenerator.ok(views.html.admins.weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
 
 }

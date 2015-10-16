@@ -175,5 +175,6 @@ POST          /user/sendStartMail                   @controllers.users.StudentCo
 
 POST          /user/sendMmail                       @controllers.Emails.sendMail()
 
+GET           /pdf                                  @controllers.users.AdminController.pdf()
 
 

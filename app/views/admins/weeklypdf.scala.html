@@ -1,0 +1,71 @@
+@import models.report.WeeklyField
+@import models.report.ReportWeeklyField
+@import models.report.WeeklyReport
+@(listReportWeeklyField: List[ReportWeeklyField],
+        listWeeklyReport: List[WeeklyReport],
+        listWeeklyField: List[WeeklyField])
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font-awesome.css")" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
+
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/aplication.css")" />
+
+            <!-- custom icon -->
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/header/logo.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
+        <title>Weekly report</title>
+    </head>
+    <body>
+        <form>
+            <div style="margin-top : 110 px">
+                <h3 class="text-center page-head-line"> Table of weekly reports </h3>
+            </div>
+            <table class="table-bordered" style="background : #B0BED9">
+                <div style="margin : 40 px 30 px 0 px 30 px" >
+                    <thead>
+                        <tr> <th>Date</th>
+                            <th>Title</th>
+                            <th>Mentor</th>
+                            <th>Student</th>
+                            @for(rwf <- listWeeklyField) {
+                                <th>@rwf.getName</th>
+                            }
+                            <th>Report</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    @for(lwr <- listWeeklyReport) {
+                        <tbody>
+                            <div>
+                                <tr class="success" style="background : lightgreen">
+                                    <td>@lwr.getDate</td>
+                                    <td>@lwr.getName</td>
+                                    <td>@lwr.getMentor</td>
+                                    <td>@lwr.getStudent</td>
+                                    @for(field <- listWeeklyField) {
+                                        @if(lwr.containsWeeklyField(field) == true) {
+                                            <td>@lwr.getWeeklyField(field).getValue()</td>
+                                        } else {
+                                            <td>/</td>
+                                        }
+                                    }
+                                    <td>@lwr.getData</td>
+                                    <td>
+                                        <a data-role="delete" data-delete-parent="tr"
+                                        href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
+                                            <i class="glyphicon glyphicon-trash"></i></a>
+                                    </td>
+                                </tr>
+                            </div>
+                        </tbody>
+                    }
+                </div>
+            </table>
+        </form>
+    </body>
+</html>
