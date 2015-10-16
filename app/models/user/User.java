@@ -14,6 +14,7 @@ import utility.UserConstants;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boris on 9/12/15.
@@ -73,7 +74,7 @@ public final class User extends Model {
     @Column(name = "weekly_status", length = 1)
     private Integer weeklyReportStatus = 0;
     @Column(unique = true)
-    private String token;
+    public String token;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
@@ -442,11 +443,16 @@ public final class User extends Model {
     }
 
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken() {
+        this.token = UUID.randomUUID().toString();
     }
 
     public String getToken() {
         return token;
     }
+
+    public static User findUserByToken(String token){
+        return finder.where().eq("token",token).findUnique();
+    }
+
 }

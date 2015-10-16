@@ -11,7 +11,7 @@ import play.Play;
  */
 public class MailHelper {
 
-    public static void send(String email, String message) {
+    public static void send(String email, String message, String message1) {
 
         try {
             HtmlEmail mail = new HtmlEmail();
@@ -21,9 +21,10 @@ public class MailHelper {
             mail.addTo(email);
             mail.setMsg(message);
             mail.setHtmlMsg(String
-                    .format("<html><body><strong> %s </strong> <p> %s </p> <p> %s </p> </body></html>",
+                    .format("<html><body><strong> %s </strong> <p> %s </p> <p> %s </p> <p> %s </p> <p> %s </p> </body></html>",
                             "Thanks for signing up to bitClassroom!",
-                            "Please confirm your Email address.\nYour password is: Student123", message));
+                            "Please confirm your Email address.\nYour password is: Student123", message,"In case you don't want to use this account or that this mail" +
+                                    "is sent to wrong person please click on the link below:",message1));
             mail.setHostName("smtp.gmail.com");
             mail.setStartTLSEnabled(true);
             mail.setSSLOnConnect(true);
