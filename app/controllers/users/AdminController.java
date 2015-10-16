@@ -158,20 +158,18 @@ public class AdminController extends Controller {
             u.setRoles(roles);
             u.setCreationDate(new DateTime());
             u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
-
+            u.setToken();
             if (u != null) {
                 try {
                     u.save();
                 } catch (PersistenceException e) {
-                    Ebean.save(new ErrorLog(e.getMessage()));
+                    Ebean.save(new ErrorLog(e.getLocalizedMessage()));
                     flash("warning", "Something went wrong, user could not be saved to database.");
                     return redirect("/admin");
                 }
-
-                u.setToken(UUID.randomUUID().toString());
-                u.update();
                 String host = url + "login";
-                MailHelper.send(u.getEmail(), host);
+                String host1 = url + "remove/" + u.token;
+                MailHelper.send(u.getEmail(), host, host1);
                 flash("success", String.format("User %s successfully added to database", u.getFirstName()));
                 return redirect("/admin/adduser");
             }

@@ -19,7 +19,7 @@ POST          /user/createprofile                   @controllers.users.UserContr
 
 GET           /user/editprofile                     @controllers.users.UserController.editProfile()
 POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
-
+GET           /remove/:token                        @controllers.users.UserController.refusedUser(token: String)
 # Route for seeing user's public profile
 GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
 

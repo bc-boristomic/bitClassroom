@@ -9,6 +9,7 @@ import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
 import models.user.Mentorship;
+import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -312,5 +313,11 @@ public class UserController extends Controller {
         return badRequest();
     }
 
+
+    public Result refusedUser(String token){
+        User user = User.findUserByToken(token);
+        User.getFinder().deleteById(user.getId());
+        return ok(views.html.refuseduserfdbck.render());
+    }
 
 }
