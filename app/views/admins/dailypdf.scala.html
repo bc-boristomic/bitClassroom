@@ -2,6 +2,7 @@
 @import models.report.ReportField
 @import models.report.DailyReport
 @import controllers.users.AdminController
+@import helpers.DateTimeFormatHelper
 @(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
 
 <!DOCTYPE html>
@@ -15,7 +16,9 @@
         <form>
             <div>
                 <h3 class="text-center page-head-line"> Table of daily reports </h3>
+
             </div>
+            <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
             <table class="table-bordered">
                 <div>
                     <thead>
@@ -42,7 +45,7 @@
                                         @if(ldr.containsField(field) == true) {
                                             <td>@ldr.getField(field).getValue()</td>
                                         } else {
-                                            <td>/</td>
+                                            <td>N/A</td>
                                         }
                                     }
                                     <td>@ldr.getData)</td>

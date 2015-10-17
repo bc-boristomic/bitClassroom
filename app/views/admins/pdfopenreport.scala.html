@@ -1,12 +1,12 @@
 @import models.report.DailyReport
 @import models.report.ReportField
 @import controllers.users.AdminController
+@import helpers.DateTimeFormatHelper
 @(dr: DailyReport, listReportField: List[ReportField])
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
 
         <link href="@routes.Assets.versioned("stylesheets/style.css")" rel="stylesheet" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
@@ -16,17 +16,21 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/header/logo.png")">
         <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
         <title>Daily PDF</title>
+        <meta charset="UTF-8">
+        <script>
+        document.getElementById("demo").innerHTML = Date().toString();
+        </script>
         <style>
         td {
         border: 0.5px solid black;
         bottom: 15px;
             padding: 15px 15px 15px 15px;
         }
-
         </style>
     </head>
     <body>
         <h3 class="page-head-line"> Daily reports </h3>
+        <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
         <form>
             <table class="table table-bordered">
                 <tbody>
