@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -677,16 +678,22 @@ public class AdminController extends Controller {
 
 
         List<PrivateMessage>  message = PrivateMessage.findAllMessage();
-        List<User> inactiveMentors = new ArrayList<>();
+        HashSet<User> inactiveMentors = new HashSet<>();
+
+
         for( int i = 0; i < message.size(); i++){
-            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR) && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
+            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
                 DateTime start = new DateTime();
                 Long result = start.getMillis() - message.get(i).getCreationDate().getMillis();
                 if(result > 60000) {
                     inactiveMentors.add(message.get(i).getReceiver());
+                    if(!inactiveMentors.add(message.get(i).getReceiver())){
+                        message.get(i).getReceiver().setUnreadMessage(message.get(i).getReceiver().getUnreadMessage()+1);
+                    }
                 }
             }
         }
+
         return ok(inactMentors.render(inactiveMentors));
     }
 
@@ -708,6 +715,8 @@ public class AdminController extends Controller {
         men.getStudent().setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
         men.getStudent().update();
         men.getMentor().setStudentStatus(0);
+        men.getMentor().update();
+
         flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
         return redirect("/admin/activementors");
     }

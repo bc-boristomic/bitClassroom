@@ -7,6 +7,7 @@ import models.Email;
 import models.Faq;
 import models.PrivateMessage;
 import models.course.CourseUser;
+import models.user.Mentorship;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
@@ -158,6 +159,13 @@ public class Application extends Controller {
         User u = SessionHelper.currentUser(ctx());
         int notify = PrivateMessage.getFind().where().eq("receiver_id", u.getId()).eq("status", 0).findRowCount();
         return ok(String.valueOf(notify));
+    }
+
+    public Result weeklyNotification(){
+
+        int counter = User.getFinder().where().eq("studentStatus", 14).findRowCount();
+        int notify = User.getFinder().where().eq("weeklyReportStatus", 2).findRowCount();
+        return ok(notify + "/" + counter);
     }
 
     public Result faq(){

@@ -1,6 +1,7 @@
 @import models.user.Mentorship
 @import models.user.User
-@(mentorship: List[User])
+@import java.util
+@(mentorship: util.HashSet[User])
 @adminmain("Inactive mentors") {
 
   <br/>
@@ -15,16 +16,18 @@
             <th>Mentor</th>
             <th>E-mail</th>
             <th>Info</th>
+            <th>Unread message</th>
             <th>Send message</th>
           </tr>
         </thead>
         <tbody>
         @for(men <- mentorship) {
           <tr class="info">
-            <td>@men.getFirstName @men.getLastName</td>
-            <td>@men.getEmail</td>
-            <td>@men.getCellPhone</td>
-            <td><a href="@controllers.users.routes.UserController.newMessage(men.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
+            <td class="text-center">@men.getFirstName @men.getLastName</td>
+            <td class="text-center">@men.getEmail</td>
+            <td class="text-center">@men.getCellPhone</td>
+            <td class="text-center"><span class="badge text-center">@men.getUnreadMessage</span></td>
+            <td class="text-center"><a href="@controllers.users.routes.UserController.newMessage(men.getId)">Send  <i class="glyphicon glyphicon-envelope"></i></a></td>
           </tr>
         }
         </tbody>

@@ -73,6 +73,9 @@ public final class User extends Model {
     private Integer homeworkStatus = 0;
     @Column(name = "weekly_status", length = 1)
     private Integer weeklyReportStatus = 0;
+    @Column(name = "daily_status", length = 1)
+    private Integer dailyReportStatus = 0;
+    private Integer unreadMessage = 0;
     @Column(unique = true)
     public String token;
     @Column(name = "update_date", columnDefinition = "datetime")
@@ -197,6 +200,22 @@ public final class User extends Model {
 
     public Long getId() {
         return id;
+    }
+
+    public Integer getUnreadMessage() {
+        return unreadMessage;
+    }
+
+    public void setUnreadMessage(Integer unreadMessage) {
+        this.unreadMessage = unreadMessage;
+    }
+
+    public Integer getDailyReportStatus() {
+        return dailyReportStatus;
+    }
+
+    public void setDailyReportStatus(Integer dailyReportStatus) {
+        this.dailyReportStatus = dailyReportStatus;
     }
 
     public String getEmail() {

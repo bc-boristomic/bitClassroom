@@ -141,6 +141,7 @@ GET           /assignment/details/:id               @controllers.users.TeacherCo
 # Notification for users that applied to course #TODO MOVE TO ADMIN
 POST          /notify                               @controllers.Application.getNotification()
 GET           /msgntif                              @controllers.Application.unreadMessages()
+POST          /weeklyntf                            @controllers.Application.weeklyNotification()
 
 
 # FOR TESTING ONLY
