@@ -16,33 +16,39 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/header/logo.png")">
         <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
         <title>Daily PDF</title>
+        <style>
+        td {
+        border: 0.5px solid black;
+        bottom: 15px;
+            padding: 15px 15px 15px 15px;
+        }
+
+        </style>
     </head>
     <body>
-
         <h3 class="page-head-line"> Daily reports </h3>
-
-
         <form>
             <table class="table table-bordered">
                 <tbody>
                     <tr class="row"><td class="col-md-2">
-                        Title:   </td><td class="col-md-9 col-md-offset-1">@dr.getName</td></tr>
+                        Title</td><td class="col-md-9 col-md-offset-1">@dr.getName</td></tr>
                     <tr class="row"><td class="col-md-2">
-                        Timestamp:         </td><td class="col-md-9 col-md-offset-1">@dr.getCreateDate</td></tr>
+                        Timestamp</td><td class="col-md-9 col-md-offset-1">@dr.getCreateDate</td></tr>
                     <tr class="row"><td class="col-md-2">
-                        Date:   </td><td class="col-md-9 col-md-offset-1">@AdminController.formaterDate(dr.getDate)</td></tr>
+                        Date</td><td class="col-md-9 col-md-offset-1">@AdminController.formaterDate(dr.getDate)</td></tr>
                     <tr class="row"><td class="col-md-2">
-                        Teacher:   </td><td class="col-md-9 col-md-offset-1">@dr.getTeacher</td></tr>
+                        Teacher</td><td class="col-md-9 col-md-offset-1">@dr.getTeacher</td></tr>
                     @for(lrf <- listReportField) {
                         @if(lrf.getDailyReport.getId.equals(dr.getId)) {
                             <tr class="row"><td class="col-md-2">
-                            @lrf.getField.getName:   </td><td class="col-md-9 col-md-offset-1">@lrf.getValue</td></tr>
+                            @lrf.getField.getName</td><td class="col-md-9 col-md-offset-1">@lrf.getValue</td></tr>
                         }
                     }
                     <tr class="row"><td class="col-md-2">
-                        Report:   </td><td class="col-md-9 col-md-offset-1">@dr.getData</td></tr>
+                        Report</td><td class="col-md-9 col-md-offset-1">@dr.getData</td></tr>
                 </tbody>
             </table>
         </form>
     </body>
+
 </html>
