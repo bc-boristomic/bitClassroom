@@ -7,16 +7,32 @@
     <form>
         <div style="margin-top : 110 px">
             <h3 class="page-head-line"> Daily reports </h3>
-            <a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)">Download PDF</a>
+
         </div>
+
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-9">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
+                    <div class="col-md-2"><ul class="pager">
+                        <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)">
+                            Download PDF</a></li>
+                    </ul>
+                    </div>
+                    <div class="col-md-9 col-md-offset-1">
+                        <ul class="pager">
+
+                            <li class="previous"><a href="@controllers.users.routes.AdminController.openPreviousReport(dr.getId)"><span aria-hidden="true">&larr;</span>
+                                Previous Report</a></li>
+                            <li><a href="/listReport ">Back to Table</a></li>
+                            <li class="next"><a href="@controllers.users.routes.AdminController.openNextReport(dr.getId)">
+                                Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="row top30">
                     <div class="col-md-3">
                         <label class="control-label">Title</label>
                     </div>
-
                     <textarea class="col-md-9" rows="1" disabled>@dr.getName</textarea>
                 </div>
                 <div class="row top17">
@@ -54,19 +70,7 @@
                     </div>
                     <textarea class="col-md-9" rows="8" disabled>@dr.getData</textarea>
                 </div>
-                <div class="row top17">
-                    <div class="col-md-9 col-md-offset-3">
-                        <ul class="pager">
-                            <li class="previous"><a href="@controllers.users.routes.AdminController.openPreviousReport(dr.getId)"><span aria-hidden="true">&larr;</span>
-                                Previous Report</a></li>
-                            <li><a href="/listReport ">Back to Table</a></li>
-                            <li class="next"><a href="@controllers.users.routes.AdminController.openNextReport(dr.getId)">
-                                Next Report <span aria-hidden="true">&rarr;</span></a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
-            <div class="col-md-2"></div>
         </div>
     </form>
 }
