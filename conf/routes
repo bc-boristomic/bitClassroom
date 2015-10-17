@@ -187,3 +187,7 @@ GET           /pdfDailyReports                      @controllers.users.AdminCont
 GET           /openReport                           @controllers.users.AdminController.openReport(id: Long)
 GET           /open+Report/:id                      @controllers.users.AdminController.openNextReport(id: Long)
 GET           /open-Report/:id                      @controllers.users.AdminController.openPreviousReport(id: Long)
+
+# FAQ page
+
+GET           /faq                                    @controllers.Application.faq()
