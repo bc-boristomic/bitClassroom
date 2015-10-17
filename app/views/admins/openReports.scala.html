@@ -5,24 +5,19 @@
 @adminmain("Open report") {
 
     <form>
-        <div style="margin-top : 110 px">
-            <h3 class="page-head-line"> Daily reports </h3>
+        @* <div style="margin-top : 110 px">
+        <h3 class="page-head-line"> Daily reports </h3>
 
-        </div>
+        </div>*@
 
-        <div class="row">
+        <div>
             <div class="col-md-10 col-md-offset-1">
-                <div class="row ">
-                    <div class="col-md-2"><ul class="pager">
-                        <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)">
-                            Download PDF</a></li>
-                    </ul>
-                    </div>
-                    <div class="col-md-9 col-md-offset-1">
+                <div class="row">
+                    <div class="col-md-12">
                         <ul class="pager">
-
                             <li class="previous"><a href="@controllers.users.routes.AdminController.openPreviousReport(dr.getId)"><span aria-hidden="true">&larr;</span>
                                 Previous Report</a></li>
+                            <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)"><i class="fa fa-file-pdf-o"> </i> PDF</a></li>
                             <li><a href="@controllers.users.routes.AdminController.listReport">Back to Table</a></li>
                             <li class="next"><a href="@controllers.users.routes.AdminController.openNextReport(dr.getId)">
                                 Next Report <span aria-hidden="true">&rarr;</span></a></li>
@@ -33,11 +28,11 @@
                     <div class="col-md-3">
                         <label>Timestamp</label>
                     </div>
-                    <p class="col-md-3" rows="1" disabled>@dr.getCreateDate</p>
+                    <p class="col-md-3">@dr.getCreateDate</p>
                     <div class="col-md-1 col-md-offset-2">
                         <label>Date</label>
                     </div>
-                    <p class="col-md-3" rows="1" disabled>@AdminController.formaterDate(dr.getDate)</p>
+                    <p class="col-md-3">@DailyReport.formaterDate(dr.getDate)</p>
                 </div>
                 <div class="row top30">
                     <div class="col-md-3">
@@ -72,7 +67,11 @@
                 </div>
             </div>
         </div>
-
+        <style>
+        .row{
+        border-bottom: 1px solid #777777;
+        }
+        </style>
     </form>
     @*
     <form>

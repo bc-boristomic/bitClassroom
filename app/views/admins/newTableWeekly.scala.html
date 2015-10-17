@@ -2,6 +2,7 @@
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
 @import controllers.users.AdminController
+@import models.report.DailyReport
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
@@ -33,7 +34,7 @@
                         <div>
                             <tr class="success" style="background: lightgreen">
                                 <td>@lwr.getCreateDate</td>
-                                <td>@AdminController.formaterDate(lwr.getDate)</td>
+                                <td>@DailyReport.formaterDate(lwr.getDate)</td>
                                 <td>@lwr.getName</td>
                                 <td>@lwr.getMentor</td>
                                 <td>@lwr.getStudent</td>

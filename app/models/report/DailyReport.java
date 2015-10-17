@@ -55,7 +55,7 @@ public final class DailyReport extends Model {
         return id;
     }
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createdDate); }
 
     public void setName(String name) {
@@ -133,4 +133,14 @@ public final class DailyReport extends Model {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createdDate);
     }
+
+
+    public static String formaterDate(String date) {
+        String[] parts = date.split("-");
+        String year = parts[0];
+        String month = parts[1];
+        String day = parts[2];
+        return day + "." + month + "." + year;
+    }
+
 }

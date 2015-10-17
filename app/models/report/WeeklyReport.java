@@ -65,7 +65,7 @@ public class WeeklyReport extends Model{
         return id;
     }
     public String getCreateDate() {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createDate); }
     public String getDate() {
         return date;
