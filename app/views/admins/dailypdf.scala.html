@@ -35,17 +35,17 @@
                             <div>
                                 <tr class="success" style="background: lightgreen">
                                     <td>@ldr.getCreateDate</td>
-                                    <td>@AdminController.formaterDate(ldr.getDate)</td>
+                                    <td>@DailyReport.formaterDate(ldr.getDate)</td>
                                     <td><a>@ldr.getTeacher</a></td>
-                                    <td>@AdminController.cutText(ldr.getName, 20)</td>
+                                    <td>@ldr.getName</td>
                                     @for(field <- listField) {
                                         @if(ldr.containsField(field) == true) {
-                                            <td>@AdminController.cutText(ldr.getField(field).getValue(), 20)</td>
+                                            <td>@ldr.getField(field).getValue()</td>
                                         } else {
                                             <td>/</td>
                                         }
                                     }
-                                    <td>@AdminController.cutText(ldr.getData, 40)</td>
+                                    <td>@ldr.getData)</td>
                                 </tr>
                             </div>
                         </tbody>

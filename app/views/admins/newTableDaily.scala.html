@@ -29,7 +29,7 @@
                             <div>
                                 <tr class="success" style="background : lightgreen">
                                     <td>@ldr.getCreateDate</td>
-                                    <td>@AdminController.formaterDate(ldr.getDate)</td>
+                                    <td>@DailyReport.formaterDate(ldr.getDate)</td>
                                     <td><a>@ldr.getTeacher</a></td>
                                     <td>@AdminController.cutText(ldr.getName, 20)</td>
                                     @for(field <- listField) {

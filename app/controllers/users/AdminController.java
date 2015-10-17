@@ -881,14 +881,6 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-    public static String formaterDate(String date) {
-        String[] parts = date.split("-");
-        String year = parts[0];
-        String month = parts[1];
-        String day = parts[2];
-        return day + "." + month + "." + year;
-    }
-
     public Result openReport(Long id) {
         return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
     }
