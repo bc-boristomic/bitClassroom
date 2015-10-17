@@ -1,6 +1,6 @@
 @import helpers.SessionHelper
 @import utility.UserConstants
-
+@(faqList : List[Faq])
 @main("FAQ"){
 
     <div class="container">
@@ -78,12 +78,29 @@
             </div>
           </div>
 
+          <div class="faqHeader">Other questions</div>
+          @for(faq <- faqList){
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse@faq.getId">@faq.getQuestion</a>
+                </h4>
+              </div>
+              <div id="collapse@faq.getId" class="panel-collapse collapse">
+                <div class="panel-body">
+                  @faq.getAnswer
+                </div>
+              </div>
+            </div>
+          }
+
 
       </div>
 
         @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)){
 
-          <a class="btn btn-warning pull-right" href="#"><strong>Add new  <span class="glyphicon glyphicon-plus"></span></strong></a>
+          <a class="btn btn-warning pull-right" href="@controllers.users.routes.AdminController.setupFAQ()"><strong>Add new  <span class="glyphicon glyphicon-plus"></span></strong></a>
 
         }
 

@@ -190,4 +190,6 @@ GET           /open-Report/:id                      @controllers.users.AdminCont
 
 # FAQ page
 
-GET           /faq                                    @controllers.Application.faq()
+GET           /faq                                  @controllers.Application.faq()
+GET           /faq/setup                            @controllers.users.AdminController.setupFAQ()
+POST          /faq/setup                            @controllers.users.AdminController.saveFAQ()

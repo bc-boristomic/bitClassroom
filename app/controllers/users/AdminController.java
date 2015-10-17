@@ -5,6 +5,7 @@ import helpers.Authorization;
 import helpers.SessionHelper;
 import it.innove.play.pdf.PdfGenerator;
 import models.ErrorLog;
+import models.Faq;
 import models.Image;
 import models.PrivateMessage;
 import models.course.Course;
@@ -826,6 +827,32 @@ public class AdminController extends Controller {
             courseUser.update();
         }
         return ok();
+    }
+
+
+    /**
+     * Method for add new question and answer in FAQ view.
+     * @return
+     */
+    public Result setupFAQ (){
+
+        return ok(faqSetup.render());
+    }
+
+    /**
+     * Method for save new question and answer to FAq page, redirect to FAQ page.
+     * @return
+     */
+    public Result saveFAQ(){
+
+        DynamicForm form = Form.form().bindFromRequest();
+        String question = form.get("question");
+        String answer = form.get("answer");
+
+        Faq newFAQ = new Faq(question, answer);
+        newFAQ.save();
+
+        return redirect("/faq");
     }
 //======================================================================================================================
 // Refactoring reports
