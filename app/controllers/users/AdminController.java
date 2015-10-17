@@ -827,6 +827,9 @@ public class AdminController extends Controller {
         }
         return ok();
     }
+//======================================================================================================================
+// Refactoring reports
+
 
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
@@ -889,6 +892,7 @@ public class AdminController extends Controller {
     public Result openReport(Long id) {
         return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
     }
+
     public Result openNextReport(Long l) {
         Long id;
         l++;
@@ -902,6 +906,7 @@ public class AdminController extends Controller {
         }
         return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
     }
+
     public Result openPreviousReport(Long l) {
         Long id;
         l--;
@@ -915,6 +920,7 @@ public class AdminController extends Controller {
         }
         return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
     }
+
     public static String cutText(String text, int length){
         if (text.length() > length) {
             text = text.substring(0, length);
@@ -922,7 +928,6 @@ public class AdminController extends Controller {
         }
         return text;
     }
-
 
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
@@ -935,7 +940,7 @@ public class AdminController extends Controller {
     public Result pdfDailyReports(Long id) {
         return pdfGenerator.ok(pdfopenreport.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()), Configuration.root().getString("application.host"));
     }
-//
+//    Radnja u pripremi
 //    public Result pdfWeeklyReports() {
 //        return pdfGenerator.ok();
 //    }
