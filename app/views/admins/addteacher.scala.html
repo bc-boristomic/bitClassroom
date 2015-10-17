@@ -5,6 +5,7 @@
 @adminmain("Add teacher to the course") {
 
     @helper.form(action = controllers.users.routes.AdminController.addTeacher(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+        <br>
         <legend>Adding teacher</legend>
         <div class="form-group">
             <label for="select" class="col-lg-2 control-label">Teachers</label>

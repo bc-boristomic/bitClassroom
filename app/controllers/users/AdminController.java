@@ -418,9 +418,6 @@ public class AdminController extends Controller {
 
         }
 
-
-
-
         User u = Mentorship.findMentorByUser(cu.getUser());
         List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
 
