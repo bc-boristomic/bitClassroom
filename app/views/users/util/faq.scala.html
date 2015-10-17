@@ -1,3 +1,6 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
+
 @main("FAQ"){
 
     <div class="container">
@@ -75,8 +78,16 @@
             </div>
           </div>
 
-          <div class="faqHeader">Sellers</div>
+
       </div>
+
+        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)){
+
+          <a class="btn btn-warning pull-right" href="#"><strong>Add new  <span class="glyphicon glyphicon-plus"></span></strong></a>
+
+        }
+
+
         </div>
 
       <style>
@@ -114,3 +125,4 @@
     </div>
 
 }
+
