@@ -4,6 +4,7 @@ import helpers.SessionHelper;
 
 import models.Email;
 
+import models.Faq;
 import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
@@ -161,7 +162,8 @@ public class Application extends Controller {
 
     public Result faq(){
 
-        return ok(faq.render());
+        List<Faq> faqList = Faq.findAllFAQ();
+        return ok(faq.render(faqList));
     }
 
 

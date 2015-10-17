@@ -25,13 +25,27 @@ public class Faq extends Model {
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
     @Column
-    private Integer status;
+    private Integer status = 0;
+
+    /**
+     * Constructor for new FAQ question for admin
+     * @param question - Stgring format of question
+     * @param answer - String format of answer of entere question
+     */
+    public Faq(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 
     static Finder<Long, Faq> finder = new Finder<Long, Faq>(Faq.class);
 
 
     public static List<Faq> findAllFAQ() {
         return finder.orderBy("id desc").findList();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getQuestion() {
