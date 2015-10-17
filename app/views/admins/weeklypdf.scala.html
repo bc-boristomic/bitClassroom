@@ -2,6 +2,7 @@
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
 @import controllers.users.AdminController
+@import helpers.DateTimeFormatHelper
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
@@ -17,6 +18,7 @@
             <div>
                 <h3 class="text-center page-head-line"> Table of weekly reports </h3>
             </div>
+            <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
             <table class="table-bordered">
                 <div>
                     <thead>
@@ -45,7 +47,7 @@
                                         @if(lwr.containsWeeklyField(field) == true) {
                                             <td>@lwr.getWeeklyField(field).getValue()</td>
                                         } else {
-                                            <td>/</td>
+                                            <td>N/A</td>
                                         }
                                     }
                                     <td>@AdminController.cutText(lwr.getData, 40)</td>

@@ -11,7 +11,9 @@
     <form>
         <div style="margin-top : 110 px">
             <h3 class="page-head-line"> table of weekly reports </h3>
-            <a href="@controllers.users.routes.AdminController.pdfWeeklyTable">Download PDF</a>
+            <ul class="pager">
+                <li><a href="@controllers.users.routes.AdminController.pdfWeeklyTable"><i class="fa fa-file-pdf-o"> </i> PDF</a></li>
+            </ul>
         </div>
         <table id="sort" class="table-bordered" style="background : #B0BED9">
             <div style="margin : 40 px 30 px 0 px 30 px" >
@@ -42,7 +44,7 @@
                                     @if(lwr.containsWeeklyField(field) == true) {
                                         <td>@lwr.getWeeklyField(field).getValue()</td>
                                     } else {
-                                        <td>/</td>
+                                        <td>N/A</td>
                                     }
                                 }
                                 <td>@lwr.getData</td>

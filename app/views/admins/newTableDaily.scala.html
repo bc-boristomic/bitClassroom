@@ -4,10 +4,14 @@
 @import controllers.users.AdminController
 @(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
     @adminmain("Daily List") {
+
+
         <form>
             <div style="margin-top : 110 px">
                 <h3 class="page-head-line"> Table of daily reports </h3>
-                <a href="@controllers.users.routes.AdminController.pdfDailyTable">Download PDF</a>
+                <ul class="pager">
+                    <li><a href="@controllers.users.routes.AdminController.pdfDailyTable"><i class="fa fa-file-pdf-o"> </i> PDF</a></li>
+                </ul>
             </div>
             <table id="sort" class="table-bordered">
                 <div style="margin : 40 px 30 px 0 px 30 px" >
@@ -36,7 +40,7 @@
                                         @if(ldr.containsField(field) == true) {
                                             <td>@AdminController.cutText(ldr.getField(field).getValue(), 20)</td>
                                         } else {
-                                            <td>/</td>
+                                            <td>N/A</td>
                                         }
                                     }
                                     <td>@AdminController.cutText(ldr.getData, 40)</td>
