@@ -51,6 +51,15 @@ create table error_log (
   constraint pk_error_log primary key (id))
 ;
 
+create table faq_setup (
+  id                        bigint auto_increment not null,
+  question                  varchar(500),
+  answer                    varchar(500),
+  create_date               datetime,
+  status                    integer,
+  constraint pk_faq_setup primary key (id))
+;
+
 create table field (
   id                        bigint auto_increment not null,
   name                      varchar(255),
@@ -241,6 +250,8 @@ drop table course_user;
 drop table daily_report;
 
 drop table error_log;
+
+drop table faq_setup;
 
 drop table field;
 
