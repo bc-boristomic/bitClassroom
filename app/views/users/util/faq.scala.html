@@ -1,0 +1,116 @@
+@main("FAQ"){
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1>BitClassroom FAQ <small>BitClassroom Frequently Asked Questions</small></h1>
+      </div>
+
+
+      <div class="container">
+        <br />
+
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          This section contains a wealth of information, . If you cannot find an answer to your question,
+          make sure <a href="/home#contact">Contact Us</a>
+          <div><a href=""></a></div>
+        </div>
+
+        <div class="panel-group" id="accordion">
+          <div class="faqHeader">General questions</div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">How to started with bitClassroom?</a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+              <div class="panel-body">
+                Classroom is available to anyone with a bitClassroom account. Your administrator only can sign up here. Select whether you are a teacher or a student, then create or join a class.
+
+                If you are the administrator, you can find more information about turning the service on and off in Access to bitClassroom.
+
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Who is eligible for bitClassroom?</a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body">
+                BitClassroom is available to all schools for Education
+                </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTen">Do I need Gmail to use bitClassroom?</a>
+              </h4>
+            </div>
+            <div id="collapseTen" class="panel-collapse collapse">
+              <div class="panel-body">
+                You do not need to have Gmail enabled for your  account to use bitClassroom; however, if you don't have Gmail enabled, you will not receive email notifications.
+
+                Note that if you have your own mail server set up and receive Google Drive notifications, you will also receive bitClassroom notifications.
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven">Is there a bitClassroom app I can use on my mobile device or tablet?</a>
+              </h4>
+            </div>
+            <div id="collapseEleven" class="panel-collapse collapse">
+              <div class="panel-body">
+                Yes, the bitClassroom app is available for iOS and Android devices.
+                </div>
+            </div>
+          </div>
+
+          <div class="faqHeader">Sellers</div>
+      </div>
+        </div>
+
+      <style>
+      .faqHeader {
+      font-size: 27px;
+      margin: 20px;
+      }
+
+      .panel-heading [data-toggle="collapse"]:after {
+      font-family: 'Glyphicons Halflings';
+      content: "\e072"; /* "play" icon */
+      float: right;
+      color: #F58723;
+      font-size: 18px;
+      line-height: 22px;
+      /* rotate "play" icon from > (right arrow) to down arrow */
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      }
+
+      .panel-heading [data-toggle="collapse"].collapsed:after {
+      /* rotate "play" icon from > (right arrow) to ^ (up arrow) */
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+      color: #454444;
+      }
+      </style>
+
+    </div>
+
+}

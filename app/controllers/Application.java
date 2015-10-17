@@ -17,6 +17,7 @@ import views.html.index;
 import views.html.newMain;
 import views.html.users.login;
 import views.html.users.util.email;
+import views.html.users.util.faq;
 
 import java.util.List;
 
@@ -156,6 +157,11 @@ public class Application extends Controller {
         User u = SessionHelper.currentUser(ctx());
         int notify = PrivateMessage.getFind().where().eq("receiver_id", u.getId()).eq("status", 0).findRowCount();
         return ok(String.valueOf(notify));
+    }
+
+    public Result faq(){
+
+        return ok(faq.render());
     }
 
 
