@@ -1,6 +1,7 @@
 @import models.report.WeeklyField
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
+@import controllers.users.AdminController
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
@@ -13,11 +14,11 @@
     </head>
     <body>
         <form>
-            <div style="margin-top : 110 px">
+            <div>
                 <h3 class="text-center page-head-line"> Table of weekly reports </h3>
             </div>
-            <table class="table-bordered" style="background : #B0BED9">
-                <div style="margin : 40 px 30 px 0 px 30 px" >
+            <table class="table-bordered">
+                <div>
                     <thead>
                         <tr>
                             <th>Timestamp</th>
@@ -47,7 +48,7 @@
                                             <td>/</td>
                                         }
                                     }
-                                    <td>@lwr.getData</td>
+                                    <td>@AdminController.cutText(lwr.getData, 40)</td>
                                 </tr>
                             </div>
                         </tbody>

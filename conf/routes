@@ -175,10 +175,15 @@ POST          /user/sendStartMail                   @controllers.users.StudentCo
 
 POST          /user/sendMmail                       @controllers.Emails.sendMail()
 
-GET           /pdf                                  @controllers.users.AdminController.pdf()
+# Download PDF
+
+GET           /pdfWeeklyTable                       @controllers.users.AdminController.pdfWeeklyTable()
+GET           /pdfDailyTable                        @controllers.users.AdminController.pdfDailyTable()
+GET           /pdfDailyReports                      @controllers.users.AdminController.pdfDailyReports(id: Long)
+#GET           /pdfWeeklyreports                     @controllers.users.AdminController.pdfWeeklyReports()
 
 # Open weekly reports
 
 GET           /openReport                           @controllers.users.AdminController.openReport(id: Long)
-GET           /open+Report/:id                       @controllers.users.AdminController.openNextReport(id: Long)
-GET           /open-Report/:id                       @controllers.users.AdminController.openPreviousReport(id: Long)
+GET           /open+Report/:id                      @controllers.users.AdminController.openNextReport(id: Long)
+GET           /open-Report/:id                      @controllers.users.AdminController.openPreviousReport(id: Long)

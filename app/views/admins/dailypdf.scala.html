@@ -3,14 +3,21 @@
 @import models.report.DailyReport
 @import controllers.users.AdminController
 @(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
-    @adminmain("Daily List") {
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <link href="@routes.Assets.versioned("stylesheets/style.css")" rel="stylesheet" />
+        <title>Daily report</title>
+    </head>
+    <body>
         <form>
-            <div style="margin-top : 110 px">
-                <h3 class="page-head-line"> Table of daily reports </h3>
-                <a href="@controllers.users.routes.AdminController.pdfDailyTable">Download PDF</a>
+            <div>
+                <h3 class="text-center page-head-line"> Table of daily reports </h3>
             </div>
-            <table id="sort" class="table-bordered">
-                <div style="margin : 40 px 30 px 0 px 30 px" >
+            <table class="table-bordered">
+                <div>
                     <thead>
                         <tr>
                             <th>Timestamp</th>
@@ -21,13 +28,12 @@
                                 <th>@rf.getName</th>
                             }
                             <th>Report</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     @for(ldr <- listDailyReport) {
                         <tbody>
                             <div>
-                                <tr class="success" style="background : lightgreen">
+                                <tr class="success" style="background: lightgreen">
                                     <td>@ldr.getCreateDate</td>
                                     <td>@AdminController.formaterDate(ldr.getDate)</td>
                                     <td><a>@ldr.getTeacher</a></td>
@@ -40,18 +46,6 @@
                                         }
                                     }
                                     <td>@AdminController.cutText(ldr.getData, 40)</td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <a href="@controllers.users.routes.AdminController.openReport(ldr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteReport(ldr.getId)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
                                 </tr>
                             </div>
                         </tbody>
@@ -59,4 +53,5 @@
                 </div>
             </table>
         </form>
-    }
+    </body>
+</html>

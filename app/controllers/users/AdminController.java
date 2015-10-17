@@ -34,6 +34,9 @@ import views.html.admins.adduser;
 import views.html.admins.newTableWeekly;
 import views.html.admins.weeklypdf;
 import views.html.admins.openReports;
+import views.html.admins.setingsweeklyreport;
+import views.html.admins.dailypdf;
+import views.html.admins.pdfopenreport;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -47,6 +50,7 @@ import java.util.UUID;
  */
 @Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
+
     @Inject
     public PdfGenerator pdfGenerator;
 
@@ -840,7 +844,7 @@ public class AdminController extends Controller {
     }
 
     public Result genWeeklyField() {
-        return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
+        return ok(views.html.admins.setingsweeklyreport.render(WeeklyField.getFinder().all()));
     }
 
     public Result saveWeeklyField() {
@@ -874,15 +878,12 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-    public Result pdf() {
-        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
-    }
     public static String formaterDate(String date) {
         String[] parts = date.split("-");
         String year = parts[0];
         String month = parts[1];
         String day = parts[2];
-        return day + "/" + month + "/" + year;
+        return day + "." + month + "." + year;
     }
 
     public Result openReport(Long id) {
@@ -921,4 +922,21 @@ public class AdminController extends Controller {
         }
         return text;
     }
+
+
+    public Result pdfWeeklyTable() {
+        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+    public Result pdfDailyTable() {
+        return pdfGenerator.ok(dailypdf.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+    public Result pdfDailyReports(Long id) {
+        return pdfGenerator.ok(pdfopenreport.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+//
+//    public Result pdfWeeklyReports() {
+//        return pdfGenerator.ok();
+//    }
 }

@@ -1,6 +1,7 @@
 @import models.report.WeeklyField
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
+@import controllers.users.AdminController
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
@@ -9,7 +10,7 @@
     <form>
         <div style="margin-top : 110 px">
             <h3 class="page-head-line"> table of weekly reports </h3>
-            <a href="@controllers.users.routes.AdminController.pdf">Download PDF</a>
+            <a href="@controllers.users.routes.AdminController.pdfWeeklyTable">Download PDF</a>
         </div>
         <table id="sort" class="table-bordered" style="background : #B0BED9">
             <div style="margin : 40 px 30 px 0 px 30 px" >
@@ -30,9 +31,9 @@
                 @for(lwr <- listWeeklyReport) {
                     <tbody>
                         <div>
-                            <tr class="success" style="background : lightgreen">
+                            <tr class="success" style="background: lightgreen">
                                 <td>@lwr.getCreateDate</td>
-                                <td>@lwr.getDate</td>
+                                <td>@AdminController.formaterDate(lwr.getDate)</td>
                                 <td>@lwr.getName</td>
                                 <td>@lwr.getMentor</td>
                                 <td>@lwr.getStudent</td>
