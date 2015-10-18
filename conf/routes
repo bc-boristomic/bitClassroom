@@ -4,110 +4,110 @@
 
 # 				:: APPLICATION ROUTES BELLOW ::
 # Home page
-GET           /home                                 @controllers.Application.welcome()
-GET           /                                     @controllers.Application.index()
-GET           /about                                @controllers.Application.about()
+GET           /home                                   @controllers.Application.welcome()
+GET           /                                       @controllers.Application.index()
+GET           /about                                  @controllers.Application.about()
 
-GET           /login                                @controllers.Application.login()
-GET           /logout                               @controllers.Application.logout()
-POST          /login                                @controllers.Application.checkLogin()
-GET           /util/email                           @controllers.Application.sendEmail()
+GET           /login                                  @controllers.Application.login()
+GET           /logout                                 @controllers.Application.logout()
+POST          /login                                  @controllers.Application.checkLogin()
+GET           /util/email                             @controllers.Application.sendEmail()
 
 # 				:: USERS ROUTES BELLOW ::
-GET           /user/createprofile                   @controllers.users.UserController.createProfile()
-POST          /user/createprofile                   @controllers.users.UserController.updateProfile()
+GET           /user/createprofile                     @controllers.users.UserController.createProfile()
+POST          /user/createprofile                     @controllers.users.UserController.updateProfile()
 
-GET           /user/editprofile                     @controllers.users.UserController.editProfile()
-POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
-GET           /remove/:token                        @controllers.users.UserController.refusedUser(token: String)
+GET           /user/editprofile                       @controllers.users.UserController.editProfile()
+POST          /user/editprofile                       @controllers.users.UserController.saveProfile()
+GET           /remove/:token                          @controllers.users.UserController.refusedUser(token: String)
 # Route for seeing user's public profile
-GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
+GET           /user/publicprofile/:id                 @controllers.users.UserController.publicProfile(id: Long)
 
 # SECURITY FOR FULLY ACTIVE USER ONLY
-GET           /user/classmates                      @controllers.users.UserController.studentList(id: Long)
-GET           /message/:id                          @controllers.users.UserController.newMessage(id: Long)
-POST          /message/:id                          @controllers.users.UserController.sendMessage(id: Long)
-GET           /allMessage                           @controllers.users.UserController.allMessage()
-GET           /message/selected/:id                 @controllers.users.UserController.seeMessage(id: Long)
-GET           /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
-DELETE        /message/inbox/delete/:id             @controllers.users.UserController.deleteInboxMessage(id: Long)
-GET           /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
-DELETE        /message/delete/:id                   @controllers.users.UserController.deleteSendMessage(id: Long)
+GET           /user/classmates                        @controllers.users.UserController.studentList(id: Long)
+GET           /message/:id                            @controllers.users.UserController.newMessage(id: Long)
+POST          /message/:id                            @controllers.users.UserController.sendMessage(id: Long)
+GET           /allMessage                             @controllers.users.UserController.allMessage()
+GET           /message/selected/:id                   @controllers.users.UserController.seeMessage(id: Long)
+GET           /message/inbox/delete/:id               @controllers.users.UserController.deleteInboxMessage(id: Long)
+DELETE        /message/inbox/delete/:id               @controllers.users.UserController.deleteInboxMessage(id: Long)
+GET           /message/delete/:id                     @controllers.users.UserController.deleteSendMessage(id: Long)
+DELETE        /message/delete/:id                     @controllers.users.UserController.deleteSendMessage(id: Long)
 
 #				:: ADMIN ROUTES BELLOW ::
 # Admin index page
-GET           /admin                                @controllers.users.AdminController.index()
+GET           /admin                                  @controllers.users.AdminController.index()
 
 # Routes for registering new user
-GET           /admin/adduser                        @controllers.users.AdminController.addNewUser()
-POST          /admin/adduser                        @controllers.users.AdminController.saveNewUser(role: String)
-GET           /admin/setrole/:id                    @controllers.users.AdminController.editUserRole(id: Long)
+GET           /admin/adduser                          @controllers.users.AdminController.addNewUser()
+POST          /admin/adduser                          @controllers.users.AdminController.saveNewUser(role: String)
+GET           /admin/setrole/:id                      @controllers.users.AdminController.editUserRole(id: Long)
 
 # Route for seeing all users
-GET           /admin/allusers                       @controllers.users.AdminController.listOfUser()
+GET           /admin/allusers                         @controllers.users.AdminController.listOfUser()
 
 # Route for seeing and deleting all errors logged in application
-GET           /admin/errors                         @controllers.users.AdminController.seeErrors()
-DELETE        /admin/error/:id                      @controllers.users.AdminController.deleteError(id: Long)
+GET           /admin/errors                           @controllers.users.AdminController.seeErrors()
+DELETE        /admin/error/:id                        @controllers.users.AdminController.deleteError(id: Long)
 
 # Assign mentor to student
-GET           /admin/mentorship                     @controllers.users.AdminController.mentorship()
-POST          /admin/mentorship                     @controllers.users.AdminController.saveMentorship()
+GET           /admin/mentorship                       @controllers.users.AdminController.mentorship()
+POST          /admin/mentorship                       @controllers.users.AdminController.saveMentorship()
 
 # See active mentorships and delete it
-GET           /admin/activementors                  @controllers.users.AdminController.seeMentorsAndStudents()
-DELETE        /admin/activementors/:id              @controllers.users.AdminController.deleteMentorship(id: Long)
-GET           /admin/inactivementors                @controllers.users.AdminController.inactiveMentors()
-GET           /admin/mentors                        @controllers.users.AdminController.seeAllMentors()
+GET           /admin/activementors                    @controllers.users.AdminController.seeMentorsAndStudents()
+DELETE        /admin/activementors/:id                @controllers.users.AdminController.deleteMentorship(id: Long)
+GET           /admin/inactivementors                  @controllers.users.AdminController.inactiveMentors()
+GET           /admin/mentors                          @controllers.users.AdminController.seeAllMentors()
 
 # Routes for admin approval of user to join certain course
-POST          /admin/approvestudent/:id             @controllers.users.AdminController.approveStudent(id: Long)
-GET           /admin/awaitlist                      @controllers.users.AdminController.awaitList()
+POST          /admin/approvestudent/:id               @controllers.users.AdminController.approveStudent(id: Long)
+GET           /admin/awaitlist                        @controllers.users.AdminController.awaitList()
 
 # Create report field
-GET           /admin/createdaily                    @controllers.users.AdminController.genField()
-POST          /admin/savefielddaily                 @controllers.users.AdminController.saveField()
-DELETE        /admin/deletefield/:id                @controllers.users.AdminController.deleteField(id: Long)
+GET           /admin/createdaily                      @controllers.users.AdminController.genField()
+POST          /admin/savefielddaily                   @controllers.users.AdminController.saveField()
+DELETE        /admin/deletefield/:id                  @controllers.users.AdminController.deleteField(id: Long)
 
 # See submited daily reports
-GET           /listReport                           @controllers.users.AdminController.listReport()
-DELETE        /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
-GET           /listReport/:id                       @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport                             @controllers.users.AdminController.listReport()
+DELETE        /listReport/:id                         @controllers.users.AdminController.deleteReport(id: Long)
+GET           /listReport/:id                         @controllers.users.AdminController.deleteReport(id: Long)
 
-GET           /listWeeklyReport                     @controllers.users.AdminController.listWeeklyReport()
-DELETE        /listWeeklyReport/:id                 @controllers.users.AdminController.deleteWeeklyReport(id: Long)
+GET           /listWeeklyReport                       @controllers.users.AdminController.listWeeklyReport()
+DELETE        /listWeeklyReport/:id                   @controllers.users.AdminController.deleteWeeklyReport(id: Long)
 
 
 # Create weekly report
-GET           /admin/createweekly                   @controllers.users.AdminController.genWeeklyField()
-POST          /admin/savefieldweekly                @controllers.users.AdminController.saveWeeklyField()
-DELETE        /admin/deletefieldweekly/:id          @controllers.users.AdminController.deleteWeeklyField(id: Long)
+GET           /admin/createweekly                     @controllers.users.AdminController.genWeeklyField()
+POST          /admin/savefieldweekly                  @controllers.users.AdminController.saveWeeklyField()
+DELETE        /admin/deletefieldweekly/:id            @controllers.users.AdminController.deleteWeeklyField(id: Long)
 
 # See submited weekly report
-GET           /weekly/report                        @controllers.users.MentorController.weeklyReport()
-POST          /weekly/reportSubmit                  @controllers.users.MentorController.saveRaport()
+GET           /weekly/report                          @controllers.users.MentorController.weeklyReport()
+POST          /weekly/reportSubmit                    @controllers.users.MentorController.saveRaport()
 
 # Create course
-GET           /admin/createcourse                   @controllers.users.AdminController.addCourse()
-POST          /admin/createcourse                   @controllers.users.AdminController.saveCourse()
+GET           /admin/createcourse                     @controllers.users.AdminController.addCourse()
+POST          /admin/createcourse                     @controllers.users.AdminController.saveCourse()
 
-GET           /admin/addnewteacher                  @controllers.users.AdminController.teachers()
-POST          /admin/addnewteacher                  @controllers.users.AdminController.addTeacher()
+GET           /admin/addnewteacher                    @controllers.users.AdminController.teachers()
+POST          /admin/addnewteacher                    @controllers.users.AdminController.addTeacher()
 
 # List of all registered users and option to delete
-GET           /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
-DELETE        /admin/delete/:id                     @controllers.users.AdminController.deleteUser(id: Long)
+GET           /admin/delete/:id                       @controllers.users.AdminController.deleteUser(id: Long)
+DELETE        /admin/delete/:id                       @controllers.users.AdminController.deleteUser(id: Long)
 
 # List of active courses and option to delete or archieve
-GET           /admin/courses                        @controllers.users.AdminController.courseList()
-POST          /admin/courses/:id                    @controllers.users.AdminController.deleteOrArchiveCourse(id: Long)
+GET           /admin/courses                          @controllers.users.AdminController.courseList()
+POST          /admin/courses/:id                      @controllers.users.AdminController.deleteOrArchiveCourse(id: Long)
 
 # List of archived courses and option to activate
-GET           /admin/courses/archived               @controllers.users.AdminController.archivedCourses()
-POST          /admin/courses/archived/:id           @controllers.users.AdminController.activateCourse(id: Long)
+GET           /admin/courses/archived                 @controllers.users.AdminController.archivedCourses()
+POST          /admin/courses/archived/:id             @controllers.users.AdminController.activateCourse(id: Long)
 
 # List of deleted courses
-GET           /admin/courses/deleted                @controllers.users.AdminController.deletedCourses()
+GET           /admin/courses/deleted                  @controllers.users.AdminController.deletedCourses()
 
 
 # Auto send message for user from deleted course
@@ -116,81 +116,99 @@ GET           /admin/courses/deleted                @controllers.users.AdminCont
 #				:: TEACHER ROUTES BELLOW ::
 # Teacher list assignment
 
-GET           /teacher/listAssignment               @controllers.users.TeacherController.listAssignment()
+GET           /teacher/listAssignment                 @controllers.users.TeacherController.listAssignment()
 
 # Daily report for teachers
-GET           /daily/report                         @controllers.users.TeacherController.dailyReport()
-POST          /daily/reportSubmit                   @controllers.users.TeacherController.saveRaport()
+GET           /daily/report                           @controllers.users.TeacherController.dailyReport()
+POST          /daily/reportSubmit                     @controllers.users.TeacherController.saveRaport()
 
 #				:: STUDENT ROUTES BELLOW ::
 # Students joining course
-POST          /student/joincourse                   @controllers.users.StudentController.joinCourse()
-POST          /student/joincourse/haveaccess        @controllers.users.StudentController.haveCourseAccess()
+POST          /student/joincourse                     @controllers.users.StudentController.joinCourse()
+POST          /student/joincourse/haveaccess          @controllers.users.StudentController.haveCourseAccess()
 
 # SECURITY FOR FULLY ACTIVE USER ONLY
 # 				::COURSE ROUTES BELLOW ::
-GET           /user/courses                         @controllers.course.CourseController.allCourses()
-GET           /user/class/:id                       @controllers.course.CourseController.course(id: Long)
+GET           /user/courses                           @controllers.course.CourseController.allCourses()
+GET           /user/class/:id                         @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
-GET           /post/new                             @controllers.posts.PostController.addPost()
-POST          /post                                 @controllers.posts.PostController.savePost()
-GET           /post/assignment/:id                  @controllers.posts.PostController.assignmentDetails(id: Long)
-GET           /assignment/details/:id               @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
+GET           /post/new                               @controllers.posts.PostController.addPost()
+POST          /post                                   @controllers.posts.PostController.savePost()
+GET           /post/assignment/:id                    @controllers.posts.PostController.assignmentDetails(id: Long)
+GET           /assignment/details/:id                 @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
 
 # Notification for users that applied to course #TODO MOVE TO ADMIN
-POST          /notify                               @controllers.Application.getNotification()
-GET           /msgntif                              @controllers.Application.unreadMessages()
-POST          /weeklyntf                            @controllers.Application.weeklyNotification()
+POST          /notify                                 @controllers.Application.getNotification()
+GET           /msgntif                                @controllers.Application.unreadMessages()
+POST          /weeklyntf                              @controllers.Application.weeklyNotification()
 
 
 # FOR TESTING ONLY
-GET           /user/test                            @controllers.users.UserController.test()
-GET           /admin/test                           @controllers.users.AdminController.test()
-GET           /teacher/test                         @controllers.users.TeacherController.test()
-GET           /mentor/test                          @controllers.users.MentorController.test()
-GET           /student/test                         @controllers.users.StudentController.test()
+GET           /user/test                              @controllers.users.UserController.test()
+GET           /admin/test                             @controllers.users.AdminController.test()
+GET           /teacher/test                           @controllers.users.TeacherController.test()
+GET           /mentor/test                            @controllers.users.MentorController.test()
+GET           /student/test                           @controllers.users.StudentController.test()
 
 
 # API routes
-GET           /api/user                             @controllers.api.UserAPIController.getUsers()
-GET           /api/user/:id                         @controllers.api.UserAPIController.getSpecificUser(id: Long)
+GET           /api/user                               @controllers.api.UserAPIController.getUsers()
+GET           /api/user/:id                           @controllers.api.UserAPIController.getSpecificUser(id: Long)
 #POST          /api/user                             @controllers.api.UserAPIController.createUser()
 #PUT           /api/user/:id                         @controllers.api.UserAPIController.updateUser(id: Long)
 #DELETE        /api/user/:id                         @controllers.api.UserAPIController.deleteUser(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                         @controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file                           @controllers.Assets.versioned(path="/public", file: Asset)
 
 #Sending email
 
 
-POST          /user/sendMail                        @controllers.Emails.sendMail()
-POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
-POST          /user/sendFinishMail                  @controllers.users.StudentController.sendFinishMessage()
+POST          /user/sendMail                          @controllers.Emails.sendMail()
+POST          /user/sendStartMail                     @controllers.users.StudentController.sendStartMessage()
+POST          /user/sendFinishMail                    @controllers.users.StudentController.sendFinishMessage()
 
-POST          /user/sendMail                        @controllers.Emails.sendMail()
-POST          /user/sendStartMail                   @controllers.users.StudentController.sendStartMessage()
+POST          /user/sendMail                          @controllers.Emails.sendMail()
+POST          /user/sendStartMail                     @controllers.users.StudentController.sendStartMessage()
 
 
 
-POST          /user/sendMmail                       @controllers.Emails.sendMail()
+POST          /user/sendMmail                         @controllers.Emails.sendMail()
 
 # Download PDF
 
-GET           /pdfWeeklyTable                       @controllers.users.AdminController.pdfWeeklyTable()
-GET           /pdfDailyTable                        @controllers.users.AdminController.pdfDailyTable()
-GET           /pdfDailyReports                      @controllers.users.AdminController.pdfDailyReports(id: Long)
+GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
+GET           /pdfDailyTable                          @controllers.users.AdminController.pdfDailyTable()
+GET           /pdfDailyReports                        @controllers.users.AdminController.pdfDailyReports(id: Long)
 #GET           /pdfWeeklyreports                     @controllers.users.AdminController.pdfWeeklyReports()
 
 # Open weekly reports
 
-GET           /openReport                           @controllers.users.AdminController.openReport(id: Long)
-GET           /open+Report/:id                      @controllers.users.AdminController.openNextReport(id: Long)
-GET           /open-Report/:id                      @controllers.users.AdminController.openPreviousReport(id: Long)
+GET           /openReport                             @controllers.users.AdminController.openReport(id: Long)
+GET           /open+Report/:id                        @controllers.users.AdminController.openNextReport(id: Long)
+GET           /open-Report/:id                        @controllers.users.AdminController.openPreviousReport(id: Long)
 
 # FAQ page
 
-GET           /faq                                  @controllers.Application.faq()
-GET           /faq/setup                            @controllers.users.AdminController.setupFAQ()
-POST          /faq/setup                            @controllers.users.AdminController.saveFAQ()
+GET           /faq                                    @controllers.Application.faq()
+GET           /faq/setup                              @controllers.users.AdminController.setupFAQ()
+POST          /faq/setup                              @controllers.users.AdminController.saveFAQ()
+
+
+
+GET           /admin/calendar                         @controllers.users.AdminController.calendar()
+GET           /admin/calendar/events                  @controllers.users.AdminController.list()
+GET           /admin/events.json                      @controllers.users.AdminController.json(start: Long ?= 0, end: Long ?= 0 )
+
+GET           /admin/calendar/event/:id/edit          @controllers.users.AdminController.edit(id:Long)
+POST          /admin/calendar/event/:id/update        @controllers.users.AdminController.update(id:Long)
+POST          /admin/calendar/event                   @controllers.users.AdminController.add()
+GET           /admin/calendar/event/new               @controllers.users.AdminController.blank()
+GET           /admin/calendar/event/:id/delete        controllers.users.AdminController.delete(id:Long)
+
+POST          /admin/calendar/event-ajax              @controllers.users.AdminController.addByAjax()
+POST          /admin/calendar/event-move              @controllers.users.AdminController.move()
+POST          /admin/calendar/event-resize            @controllers.users.AdminController.resize()
+
+
