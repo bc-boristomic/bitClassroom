@@ -33,6 +33,9 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <div id="postlist">
+                            @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
+                                <span class="label label-warning">You can't finish your assignment until you leave the link</span>
+                            }
                                 <div class="panel">
                                     <div class="panel-heading">
                                         <div class="text-center">
@@ -163,6 +166,7 @@
                    $("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                    var div = $("#sendStartMessage"+postId).parent();
 
+
                    $("#sendStartMessage"+postId).remove();
                    var label = document.createElement('label');
                    label.innerText = "STARTED";
@@ -214,12 +218,9 @@
 
                 function enableLink(postId){
                    var link = $("#homework-link").val();
-                   var pattern = /^(www.)?(https?://(www.)?)?[a-z]{3,}\.[\w]{2,6}(/[\w\.\?\!\=\:\%\#/-]+)?$/;
-                   if(link.match(pattern)){
-                   alert("hello");
                         var button = document.getElementById("sendFinishMessage" + postId);
                         button.disabled = false;
-                   }
+
                 }
 
 
