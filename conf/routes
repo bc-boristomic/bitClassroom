@@ -181,7 +181,7 @@ POST          /user/sendMmail                       @controllers.Emails.sendMail
 GET           /pdfWeeklyTable                       @controllers.users.AdminController.pdfWeeklyTable()
 GET           /pdfDailyTable                        @controllers.users.AdminController.pdfDailyTable()
 GET           /pdfDailyReports                      @controllers.users.AdminController.pdfDailyReports(id: Long)
-#GET           /pdfWeeklyreports                     @controllers.users.AdminController.pdfWeeklyReports()
+GET           /pdfWeeklyReports                     @controllers.users.AdminController.pdfWeeklyReports(id: Long)
 
 # Open weekly reports
 GET           /openWeeklyReport                     @controllers.users.AdminController.openWeeklyReport(id: Long)

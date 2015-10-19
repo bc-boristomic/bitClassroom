@@ -41,6 +41,8 @@ import views.html.admins.setingsweeklyreport;
 import views.html.admins.dailypdf;
 import views.html.admins.pdfopenreport;
 import views.html.admins.openWeeklyReports;
+import views.html.admins.setingsweeklyreport;
+import views.html.admins.pdfOpenWeeklyReport;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -883,7 +885,7 @@ public class AdminController extends Controller {
     }
 
     public Result genWeeklyField() {
-        return ok(views.html.admins.setingsweeklyreport.render(WeeklyField.getFinder().all()));
+        return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
     }
 
     public Result saveWeeklyField() {
@@ -991,10 +993,6 @@ public class AdminController extends Controller {
         return text;
     }
 
-    public Result pdfWeeklyTable() {
-        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
-    }
-
     public Result pdfDailyTable() {
         return pdfGenerator.ok(dailypdf.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()), Configuration.root().getString("application.host"));
     }
@@ -1002,10 +1000,14 @@ public class AdminController extends Controller {
     public Result pdfDailyReports(Long id) {
         return pdfGenerator.ok(pdfopenreport.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()), Configuration.root().getString("application.host"));
     }
-//    Radnja u pripremi
-//    public Result pdfWeeklyReports() {
-//        return pdfGenerator.ok();
-//    }
+
+    public Result pdfWeeklyTable() {
+        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+    public Result pdfWeeklyReports(Long id) {
+        return pdfGenerator.ok(pdfOpenWeeklyReport.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()), Configuration.root().getString("application.host"));
+    }
 
 
 }

@@ -1,21 +1,17 @@
 @import models.report.WeeklyReport
 @import models.report.ReportWeeklyField
-@import controllers.users.AdminController
 @import models.report.DailyReport
 @(wr: WeeklyReport, listReportWeeklyField: List[ReportWeeklyField])
 @adminmain("Open weekly report") {
     <form>
         <div>
             <div class="col-md-10 col-md-offset-1">
-
-
-
                 <div class="row down-border">
                     <div class="col-md-12">
                         <ul class="pager">
                             <li class="previous"><a href="@controllers.users.routes.AdminController.openPreviousWeeklyReport(wr.getId)"><span aria-hidden="true">&larr;</span>
                                 Previous Report</a></li>
-                            <li><a href="@*  @controllers.users.routes.AdminController.pdfDailyReports(dr.getId)  *@"><i class="fa fa-file-pdf-o"> </i>
+                            <li><a href="@controllers.users.routes.AdminController.pdfWeeklyReports(wr.getId)"><i class="fa fa-file-pdf-o"> </i>
                                 PDF</a></li>
                             <li><a href="@controllers.users.routes.AdminController.listWeeklyReport">Back to Table</a></li>
                             <li class="next"><a href="@controllers.users.routes.AdminController.openNextWeeklyReport(wr.getId)">
@@ -23,11 +19,6 @@
                         </ul>
                     </div>
                 </div>
-
-
-
-
-
                 <div class="row down-border top17">
                     <div class="col-md-3">
                         <label>Timestamp</label>
@@ -59,7 +50,6 @@
                     <p class="col-md-2">@wr.getStudent</p>
                     <a class="col-md-1 col-md-offset-6" href="#"> <i class="glyphicon glyphicon-envelope"></i></a>
                 </div>
-
                 @for(lwrf <- listReportWeeklyField) {
                     @if(lwrf.getWeeklyReport.getId.equals(wr.getId)) {
                         <div class="row down-border top17">
@@ -79,7 +69,7 @@
             </div>
         </div>
         <style>
-        .down-border{
+        .down-border {
         border-bottom: 1px solid #777777 ;
         }
         </style>
