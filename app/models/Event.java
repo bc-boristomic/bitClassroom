@@ -31,11 +31,11 @@ public class Event extends Model {
     private Boolean allDay;
 
     @Constraints.Required
-    @Formats.DateTime(pattern = "dd.MM.yyyy - HH:mm")
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     @Column(name="start")
     private Date start = new Date();
 
-    @Formats.DateTime(pattern = "dd.MM.yyyy - HH:mm")
+    @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     @Column(name="end")
     private Date end = new Date();
 

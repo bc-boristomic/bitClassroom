@@ -64,7 +64,7 @@ public final class User extends Model {
     @Column(name = "status", length = 1)
     private Integer status = UserConstants.INACTIVE;
     @Column(name = "student_status", length = 1)
-    private Integer studentStatus;
+    private Integer studentStatus = 0;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false, length = 50)

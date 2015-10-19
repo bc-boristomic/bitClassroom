@@ -199,7 +199,7 @@ POST          /faq/setup                              @controllers.users.AdminCo
 
 GET           /admin/calendar                         @controllers.users.AdminController.calendar()
 GET           /admin/calendar/events                  @controllers.users.AdminController.list()
-GET           /admin/events.json                      @controllers.users.AdminController.json(start: Long ?= 0, end: Long ?= 0 )
+GET           /events.json                            @controllers.users.AdminController.json(start: Long ?= 0, end: Long ?= 0 )
 
 GET           /admin/calendar/event/:id/edit          @controllers.users.AdminController.edit(id:Long)
 POST          /admin/calendar/event/:id/update        @controllers.users.AdminController.update(id:Long)
