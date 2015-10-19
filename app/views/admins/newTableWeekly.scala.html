@@ -47,11 +47,21 @@
                                         <td>N/A</td>
                                     }
                                 }
-                                <td>@lwr.getData</td>
+                                <td>@AdminController.cutText(lwr.getData, 40)</td>
                                 <td>
+                                  @*     *@
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="@controllers.users.routes.AdminController.openWeeklyReport(lwr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                                    </div>
                                     <a data-role="delete" data-delete-parent="tr"
                                     href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
                                         <i class="glyphicon glyphicon-trash"></i></a>
+                                    <div class="col-md-6">
+
+                                    </div>
+                                </div>
+
                                 </td>
                             </tr>
                         </div>

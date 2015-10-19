@@ -184,6 +184,11 @@ GET           /pdfDailyReports                      @controllers.users.AdminCont
 #GET           /pdfWeeklyreports                     @controllers.users.AdminController.pdfWeeklyReports()
 
 # Open weekly reports
+GET           /openWeeklyReport                     @controllers.users.AdminController.openWeeklyReport(id: Long)
+GET           /open-WeeklyReport/:id                @controllers.users.AdminController.openPreviousWeeklyReport(id: Long)
+GET           /open+WeeklyReport/:id                @controllers.users.AdminController.openNextWeeklyReport(id: Long)
+
+# Open daily reports
 
 GET           /openReport                           @controllers.users.AdminController.openReport(id: Long)
 GET           /open+Report/:id                      @controllers.users.AdminController.openNextReport(id: Long)
