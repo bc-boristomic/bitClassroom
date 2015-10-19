@@ -865,9 +865,6 @@ public class AdminController extends Controller {
 
         return redirect("/faq");
     }
-//======================================================================================================================
-// Refactoring reports
-
 
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
@@ -949,10 +946,6 @@ public class AdminController extends Controller {
         return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
     }
 
-
-
-
-
     public Result openReport(Long id) {
         return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
     }
@@ -1008,6 +1001,4 @@ public class AdminController extends Controller {
     public Result pdfWeeklyReports(Long id) {
         return pdfGenerator.ok(pdfOpenWeeklyReport.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()), Configuration.root().getString("application.host"));
     }
-
-
 }

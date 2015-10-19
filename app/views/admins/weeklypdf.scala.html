@@ -1,17 +1,22 @@
 @import models.report.WeeklyField
 @import models.report.ReportWeeklyField
 @import models.report.WeeklyReport
-@import controllers.users.AdminController
 @import helpers.DateTimeFormatHelper
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <link href="@routes.Assets.versioned("stylesheets/style.css")" rel="stylesheet" />
         <title>Weekly report</title>
+        <style>
+        th, td {
+        border: 1px solid black;
+        text-align: center;
+        bottom: 5px;
+        }
+        </style>
     </head>
     <body>
         <form>
@@ -37,7 +42,7 @@
                     @for(lwr <- listWeeklyReport) {
                         <tbody>
                             <div>
-                                <tr class="success" style="background : lightgreen">
+                                <tr class="success">
                                     <td>@lwr.getCreateDate</td>
                                     <td>@lwr.getDate</td>
                                     <td>@lwr.getName</td>
