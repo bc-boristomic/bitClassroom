@@ -6,17 +6,17 @@
 @(listReportWeeklyField: List[ReportWeeklyField],
         listWeeklyReport: List[WeeklyReport],
         listWeeklyField: List[WeeklyField])
-
 @adminmain("Weekly List") {
     <form>
-        <div style="margin-top : 110 px">
+        <div>
             <h3 class="page-head-line"> table of weekly reports </h3>
             <ul class="pager">
-                <li><a href="@controllers.users.routes.AdminController.pdfWeeklyTable"><i class="fa fa-file-pdf-o"> </i> PDF</a></li>
+                <li><a href="@controllers.users.routes.AdminController.pdfWeeklyTable"><i class="fa fa-file-pdf-o"> </i>
+                    PDF</a></li>
             </ul>
         </div>
-        <table id="sort" class="table-bordered" style="background : #B0BED9">
-            <div style="margin : 40 px 30 px 0 px 30 px" >
+        <table id="sort" class="table-bordered">
+            <div>
                 <thead>
                     <tr>
                         <th>Timestamp</th>
@@ -28,13 +28,13 @@
                             <th>@rwf.getName</th>
                         }
                         <th>Report</th>
-                        <th>Delete</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 @for(lwr <- listWeeklyReport) {
                     <tbody>
                         <div>
-                            <tr class="success" style="background: lightgreen">
+                            <tr class="success">
                                 <td>@lwr.getCreateDate</td>
                                 <td>@DailyReport.formaterDate(lwr.getDate)</td>
                                 <td>@lwr.getName</td>
@@ -47,11 +47,18 @@
                                         <td>N/A</td>
                                     }
                                 }
-                                <td>@lwr.getData</td>
+                                <td>@AdminController.cutText(lwr.getData, 40)</td>
                                 <td>
-                                    <a data-role="delete" data-delete-parent="tr"
-                                    href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
-                                        <i class="glyphicon glyphicon-trash"></i></a>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="@controllers.users.routes.AdminController.openWeeklyReport(lwr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                                        </div>
+                                        <a data-role="delete" data-delete-parent="tr"
+                                        href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
+                                            <i class="glyphicon glyphicon-trash"></i></a>
+                                        <div class="col-md-6">
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </div>

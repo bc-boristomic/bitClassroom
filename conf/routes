@@ -17,9 +17,19 @@ GET           /util/email                             @controllers.Application.s
 GET           /user/createprofile                     @controllers.users.UserController.createProfile()
 POST          /user/createprofile                     @controllers.users.UserController.updateProfile()
 
+<<<<<<< HEAD
 GET           /user/editprofile                       @controllers.users.UserController.editProfile()
 POST          /user/editprofile                       @controllers.users.UserController.saveProfile()
 GET           /remove/:token                          @controllers.users.UserController.refusedUser(token: String)
+=======
+GET           /user/editprofile                     @controllers.users.UserController.editProfile()
+POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
+GET           /remove/:token                        @controllers.users.UserController.refusedUser(token: String)
+GET           /user/forgot/password                 @controllers.users.UserController.forgotPassword()
+POST          /user/forgot/password                 @controllers.users.UserController.sendRecoveryMail()
+GET           /reset/password/:token                @controllers.users.UserController.showResetPassword(token: String)
+POST          /reset/password/:token                @controllers.users.UserController.resetPassword(token: String)
+>>>>>>> develop
 # Route for seeing user's public profile
 GET           /user/publicprofile/:id                 @controllers.users.UserController.publicProfile(id: Long)
 
@@ -178,12 +188,19 @@ POST          /user/sendMmail                         @controllers.Emails.sendMa
 
 # Download PDF
 
-GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
-GET           /pdfDailyTable                          @controllers.users.AdminController.pdfDailyTable()
-GET           /pdfDailyReports                        @controllers.users.AdminController.pdfDailyReports(id: Long)
-#GET           /pdfWeeklyreports                     @controllers.users.AdminController.pdfWeeklyReports()
+
+GET           /pdfWeeklyTable                       @controllers.users.AdminController.pdfWeeklyTable()
+GET           /pdfDailyTable                        @controllers.users.AdminController.pdfDailyTable()
+GET           /pdfDailyReports                      @controllers.users.AdminController.pdfDailyReports(id: Long)
+GET           /pdfWeeklyReports                     @controllers.users.AdminController.pdfWeeklyReports(id: Long)
+
 
 # Open weekly reports
+GET           /openWeeklyReport                     @controllers.users.AdminController.openWeeklyReport(id: Long)
+GET           /open-WeeklyReport/:id                @controllers.users.AdminController.openPreviousWeeklyReport(id: Long)
+GET           /open+WeeklyReport/:id                @controllers.users.AdminController.openNextWeeklyReport(id: Long)
+
+# Open daily reports
 
 GET           /openReport                             @controllers.users.AdminController.openReport(id: Long)
 GET           /open+Report/:id                        @controllers.users.AdminController.openNextReport(id: Long)
