@@ -22,18 +22,24 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.MD5Hash;
+import utility.MailHelper;
 import utility.UserConstants;
 import utility.UserUtils;
+import views.html.notfound;
 import views.html.posts.message;
 import views.html.users.editprofile;
+import views.html.users.login;
 import views.html.users.profile;
 import views.html.posts.studentList;
 import views.html.posts.allMessage;
+import views.html.users.util.resetpassword;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boris on 9/12/15.
@@ -43,6 +49,8 @@ public class UserController extends Controller {
     private List<String> imageList = new ArrayList<>();
 
     private final Form<User> userForm = Form.form(User.class);
+    private final Form<String> emailForm = Form.form(String.class);
+    private static String url = Play.application().configuration().getString("url");
 
     /**
      * Renders template for creating initial user profile with all information, once profile is created status of user is
@@ -324,4 +332,47 @@ public class UserController extends Controller {
         }
     }
 
+    public Result forgotPassword(){
+        return ok(views.html.users.util.email.render());
+    }
+
+    public Result sendRecoveryMail(){
+        Form<String> boundForm = emailForm.bindFromRequest();
+        String email = boundForm.bindFromRequest().field("email").value();
+        if(email.equals("") || email == null){
+            flash("error", "Something is wrong!");
+        }else{
+            User user = User.findByEmail(email);
+            String message = url + "reset/password/" + user.getToken();
+            MailHelper.send(email,message);
+            flash("success", "Fantastic");
+        }
+        return redirect(routes.UserController.forgotPassword());
+    }
+
+    public Result showResetPassword(String token){
+        return ok(views.html.users.util.resetpassword.render(token));
+    }
+
+    public Result resetPassword(String token){
+        Form<User> boundForm = userForm.bindFromRequest();
+        String pass1 = boundForm.bindFromRequest().field("password1").value();
+        String pass2 = boundForm.bindFromRequest().field("password2").value();
+
+        if(!pass1.equals("") && pass1 != null && pass2.equals(pass1)){
+            User user = User.findUserByToken(token);
+            if(user == null){
+                return badRequest(views.html.notfound.render());
+            }
+            user.setPassword(MD5Hash.getEncriptedPasswordMD5(pass1));
+            user.setToken();
+            user.update();
+            flash("success", "You successfully changed your password!");
+            return ok(login.render(userForm));
+        }else{
+            flash("Please fill form correctly!");
+            return redirect(routes.UserController.showResetPassword(token));
+        }
+
+    }
 }

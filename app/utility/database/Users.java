@@ -69,6 +69,7 @@ public class Users {
 			} else {
 				whatUser.setGender(1);
 			}
+			whatUser.setToken();
 			whatUser.save();
 		}
 
@@ -80,6 +81,7 @@ public class Users {
 			teacher.setLastName(LAST_NAME_TEACHERS[i]);
 			teacher.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.TEACHER })));
 			teacher.setCreatedBy("Global.java");
+			teacher.setToken();
 			teacher.save();
 		}
 
@@ -93,6 +95,7 @@ public class Users {
 			student.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
 			student.setHomeworkStatus(0);
 			student.setCreatedBy("Global.java");
+			student.setToken();
 			student.save();
 		}
 
@@ -104,6 +107,7 @@ public class Users {
 			mentor.setLastName(LAST_NAME_MENTORS[i]);
 			mentor.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.MENTOR })));
 			mentor.setCreatedBy("Global.java");
+			mentor.setToken();
 			mentor.save();
 		}
 
@@ -115,6 +119,7 @@ public class Users {
 			staff.setLastName(LAST_NAME_STAFF[i]);
 			staff.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.ADMIN })));
 			staff.setCreatedBy("Global.java");
+			staff.setToken();
 			staff.save();
 		}
 	}

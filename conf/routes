@@ -20,6 +20,10 @@ POST          /user/createprofile                   @controllers.users.UserContr
 GET           /user/editprofile                     @controllers.users.UserController.editProfile()
 POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
 GET           /remove/:token                        @controllers.users.UserController.refusedUser(token: String)
+GET           /user/forgot/password                 @controllers.users.UserController.forgotPassword()
+POST          /user/forgot/password                 @controllers.users.UserController.sendRecoveryMail()
+GET           /reset/password/:token                @controllers.users.UserController.showResetPassword(token: String)
+POST          /reset/password/:token                @controllers.users.UserController.resetPassword(token: String)
 # Route for seeing user's public profile
 GET           /user/publicprofile/:id               @controllers.users.UserController.publicProfile(id: Long)
 

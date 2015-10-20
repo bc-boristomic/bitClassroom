@@ -65,4 +65,30 @@ public class MailHelper {
 
         }
     }
+
+    public static void send(String email, String message) {
+
+        try {
+            HtmlEmail mail = new HtmlEmail();
+            mail.setSubject("bitClassroom Reset your password!");
+            mail.setFrom("bitClassroom <" + Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV") + ">");
+            mail.addTo("Contact <" + Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV") + ">");
+            mail.addTo(email);
+            mail.setMsg(message);
+            mail.setHtmlMsg(String
+                    .format("<html><body><strong> %s </strong> <p> %s </p> <p> %s </p></body></html>",
+                            "Thanks for using bitClassroom!",
+                            "Please click on link below to change your password", message));
+            mail.setHostName("smtp.gmail.com");
+            mail.setStartTLSEnabled(true);
+            mail.setSSLOnConnect(true);
+            mail.setAuthenticator(new DefaultAuthenticator(
+                    Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV"),
+                    Play.application().configuration().reference().getString("EMAIL_PASSWORD_ENV")
+            ));
+            mail.send();
+        } catch (Exception e) {
+            Logger.warn("Email error: " + e);
+        }
+    }
 }
