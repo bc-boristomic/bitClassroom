@@ -760,7 +760,7 @@ function Header(calendar, options) {
 									"</span>" +
 								"</span>"
 							);
-							if (button) {
+							if (button) {z
 								button
 									.click(function() {
 										if (!button.hasClass(tm + '-state-disabled')) {

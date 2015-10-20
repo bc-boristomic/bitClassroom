@@ -104,7 +104,7 @@ $(document).ready(function () {
 
     setNewHeight();
 
-    $('#calendar').fullCalendar('gotoDate', 2012,10,21);
+    $('#calendar').fullCalendar('gotoDate', 2015,10,21);
 
 });
 

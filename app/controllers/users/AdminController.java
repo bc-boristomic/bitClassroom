@@ -15,6 +15,8 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import play.Configuration;
 import play.Logger;
 import play.Play;
@@ -893,7 +895,7 @@ public class AdminController extends Controller {
 
         List<Event> resultList = Event.findInDateRange(startDate, endDate);
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy - HH:mm");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         for (Event event : resultList) {
             Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
@@ -905,8 +907,13 @@ public class AdminController extends Controller {
             eventRemapped.put("url", "/admin/calendar/event/"+event.getId().toString()+"/edit");
 
             allEvents.add(eventRemapped);
+
         }
-        return ok(play.libs.Json.toJson(allEvents));
+        Logger.info(allEvents.toString());
+        JSONArray obj = new JSONArray();
+        obj.addAll(allEvents);
+
+        return ok(obj.toJSONString());
     }
 
 
@@ -1020,6 +1027,7 @@ public class AdminController extends Controller {
         Map<String, String> result = new HashMap<String, String>();
         result.put("id", newEvent.getId().toString());
         result.put("url", "/admin/calendar/event/"+newEvent.getId().toString()+"/edit");
+        Logger.info(result.toString());
 
         return ok(play.libs.Json.toJson(result));
     }
