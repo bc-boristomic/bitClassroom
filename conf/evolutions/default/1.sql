@@ -51,6 +51,16 @@ create table error_log (
   constraint pk_error_log primary key (id))
 ;
 
+create table event_setup (
+  id                        bigint auto_increment not null,
+  title                     varchar(255),
+  is_all_day                tinyint(1) default 0,
+  start                     datetime(6),
+  end                       datetime(6),
+  ends_same_day             tinyint(1) default 0,
+  constraint pk_event_setup primary key (id))
+;
+
 create table faq_setup (
   id                        bigint auto_increment not null,
   question                  varchar(500),
@@ -252,6 +262,8 @@ drop table course_user;
 drop table daily_report;
 
 drop table error_log;
+
+drop table event_setup;
 
 drop table faq_setup;
 
