@@ -36,22 +36,20 @@ import views.html.admins.adduser;
 import views.html.admins.newTableWeekly;
 import views.html.admins.openReports;
 import views.html.admins.setingsweeklyreport;
-<<<<<<< HEAD
-import views.html.admins.dailypdf;
-import views.html.admins.pdfopenreport;
+
 import views.html.calendar;
 import views.html.formEdit;
 import views.html.formNew;
 import views.html.list;
 
-=======
+
 import views.html.admins.openWeeklyReports;
 import views.html.admins.setingsweeklyreport;
 import views.html.pdf.pdfopenreport;
 import views.html.pdf.weeklypdf;
 import views.html.pdf.dailypdf;
 import views.html.pdf.pdfOpenWeeklyReport;
->>>>>>> develop
+
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
@@ -876,9 +874,7 @@ public class AdminController extends Controller {
 
         return redirect("/faq");
     }
-<<<<<<< HEAD
-
-
+    
     /**
      * Checks if events ends the same day which starts
      * @param start Date
