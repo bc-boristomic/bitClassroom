@@ -15,7 +15,9 @@ $(document).ready(function () {
         selectable:true,
         selectHelper:true,
         select:function (start, end, allDay) {
+            swal({   title: "An input!",   text: "Write something interesting:",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Write something" }, function(inputValue){   if (inputValue === false) return false;      if (inputValue === "") {     swal.showInputError("You need to write something!");     return false   }      swal("Nice!", "You wrote: " + inputValue, "success"); });
             var title = prompt('Event Title:');
+            swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
 //            var title = "Quick test title...";
             if (title) {
                 jQuery("#newTitle").val(title);
