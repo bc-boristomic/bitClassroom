@@ -345,9 +345,11 @@ public class AdminController extends Controller {
 
         List<Course> courses =  Course.findAll();
         for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description) && courses.get(i).getStatus() != 2){
-                flash("warning", "Course already exist");
-                return redirect("/admin/createcourse");
+            if(courses.get(i).getStatus() == 1) {
+                if (courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description) && courses.get(i).getStatus() != 2) {
+                    flash("warning", "Course already exist");
+                    return redirect("/admin/createcourse");
+                }
             }
         }
 

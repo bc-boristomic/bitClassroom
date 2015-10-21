@@ -18,13 +18,13 @@ GET           /user/createprofile                     @controllers.users.UserCon
 POST          /user/createprofile                     @controllers.users.UserController.updateProfile()
 
 
-GET           /user/editprofile                     @controllers.users.UserController.editProfile()
-POST          /user/editprofile                     @controllers.users.UserController.saveProfile()
-GET           /remove/:token                        @controllers.users.UserController.refusedUser(token: String)
-GET           /user/forgot/password                 @controllers.users.UserController.forgotPassword()
-POST          /user/forgot/password                 @controllers.users.UserController.sendRecoveryMail()
-GET           /reset/password/:token                @controllers.users.UserController.showResetPassword(token: String)
-POST          /reset/password/:token                @controllers.users.UserController.resetPassword(token: String)
+GET           /user/editprofile                       @controllers.users.UserController.editProfile()
+POST          /user/editprofile                       @controllers.users.UserController.saveProfile()
+GET           /remove/:token                          @controllers.users.UserController.refusedUser(token: String)
+GET           /user/forgot/password                   @controllers.users.UserController.forgotPassword()
+POST          /user/forgot/password                   @controllers.users.UserController.sendRecoveryMail()
+GET           /reset/password/:token                  @controllers.users.UserController.showResetPassword(token: String)
+POST          /reset/password/:token                  @controllers.users.UserController.resetPassword(token: String)
 
 # Route for seeing user's public profile
 GET           /user/publicprofile/:id                 @controllers.users.UserController.publicProfile(id: Long)
@@ -185,16 +185,16 @@ POST          /user/sendMmail                         @controllers.Emails.sendMa
 # Download PDF
 
 
-GET           /pdfWeeklyTable                       @controllers.users.AdminController.pdfWeeklyTable()
-GET           /pdfDailyTable                        @controllers.users.AdminController.pdfDailyTable()
-GET           /pdfDailyReports                      @controllers.users.AdminController.pdfDailyReports(id: Long)
-GET           /pdfWeeklyReports                     @controllers.users.AdminController.pdfWeeklyReports(id: Long)
+GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
+GET           /pdfDailyTable                          @controllers.users.AdminController.pdfDailyTable()
+GET           /pdfDailyReports                        @controllers.users.AdminController.pdfDailyReports(id: Long)
+GET           /pdfWeeklyReports                       @controllers.users.AdminController.pdfWeeklyReports(id: Long)
 
 
 # Open weekly reports
-GET           /openWeeklyReport                     @controllers.users.AdminController.openWeeklyReport(id: Long)
-GET           /open-WeeklyReport/:id                @controllers.users.AdminController.openPreviousWeeklyReport(id: Long)
-GET           /open+WeeklyReport/:id                @controllers.users.AdminController.openNextWeeklyReport(id: Long)
+GET           /openWeeklyReport                       @controllers.users.AdminController.openWeeklyReport(id: Long)
+GET           /open-WeeklyReport/:id                  @controllers.users.AdminController.openPreviousWeeklyReport(id: Long)
+GET           /open+WeeklyReport/:id                  @controllers.users.AdminController.openNextWeeklyReport(id: Long)
 
 # Open daily reports
 
@@ -208,11 +208,11 @@ GET           /faq                                    @controllers.Application.f
 GET           /faq/setup                              @controllers.users.AdminController.setupFAQ()
 POST          /faq/setup                              @controllers.users.AdminController.saveFAQ()
 
+# Calendar view and events list
 
-
-GET           /admin/calendar                         @controllers.users.AdminController.calendar()
+GET           /calendar                               @controllers.Application.calendar()
 GET           /admin/calendar/events                  @controllers.users.AdminController.list()
-GET          /events.json                            @controllers.users.AdminController.json(start: Long ?= 0, end: Long ?= 0 )
+GET           /events.json                            @controllers.users.AdminController.json(start: Long ?= 0, end: Long ?= 0 )
 
 GET           /admin/calendar/event/:id/edit          @controllers.users.AdminController.edit(id:Long)
 POST          /admin/calendar/event/:id/update        @controllers.users.AdminController.update(id:Long)
@@ -223,6 +223,7 @@ GET           /admin/calendar/event/:id/delete        controllers.users.AdminCon
 POST          /admin/calendar/event-ajax              @controllers.users.AdminController.addByAjax()
 POST          /admin/calendar/event-move              @controllers.users.AdminController.move()
 POST          /admin/calendar/event-resize            @controllers.users.AdminController.resize()
+
 
 
 
