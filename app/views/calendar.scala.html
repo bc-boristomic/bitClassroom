@@ -1,4 +1,6 @@
 @import java.util.Date
+@import helpers.SessionHelper
+@import utility.UserConstants
 @(pageTitle: String)
 
 @layouts.calendarLayout("Full calendar") {
@@ -7,34 +9,92 @@
     <br/>
     <br/>
 <div style="display: none;">
-    <form action="@controllers.users.routes.AdminController.addByAjax()" method="POST" id="eventFormNew">
-        <input type="text" name="title" id="newTitle"/>
-        <input type="text" name="start" id="newStart"/>
-        <input type="text" name="end" id="newEnd"/>
-        <input type="text" name="allDay" id="newAllDay"/>
-    </form>
+    @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+        <form action="@controllers.users.routes.AdminController.addByAjax()" method="POST" id="eventFormNew">
+            <input type="text" name="title" id="newTitle"/>
+            <input type="text" name="start" id="newStart"/>
+            <input type="text" name="end" id="newEnd"/>
+            <input type="text" name="allDay" id="newAllDay"/>
+        </form>
 
 
-    <form action="@controllers.users.routes.AdminController.move()" method="POST" id="eventFormMove">
-        <input type="text" name="id" id="moveId"/>
-        <input type="text" name="dayDelta" id="moveDayDelta"/>
-        <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
-        <input type="text" name="allDay" id="moveAllDay"/>
-    </form>
+        <form action="@controllers.users.routes.AdminController.move()" method="POST" id="eventFormMove">
+            <input type="text" name="id" id="moveId"/>
+            <input type="text" name="dayDelta" id="moveDayDelta"/>
+            <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
+            <input type="text" name="allDay" id="moveAllDay"/>
+        </form>
 
 
-    <form action="@controllers.users.routes.AdminController.resize()" method="POST" id="eventFormResize">
-        <input type="text" name="id" id="resizeId"/>
-        <input type="text" name="dayDelta" id="resizeDayDelta"/>
-        <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
-    </form>
+        <form action="@controllers.users.routes.AdminController.resize()" method="POST" id="eventFormResize">
+            <input type="text" name="id" id="resizeId"/>
+            <input type="text" name="dayDelta" id="resizeDayDelta"/>
+            <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
+        </form>
+    }else{
+
+    }
+
 </div>
 
     <div id='calendar'>
 
         <br/>
     </div>
+    @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.eq(UserConstants.ADMIN)) {
+        <script>
+     $(document).ready(function () {
 
 
-}
+        var calendar = $('#calendar').fullCalendar({
+        timeFormat:'H:mm{ - H:mm}',
+        header:{
+            left:'prev,next today',
+            center:'title',
+            right:'month,agendaWeek,agendaDay'
+        },
+        selectable:true,
+        selectHelper:true,
+        select:function (start, end, allDay) {
+
+            var title = prompt('Event Title:');
+//            var title = "Quick test title...";
+            if (title) {
+                jQuery("#newTitle").val(title);
+                jQuery("#newStart").val(convertDate(start));
+                jQuery("#newEnd").val(convertDate(end));
+                jQuery("#newAllDay").val(allDay);
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url:  jQuery("#eventFormNew").attr("action"),
+                    data: jQuery("#eventFormNew").serialize() ,
+                    dataType: "json",
+                    statusCode: {
+                        200: function(data) {
+                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,start:start,end:end,allDay:allDay, url:data.url },true);
+                        }
+                    }
+                });
+            } else {
+                alert("Title is required!");
+            }
+            calendar.fullCalendar('unselect');
+        },
+       events: {
+            url:"/events.json",
+            cache: true,
+            editable:true
+        }
+         });
+          setNewHeight();
+       });
+
+
+</script>
+    }
+
+
+    }
+
 

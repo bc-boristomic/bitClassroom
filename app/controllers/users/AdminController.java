@@ -565,7 +565,7 @@ public class AdminController extends Controller {
             }
 
 
-        flash("success", String.format("Successfully assigned %s %s to %s %s.", mentor.getFirstName(),mentor.getLastName(), student.getFirstName(),student.getLastName()));
+        flash("success", String.format("Successfully assigned %s %s to %s %s.", mentor.getFirstName(), mentor.getLastName(), student.getFirstName(), student.getLastName()));
         return redirect("/admin/mentorship");
     }
 
@@ -876,7 +876,8 @@ public class AdminController extends Controller {
 
         return redirect("/faq");
     }
-    
+
+    /********************************Calendar option for admin*********************************/
     /**
      * Checks if events ends the same day which starts
      * @param start Date
@@ -888,49 +889,6 @@ public class AdminController extends Controller {
         return dateFormat.format(start).equals(dateFormat.format(end));
     }
 
-
-    /**
-     * Returns list of events for calendar view
-     * @param start Long Timestamp of current view start
-     * @param end Long Timestamp of current view end
-     * @return Result
-     */
-    public  Result json(Long start, Long end) {
-
-        Date startDate = new Date(start*1000);
-        Date endDate = new Date(end*1000);
-
-        List<Event> resultList = Event.findInDateRange(startDate, endDate);
-        ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        for (Event event : resultList) {
-            Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
-            eventRemapped.put("id", event.getId());
-            eventRemapped.put("title", event.getTitle());
-            eventRemapped.put("start", df.format(event.getStart()));
-            eventRemapped.put("end", df.format(event.getEnd()));
-            eventRemapped.put("allDay", event.getAllDay());
-            eventRemapped.put("url", "/admin/calendar/event/"+event.getId().toString()+"/edit");
-
-            allEvents.add(eventRemapped);
-
-        }
-        Logger.info(allEvents.toString());
-        JSONArray obj = new JSONArray();
-        obj.addAll(allEvents);
-
-        return ok(obj.toJSONString());
-    }
-
-
-    /**
-     * Displays full calendar
-     * @return Result
-     */
-    public  Result calendar() {
-        return ok(calendar.render("Title of this calendar..."));
-    }
 
     /**
      * List of events in table view
@@ -972,19 +930,6 @@ public class AdminController extends Controller {
         return redirect("/admin/calendar/events");
     }
 
-
-    /**
-     * Dislays form for editing existing event
-     * @param id Long
-     * @return Result
-     */
-    public Result edit(Long id) {
-        Event event = Event.find.byId(id);
-        Form<Event> eventForm = Form.form(Event.class).fill(event);
-        return ok(formEdit.render(id, eventForm, event));
-    }
-
-
     /**
      * Save new event in DB (a.k.a. submit action in other examples)
      * @param id Long
@@ -1021,7 +966,9 @@ public class AdminController extends Controller {
      * Adds event after clicking on calendar
      * @return Result
      */
+
     public Result addByAjax() {
+
         Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
         Event newEvent = eventForm.get();
         newEvent.setEndsSameDay(endsSameDay(newEvent.getStart(), newEvent.getEnd()));
@@ -1033,7 +980,7 @@ public class AdminController extends Controller {
 
         Map<String, String> result = new HashMap<String, String>();
         result.put("id", newEvent.getId().toString());
-        result.put("url", "/admin/calendar/event/"+newEvent.getId().toString()+"/edit");
+        result.put("url", "/calendar/event/"+newEvent.getId().toString());
         Logger.info(result.toString());
 
         return ok(play.libs.Json.toJson(result));

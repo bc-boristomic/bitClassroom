@@ -1,3 +1,5 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
 @(id: Long, eventForm: Form[Event], event: Event)
 
 @import helper._
@@ -12,8 +14,11 @@
     <br/>
 <div class="container">
 
-    <h3>Edit event: @event.getTitle </h3>
-
+    @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+        <h3>Edit event: @event.getTitle </h3>
+    } else {
+        <h3>Event details</h3>
+    }
     @helper.form(action = controllers.users.routes.AdminController.update(id), 'id->"eventFormEdit") {
 
         @inputText(eventForm("title"), args =
@@ -44,12 +49,17 @@
             'placeholder -> "dd.mm.yyyy hh:mm"
         )
 
+
+        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
         <div class="row" id="rowOf_submitbuttons">
             <div class="span8 offset2">
             <input type="submit" value="Save an event" class="btn btn-warning"> or
             <a href="@controllers.users.routes.AdminController.list()" class="btn">Cancel</a>
             </div>
         </div>
+        }else{
+
+        }
         }
 </div>
 }

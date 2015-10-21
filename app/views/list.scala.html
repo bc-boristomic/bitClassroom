@@ -20,7 +20,7 @@
         <tbody>
         @for(event <- events){
         <tr>
-            <td><a href="@controllers.users.routes.AdminController.edit(event.getId)">@event.getTitle</a></td>
+            <td><a href="@controllers.users.routes.UserController.edit(event.getId)">@event.getTitle</a></td>
             @if(event.getAllDay && event.getEndsSameDay){
                 <td colspan="2">@if(event.getStart == null){ - } else {@event.getStart.format("dd.MM.yyyy") (All day)}</td>
             } else {

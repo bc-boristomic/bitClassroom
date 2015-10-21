@@ -17,10 +17,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import utility.MD5Hash;
 import utility.UserConstants;
-import views.html.about;
-import views.html.calendar;
-import views.html.index;
-import views.html.newMain;
+import views.html.*;
 import views.html.users.login;
 import views.html.users.util.email;
 import views.html.users.util.faq;
@@ -181,48 +178,5 @@ public class Application extends Controller {
         return ok(faq.render(faqList));
     }
 
-
-    /**
-     * Displays full calendar
-     * @return Result
-     */
-    public  Result calendar() {
-        return ok(calendar.render("Title of this calendar..."));
-    }
-
-
-    /**
-     * Returns list of events for calendar view
-     * @param start Long Timestamp of current view start
-     * @param end Long Timestamp of current view end
-     * @return Result
-     */
-    public  Result json(Long start, Long end) {
-
-        Date startDate = new Date(start*1000);
-        Date endDate = new Date(end*1000);
-
-        List<Event> resultList = Event.findInDateRange(startDate, endDate);
-        ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        for (Event event : resultList) {
-            Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
-            eventRemapped.put("id", event.getId());
-            eventRemapped.put("title", event.getTitle());
-            eventRemapped.put("start", df.format(event.getStart()));
-            eventRemapped.put("end", df.format(event.getEnd()));
-            eventRemapped.put("allDay", event.getAllDay());
-            eventRemapped.put("url", "/admin/calendar/event/"+event.getId().toString()+"/edit");
-
-            allEvents.add(eventRemapped);
-
-        }
-        Logger.info(allEvents.toString());
-        JSONArray obj = new JSONArray();
-        obj.addAll(allEvents);
-
-        return ok(obj.toJSONString());
-    }
 
 }

@@ -3,6 +3,7 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import models.Event;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
@@ -13,6 +14,7 @@ import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
+import org.json.simple.JSONArray;
 import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
@@ -26,6 +28,8 @@ import utility.MD5Hash;
 import utility.MailHelper;
 import utility.UserConstants;
 import utility.UserUtils;
+import views.html.calendar;
+import views.html.formEdit;
 import views.html.notfound;
 import views.html.posts.message;
 import views.html.users.editprofile;
@@ -37,9 +41,10 @@ import views.html.users.util.resetpassword;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by boris on 9/12/15.
@@ -374,5 +379,60 @@ public class UserController extends Controller {
             return redirect(routes.UserController.showResetPassword(token));
         }
 
+    }
+
+
+    /**
+     * Displays full calendar
+     * @return Result
+     */
+    public  Result calendar() {
+        return ok(calendar.render("Title of this calendar..."));
+    }
+
+
+    /**
+     * Returns list of events for calendar view
+     * @param start Long Timestamp of current view start
+     * @param end Long Timestamp of current view end
+     * @return Result
+     */
+    public  Result json(Long start, Long end) {
+
+        Date startDate = new Date(start*1000);
+        Date endDate = new Date(end*1000);
+
+        List<Event> resultList = Event.findInDateRange(startDate, endDate);
+        ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        for (Event event : resultList) {
+            Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
+            eventRemapped.put("id", event.getId());
+            eventRemapped.put("title", event.getTitle());
+            eventRemapped.put("start", df.format(event.getStart()));
+            eventRemapped.put("end", df.format(event.getEnd()));
+            eventRemapped.put("allDay", event.getAllDay());
+            eventRemapped.put("url", "/calendar/event/"+event.getId().toString());
+
+            allEvents.add(eventRemapped);
+
+        }
+        Logger.info(allEvents.toString());
+        JSONArray obj = new JSONArray();
+        obj.addAll(allEvents);
+
+        return ok(obj.toJSONString());
+    }
+
+    /**
+     * Dislays form for editing existing event
+     * @param id Long
+     * @return Result
+     */
+    public Result edit(Long id) {
+        Event event = Event.find.byId(id);
+        Form<Event> eventForm = Form.form(Event.class).fill(event);
+        return ok(formEdit.render(id, eventForm, event));
     }
 }

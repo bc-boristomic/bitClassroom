@@ -1,3 +1,5 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
 @(title: String)(content: Html)
 <!DOCTYPE html>
 
@@ -18,14 +20,15 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="@routes.Application.calendar()">FullCalendar</a>
-
-            <ul class="nav pull-right">
-                <li >
-                    <a href="@controllers.users.routes.AdminController.list()">
-                        <i class="icon-list icon-white"></i> Event's list</a>
-                </li>
-            </ul>
+            <a class="brand" href="@controllers.users.routes.UserController.calendar()">FullCalendar</a>
+            @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+                <ul class="nav pull-right">
+                    <li >
+                        <a href="@controllers.users.routes.AdminController.list()">
+                            <i class="icon-list icon-white"></i> Event's list</a>
+                    </li>
+                </ul>
+            }
         </div>
     </div>
 </div>
