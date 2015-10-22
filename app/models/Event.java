@@ -1,7 +1,9 @@
 package models;
 
 import com.avaje.ebean.Expr;
+
 import com.avaje.ebean.Model;
+import models.course.Course;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -38,6 +40,9 @@ public class Event extends Model {
     @Formats.DateTime(pattern = "dd.MM.yyyy HH:mm")
     @Column(name="end")
     private Date end = new Date();
+
+    @ManyToOne
+    private Course course;
 
     private Boolean endsSameDay;
 
@@ -95,6 +100,14 @@ public class Event extends Model {
 
     public void setEndsSameDay(Boolean endsSameDay) {
         this.endsSameDay = endsSameDay;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public static List<Event> findInDateRange(Date start, Date end) {

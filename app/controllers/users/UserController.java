@@ -28,9 +28,7 @@ import utility.MD5Hash;
 import utility.MailHelper;
 import utility.UserConstants;
 import utility.UserUtils;
-import views.html.calendar;
-import views.html.formEdit;
-import views.html.notfound;
+import views.html.*;
 import views.html.posts.message;
 import views.html.users.editprofile;
 import views.html.users.login;
@@ -53,6 +51,7 @@ public class UserController extends Controller {
 
     private List<String> imageList = new ArrayList<>();
 
+    final static Form<Event> eventForm = Form.form(Event.class);
     private final Form<User> userForm = Form.form(User.class);
     private final Form<String> emailForm = Form.form(String.class);
     private static String url = Play.application().configuration().getString("url");
@@ -386,8 +385,12 @@ public class UserController extends Controller {
      * Displays full calendar
      * @return Result
      */
-    public  Result calendar() {
-        return ok(calendar.render("Title of this calendar..."));
+    public static Long courseId;
+    public static Course course;
+    public  Result calendar(Long id) {
+        courseId = id;
+        course = Course.findById(id);
+        return ok(calendar.render("Title of this calendar...", course));
     }
 
 
@@ -402,11 +405,17 @@ public class UserController extends Controller {
         Date startDate = new Date(start*1000);
         Date endDate = new Date(end*1000);
 
+        List<Event> courseEvent = new ArrayList<>();
         List<Event> resultList = Event.findInDateRange(startDate, endDate);
+        for ( int i = 0; i < resultList.size(); i++){
+            if(resultList.get(i).getCourse().getId().equals(courseId)){
+                courseEvent.add(resultList.get(i));
+            }
+        }
         ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        for (Event event : resultList) {
+        for (Event event : courseEvent) {
             Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
             eventRemapped.put("id", event.getId());
             eventRemapped.put("title", event.getTitle());
@@ -433,6 +442,177 @@ public class UserController extends Controller {
     public Result edit(Long id) {
         Event event = Event.find.byId(id);
         Form<Event> eventForm = Form.form(Event.class).fill(event);
-        return ok(formEdit.render(id, eventForm, event));
+        return ok(formEdit.render(id, eventForm, event, course));
+    }
+
+    /********************************Calendar option for admin*********************************/
+    /**
+     * Checks if events ends the same day which starts
+     * @param start Date
+     * @param end Date
+     * @return Boolean: True if ends same day
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    private  Boolean endsSameDay(Date start, Date end){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        return dateFormat.format(start).equals(dateFormat.format(end));
+    }
+
+
+    /**
+     * List of events in table view
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public  Result list() {
+        List<Event> events = Event.find.order().desc("start").findList();
+        return ok(list.render(events, course));
+    }
+
+
+    /**
+     * Displays blank form
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public  Result blank() {
+        return ok(formNew.render(eventForm));
+    }
+
+
+    /**
+     * Save new event in DB (a.k.a. submit action in other examples)
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result add() {
+        Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        if (eventForm.hasErrors()) {
+            return badRequest(formNew.render(eventForm));
+        }
+
+        Event newEvent = eventForm.get();
+
+        newEvent.setAllDay(false);
+        if (newEvent.getEnd() == null) {
+            newEvent.setEnd(new DateTime(newEvent.getStart()).plusMinutes(30).toDate());
+        }
+        newEvent.setEndsSameDay(endsSameDay(newEvent.getStart(), newEvent.getEnd()));
+        newEvent.setCourse(course);
+        newEvent.save();
+        return redirect("/admin/calendar/events");
+    }
+
+    /**
+     * Save new event in DB (a.k.a. submit action in other examples)
+     * @param id Long
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result update(Long id) {
+        Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        if (eventForm.hasErrors()) {
+            return badRequest(formEdit.render(id, eventForm, Event.find.byId(id), Course.findById(courseId)));
+        }
+        Event updatedEvent = Event.find.byId(id);
+        updatedEvent.setAllDay(false);
+        if (updatedEvent.getEnd() == null) {
+            updatedEvent.setEnd(new DateTime(updatedEvent.getStart()).plusMinutes(30).toDate());
+        }
+        updatedEvent.setEndsSameDay(endsSameDay(updatedEvent.getStart(), updatedEvent.getEnd()));
+        updatedEvent.setCourse(course);
+        updatedEvent.setStart(eventForm.get().getStart());
+        updatedEvent.setEnd(eventForm.get().getEnd());
+        Ebean.update(updatedEvent);
+        updatedEvent.update();
+        return redirect("/admin/calendar/events");
+    }
+
+
+    /**
+     * Deletes event
+     * @param id Long
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result delete(Long id) {
+        Event.find.ref(id).delete();
+        return redirect("/admin/calendar/events");
+    }
+
+
+    /**
+     * Adds event after clicking on calendar
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result addByAjax() {
+
+        Form<Event> eventForm = Form.form(Event.class).bindFromRequest();
+        Event newEvent = eventForm.get();
+        newEvent.setEndsSameDay(endsSameDay(newEvent.getStart(), newEvent.getEnd()));
+        newEvent.setCourse(course);
+        newEvent.save();
+
+        if (eventForm.hasErrors()){
+            return badRequest("There was some errors in form");
+        }
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("id", newEvent.getId().toString());
+        result.put("url", "/calendar/event/"+newEvent.getId().toString());
+        Logger.info(result.toString());
+
+        return ok(play.libs.Json.toJson(result));
+    }
+
+
+    /**
+     * Saves in DB date changed by event drag
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result move() {
+
+        Long id = Long.valueOf(Form.form().bindFromRequest().get("id"));
+        int dayDelta = Integer.parseInt(Form.form().bindFromRequest().get("dayDelta"));
+        int minuteDelta = Integer.parseInt(Form.form().bindFromRequest().get("minuteDelta"));
+
+        Event event = Event.find.byId(id);
+        event.setStart(new DateTime(event.getStart()).plusDays(dayDelta).plusMinutes(minuteDelta).toDate());
+        event.setEnd(new DateTime(event.getEnd()).plusDays(dayDelta).plusMinutes(minuteDelta).toDate());
+        event.setAllDay(Boolean.valueOf(Form.form().bindFromRequest().get("allDay")));
+        event.setEndsSameDay(endsSameDay(event.getStart(), event.getEnd()));
+        event.setCourse(course);
+        event.update();
+
+//        if (thereIsSomeError){
+//            return badRequest("You can not move this event!");
+//        }
+
+        return ok("changed");
+    }
+
+    /**
+     * Saves in DB end date changed by event resize
+     * @return Result
+     */
+    @Security.Authenticated(Authorization.Admin.class)
+    public Result resize() {
+
+        Long id = Long.valueOf(Form.form().bindFromRequest().get("id"));
+        int dayDelta = Integer.parseInt(Form.form().bindFromRequest().get("dayDelta"));
+        int minuteDelta = Integer.parseInt(Form.form().bindFromRequest().get("minuteDelta"));
+
+        Event event = Event.find.byId(id);
+        event.setEnd(new DateTime(event.getEnd()).plusDays(dayDelta).plusMinutes(minuteDelta).toDate());
+        event.setEndsSameDay(endsSameDay(event.getStart(), event.getEnd()));
+        event.update();
+
+//        if (thereIsSomeError){
+//            return badRequest("You can not resize this event!");
+//        }
+
+        return ok("changed");
     }
 }

@@ -1,7 +1,25 @@
-@(events: List[Event])
+@import models.course.Course
+@import helpers.SessionHelper
+@import utility.UserConstants
+@(events: List[Event])(course: Course)
 
 @layouts.mainLayout("List events") {
 
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="@controllers.users.routes.UserController.calendar(course.getId)">@course.getName @course.getDescription Calendar</a>
+                @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+                    <ul class="nav pull-right">
+                        <li >
+                            <a href="@controllers.users.routes.UserController.list()">
+                                <i class="icon-list icon-white"></i> Event's list</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
     <br/>
     <br/>
     <br/>
@@ -14,7 +32,7 @@
             <th  style="min-width:10px; max-width:900px;width:auto; white-space:nowrap;">Event</th>
             <th style="width:104px;">From</th>
             <th style="width:104px;">To</th>
-            <th style="width:14px;"><a href="@controllers.users.routes.AdminController.blank()" title="Add new event"><i class="icon-plus"></i></a></th>
+            <th style="width:14px;"><a href="@controllers.users.routes.UserController.blank()" title="Add new event"><i class="icon-plus"></i></a></th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +49,7 @@
                     <td>@if(event.getEnd == null){ - } else {@event.getEnd.format("dd.MM.yyyy H:mm")}</td>
                 }
             }
-            <td><a href="@controllers.users.routes.AdminController.delete(event.getId)"><i class="icon-trash"></i></a> </td>
+            <td><a href="@controllers.users.routes.UserController.delete(event.getId)"><i class="icon-trash"></i></a> </td>
         </tr>
         }
         </tbody>

@@ -1,6 +1,7 @@
 package models.course;
 
 import com.avaje.ebean.Model;
+import models.Event;
 import models.Image;
 import models.Post;
 import org.joda.time.DateTime;
@@ -44,6 +45,8 @@ public final class Course extends Model {
     private Integer status = CourseConstants.ACTIVE_COURSE;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Event> events = new ArrayList<>();
     @OneToOne
     private Image image;
 
@@ -204,5 +207,9 @@ public final class Course extends Model {
             newPosts.add(posts.get(i));
         }
         return newPosts;
+    }
+
+    public List<Event> getEvents() {
+        return events;
     }
 }

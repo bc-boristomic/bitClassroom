@@ -210,19 +210,19 @@ POST          /faq/setup                              @controllers.users.AdminCo
 
 # Calendar view and events list
 
-GET           /calendar                               @controllers.users.UserController.calendar()
-GET           /admin/calendar/events                  @controllers.users.AdminController.list()
+GET           /calendar/:id                           @controllers.users.UserController.calendar(id: Long)
+GET           /admin/calendar/events                  @controllers.users.UserController.list()
 GET           /events.json                            @controllers.users.UserController.json(start: Long ?= 0, end: Long ?= 0 )
 
 GET           /calendar/event/:id                     @controllers.users.UserController.edit(id:Long)
-POST          /admin/calendar/event/:id/update        @controllers.users.AdminController.update(id:Long)
-POST          /admin/calendar/event                   @controllers.users.AdminController.add()
-GET           /admin/calendar/event/new               @controllers.users.AdminController.blank()
-GET           /admin/calendar/event/:id/delete        controllers.users.AdminController.delete(id:Long)
+POST          /admin/calendar/event/:id/update        @controllers.users.UserController.update(id:Long)
+POST          /admin/calendar/event                   @controllers.users.UserController.add()
+GET           /admin/calendar/event/new               @controllers.users.UserController.blank()
+GET           /admin/calendar/event/:id/delete        controllers.users.UserController.delete(id:Long)
 
-POST          /admin/calendar/event-ajax              @controllers.users.AdminController.addByAjax()
-POST          /admin/calendar/event-move              @controllers.users.AdminController.move()
-POST          /admin/calendar/event-resize            @controllers.users.AdminController.resize()
+POST          /admin/calendar/event-ajax              @controllers.users.UserController.addByAjax()
+POST          /admin/calendar/event-move              @controllers.users.UserController.move()
+POST          /admin/calendar/event-resize            @controllers.users.UserController.resize()
 
 
 
