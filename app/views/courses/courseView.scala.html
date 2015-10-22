@@ -34,9 +34,7 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <div id="postlist">
-                                @if( post.getPostType == 1 && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
-                                    <span class="label label-warning">You can't finish your assignment until you leave the link</span>
-                                }
+                                
                                 <div class="panel">
                                     <div class="panel-heading">
                                         <div class="text-center">
