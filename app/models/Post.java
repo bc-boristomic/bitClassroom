@@ -36,8 +36,6 @@ public final class Post extends Model {
     private Boolean visibleToMentors = false;
     @Column(name = "link")
     private String link;
-    @Column(name="files")
-    private String files;
     @Column(name = "date")
     private String date;
     @Column(name="time")
@@ -50,7 +48,8 @@ public final class Post extends Model {
     private User user;
     @OneToMany
     private List<Assignment> assigments = new ArrayList<>();
-
+    @OneToMany
+    private List<CloudFile> files;
 
     /**
      * Empty constructor for Ebean
@@ -176,11 +175,11 @@ public final class Post extends Model {
         return link;
     }
 
-    public void setFiles(String files) {
-        this.files = files;
+    public void addFile(CloudFile file) {
+        this.files.add(file);
     }
 
-    public String getFiles() {return files;}
+    public List<CloudFile> getFiles() {return files;}
 
     public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createdDate); }

@@ -3,6 +3,7 @@ package controllers.posts;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
+import helpers.CloudHelper;
 import helpers.SessionHelper;
 import models.Post;
 import models.PrivateMessage;
@@ -72,6 +73,7 @@ public class PostController extends Controller {
         User user = SessionHelper.currentUser(ctx());
 
         Post post = new Post();
+        post.save();
         MultipartFormData data = request().body().asMultipartFormData();
         List<MultipartFormData.FilePart> files = data.getFiles();
 
@@ -80,22 +82,15 @@ public class PostController extends Controller {
             for (Http.MultipartFormData.FilePart filePart : files) {
                 fName = filePart.getFilename();
                 File file = filePart.getFile();
-
                 try {
-                    FileUtils.moveFile(file, new File(Play.application().path() + "/public/files/users/" + user.getFirstName() + "/" + fName));
+                    CloudHelper.uploadToCloud(file,fName, post.getId());
                     filesList.add(fName);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Logger.info("Could not move file. " + e.getMessage());
                     flash("error", "Could not move file.");
                 }
             }
-                if(fName != null) {
-                    post.setFiles(user.getFirstName() + "/" + fName);
-                }
         }
-
-
-
 
 
         String title = boundForm.field("title").value();
@@ -143,7 +138,7 @@ public class PostController extends Controller {
             post.setLink(link);
             post.setVisibleToMentors(visible);
             post.setCourse(course);
-            post.save();
+            post.update();
             course.getPosts().add(post);
 
             if (post.getPostType().equals(1)) {
