@@ -55,7 +55,7 @@
                                                         @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
                                                             <div class="col-sm-3">
                                                                 <h4 class="pull-right">
-                                                                    <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
+                                                                    <button  class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
                                                                         Start</button>
                                                                 </h4>
                                                             </div>
@@ -67,9 +67,10 @@
                                                             <h4 class="pull-right">
                                                                 <label id="label@post.getId">STARTED</label>
                                                             </h4>
-                                                            <br>
+                                                            </div>
+                                                        <div class="col-sm-11">
                                                             <h4 class="pull-right">
-                                                                <button id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
+                                                                <button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
                                                                     Finish</button>
                                                             </h4>
                                                         </div>
@@ -79,7 +80,7 @@
                                                     @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
                                          <div class="col-sm-3">
                                                             <h4 class="pull-right">
-                                                                <button id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+                                                                <button class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
                                                                     Start</button>
                                                             </h4>
                                                         </div>
@@ -173,6 +174,10 @@
                    var at = document.createAttribute("id");
                    at.value = "sendFinishMessage" + postId;
                    button.setAttributeNode(at);
+                   var buttClass = document.createAttribute("class");
+                   at.value = "btn btn-primary";
+                   button.setAttributeNode(buttClass);
+
                    div.append(label);
                    var att = document.createAttribute("onclick");
                    att.value = "callSecondAjax("+postId+")";
