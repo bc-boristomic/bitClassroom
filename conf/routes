@@ -209,6 +209,7 @@ GET           /faq/setup                              @controllers.users.AdminCo
 POST          /faq/setup                              @controllers.users.AdminController.saveFAQ()
 GET           /faq/edit/:id                           @controllers.users.AdminController.editFAQ(id: Long)
 POST          /faq/edit/:id                           @controllers.users.AdminController.upDateFaq(id: Long)
+DELETE        /faq/delete/:id                         @controllers.users.AdminController.deleteFAQ(id: Long)
 
 # Calendar view and events list
 
@@ -225,6 +226,7 @@ GET           /admin/calendar/event/:id/delete        controllers.users.UserCont
 POST          /admin/calendar/event-ajax              @controllers.users.UserController.addByAjax()
 POST          /admin/calendar/event-move              @controllers.users.UserController.move()
 POST          /admin/calendar/event-resize            @controllers.users.UserController.resize()
+
 
 
 

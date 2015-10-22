@@ -80,8 +80,9 @@
           </div>
 
           <div class="faqHeader">Other questions</div>
+          <tbody>
           @for(faq <- faqList){
-
+            <tr>
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
@@ -90,15 +91,24 @@
               </div>
               <div id="collapse@faq.getId" class="panel-collapse collapse">
                 <div class="panel-body">
-                  @faq.getAnswer
+
+                 <td> @faq.getAnswer</td>
                   @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)) {
-                    <div class="pull-right"><a href="@controllers.users.routes.AdminController.editFAQ(faq.getId)"><span class="glyphicon glyphicon-edit"></span><i>
+                    <td><div class="pull-right"><a href="@controllers.users.routes.AdminController.editFAQ(faq.getId)"><span class="glyphicon glyphicon-edit"></span><i>
                       Edit</i></a></div>
+                    </td>
+
+                    <td>
+                      <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteFAQ(faq.getId)" role="button">
+                        <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
                   }
+
                 </div>
               </div>
-            </div>
+            </div></tr>
           }
+          <tbody>
 
 
       </div>

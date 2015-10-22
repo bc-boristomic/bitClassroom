@@ -49,6 +49,7 @@ import views.html.pdf.pdfopenreport;
 import views.html.pdf.weeklypdf;
 import views.html.pdf.dailypdf;
 import views.html.pdf.pdfOpenWeeklyReport;
+import views.html.users.util.faq;
 
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
@@ -894,6 +895,14 @@ public class AdminController extends Controller {
         Faq faq = Faq.findFaqById(id);
         return ok(faqEdit.render(faq));
 
+    }
+
+
+    public Result deleteFAQ(Long id){
+
+        Logger.info(id.toString());
+        Faq.findFaqById(id).delete();
+        return ok(faq.render(Faq.findAllFAQ()));
     }
 
 

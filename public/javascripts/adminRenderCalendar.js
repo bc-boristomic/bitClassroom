@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 
                 alert("Title is required!");
-            
+
             calendar.fullCalendar('unselect');
         },
         eventDrop:function(event,dayDelta,minuteDelta,allDay,revertFunc){

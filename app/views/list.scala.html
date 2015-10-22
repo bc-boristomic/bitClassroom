@@ -49,7 +49,10 @@
                     <td>@if(event.getEnd == null){ - } else {@event.getEnd.format("dd.MM.yyyy H:mm")}</td>
                 }
             }
-            <td><a href="@controllers.users.routes.UserController.delete(event.getId)"><i class="icon-trash"></i></a> </td>
+            <td>
+                <a data-role="delete" data-delete-parent="tr"  href="@controllers.users.routes.UserController.delete(event.getId)" role="button"><i class="icon-trash"></i></a>
+            </td>
+
         </tr>
         }
         </tbody>
