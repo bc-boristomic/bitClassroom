@@ -1,6 +1,7 @@
 package models.user;
 
 import com.avaje.ebean.Model;
+import models.CloudFile;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
@@ -90,7 +91,6 @@ public final class User extends Model {
     private List<PrivateMessage> messages = new ArrayList<>();
     @OneToMany(cascade=CascadeType.ALL)
     private List<Assignment> assigments = new ArrayList<>();
-
 
     /**
      * Default empty constructor for Ebean

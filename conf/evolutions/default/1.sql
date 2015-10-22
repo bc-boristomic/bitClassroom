@@ -11,6 +11,13 @@ create table assignment (
   constraint pk_assignment primary key (id))
 ;
 
+create table cloud_file (
+  id                        bigint auto_increment not null,
+  file_name                 varchar(255),
+  post_id                   bigint,
+  constraint pk_cloud_file primary key (id))
+;
+
 create table course (
   id                        bigint auto_increment not null,
   name                      varchar(50),
@@ -108,7 +115,6 @@ create table post (
   post_type                 integer,
   visible_mentors           tinyint(1) default 0,
   link                      varchar(255),
-  files                     varchar(255),
   date                      varchar(255),
   time                      varchar(255),
   create_date               datetime,
@@ -221,6 +227,14 @@ alter table course_user add constraint fk_course_user_course_5 foreign key (cour
 create index ix_course_user_course_5 on course_user (course_id);
 alter table event_setup add constraint fk_event_setup_course_6 foreign key (course_id) references course (id) on delete restrict on update restrict;
 create index ix_event_setup_course_6 on event_setup (course_id);
+alter table cloud_file add constraint fk_cloud_file_post_3 foreign key (post_id) references post (id) on delete restrict on update restrict;
+create index ix_cloud_file_post_3 on cloud_file (post_id);
+alter table course add constraint fk_course_image_4 foreign key (image_id) references image (id) on delete restrict on update restrict;
+create index ix_course_image_4 on course (image_id);
+alter table course_user add constraint fk_course_user_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_course_user_user_5 on course_user (user_id);
+alter table course_user add constraint fk_course_user_course_6 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_course_user_course_6 on course_user (course_id);
 alter table image add constraint fk_image_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_image_user_7 on image (user_id);
 alter table image add constraint fk_image_course_8 foreign key (course_id) references course (id) on delete restrict on update restrict;
@@ -257,6 +271,8 @@ alter table user_role add constraint fk_user_role_role_02 foreign key (role_id) 
 SET FOREIGN_KEY_CHECKS=0;
 
 drop table assignment;
+
+drop table cloud_file;
 
 drop table course;
 

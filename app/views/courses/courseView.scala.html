@@ -120,7 +120,9 @@
                                     @if(post.getFiles != null) {
                                         <div class="panel-body" style="border : 1 px solid darkgrey ; background-color : lightgrey ; margin : 0 20 px 20 px 20 px ; height : 60 px">
                                             <label>Attachment : </label>
-                                            <a href="@routes.Assets.versioned("/files/users/" + post.getFiles)">@post.getFiles</a>
+                                            @for(file <- post.getFiles) {
+                                                <a href="@file.getUrl()">@file.getFileName()</a> <br/>
+                                            }
                                         </div>
                                     }
                                     <div class="panel-footer">
