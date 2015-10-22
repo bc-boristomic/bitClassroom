@@ -19,7 +19,7 @@ $(document).ready(function () {
         selectHelper:true,
         select:function (start, end, allDay) {
 
-            swal({   title: "An input!",   text: "Write something interesting:",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Write something" }, function(inputValue){   if (inputValue === false) return false;      if (inputValue === "") {     swal.showInputError("You need to write something!");     return false   }     swal("Nice!", "You wrote: " + inputValue, "success"); jQuery("#newTitle").val(inputValue);
+            swal({   title: "New event!",   text: "Write event title:",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Write something" }, function(inputValue){   if (inputValue === false) return false;      if (inputValue === "") {     swal.showInputError("You need to write something!");     return false   }     swal("Nice!", "You wrote: " + inputValue, "success"); jQuery("#newTitle").val(inputValue);
                     jQuery("#newStart").val(convertDate(start));
                     jQuery("#newEnd").val(convertDate(end));
                     jQuery("#newAllDay").val(allDay);
@@ -35,9 +35,6 @@ $(document).ready(function () {
                             }
                         }  });} );
 
-
-                alert("Title is required!");
-            
             calendar.fullCalendar('unselect');
         },
         eventDrop:function(event,dayDelta,minuteDelta,allDay,revertFunc){
