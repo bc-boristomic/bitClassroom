@@ -19,28 +19,25 @@ $(document).ready(function () {
         selectHelper:true,
         select:function (start, end, allDay) {
 
-            var title = prompt('Event Title:');
-//            var title = "Quick test title...";
-            if (title) {
-                jQuery("#newTitle").val(title);
-                jQuery("#newStart").val(convertDate(start));
-                jQuery("#newEnd").val(convertDate(end));
-                jQuery("#newAllDay").val(allDay);
+            swal({   title: "An input!",   text: "Write something interesting:",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Write something" }, function(inputValue){   if (inputValue === false) return false;      if (inputValue === "") {     swal.showInputError("You need to write something!");     return false   }     swal("Nice!", "You wrote: " + inputValue, "success"); jQuery("#newTitle").val(inputValue);
+                    jQuery("#newStart").val(convertDate(start));
+                    jQuery("#newEnd").val(convertDate(end));
+                    jQuery("#newAllDay").val(allDay);
 
-                jQuery.ajax({
-                    type: 'POST',
-                    url:  jQuery("#eventFormNew").attr("action"),
-                    data: jQuery("#eventFormNew").serialize() ,
-                    dataType: "json",
-                    statusCode: {
-                        200: function(data) {
-                            calendar.fullCalendar('renderEvent',{id:data.id,title:title,start:start,end:end,allDay:allDay, url:data.url },true);
-                        }
-                    }
-                });
-            } else {
+                    jQuery.ajax({
+                        type: 'POST',
+                        url:  jQuery("#eventFormNew").attr("action"),
+                        data: jQuery("#eventFormNew").serialize() ,
+                        dataType: "json",
+                        statusCode: {
+                            200: function(data) {
+                                calendar.fullCalendar('renderEvent',{id:data.id,title:inputValue,start:start,end:end,allDay:allDay, url:data.url },true);
+                            }
+                        }  });} );
+
+
                 alert("Title is required!");
-            }
+            
             calendar.fullCalendar('unselect');
         },
         eventDrop:function(event,dayDelta,minuteDelta,allDay,revertFunc){
