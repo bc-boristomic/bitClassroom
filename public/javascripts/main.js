@@ -168,7 +168,7 @@ function checkFacebook(){
     if ( facebook == null){
 
         facebook.val("http://www.facebook.com/");
-    } else if(facebook.includes("https://www.facebook.com/") == false){
+    } else if(facebook.includes("http://www.facebook.com/") == false){
         document.getElementById("facebookCheck").innerHTML = "Wrong URL, please enter valid URL";
     } else if ( facebook.length < 28){
 
