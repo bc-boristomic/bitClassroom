@@ -34,8 +34,9 @@
                 Classroom is available to anyone with a bitClassroom account. Your administrator only can sign up here. Select whether you are a teacher or a student, then create or join a class.
 
                 If you are the administrator, you can find more information about turning the service on and off in Access to bitClassroom.
-
+                  <div class="pull-right"><a href="@controllers.users.routes.AdminController.editFAQ(1)"><span class="glyphicon glyphicon-edit"></span><i>Edit</i></a></div>
               </div>
+
             </div>
           </div>
 
@@ -90,6 +91,10 @@
               <div id="collapse@faq.getId" class="panel-collapse collapse">
                 <div class="panel-body">
                   @faq.getAnswer
+                  @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)) {
+                    <div class="pull-right"><a href="@controllers.users.routes.AdminController.editFAQ(faq.getId)"><span class="glyphicon glyphicon-edit"></span><i>
+                      Edit</i></a></div>
+                  }
                 </div>
               </div>
             </div>

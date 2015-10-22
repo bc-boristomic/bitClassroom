@@ -207,6 +207,8 @@ GET           /open-Report/:id                        @controllers.users.AdminCo
 GET           /faq                                    @controllers.Application.faq()
 GET           /faq/setup                              @controllers.users.AdminController.setupFAQ()
 POST          /faq/setup                              @controllers.users.AdminController.saveFAQ()
+GET           /faq/edit/:id                           @controllers.users.AdminController.editFAQ(id: Long)
+POST          /faq/edit/:id                           @controllers.users.AdminController.upDateFaq(id: Long)
 
 # Calendar view and events list
 

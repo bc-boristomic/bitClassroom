@@ -875,9 +875,26 @@ public class AdminController extends Controller {
         return redirect("/faq");
     }
 
+    public Result upDateFaq(Long id){
 
+        DynamicForm form = Form.form().bindFromRequest();
+        String question = form.get("question");
+        String answer = form.get("answer");
+        Faq faq = Faq.findFaqById(id);
 
+        faq.setQuestion(question);
+        faq.setAnswer(answer);
+        faq.update();
 
+        return redirect("/faq");
+
+    }
+
+    public Result editFAQ(Long id){
+        Faq faq = Faq.findFaqById(id);
+        return ok(faqEdit.render(faq));
+
+    }
 
 
 //======================================================================================================================

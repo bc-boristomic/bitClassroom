@@ -44,6 +44,13 @@ public class Faq extends Model {
         return finder.orderBy("id desc").findList();
     }
 
+    public static Faq findFaqById(Long id) {
+        return finder
+                .where()
+                .eq("id", id)
+                .findUnique();
+    }
+
     public Long getId() {
         return id;
     }
