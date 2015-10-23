@@ -55,7 +55,7 @@
                                                     @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
                                                         @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
                                                             <div class="col-sm-3">
-                                                                <h4 class="pull-right">
+                                                                <h4 class="pull-right" onmouseover="spanMsg(@post.getId)">
                                                                     <button  class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
                                                                         Start</button>
                                                                 </h4>
@@ -64,13 +64,13 @@
                                                     }
 
                                                     @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-3" >
                                                             <h4 class="pull-right">
                                                                 <label id="label@post.getId">STARTED</label>
                                                             </h4>
                                                             </div>
-                                                        <div class="col-sm-11">
-                                                            <h4 class="pull-right">
+                                                        <div class="col-sm-11" >
+                                                            <h4 class="pull-right" onmouseout="" onmouseover="span(@post.getId)">
                                                                 <button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
                                                                     Finish</button>
                                                             </h4>
@@ -226,7 +226,34 @@
                         button.disabled = false;
 
                 }
+                var bol = "true";
 
+                function span(postId){
+
+                    if(bol == "true"){
+                    var span = document.createElement('span');
+                    span.innerText = "You can't finish your assignment until you leave the link";
+                    var spanClass = document.createAttribute("class");
+                    spanClass.value = "label label-warning";
+                    span.setAttributeNode(spanClass);
+                    $("#sendFinishMessage" + postId).parent().parent().parent().before(span);
+                    bol = "false";
+                    }
+
+                }
+
+                var bol1 = "true";
+                function spanMsg(postId){
+                    if(bol1 == "true"){
+                    var span = document.createElement('span');
+                    span.innerText = "You can't start new assignment until you finish the started one";
+                    var spanClass = document.createAttribute("class");
+                    spanClass.value = "label label-warning";
+                    span.setAttributeNode(spanClass);
+                    $("#sendStartMessage" + postId).parent().parent().parent().before(span);
+                    bol1 = "false";
+                    }
+                }
 
         </script>
     }
