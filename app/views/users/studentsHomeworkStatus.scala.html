@@ -13,6 +13,7 @@
             <th>Name:</th>
             <th>Email</th>
             <th>Assignment</th>
+            <th>Status</th>
             <th></th>
 
           </tr>
@@ -24,6 +25,7 @@
               <td>@users.getFirstName @users.getLastName</td>
               <td>@users.getEmail</td>
               <td>@post.getTitle</td>
+              <td></td>
               <td><a href="@controllers.users.routes.UserController.newMessage(users.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
             </tr>
 

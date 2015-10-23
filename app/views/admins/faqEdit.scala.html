@@ -17,13 +17,13 @@
         <div class="form-group has-success">
           <label class="col-xs-2 control-label" for="inputQuestion">Question</label>
           <div class="col-xs-10">
-            <input type="text" id="inputQuestion" name="question" class="form-control"  value="@faq.getQuestion">
+            <input type="text" id="inputQuestion" name="question" class="form-control"  value="@faq.getQuestion" required>
           </div>
         </div>
         <div class="form-group has-warning">
           <label class="col-xs-2 control-label" for="inputAnswer">Answer</label>
           <div class="col-xs-10">
-            <textarea  id="inputAnswer"  name="answer" rows="5" class="form-control">@faq.getAnswer</textarea>
+            <textarea  id="inputAnswer"  name="answer" rows="5" class="form-control" required>@faq.getAnswer</textarea>
 
           </div>
         </div>
