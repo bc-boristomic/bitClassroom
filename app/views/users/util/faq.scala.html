@@ -56,7 +56,7 @@
 
       </div>
 
-        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)){
+        @if(SessionHelper.currentUser(ctx())!= null && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)){
 
           <a class="btn btn-warning pull-right" href="@controllers.users.routes.AdminController.setupFAQ()"><strong>Add new  <span class="glyphicon glyphicon-plus"></span></strong></a>
 
