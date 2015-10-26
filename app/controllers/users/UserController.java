@@ -349,12 +349,16 @@ public class UserController extends Controller {
             User user = User.findByEmail(email);
             String message = url + "reset/password/" + user.getToken();
             MailHelper.send(email,message);
-            flash("success", "Fantastic");
+            flash("success", "Recovery mail is sent to you!");
         }
         return redirect(routes.UserController.forgotPassword());
     }
 
     public Result showResetPassword(String token){
+        User user = User.findUserByToken(token);
+        if(user == null){
+            return badRequest(views.html.notfound.render());
+        }
         return ok(views.html.users.util.resetpassword.render(token));
     }
 
@@ -365,9 +369,6 @@ public class UserController extends Controller {
 
         if(!pass1.equals("") && pass1 != null && pass2.equals(pass1)){
             User user = User.findUserByToken(token);
-            if(user == null){
-                return badRequest(views.html.notfound.render());
-            }
             user.setPassword(MD5Hash.getEncriptedPasswordMD5(pass1));
             user.setToken();
             user.update();
