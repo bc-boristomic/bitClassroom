@@ -9,6 +9,7 @@ import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import utility.MD5Hash;
 import utility.UserConstants;
 
 import javax.persistence.*;
@@ -475,4 +476,9 @@ public final class User extends Model {
         return finder.where().eq("token",token).findUnique();
     }
 
+    public static User findEmailAndPassword(String email, String password) {
+        String pass = MD5Hash.getEncriptedPasswordMD5(password);
+        User user = finder.where().eq("email",email).eq("password",pass).findUnique();
+        return user;
+    }
 }
