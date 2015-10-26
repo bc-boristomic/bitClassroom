@@ -10,7 +10,7 @@
 
     @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
-        <h3 class="page-head-line">@course.getName  @course.getDescription <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a></h3>
+        <h4 class="page-head-line">@course.getName  @course.getDescription  <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a></h4>
         <div ></div>
         <div class="pull-right">
             <a href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary">

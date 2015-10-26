@@ -1,7 +1,7 @@
 @import models.course.CourseUser
 @import utility.UserConstants
 @(courseUserForm: List[CourseUser])
-@adminmain("List of applied students") {
+@main("List of applied students") {
 
     <br/>
     <legend>Applied students</legend>
@@ -26,24 +26,24 @@
                     <td><a id="approved@courseUser.getId" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></a></td>
                     <td><a id="dissaproved@courseUser.getId" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></a></td>
 
-                <script>
+                    <script>
         $(document).ready(function() {
             $("#approved@courseUser.getId").click(function() {
                 $.ajax({
                     type: "post",
-                    url: "@controllers.users.routes.AdminController.approveStudent(courseUser.getId)",
+                    url: "@controllers.users.routes.TeacherController.approveStudent(courseUser.getId)",
                     data: "pressed=2"
                 }).success(function(response) {
-                   window.location.href = '/admin/awaitlist';
+                   window.location.href = '/teacher/awaitlist';
                 })
             })
              $("#dissaproved@courseUser.getId").click(function() {
                 $.ajax({
                     type: "post",
-                    url: "@controllers.users.routes.AdminController.approveStudent(courseUser.getId)",
+                    url: "@controllers.users.routes.TeacherController.approveStudent(courseUser.getId)",
                     data: "pressed=3"
                 }).success(function(response) {
-                    window.location.href = '/admin/awaitlist';
+                    window.location.href = '/teacher/awaitlist';
                 })
             })
         });

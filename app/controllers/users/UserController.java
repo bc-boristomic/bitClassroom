@@ -292,10 +292,13 @@ public class UserController extends Controller {
      */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result seeMessage(Long id) {
+
         PrivateMessage msg = PrivateMessage.findMessageById(id);
-        msg.setStatus(1);
-        Ebean.save(msg);
         if( msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail()) || msg.getSender().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
+            if(msg.getReceiver().getEmail().equals(SessionHelper.currentUser(ctx()).getEmail())){
+                msg.setStatus(1);
+                Ebean.save(msg);
+            }
         return ok(views.html.posts.seeMessage.render(PrivateMessage.getFind().where().eq("id", id).findUnique()));
         }
 

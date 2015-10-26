@@ -3,12 +3,14 @@ package controllers.users;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.Post;
+import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.DailyReport;
 import models.report.Field;
 import models.report.ReportField;
 import models.user.Assignment;
+import models.user.Mentorship;
 import models.user.User;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -23,6 +25,7 @@ import views.html.index;
 import views.html.posts.assignmentView;
 import views.html.posts.teacherListsAssignment;
 import views.html.users.studentsHomeworkStatus;
+import views.html.users.teacherApprowedStudent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ import java.util.List;
  * Created by boris on 9/12/15.
  */
 @Security.Authenticated(Authorization.Teacher.class)
-public class TeacherController extends Controller {
+public class  TeacherController extends Controller {
 
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
 
@@ -73,14 +76,13 @@ public class TeacherController extends Controller {
             reportField.save();
         }
         User u = SessionHelper.currentUser(ctx());
-       // List<Course> list = CourseUser.allUserCourses(u);
+        // List<Course> list = CourseUser.allUserCourses(u);
         //CourseUser userc = CourseUser.findAll(u.getId()).get(0);
         List<CourseUser> userc = CourseUser.getFinder().all();
 
         return ok(index.render(u, userc));
 
     }
-
 
 
     public Result test() {
@@ -92,8 +94,7 @@ public class TeacherController extends Controller {
         return ok(teacherListsAssignment.render(user.getPosts()));
     }
 
-
-    public Result studentAssignmentStatus(Long id, String status){
+    public Result studentAssignmentStatus(Long id, String status) {
 
         Logger.info(id + "");
         Post post = Post.findPostById(id);
@@ -102,25 +103,25 @@ public class TeacherController extends Controller {
         List<User> users = CourseUser.allUserFromCourse(course.getId());
         List<User> students = new ArrayList<>();
 
-        if( status.equals("Done")) {
+        if (status.equals("Done")) {
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 2) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 2) {
 
 
                     students.add(users.get(i));
                 }
             }
-        }else if(status.equals("Working")){
+        } else if (status.equals("Working")) {
             for (int i = 0; i < users.size(); i++) {
 
-                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT)  && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 1) {
+                if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 1) {
 
                     students.add(users.get(i));
                 }
             }
         }
-        if( status.equals("Not")) {
+        if (status.equals("Not")) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 0) {
@@ -131,4 +132,92 @@ public class TeacherController extends Controller {
         }
         return ok(studentsHomeworkStatus.render(students, post));
     }
+
+    public Result awaitList(){
+
+        List<CourseUser> allCourseUserList = CourseUser.getFinder().all();
+        List<CourseUser> courseUserList = CourseUser.findAll(SessionHelper.currentUser(ctx()).getId());
+        List<CourseUser> studentCourseList = new ArrayList<>();
+
+        for ( int i = 0; i < allCourseUserList.size(); i++){
+            for( int j = 0; j < courseUserList.size(); j++){
+
+                if(allCourseUserList.get(i).getCourse().getId().equals(courseUserList.get(j).getCourse().getId())){
+
+                    studentCourseList.add(allCourseUserList.get(i));
+                }
+            }
+
+        }
+        Logger.info(studentCourseList.size()+"");
+        return ok(teacherApprowedStudent.render(studentCourseList));
+    }
+
+
+    public Result approveStudent(Long id) {
+        DynamicForm form = Form.form().bindFromRequest();
+
+        String s = form.data().get("pressed");
+        CourseUser cu = CourseUser.getFinder().byId(id);
+        if (s != null) {
+            cu.setStatus(Integer.parseInt(s));
+            cu.save();
+        }
+
+        approvedNotification(cu.getCourse(), cu.getUser());
+
+
+        Course c = cu.getCourse();
+        for(int i = 0; i < c.getPosts().size(); i++){
+            if(c.getPosts().get(i).getPostType() == 1){
+                Assignment a = new Assignment();
+                a.setUser(cu.getUser());
+                a.setPost(c.getPosts().get(i));
+                a.setHomeworkPostStatus(0);
+                a.save();
+            }
+
+        }
+
+        User u = Mentorship.findMentorByUser(cu.getUser());
+        List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
+
+        if( u != null) {
+            for (int i = 0; i < courseUsers.size(); i++) {
+                if (courseUsers.get(i).getId() == u.getId()) {
+                    return ok("");
+                }
+            }
+        }
+
+        if(u != null){
+            CourseUser cc = new CourseUser();
+            cc.setCourse(cu.getCourse());
+            cc.setStatus(Integer.parseInt(s));
+            cc.setUser(u);
+            cc.save();
+        }
+
+
+        return ok("");
+    }
+
+    /**
+     * Send notification when admin approved user in the class
+     * @param course
+     * @param student
+     */
+    public void approvedNotification ( Course course, User student){
+
+        String subject = "Course information";
+        String content = "Your application for access to the course" + course.getName() + " is accepted";
+
+        User sender = SessionHelper.currentUser(ctx());
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+
+    }
 }
+

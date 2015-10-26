@@ -123,6 +123,9 @@ GET           /admin/courses/deleted                  @controllers.users.AdminCo
 # Teacher list assignment
 
 GET           /teacher/listAssignment                 @controllers.users.TeacherController.listAssignment()
+POST          /teacher/approvestudent/:id             @controllers.users.TeacherController.approveStudent(id: Long)
+GET           /teacher/awaitlist                      @controllers.users.TeacherController.awaitList()
+
 
 # Daily report for teachers
 GET           /daily/report                           @controllers.users.TeacherController.dailyReport()

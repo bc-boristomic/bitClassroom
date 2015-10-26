@@ -49,6 +49,7 @@ import views.html.pdf.pdfopenreport;
 import views.html.pdf.weeklypdf;
 import views.html.pdf.dailypdf;
 import views.html.pdf.pdfOpenWeeklyReport;
+import views.html.users.teacherApprowedStudent;
 import views.html.users.util.faq;
 
 import javax.inject.Inject;
@@ -473,6 +474,7 @@ public class AdminController extends Controller {
 
     }
 
+
     /**
      * List of students that applied for courses. Course name, student name and
      * approve, dissaprove buttons are displayed in a row.
@@ -480,8 +482,10 @@ public class AdminController extends Controller {
      * @return
      */
     public Result awaitList() {
-        return ok(views.html.admins.approveuser.render(CourseUser.getFinder().all()));
+
+        return ok(approveuser.render(CourseUser.getFinder().all()));
     }
+
 
     /**
      * See tables of daily reports
