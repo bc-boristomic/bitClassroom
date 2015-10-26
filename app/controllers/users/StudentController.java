@@ -16,7 +16,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
+import views.html.users.studentsWork;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -151,8 +153,46 @@ public class StudentController extends Controller {
 
         return redirect("/user/class/"+courseId);
     }
+
+
+    public Result studentsWork(){
+
+        List<Assignment> posts = SessionHelper.currentUser(ctx()).getAssignments();
+        Logger.info(posts.size()+"");
+        return ok(studentsWork.render(posts));
+    }
+
+    public Result worksActivity(String status){
+
+        List<Assignment> posts = SessionHelper.currentUser(ctx()).getAssignments();
+        List<Assignment> assignments = new ArrayList<>();
+        for( int i = 0; i < posts.size(); i++){
+
+            if (status.equals("DONE") && posts.get(i).getHomeworkPostStatus().equals(2)){
+
+                assignments.add(posts.get(i));
+
+            }else if( status.equals("WORKING") && posts.get(i).getHomeworkPostStatus().equals(1)){
+
+                assignments.add(posts.get(i));
+
+            }else if(status.equals("NOT") && posts.get(i).getHomeworkPostStatus().equals(0)){
+
+                assignments.add(posts.get(i));
+            }
+
+        }
+
+        return ok(studentsWork.render(assignments));
+
+    }
+
+
     
     public Result test() {
         return ok("you are student");
     }
+
+
+
 }

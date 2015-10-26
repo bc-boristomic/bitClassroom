@@ -1,3 +1,5 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
 @(post : Post)
 @main("Assignment") {
 
@@ -75,36 +77,49 @@
     </div>
 
 
-
+@if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.TEACHER)) {
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown active">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><button type="submit" class="btn btn-info navbar-btn">Activity  <span class="glyphicon glyphicon-plus-sign"></span></button></a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><button type="submit" class="btn btn-info navbar-btn">
+        Activity  <span class="glyphicon glyphicon-plus-sign"></span></button></a>
       <ul class="dropdown-menu" role="menu" style="background-color : white">
         <li class="navbar-left">
           <a href="@controllers.users.routes.TeacherController.studentAssignmentStatus(post.getId, "Done")">
-            <button type="submit" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-ok"></span> Finished</button>
+            <button type="submit" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-ok"></span>
+              Finished</button>
           </a>
         </li>
         <li>
           <a href="@controllers.users.routes.TeacherController.studentAssignmentStatus(post.getId, "Working")">
-            <button type="button"  class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-check"></span> Working.</button>
+            <button type="button" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-check"></span>
+              Working.</button>
           </a>
         </li>
         <li>
           <a href="@controllers.users.routes.TeacherController.studentAssignmentStatus(post.getId, "Not")">
-            <button type="button"  class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span> Not Done</button>
+            <button type="button" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span>
+              Not Done</button>
           </a>
         </li>
       </ul>
     </li>
   </ul>
+}
 
   <ul class="nav navbar-nav navbar-left">
 
     <li class="navbar-left">
-      <a href="@controllers.users.routes.TeacherController.listAssignment()">
-        <button type="submit" class="btn btn-facebook navbar-btn"><span class="glyphicon glyphicon-circle-arrow-left"></span>Go Back</button>
-      </a>
+      @if(SessionHelper.currentUser(ctx()).getId.equals(UserConstants.TEACHER)) {
+        <a href="@controllers.users.routes.TeacherController.listAssignment()">
+          <button type="submit" class="btn btn-facebook navbar-btn"><span class="glyphicon glyphicon-circle-arrow-left"></span>
+            Go Back</button>
+        </a>
+      }else{
+        <a href="@controllers.users.routes.StudentController.studentsWork()">
+          <button type="submit" class="btn btn-facebook navbar-btn"><span class="glyphicon glyphicon-circle-arrow-left"></span>
+            Go Back</button>
+        </a>
+      }
     </li>
 
   </ul>
