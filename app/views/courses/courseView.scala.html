@@ -221,9 +221,17 @@
 
                 function enableLink(postId){
                    var link = $("#homework-link").val();
-
-                        var button = document.getElementById("sendFinishMessage" + postId);
+                   var regex = /^(https?:\/\/)[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+                   var regex2 = /^www\.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+                   var regex3 = /^https?:\/\/www.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+                   var button = document.getElementById("sendFinishMessage" + postId);
+                   if(regex.test(link) || regex2.test(link) || regex3.test(link)){
                         button.disabled = false;
+                   }else{
+                        button.disabled = true;
+                   }
+
+
 
                 }
                 var bol = "true";
