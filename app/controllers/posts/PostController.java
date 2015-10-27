@@ -24,6 +24,7 @@ import play.mvc.Security;
 import play.twirl.api.Html;
 import utility.UserConstants;
 import views.html.posts.assignmentView;
+import views.html.posts.editpost;
 import views.html.posts.newpost;
 
 import java.io.File;
@@ -53,6 +54,12 @@ public class PostController extends Controller {
         return ok(newpost.render(postForm, SessionHelper.currentUser(ctx()), CourseUser.allUserCourses(SessionHelper.currentUser(ctx()))));
     }
 
+    public Result editPost(Long id){
+        Post post = Post.findPostById(id);
+
+        return ok(editpost.render(postForm, post));
+    }
+
     public Result assignmentDetails(Long id){
 
         Post post = Post.findPostById(id);
@@ -66,6 +73,38 @@ public class PostController extends Controller {
      * Getting user from session
      * Saving post in database
      */
+
+    public Result saveEditedPost(Long id){
+        Form<Post> boundForm = postForm.bindFromRequest();
+
+        Post post = Post.findPostById(id);
+        User user = SessionHelper.currentUser(ctx());
+
+        String title = boundForm.field("title").value();
+        String content = boundForm.field("content").value();
+        String link = boundForm.field("link").value();
+
+        if(user != null && user.getRoles().size() > 0 && user.getRoles() != null){
+            for(Role r: user.getRoles()){
+                if(r.getId().equals(UserConstants.TEACHER)){
+                    String date = boundForm.field("date").value();
+                    String time = boundForm.field("time").value();
+
+                    post.setPostType(1);
+                    post.setDate(date);
+                    post.setTime(time);
+
+                }
+            }
+        }
+
+        post.setTitle(title);
+        post.setContent(content);
+        post.setLink(link);
+        post.update();
+        return redirect("/user/class/" + post.getCourse().getId());
+    }
+
     public Result savePost() {
 
         Form<Post> boundForm = postForm.bindFromRequest();
