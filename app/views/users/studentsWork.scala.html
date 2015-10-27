@@ -11,19 +11,19 @@
         <li class="navbar-left">
           <a href="@controllers.users.routes.StudentController.worksActivity("DONE")">
             <button type="submit" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-ok"></span>
-              Finished</button>
+              DONE</button>
           </a>
         </li>
         <li>
           <a href="@controllers.users.routes.StudentController.worksActivity("WORKING")">
             <button type="button" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-check"></span>
-              Working.</button>
+              WORKING</button>
           </a>
         </li>
         <li>
           <a href="@controllers.users.routes.StudentController.worksActivity("NOT")">
             <button type="button" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span>
-              Not Done</button>
+              TO-DO</button>
           </a>
         </li>
       </ul>
@@ -98,5 +98,13 @@
         </div>
       </a>
 
+  }
+
+  @if(listPost.size == 0){
+
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>Woohoo, no assignments!
+      <div><a href=""></a></div>
+    </div>
   }
 }
