@@ -9,25 +9,25 @@
 
 @layouts.mainLayout("Edit event: "+ event.getTitle){
 
-    <div class="navbar navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="@controllers.users.routes.UserController.calendar(course.getId)">@course.getName @course.getDescription Calendar</a>
+                <br/>
+                <a class="brand badge" href="@controllers.users.routes.UserController.calendar(course.getId)">@course.getName @course.getDescription Calendar</a>
                 @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
                     <ul class="nav pull-right">
                         <li >
-                            <a href="@controllers.users.routes.UserController.list()">
-                                <i class="icon-list icon-white"></i> Event's list</a>
+
+                            <a class="badge" href="@controllers.users.routes.UserController.list()">
+                                 Event's list</a>
                         </li>
                     </ul>
                 }
             </div>
         </div>
-    </div>
+    </nav>
 
     <br>
-    <br/>
-    <br/>
     <br/>
 <div class="container">
 
@@ -36,6 +36,7 @@
     } else {
         <h3>Event details</h3>
     }
+    <br/> <br/>
     @helper.form(action = controllers.users.routes.UserController.update(id), 'id->"eventFormEdit") {
 
         @inputText(eventForm("title"), args =
@@ -45,11 +46,12 @@
             'class -> "required",
             'minlength -> "3"
         )
-
+        <br/>
         @checkbox(field = eventForm("allDay"), args =
             '_label -> "All day event?"
         )
 
+        <br/>
         @inputText(eventForm("start"), args =
             '_label -> "Start date",
             '_help -> "",
@@ -59,12 +61,16 @@
             'class -> "required"
         )
 
+        <br/>
         @inputText(eventForm("end"), args =
             '_label -> "End date",
             '_help -> "",
             'size ->18,
             'placeholder -> "dd.mm.yyyy hh:mm"
         )
+
+        <br/>
+        <br/>
 
 
         @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
