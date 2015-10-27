@@ -6,9 +6,7 @@ import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
-import models.report.DailyReport;
-import models.report.Field;
-import models.report.ReportField;
+import models.report.*;
 import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.User;
@@ -20,10 +18,12 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
+import views.html.admins.newTableWeekly;
 import views.html.dailyreports.dailyraport;
 import views.html.index;
 import views.html.posts.assignmentView;
 import views.html.posts.teacherListsAssignment;
+import views.html.users.mentorReportForStudent;
 import views.html.users.studentsHomeworkStatus;
 import views.html.users.teacherApprowedStudent;
 
@@ -135,6 +135,7 @@ public class  TeacherController extends Controller {
 
     public Result awaitList(){
 
+
         List<CourseUser> allCourseUserList = CourseUser.getFinder().all();
         List<CourseUser> courseUserList = CourseUser.findAll(SessionHelper.currentUser(ctx()).getId());
         List<CourseUser> studentCourseList = new ArrayList<>();
@@ -217,6 +218,14 @@ public class  TeacherController extends Controller {
         privMessage.setStatus(0);
         student.getMessages().add(privMessage);
         student.save();
+
+    }
+
+    public Result seeMentorReports(){
+
+        List<WeeklyReport> reports = WeeklyReport.getFinder().all();
+        
+        return ok(mentorReportForStudent.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
 
     }
 }
