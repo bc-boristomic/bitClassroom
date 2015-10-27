@@ -1,5 +1,6 @@
 @import models.user.User
 @import utility.UserConstants
+@import models.course.CourseUser
 @(user: User)
 @main(user.getFirstName + " " + user.getLastName + " public profile") {
 
@@ -74,7 +75,17 @@
                                 <td><i class="fa fa-facebook fa-2x"></i></td>
                                 <td><a href="@user.getFacebook">@user.getFacebook</a></td>
                             </tr>
-
+                            @if(user.getRoles.get(0).getId.equals(UserConstants.STUDENT)){
+                                <tr>
+                                    <td><strong>Classes</strong></td>
+                                    <td>
+                                        @for(course <- CourseUser.allUserCourses(user)){
+                                            @course.getName - @course.getDescription
+                                            <br>
+                                        }
+                                    </td>
+                                </tr>
+                            }
 
                         </tbody>
                     </table>

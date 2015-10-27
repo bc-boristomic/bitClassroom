@@ -70,7 +70,7 @@
                                                             </h4>
                                                             </div>
                                                         <div class="col-sm-11" >
-                                                            <h4 class="pull-right" onmouseout="" onmouseover="span(@post.getId)">
+                                                            <h4 class="pull-right" onmouseout="" style="padding-right: 20px;" onmouseover="span(@post.getId)">
                                                                 <button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
                                                                     Finish</button>
                                                             </h4>
@@ -125,9 +125,15 @@
                                     }
                                     <div class="panel-footer">
                                         @if(post.getPostType == 1){
-                                            <span class="label label-default">Assignment </span> <span class="label label-default pull-right"> @post.getCreateDate</span>
+                                            <span class="label label-default">Assignment   </span>      <span class="label label-default pull-right"> @post.getCreateDate</span>
+
                                         }else{
-                                            <span class="label label-default">Announcement </span> <span class="label label-default pull-right">@post.getCreateDate</span>
+                                            <span class="label label-default">Announcement    </span>    <span class="label label-default pull-right">@post.getCreateDate</span>
+                                        }
+
+                                        @if(SessionHelper.currentUser(ctx()).getFirstName.equals(post.getUser.getFirstName) && SessionHelper.currentUser(ctx()).getLastName.equals(post.getUser.getLastName)){
+                                            <a href="@controllers.posts.routes.PostController.editPost(post.getId)"><i class="glyphicon glyphicon-edit" style="padding-left: 10px;"></i></a>
+
                                         }
 
 

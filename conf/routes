@@ -146,6 +146,8 @@ GET           /user/class/:id                         @controllers.course.Course
 
 # 				:: POST ROUTES BELLOW ::
 GET           /post/new                               @controllers.posts.PostController.addPost()
+GET           /post/edit/:id                          @controllers.posts.PostController.editPost(id: Long)
+POST          /post/edit/:id                          @controllers.posts.PostController.saveEditedPost(id: Long)
 POST          /post                                   @controllers.posts.PostController.savePost()
 GET           /post/assignment/:id                    @controllers.posts.PostController.assignmentDetails(id: Long)
 GET           /assignment/details/:id                 @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
