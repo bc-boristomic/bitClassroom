@@ -224,7 +224,7 @@ public class  TeacherController extends Controller {
     public Result seeMentorReports(){
 
         List<WeeklyReport> reports = WeeklyReport.getFinder().all();
-        
+
         return ok(mentorReportForStudent.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
 
     }
