@@ -47,7 +47,8 @@ create table daily_report (
   create_date               datetime,
   data                      varchar(4000),
   date                      varchar(255),
-  teacher                   varchar(255),
+  teacher_id                bigint,
+  course_id                 bigint,
   constraint pk_daily_report primary key (id))
 ;
 
@@ -227,32 +228,36 @@ alter table course_user add constraint fk_course_user_user_5 foreign key (user_i
 create index ix_course_user_user_5 on course_user (user_id);
 alter table course_user add constraint fk_course_user_course_6 foreign key (course_id) references course (id) on delete restrict on update restrict;
 create index ix_course_user_course_6 on course_user (course_id);
-alter table event_setup add constraint fk_event_setup_course_7 foreign key (course_id) references course (id) on delete restrict on update restrict;
-create index ix_event_setup_course_7 on event_setup (course_id);
-alter table image add constraint fk_image_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_image_user_8 on image (user_id);
-alter table image add constraint fk_image_course_9 foreign key (course_id) references course (id) on delete restrict on update restrict;
-create index ix_image_course_9 on image (course_id);
-alter table mentorship add constraint fk_mentorship_mentor_10 foreign key (mentor_id) references user (id) on delete restrict on update restrict;
-create index ix_mentorship_mentor_10 on mentorship (mentor_id);
-alter table mentorship add constraint fk_mentorship_student_11 foreign key (student_id) references user (id) on delete restrict on update restrict;
-create index ix_mentorship_student_11 on mentorship (student_id);
-alter table post add constraint fk_post_course_12 foreign key (course_id) references course (id) on delete restrict on update restrict;
-create index ix_post_course_12 on post (course_id);
-alter table post add constraint fk_post_user_13 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_post_user_13 on post (user_id);
-alter table private_message add constraint fk_private_message_sender_14 foreign key (sender_id) references user (id) on delete restrict on update restrict;
-create index ix_private_message_sender_14 on private_message (sender_id);
-alter table private_message add constraint fk_private_message_receiver_15 foreign key (receiver_id) references user (id) on delete restrict on update restrict;
-create index ix_private_message_receiver_15 on private_message (receiver_id);
-alter table report_field add constraint fk_report_field_dailyReport_16 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
-create index ix_report_field_dailyReport_16 on report_field (daly_id);
-alter table report_field add constraint fk_report_field_field_17 foreign key (field_id) references field (id) on delete restrict on update restrict;
-create index ix_report_field_field_17 on report_field (field_id);
-alter table report_weekly_field add constraint fk_report_weekly_field_weeklyReport_18 foreign key (weekly_report) references weekly_report (id) on delete restrict on update restrict;
-create index ix_report_weekly_field_weeklyReport_18 on report_weekly_field (weekly_report);
-alter table report_weekly_field add constraint fk_report_weekly_field_weeklyField_19 foreign key (weekly_field) references weekly_field (id) on delete restrict on update restrict;
-create index ix_report_weekly_field_weeklyField_19 on report_weekly_field (weekly_field);
+alter table daily_report add constraint fk_daily_report_teacher_7 foreign key (teacher_id) references user (id) on delete restrict on update restrict;
+create index ix_daily_report_teacher_7 on daily_report (teacher_id);
+alter table daily_report add constraint fk_daily_report_course_8 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_daily_report_course_8 on daily_report (course_id);
+alter table event_setup add constraint fk_event_setup_course_9 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_event_setup_course_9 on event_setup (course_id);
+alter table image add constraint fk_image_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_image_user_10 on image (user_id);
+alter table image add constraint fk_image_course_11 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_image_course_11 on image (course_id);
+alter table mentorship add constraint fk_mentorship_mentor_12 foreign key (mentor_id) references user (id) on delete restrict on update restrict;
+create index ix_mentorship_mentor_12 on mentorship (mentor_id);
+alter table mentorship add constraint fk_mentorship_student_13 foreign key (student_id) references user (id) on delete restrict on update restrict;
+create index ix_mentorship_student_13 on mentorship (student_id);
+alter table post add constraint fk_post_course_14 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_post_course_14 on post (course_id);
+alter table post add constraint fk_post_user_15 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_post_user_15 on post (user_id);
+alter table private_message add constraint fk_private_message_sender_16 foreign key (sender_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_sender_16 on private_message (sender_id);
+alter table private_message add constraint fk_private_message_receiver_17 foreign key (receiver_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_receiver_17 on private_message (receiver_id);
+alter table report_field add constraint fk_report_field_dailyReport_18 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_18 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_19 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_19 on report_field (field_id);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyReport_20 foreign key (weekly_report) references weekly_report (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyReport_20 on report_weekly_field (weekly_report);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyField_21 foreign key (weekly_field) references weekly_field (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyField_21 on report_weekly_field (weekly_field);
 
 
 

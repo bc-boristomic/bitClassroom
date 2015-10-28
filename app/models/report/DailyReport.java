@@ -1,6 +1,8 @@
 package models.report;
 
 import com.avaje.ebean.Model;
+import models.course.Course;
+import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Created by enver on 9/12/15.
  */
+
 @Entity
 @Table(name = "daily_report")
 public final class DailyReport extends Model {
@@ -22,20 +25,31 @@ public final class DailyReport extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
+
     @Column(name = "data", length = 4000)
     private String data;
+
     @Column(name = "date")
     private String date;
+
     @Column(name = "teacher")
-    private String teacher;
+    @ManyToOne
+    private User teacher;
+
+    @Column(name = "course")
+    @ManyToOne
+    private Course course;
 
     /*
      * Default empty constructor for Ebean
      */
+
     public DailyReport() {
     }
 
@@ -55,8 +69,18 @@ public final class DailyReport extends Model {
         return id;
     }
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
-        return dtf.print(createdDate); }
+    public String getCreateDate() {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
+        return dtf.print(createdDate);
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -70,54 +94,42 @@ public final class DailyReport extends Model {
         this.createdDate = createdDate;
     }
 
-    public void setDate(String date) { this.date = date;}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(User teacher) {
         this.teacher = teacher;
     }
 
-    public String getTeacher() {
+    public User getTeacher() {
         return teacher;
     }
 
-    public String getDate() {  return date;}
-
-
+    public String getDate() {
+        return date;
+    }
 
     @OneToMany(mappedBy = "dailyReport", cascade = CascadeType.ALL)
     private List<ReportField> fieldList = new ArrayList<>();
-    //Enver sprint 4
-
-    /** Metoda se poziva iz vieiw.admins.newTableDaily preko scale,
-     * vraca true ukoliko pronadje isti field, ili false ukoliko ga ne pronadje*/
 
     public boolean containsField(Field field) {
-        for (ReportField rf :fieldList) {
+        for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
                 return true;
             }
-
         }
-
         return false;
     }
 
-    //Enver sprint 4
-    /** Metoda se poziva iz vieiw.admins.newTableDaily preko scale,
-     * prima field koji je u boolean metodi containsField uporedjen sa fieldom iz tabele,
-     * i ako su isti upisuje u njega value, ukoliko nisu ostavlja polje u tabeli prazno
-     * */
     public ReportField getField(Field field) {
         for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
                 return rf;
             }
-
         }
-
         return null;
     }
-
 
     public static DailyReport findDailyReportById(Long id) {
 
@@ -128,12 +140,10 @@ public final class DailyReport extends Model {
         return (DailyReport) report.get(0);
     }
 
-
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createdDate);
     }
-
 
     public static String formaterDate(String date) {
         String[] parts = date.split("-");
@@ -143,4 +153,19 @@ public final class DailyReport extends Model {
         return day + "." + month + "." + year;
     }
 
+    public static DailyReport previousReport(Long id) {
+        List<DailyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
+
+    public static DailyReport nextReport(Long id) {
+        List<DailyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
 }

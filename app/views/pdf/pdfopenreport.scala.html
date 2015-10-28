@@ -2,7 +2,6 @@
 @import models.report.ReportField
 @import helpers.DateTimeFormatHelper
 @(dr: DailyReport, listReportField: List[ReportField])
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,7 +15,7 @@
         td {
         border: 0.5px solid black;
         bottom: 15px;
-            padding: 15px 15px 15px 15px;
+        padding: 15px 15px 15px 15px;
         }
         </style>
     </head>
@@ -33,7 +32,9 @@
                     <tr class="row"><td class="col-md-2">
                         Date</td><td class="col-md-9 col-md-offset-1">@DailyReport.formaterDate(dr.getDate)</td></tr>
                     <tr class="row"><td class="col-md-2">
-                        Teacher</td><td class="col-md-9 col-md-offset-1">@dr.getTeacher</td></tr>
+                        Teacher</td><td class="col-md-9 col-md-offset-1">@dr.getTeacher.getFirstName @dr.getTeacher.getLastName</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Course</td><td class="col-md-9 col-md-offset-1">@dr.getCourse.getName @dr.getCourse.getDescription</td></tr>
                     @for(lrf <- listReportField) {
                         @if(lrf.getDailyReport.getId.equals(dr.getId)) {
                             <tr class="row"><td class="col-md-2">

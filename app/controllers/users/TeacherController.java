@@ -39,40 +39,39 @@ import java.util.Set;
 public class  TeacherController extends Controller {
 
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
-
     public Result dailyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
         dynamicForm.get("1");
-
         List<Field> fields = Field.getFinder().findList();
-        return ok(dailyraport.render(raportForm, fields));
-
+        List<CourseUser> courseUserList = CourseUser.findAll(SessionHelper.currentUser(ctx()).getId());
+        List<Course> courseList = new ArrayList<>();
+        for (int i = 0; i < courseUserList.size();  i++){
+            courseList.add(courseUserList.get(i).getCourse());
+        }
+        return ok(dailyraport.render(raportForm, fields, courseList));
     }
 
     public Result saveRaport() {
         User temp = SessionHelper.currentUser(ctx());
-
         List<Field> fields = Field.getFinder().findList();
-
         DynamicForm dynamicForm = Form.form().bindFromRequest();
         dynamicForm.bindFromRequest(request());
-
         DailyReport dailyReport = new DailyReport();
         dailyReport.setName(dynamicForm.get("title"));
         dailyReport.setCreatedDate(new DateTime());
         dailyReport.setData(dynamicForm.get("data"));
         dailyReport.setDate(dynamicForm.get("date"));
-        dailyReport.setTeacher(temp.getFirstName() + " " + temp.getLastName());
-
+        dailyReport.setTeacher(temp);
+        long courseId = Long.parseLong(dynamicForm.get("course"));
+        Course course = Course.findById(courseId);
+        dailyReport.setCourse(course);
         dailyReport.save();
 
         for (Field field : fields) {
             ReportField reportField = new ReportField();
             reportField.setDailyReport(dailyReport);
-
             String fieldId = dynamicForm.get(String.valueOf(field.getId()));
-
             reportField.setValue(fieldId);
             reportField.setField(field);
             reportField.save();
@@ -81,12 +80,8 @@ public class  TeacherController extends Controller {
         // List<Course> list = CourseUser.allUserCourses(u);
         //CourseUser userc = CourseUser.findAll(u.getId()).get(0);
         List<CourseUser> userc = CourseUser.getFinder().all();
-
         return ok(index.render(u, userc));
-
     }
-
-
     public Result test() {
         return ok("you are teacher");
     }

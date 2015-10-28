@@ -996,35 +996,7 @@ public class AdminController extends Controller {
     }
 
     public Result openReport(Long id) {
-        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
-    }
-
-    public Result openNextReport(Long l) {
-        Long id;
-        l++;
-        id = l;
-        if(DailyReport.findDailyReportById(id) == null){
-            flash("success", "The last report from the table");
-            l--;
-            id = l;
-            return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
-
-        }
-        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
-    }
-
-    public Result openPreviousReport(Long l) {
-        Long id;
-        l--;
-        id = l;
-        if(DailyReport.findDailyReportById(id) == null){
-            flash("success", "The first report of the table");
-            l++;
-            id = l;
-            return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
-
-        }
-        return ok(openReports.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()));
+        return ok(openReports.render(DailyReport.findDailyReportById(id), DailyReport.nextReport(id), DailyReport.previousReport(id), ReportField.getFinder().all()));
     }
 
     public static String cutText(String text, int length){

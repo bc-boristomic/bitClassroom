@@ -1,5 +1,4 @@
 package models.user;
-
 import com.avaje.ebean.Model;
 import models.CloudFile;
 import models.Image;
@@ -176,23 +175,23 @@ public final class User extends Model {
      *
      * @return <code>String</code> type value of User information
      */
-    @Override
-    public String toString() {
-        String g = "female";
-        if (gender.equals(1) && gender != null) {
-            g = "male";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(firstName).append(" ");
-        sb.append(lastName).append(" ");
-        sb.append("Born ").append(birthDate).append(" ");
-        sb.append("Gender: ").append(g).append(" ");
-        sb.append("Location: ").append(location).append(" ");
-        sb.append("Phone: ").append(cellPhone).append(" ");
-        sb.append("Web: ").append(website);
-        sb.append("STATUS ").append(status);
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        String g = "female";
+//        if (gender.equals(1) && gender != null) {
+//            g = "male";
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Name: ").append(firstName).append(" ");
+//        sb.append(lastName).append(" ");
+//        sb.append("Born ").append(birthDate).append(" ");
+//        sb.append("Gender: ").append(g).append(" ");
+//        sb.append("Location: ").append(location).append(" ");
+//        sb.append("Phone: ").append(cellPhone).append(" ");
+//        sb.append("Web: ").append(website);
+//        sb.append("STATUS ").append(status);
+//        return sb.toString();
+//    }
 
 
 

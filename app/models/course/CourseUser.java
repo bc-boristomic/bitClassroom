@@ -44,15 +44,18 @@ public final class CourseUser extends Model {
      * @return <code>List</code> type value of all courses from database
      */
     public static List<CourseUser> findAll(Long userId) {
-        List<CourseUser> list = finder.all();
-        List<CourseUser> courseUserList = new ArrayList<>();
+        return finder.where().eq("user_id", userId).findList();
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getUser().getId().equals(userId)) {
-                courseUserList.add(list.get(i));
-            }
-        }
-        return courseUserList;
+//        List<CourseUser> list = finder.all();
+//        List<CourseUser> courseUserList = new ArrayList<>();
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).getUser().getId().equals(userId)) {
+//                courseUserList.add(list.get(i));
+//
+//            }
+//        }
+//        return courseUserList;
     }
 
     public static List<Course> allUserCourses(User currentUser) {

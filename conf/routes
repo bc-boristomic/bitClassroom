@@ -208,8 +208,6 @@ GET           /open+WeeklyReport/:id                  @controllers.users.AdminCo
 # Open daily reports
 
 GET           /openReport                             @controllers.users.AdminController.openReport(id: Long)
-GET           /open+Report/:id                        @controllers.users.AdminController.openNextReport(id: Long)
-GET           /open-Report/:id                        @controllers.users.AdminController.openPreviousReport(id: Long)
 
 # FAQ page
 
