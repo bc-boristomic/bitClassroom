@@ -28,7 +28,9 @@ import views.html.users.studentsHomeworkStatus;
 import views.html.users.teacherApprowedStudent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by boris on 9/12/15.
@@ -223,9 +225,37 @@ public class  TeacherController extends Controller {
 
     public Result seeMentorReports(){
 
-        List<WeeklyReport> reports = WeeklyReport.getFinder().all();
+        List<CourseUser> allCourseUserList = CourseUser.getFinder().all();
+        List<CourseUser> courseUserList = CourseUser.findAll(SessionHelper.currentUser(ctx()).getId());
+        List<CourseUser> studentCourseList = new ArrayList<>();
 
-        return ok(mentorReportForStudent.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
+        for ( int i = 0; i < allCourseUserList.size(); i++){
+            for( int j = 0; j < courseUserList.size(); j++){
+
+                if(allCourseUserList.get(i).getCourse().getId().equals(courseUserList.get(j).getCourse().getId())){
+
+                    studentCourseList.add(allCourseUserList.get(i));
+                }
+            }
+
+        }
+
+        List<WeeklyReport> reports = WeeklyReport.getFinder().all();
+        Set<WeeklyReport> studentsReport = new HashSet<>();
+        for ( int i = 0; i < reports.size(); i++){
+            for( int j = 0; j < studentCourseList.size(); j++){
+                Logger.error(reports.get(i).getStudent());
+                Logger.error(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName());
+                if( reports.get(i).getStudent().equals(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName())){
+                    Logger.info(reports.get(i).getStudent());
+                    Logger.info(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName());
+                    studentsReport.add(reports.get(i));
+
+                }
+            }
+        }
+
+        return ok(mentorReportForStudent.render(ReportWeeklyField.getFinderReportWeeklyField().all(), studentsReport, WeeklyField.getFinder().all()));
 
     }
 }

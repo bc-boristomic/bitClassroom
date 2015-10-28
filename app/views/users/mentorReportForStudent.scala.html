@@ -4,7 +4,7 @@
 @import controllers.users.AdminController
 @import models.report.DailyReport
 @(listReportWeeklyField: List[ReportWeeklyField],
-        listWeeklyReport: List[WeeklyReport],
+        listWeeklyReport: Set[WeeklyReport],
         listWeeklyField: List[WeeklyField])
 @main("Weekly List") {
   <form>
