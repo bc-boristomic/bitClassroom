@@ -151,4 +151,21 @@ public class WeeklyReport extends Model{
 
         return weeklyFinder.findList();
     }
+
+
+    public static WeeklyReport previousWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
+
+    public static WeeklyReport nextWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
 }

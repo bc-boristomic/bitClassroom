@@ -3,7 +3,7 @@
 @import models.report.DailyReport
 @import helpers.SessionHelper
 @import utility.UserConstants
-@(wr: WeeklyReport, listReportWeeklyField: List[ReportWeeklyField])
+@(wr: WeeklyReport, nextWeeklyReport: WeeklyReport, perviousWeeklyReport: WeeklyReport, listReportWeeklyField: List[ReportWeeklyField])
 @main("Open weekly report") {
     <form>
         <div>
@@ -11,8 +11,10 @@
                 <div class="row down-border">
                     <div class="col-md-12">
                         <ul class="pager">
-                            <li class="previous"><a href="@controllers.users.routes.UserController.openPreviousWeeklyReport(wr.getId)"><span aria-hidden="true">&larr;</span>
+                            @if(perviousWeeklyReport != null){
+                                <li class="previous"><a href="@controllers.users.routes.UserController.openWeeklyReport(perviousWeeklyReport.getId)"><span aria-hidden="true">&larr;</span>
                                 Previous Report</a></li>
+                        }
                             <li><a href="@controllers.users.routes.UserController.pdfWeeklyReports(wr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
                                 PDF</a></li>
                             @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)){
@@ -20,8 +22,10 @@
                             }else{
                             <li><a href="@controllers.users.routes.TeacherController.seeMentorReports()">Back to Table</a></li>
                             }
-                            <li class="next"><a href="@controllers.users.routes.UserController.openNextWeeklyReport(wr.getId)">
-                                Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                            @if(nextWeeklyReport != null) {
+                                <li class="next"><a href="@controllers.users.routes.UserController.openWeeklyReport(nextWeeklyReport.getId)">
+                                    Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                            }
                         </ul>
                     </div>
                 </div>

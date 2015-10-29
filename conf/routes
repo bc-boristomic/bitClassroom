@@ -205,8 +205,6 @@ GET           /pdfWeeklyReports                       @controllers.users.UserCon
 
 # Open weekly reports
 GET           /openWeeklyReport                       @controllers.users.UserController.openWeeklyReport(id: Long)
-GET           /open-WeeklyReport/:id                  @controllers.users.UserController.openPreviousWeeklyReport(id: Long)
-GET           /open+WeeklyReport/:id                  @controllers.users.UserController.openNextWeeklyReport(id: Long)
 
 # Open daily reports
 

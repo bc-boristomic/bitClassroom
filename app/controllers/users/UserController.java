@@ -631,33 +631,7 @@ public class UserController extends Controller {
     }
 
     public Result openWeeklyReport(Long id) {
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-    }
-
-    public Result openPreviousWeeklyReport(Long l) {
-        Long id;
-        l--;
-        id = l;
-        if (WeeklyReport.findWeeklyReportById(id) == null) {
-            flash("success", "The first report of the table");
-            l++;
-            id = l;
-            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-        }
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-    }
-
-    public Result openNextWeeklyReport(Long l) {
-        Long id;
-        l++;
-        id = l;
-        if (WeeklyReport.findWeeklyReportById(id) == null) {
-            flash("success", "The last report of the table");
-            l--;
-            id = l;
-            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-        }
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), WeeklyReport.previousWeeklyReport(id), WeeklyReport.nextWeeklyReport(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
     }
 
     public Result pdfWeeklyReports(Long id) {
