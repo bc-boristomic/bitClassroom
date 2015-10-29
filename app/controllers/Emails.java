@@ -59,4 +59,39 @@ public class Emails extends Controller {
         }
     }
 
+    @Inject WSClient wsU;
+    public Result sendUserMail() {
+        DynamicForm mailForm = Form.form().bindFromRequest();
+        String userName = mailForm.get("name");
+        String mail = mailForm.get("mail");
+        String subject = mailForm.get("subject");
+        String message = mailForm.get("message");
+        String recaptcha = mailForm.get("g-recaptcha-response");
+        Boolean verify = GoogleRecaptcha.verifyGoogleRecaptcha(wsU, recaptcha);
+
+        if (verify) {
+            SimpleEmail email = new SimpleEmail();
+            email.setHostName(Play.application().configuration().getString("smtp.host"));
+            email.setSmtpPort(587);
+            try {
+                email.setFrom(Play.application().configuration().getString("mailFrom"));
+                email.setAuthentication(Play.application().configuration().getString("mailFromPass"), Play.application().configuration().getString("mail.smtp.pass"));
+                email.setStartTLSEnabled(true);
+                email.setDebug(true);
+                email.addTo(Play.application().configuration().getString("mail.smtp.user"));
+                email.setSubject(subject);
+                email.setMsg(userName + "\n" + mail + "\n\n"+subject +"\n" + message);
+
+                email.send();
+            } catch (EmailException e) {
+                Ebean.save(new ErrorLog(e.getMessage()));
+                e.printStackTrace();
+            }
+            return redirect("/");
+        } else {
+            flash("error", "Not validated");
+            return redirect("/");
+        }
+    }
+
 }
