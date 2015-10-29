@@ -92,7 +92,7 @@
 
                                            <!-- <li><a href="/user/courses">Courses</a></li> -->
                                             <li><a href="/post/new">Add post</a></li>
-                                            <li><a href="/teacher/awaitlist">Awaiting approval</a></li>
+                                            <li><a href="/teacher/awaitlist">Awaiting approval <span class="badge" id="notify1"></span></a></li>
                                             <li class="divider"></li>
                                             <li><a href="/daily/report">Write daily report</a></li>
 
@@ -268,6 +268,16 @@
                 })
 
             }, 1000));
+
+        $(document).ready(setInterval(function(){
+                $.ajax({
+                        type: "post",
+                        url: "@routes.Application.getNotification()",
+                        data: ""
+                }).success(function(response) {
+                    $('#notify1').html(response);
+                })
+                }, 1000));
 
         </script>
 
