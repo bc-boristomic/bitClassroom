@@ -42,7 +42,7 @@ public class WeeklyReport extends Model{
     private String data;
 
     @Column(name = "week")
-    private Integer week;
+    private Integer week = 1;
 
     //Constructior
     public WeeklyReport() {

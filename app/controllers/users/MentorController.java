@@ -18,6 +18,8 @@ import play.mvc.Security;
 import utility.UserConstants;
 import views.html.dailyreports.weeklyreport;
 import views.html.index;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,7 +69,7 @@ public class MentorController extends Controller {
             week += 1;
             weeklyReport.setWeek(week);
             mentorship.setCreationDate(DateTime.now());
-            mentorship.update();
+            mentorship.save();
         }else{
             weeklyReport.setWeek(week);
         }
