@@ -194,6 +194,9 @@ POST          /user/sendStartMail                     @controllers.users.Student
 
 POST          /user/sendMmail                         @controllers.Emails.sendMail()
 
+GET           /user/contact                           @controllers.Application.contact()
+POST          /user/sendUserMail                      @controllers.Emails.sendUserMail()
+
 # Download PDF
 
 

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Contac us">
+        <meta name="author" content="bitClassroom">
+        <link rel="icon" href="@routes.Assets.versioned("img/neo/favicon.png")">
+
+        <title>Contact us</title>
+
+            <!-- CSS Plugins -->
+        <link href="@routes.Assets.versioned("css/jquery.fullPage.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("css/animate.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("css/lightbox.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("css/font-awesome.min.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("css/open-iconic-bootstrap.css")"  rel="stylesheet">
+
+            <!-- CSS Custom -->
+        <link href="@routes.Assets.versioned("css/style_blue.css")"  rel="stylesheet">
+
+            <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+
+            <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+            <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    </head>
+
+    <body>
+        <div class="preloader">
+            <img src="@routes.Assets.versioned("img/neo/load2.gif")" alt="Loading..." class="preloader__img">
+        </div>
+
+
+            <!-- BACKGROUND PATTERN
+    ============================== -->
+        <div class="bg-pattern"></div>
+
+
+            <!-- BACKSTRETCH CAROUSEL
+    ============================== -->
+        <div class="backstretch-carousel"></div>
+
+        <div id="fullpage">
+
+
+    <!-- CONTACT SCREEN
+      ============================== -->
+<div class="site-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+
+          <!-- Heading -->
+        <h1 class="heading">
+                Feel free to  <span class="text-primary">contact us</span>
+              </h1>
+
+          <!-- Sub heading -->
+        <p class="heading__sub">
+                Do not hesitate to drop us a couple of lines. 24/7 support guaranteed.
+        </p>
+
+      </div>
+    </div> <!-- / .row -->
+    <div class="row">
+      <div class="col-sm-6 col-md-5 col-md-offset-1">
+
+          <!-- Contact info -->
+        <h3 class="contact-info__title">
+                Support<span class="text-primary"> example.com</span>
+              </h3>
+        <h3 class="contact-info__title">
+                (987)654-32-10
+        </h3>
+        <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          <br />
+          Nunc consectetur elit erat, id convallis ante ultrices ac. Pellentesque eget nisi at libero malesuada malesuada.
+        </p>
+
+
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-5">
+
+          <!-- Alert message -->
+        <div class="alert contact-form__alert" id="form_message" role="alert"></div>
+
+          <!-- Setting the custom theme for reCaptcha.
+                   Default themes and customization:
+                   https://developers.google.com/recaptcha/docs/customization -->
+
+        <script type="text/javascript">
+               var RecaptchaOptions = {
+                  theme : 'custom',
+                  custom_theme_widget: 'recaptcha_widget'
+               };
+              </script>
+
+          <!-- Contact form -->
+          <!-- Please carefully read the README.txt file
+               in order to setup the PHP contact form properly -->
+        <form role="form" class="contact__form" id="form_sendemail" action="@routes.Emails.sendUserMail()" method="post">
+          <div class="row form-group">
+            <div class="col-xs-6">
+              <label for="email" class="sr-only">Your email address</label>
+              <input type="email" name="mail" class="form-control" id="email" placeholder="E-mail" required data-validation-required-message="Please enter a email">
+              <span class="help-block text-danger"></span>
+            </div>
+            <div class="col-xs-6">
+              <label for="name" class="sr-only">Your name</label>
+              <input type="text" name="name" class="form-control" id="name" placeholder="Full Name" required data-validation-required-message="Please enter a name">
+              <span class="help-block text-danger"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name" class="sr-only">Subject</label>
+            <input type="text" name="subject" class="form-control" id="name" placeholder="Subject" required data-validation-required-message="Please enter a subject">
+            <span class="help-block text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label for="message" class="sr-only">Your message</label>
+            <textarea name="message" class="form-control" rows="3" id="message" placeholder="Message" required data-validation-required-message="Please enter a message"></textarea>
+            <span class="help-block text-danger"></span>
+          </div>
+
+            <!-- reCAPTCHA -->
+          <div class="form-group" id="form-captcha">
+              <!-- Start reCAPTCHA -->
+
+            <div class="g-recaptcha" data-sitekey="6LfOKQ4TAAAAAKOKbK-0FdNW6TUj1Jc2B6360Yn7"></div>
+              <!-- End reCAPTCHA -->
+            <span class="help-block"></span>
+          </div>
+          <a href="@routes.Emails.sendUserMail()">
+            <button type="submit" class="btn btn-lg btn-primary">
+              <span class="oi oi-arrow-right" title="Send it" aria-hidden="true"></span>
+              <span>Send it</span>
+            </button>
+          </a>
+        </form>
+
+      </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .container -->
+</div> <!-- / .site-wrapper -->
+
+</div> <!-- / #fullpage -->
+
+        <!-- JS Global -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")"></script>
+
+            <!-- JS Plugins -->
+        <script src="@routes.Assets.versioned("javascripts/jquery.slimscroll.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/jquery.fullPage.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/jquery.backstretch.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/imagesloaded.pkgd.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/isotope.pkgd.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lightbox.min.js")"></script>
+
+            <!-- JS Custom -->
+        <script src="@routes.Assets.versioned("javascripts/custom_crossfading.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/custom.js")"></script>
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    </body>
+</html>
