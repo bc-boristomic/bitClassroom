@@ -160,4 +160,8 @@ public class PrivateMessage extends Model {
         find.ref(id).delete();
     }
 
+    public static List<PrivateMessage> getUsersMessages(User user){
+        //TODO
+        return null;
+    }
 }

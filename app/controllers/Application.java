@@ -7,6 +7,7 @@ import models.Faq;
 import models.PrivateMessage;
 import models.course.CourseUser;
 import models.user.User;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -88,9 +89,6 @@ public class Application extends Controller {
      * @return
      */
     public Result checkLogin() {
-        if (!request().accepts("text/html")) {
-            return UserAPIController.login();
-        }
         Form<User> boundForm = userForm.bindFromRequest();
 
         if (boundForm.hasErrors()) {

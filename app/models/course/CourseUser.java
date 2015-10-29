@@ -1,9 +1,6 @@
 package models.course;
 
 import com.avaje.ebean.Model;
-import helpers.SessionHelper;
-import models.Post;
-import models.user.Assignment;
 import models.user.User;
 
 import javax.persistence.*;
@@ -134,6 +131,10 @@ public final class CourseUser extends Model {
         return finder;
     }
 
+    public static List<CourseUser> getCoursesPerUser(User u){
+        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).findList();
+        return courseUsers;
+    }
 
 
     @Override

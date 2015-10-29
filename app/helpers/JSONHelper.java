@@ -13,8 +13,6 @@ public class JSONHelper {
 
         ObjectNode user = Json.newObject();
         user.put("id", u.getId());
-        user.put("firstName", u.getFirstName());
-        user.put("lastName", u.getLastName());
         user.put("password", u.getPassword());
         user.put("email", u.getEmail());
         return user;
