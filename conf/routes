@@ -126,6 +126,9 @@ GET           /teacher/listAssignment                 @controllers.users.Teacher
 POST          /teacher/approvestudent/:id             @controllers.users.TeacherController.approveStudent(id: Long)
 GET           /teacher/awaitlist                      @controllers.users.TeacherController.awaitList()
 GET           /teacher/reports                        @controllers.users.TeacherController.seeMentorReports()
+GET           /teacher/reports/pdf                    @controllers.users.TeacherController.pdfWeeklyTable()
+
+
 
 
 # Daily report for teachers
@@ -197,13 +200,13 @@ POST          /user/sendMmail                         @controllers.Emails.sendMa
 GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
 GET           /pdfDailyTable                          @controllers.users.AdminController.pdfDailyTable()
 GET           /pdfDailyReports                        @controllers.users.AdminController.pdfDailyReports(id: Long)
-GET           /pdfWeeklyReports                       @controllers.users.AdminController.pdfWeeklyReports(id: Long)
+GET           /pdfWeeklyReports                       @controllers.users.UserController.pdfWeeklyReports(id: Long)
 
 
 # Open weekly reports
-GET           /openWeeklyReport                       @controllers.users.AdminController.openWeeklyReport(id: Long)
-GET           /open-WeeklyReport/:id                  @controllers.users.AdminController.openPreviousWeeklyReport(id: Long)
-GET           /open+WeeklyReport/:id                  @controllers.users.AdminController.openNextWeeklyReport(id: Long)
+GET           /openWeeklyReport                       @controllers.users.UserController.openWeeklyReport(id: Long)
+GET           /open-WeeklyReport/:id                  @controllers.users.UserController.openPreviousWeeklyReport(id: Long)
+GET           /open+WeeklyReport/:id                  @controllers.users.UserController.openNextWeeklyReport(id: Long)
 
 # Open daily reports
 

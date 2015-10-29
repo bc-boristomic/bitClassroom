@@ -3,18 +3,22 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
+import it.innove.play.pdf.PdfGenerator;
 import models.Event;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
+import models.report.ReportWeeklyField;
+import models.report.WeeklyReport;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
+import play.Configuration;
 import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
@@ -29,6 +33,8 @@ import utility.MailHelper;
 import utility.UserConstants;
 import utility.UserUtils;
 import views.html.*;
+import views.html.admins.openWeeklyReports;
+import views.html.pdf.pdfOpenWeeklyReport;
 import views.html.posts.message;
 import views.html.users.editprofile;
 import views.html.users.login;
@@ -37,6 +43,7 @@ import views.html.posts.studentList;
 import views.html.posts.allMessage;
 import views.html.users.util.resetpassword;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -48,6 +55,9 @@ import java.util.*;
  * Created by boris on 9/12/15.
  */
 public class UserController extends Controller {
+
+    @Inject
+    public PdfGenerator pdfGenerator;
 
     private List<String> imageList = new ArrayList<>();
 
@@ -564,7 +574,7 @@ public class UserController extends Controller {
 
         Map<String, String> result = new HashMap<String, String>();
         result.put("id", newEvent.getId().toString());
-        result.put("url", "/calendar/event/"+newEvent.getId().toString());
+        result.put("url", "/calendar/event/" + newEvent.getId().toString());
         Logger.info(result.toString());
 
         return ok(play.libs.Json.toJson(result));
@@ -618,5 +628,39 @@ public class UserController extends Controller {
 //        }
 
         return ok("changed");
+    }
+
+    public Result openWeeklyReport(Long id) {
+        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+    }
+
+    public Result openPreviousWeeklyReport(Long l) {
+        Long id;
+        l--;
+        id = l;
+        if (WeeklyReport.findWeeklyReportById(id) == null) {
+            flash("success", "The first report of the table");
+            l++;
+            id = l;
+            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+        }
+        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+    }
+
+    public Result openNextWeeklyReport(Long l) {
+        Long id;
+        l++;
+        id = l;
+        if (WeeklyReport.findWeeklyReportById(id) == null) {
+            flash("success", "The last report of the table");
+            l--;
+            id = l;
+            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+        }
+        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
+    }
+
+    public Result pdfWeeklyReports(Long id) {
+        return pdfGenerator.ok(pdfOpenWeeklyReport.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()), Configuration.root().getString("application.host"));
     }
 }

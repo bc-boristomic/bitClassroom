@@ -2,6 +2,7 @@ package controllers.users;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
+import it.innove.play.pdf.PdfGenerator;
 import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
@@ -11,6 +12,7 @@ import models.user.Assignment;
 import models.user.Mentorship;
 import models.user.User;
 import org.joda.time.DateTime;
+import play.Configuration;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -19,14 +21,18 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
 import views.html.admins.newTableWeekly;
+import views.html.admins.openWeeklyReports;
 import views.html.dailyreports.dailyraport;
 import views.html.index;
+import views.html.pdf.pdfOpenWeeklyReport;
+import views.html.pdf.weeklypdf;
 import views.html.posts.assignmentView;
 import views.html.posts.teacherListsAssignment;
 import views.html.users.mentorReportForStudent;
 import views.html.users.studentsHomeworkStatus;
 import views.html.users.teacherApprowedStudent;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +43,9 @@ import java.util.Set;
  */
 @Security.Authenticated(Authorization.Teacher.class)
 public class  TeacherController extends Controller {
+
+    @Inject
+    public PdfGenerator pdfGenerator;
 
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
     public Result dailyReport() {
@@ -253,5 +262,11 @@ public class  TeacherController extends Controller {
         return ok(mentorReportForStudent.render(ReportWeeklyField.getFinderReportWeeklyField().all(), studentsReport, WeeklyField.getFinder().all()));
 
     }
+
+    public Result pdfWeeklyTable() {
+        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+
 }
 

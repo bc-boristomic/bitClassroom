@@ -11,7 +11,7 @@
     <div>
       <h3 class="page-head-line"> Table of weekly reports </h3>
       <ul class="pager">
-        <li><a href="@controllers.users.routes.AdminController.pdfWeeklyTable" target="_blank"><i class="fa fa-file-pdf-o"> </i>
+        <li><a href="@controllers.users.routes.TeacherController.pdfWeeklyTable" target="_blank"><i class="fa fa-file-pdf-o"> </i>
           PDF</a></li>
       </ul>
     </div>
@@ -51,11 +51,8 @@
                 <td>
                   <div class="row">
                     <div class="col-md-6">
-                      <a href="@controllers.users.routes.AdminController.openWeeklyReport(lwr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                      <a href="@controllers.users.routes.UserController.openWeeklyReport(lwr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
                     </div>
-                    <a data-role="delete" data-delete-parent="tr"
-                    href="@controllers.users.routes.AdminController.deleteWeeklyReport(lwr.getId)">
-                      <i class="glyphicon glyphicon-trash"></i></a>
                     <div class="col-md-6">
                                         </div>
                   </div>

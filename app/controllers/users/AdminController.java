@@ -965,36 +965,6 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-    public Result openWeeklyReport(Long id) {
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-    }
-
-    public Result openPreviousWeeklyReport(Long l) {
-        Long id;
-        l--;
-        id = l;
-        if (WeeklyReport.findWeeklyReportById(id) == null) {
-            flash("success", "The first report of the table");
-            l++;
-            id = l;
-            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-        }
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-    }
-
-    public Result openNextWeeklyReport(Long l) {
-        Long id;
-        l++;
-        id = l;
-        if (WeeklyReport.findWeeklyReportById(id) == null) {
-            flash("success", "The last report of the table");
-            l--;
-            id = l;
-            return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-        }
-        return ok(openWeeklyReports.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()));
-    }
-
     public Result openReport(Long id) {
         return ok(openReports.render(DailyReport.findDailyReportById(id), DailyReport.nextReport(id), DailyReport.previousReport(id), ReportField.getFinder().all()));
     }
@@ -1019,7 +989,4 @@ public class AdminController extends Controller {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
     }
 
-    public Result pdfWeeklyReports(Long id) {
-        return pdfGenerator.ok(pdfOpenWeeklyReport.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()), Configuration.root().getString("application.host"));
-    }
 }
