@@ -248,11 +248,7 @@ public class  TeacherController extends Controller {
         Set<WeeklyReport> studentsReport = new HashSet<>();
         for ( int i = 0; i < reports.size(); i++){
             for( int j = 0; j < studentCourseList.size(); j++){
-                Logger.error(reports.get(i).getStudent());
-                Logger.error(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName());
                 if( reports.get(i).getStudent().equals(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName())){
-                    Logger.info(reports.get(i).getStudent());
-                    Logger.info(studentCourseList.get(j).getUser().getFirstName() + " " + studentCourseList.get(j).getUser().getLastName());
                     studentsReport.add(reports.get(i));
 
                 }

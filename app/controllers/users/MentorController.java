@@ -1,5 +1,6 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.course.CourseUser;
@@ -58,19 +59,25 @@ public class MentorController extends Controller {
         weeklyReport.setName(dynamicForm.get("title"));
         weeklyReport.setStudent(dynamicForm.get("student"));
         weeklyReport.setData(dynamicForm.get("data"));
-        Mentorship mentorship =  Mentorship.findMentroship(SessionHelper.currentUser(ctx()));
+        Mentorship mentorship =  Mentorship.findMentroship(temp);
         Long tmpWeek = mentorship.getCreationDate().getMillis()/1000;
         Logger.info(tmpWeek+"");
         Long time = DateTime.now().getMillis()/1000;
         Long status = time - tmpWeek;
         Logger.info(status+"");
         Integer week = weeklyReport.getWeek();
+
         if(status > 604800) {
+
             week += 1;
             weeklyReport.setWeek(week);
             mentorship.setCreationDate(DateTime.now());
-            mentorship.save();
+            Logger.info(mentorship.getId() + "");
+            mentorship.update();
+            Ebean.update(mentorship);
+
         }else{
+
             weeklyReport.setWeek(week);
         }
         weeklyReport.save();
@@ -87,7 +94,7 @@ public class MentorController extends Controller {
         List<CourseUser> userc = CourseUser.getFinder().all();
 
         flash("success", "Your report has been sent");
-        return ok(index.render(u, userc));
+        return redirect("/");
 
     }
 
