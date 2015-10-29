@@ -15,13 +15,27 @@
 
 
             <div class="col-md-4 text-center">
+                <div class="ImageWrapper ContentWrapperCl chrome-fix">
                 @if(user.getProfilePicture.size() != 0 && user.getProfilePicture != null){
                     <img src="@user.getProfilePicture.get(user.getProfilePicture.size()-1).getSize(300,300)"/>
                 }else{
                     <img src="http://placehold.it/300x300"/>
                 }
-                <br>
-                <input type="file" name="image" accept="image/*" id="upload-img"/>
+                    <div class="ImageOverlayH">
+                        <div class="ContentCl">
+                            <div class="Content">
+                                <h2>
+                                    Change your picture.
+                                </h2>
+                                <div class="ReadMore">
+                            <span class="file-input btn btn-primary btn-file">
+                                Browse&hellip; <input type="file" name="image" accept="image/*" id="upload-img" multiple>
+                            </span>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
                 <!-- edit form column -->

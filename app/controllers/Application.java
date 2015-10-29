@@ -178,5 +178,9 @@ public class Application extends Controller {
         return ok(faq.render(faqList));
     }
 
+    public Result contact(){
+        return ok(contact.render());
+    }
+
 
 }

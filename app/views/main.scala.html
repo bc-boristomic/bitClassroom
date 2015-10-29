@@ -17,13 +17,16 @@
             <!-- TITLE IS ADDED FROM EVERY PAGE -->
         <title>@title</title>
 
-            <!-- main theme for site css bootstrap -->
+
+
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/component.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font-awesome.css")" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/sinister.css")" />
 
-        <!-- Footer -->
-        <link rel="stylesheet" href="@routes.Assets.versioned("css/demo.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("css/footer-distributed-with-address-and-phones.css")">
+
+
+
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
@@ -32,19 +35,18 @@
         <!-- css for validation and other main stylesheat -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
 
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/aplication.css")" />
-
-
         <!-- custom icon -->
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/header/logo.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/neo/favicon.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
-
-
 
         <!--css for jquery-ui-->
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
+
+        <script src="@routes.Assets.versioned("javascripts/modernizr.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/jquery.js")"></script>
+
         <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
@@ -58,6 +60,8 @@
         <!-- END OF HEAD TAG -->
 
     <body style="background-color: #f7f7f7">
+
+
             <!-- HEADER WITH IMAGE ONLY -->
 
             @if(currentUser != null){
@@ -72,7 +76,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" style="font-family: myFirstFont; color: white;font-size: 25px" href="/">bitClassroom</a>
+                    <a class="" href="/"><img  src="@routes.Assets.versioned("img/neo/bcLogoNoText.png")" alt=""/></a>
                 </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -179,63 +183,38 @@
         </div>
 
             <!-- CONTAINER WITH ALL CONTENT FOR MAIN HTML -->
-        <div class="container">
+        <div id="perspective" class="perspective effect-airbnb">
+            <div class="container">
+                <div class="wrapper">
+
 
         @content
-        </div>
+
             <!-- END OF CONTAINER WITH CONTENT -->
 
-            <!-- FOOTER ALWAYS FIXED AT BOTTOM OF PAGE -->
 
-        <div class="row top50">
-            <footer class="footer-distributed">
 
-                <div class="footer-left">
+                </div><!-- wrapper -->
 
-                    <p class="footer-links">
-                        <a href="/home">Home</a>
-                        ·
-                        <a href="/about">About</a>
-                        ·
-                        <a href="/faq">FAQ</a>
-                    </p>
 
-                    <p class="footer-company-name">Copyright &copy;
-                        2015 bitClassroom &#64; BITCamp.<br>All Rights Reserved</p>
-                </div>
 
-                <div class="footer-center">
-                    <h3>Bit<span>Classroom</span></h3>
+            </div><!-- /container -->
 
-                </div>
+            <button id="showMenu" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-option-horizontal"></i></button>
 
-                <div class="footer-right">
 
-                    <p class="footer-company-about">
-                        <span>
-                        BitClassroom is a mission control.
-                        </span>
-                    </p>
+            <nav class="outer-nav left vertical">
+                <a href="/" ><i class="fa fa-home fa-8"></i>  Home</a>
+                <a href="https://github.com/boristomic/bitClassroom" ><i class="fa fa-github fa-8"></i>  GitHub</a>
+                <a href="/faq" ><i class="fa fa-question-circle fa-8"></i>  F.A.Q.</a>
+                <a href="/user/contact" ><i class="fa fa-envelope fa-8"></i>  Contact</a>
 
-                    <div class="footer-icons">
-
-                        <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
-                        <a href="https://twitter.com/?lang=en"><i class="fa fa-twitter"></i></a>
-                        <a href="https://www.linkedin.com/uas/login"><i class="fa fa-linkedin"></i></a>
-                        <a href="https://github.com/boristomic/bitClassroom"><i class="fa fa-github"></i></a>
-
-                    </div>
-
-                </div>
-
-            </footer>
-
+            </nav>
         </div>
             <!-- END OF FOOTER -->
-
-
-
             <!-- JAVASCRIPT SCRIPTS, FIRST JQUERY IS LOADED -->
+        <script src="@routes.Assets.versioned("javascripts/classie.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/menu.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/bootbox.js")"></script>
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
@@ -281,6 +260,7 @@
 
         </script>
 
-        
+
+
     </body>
 </html>
