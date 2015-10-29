@@ -41,6 +41,9 @@ public class WeeklyReport extends Model{
     @Column(name = "data", length = 4000)
     private String data;
 
+    @Column(name = "week")
+    private Integer week;
+
     //Constructior
     public WeeklyReport() {
 
@@ -82,10 +85,10 @@ public class WeeklyReport extends Model{
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getMentor() {
         return mentor;
     }
+    public Integer getWeek() { return week; }
 
     //Setters
     public void setCreateDate(DateTime createDate) {
@@ -103,9 +106,11 @@ public class WeeklyReport extends Model{
     public void setData(String data) {
         this.data = data;
     }
-
     public void setMentor(String mentor) {
         this.mentor = mentor;
+    }
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     public static WeeklyReport findWeeklyReportById(Long id) {

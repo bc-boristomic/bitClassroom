@@ -207,6 +207,7 @@ create table weekly_report (
   mentor                    varchar(255),
   student                   varchar(255),
   data                      varchar(4000),
+  week                      integer,
   constraint pk_weekly_report primary key (id))
 ;
 
