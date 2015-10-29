@@ -12,7 +12,7 @@
                                     <li class="previous"><a href="@controllers.users.routes.AdminController.openReport(previousReport.getId)"><span aria-hidden="true">&larr;</span>
                                         Previous Report</a></li>
                                 }
-                                <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)"><i class="fa fa-file-pdf-o"> </i>
+                                <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
                                     PDF</a></li>
                                 <li><a href="@controllers.users.routes.AdminController.listReport">Back to Table</a></li>
                                 @if(nextReport!=null) {
