@@ -18,6 +18,8 @@ import play.mvc.Security;
 import utility.UserConstants;
 import views.html.dailyreports.weeklyreport;
 import views.html.index;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +43,6 @@ public class MentorController extends Controller {
 
     public Result saveRaport() {
 
-        Integer week = 1;
         User temp = SessionHelper.currentUser(ctx());
         temp.setWeeklyReportStatus(2);
         temp.save();
@@ -58,13 +59,17 @@ public class MentorController extends Controller {
         weeklyReport.setStudent(dynamicForm.get("student"));
         weeklyReport.setData(dynamicForm.get("data"));
         Mentorship mentorship =  Mentorship.findMentroship(SessionHelper.currentUser(ctx()));
-        Long tmpWeek = mentorship.getCreationDate().getMillis()*1000;
-        Long time = DateTime.now().getMillis()*1000;
+        Long tmpWeek = mentorship.getCreationDate().getMillis()/1000;
+        Logger.info(tmpWeek+"");
+        Long time = DateTime.now().getMillis()/1000;
         Long status = time - tmpWeek;
+        Logger.info(status+"");
+        Integer week = weeklyReport.getWeek();
         if(status > 604800) {
-            weeklyReport.setWeek(week++);
+            week += 1;
+            weeklyReport.setWeek(week);
             mentorship.setCreationDate(DateTime.now());
-            mentorship.update();
+            mentorship.save();
         }else{
             weeklyReport.setWeek(week);
         }
