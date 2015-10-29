@@ -153,7 +153,7 @@ public class WeeklyReport extends Model{
     }
 
 
-    public static WeeklyReport previousWeeklyReport(Long id) {
+    public static WeeklyReport nextWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
         if (reports.size() > 0) {
             return reports.get(0);
@@ -161,7 +161,7 @@ public class WeeklyReport extends Model{
         return null;
     }
 
-    public static WeeklyReport nextWeeklyReport(Long id) {
+    public static WeeklyReport previousWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
         if (reports.size() > 0) {
             return reports.get(0);
