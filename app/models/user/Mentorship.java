@@ -51,6 +51,11 @@ public final class Mentorship extends Model {
 
     }
 
+    public static Mentorship findMentroship(User user){
+
+        return finder.where().eq("mentor", user).findUnique();
+    }
+
     public Long getId() {
         return id;
     }
