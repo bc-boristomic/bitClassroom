@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 public class UserAPIController extends Controller {
 
@@ -70,7 +69,7 @@ public class UserAPIController extends Controller {
             object2.put("teachers",courseTeacherNames);
 
             JSONObject object3 = new JSONObject();
-            object3.put("course_id",courseIds);
+            object3.put("course_id", courseIds);
 
         jsonArray.add(object);
         jsonArray.add(object1);
@@ -269,7 +268,10 @@ public class UserAPIController extends Controller {
         privMessage.setStatus(0);
         receiver.getMessages().add(privMessage);
         receiver.save();
-        play.Logger.info("-------------------------aaaajajajajajja");
-        return ok();
+        JSONObject object = new JSONObject();
+
+        object.put("response","ok");
+        JsonNode jsonNode = Json.toJson(object);
+        return ok(jsonNode);
     }
 }
