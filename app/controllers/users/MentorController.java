@@ -59,22 +59,23 @@ public class MentorController extends Controller {
         weeklyReport.setName(dynamicForm.get("title"));
         weeklyReport.setStudent(dynamicForm.get("student"));
         weeklyReport.setData(dynamicForm.get("data"));
-        Mentorship mentorship =  Mentorship.findMentroship(temp);
-        Long tmpWeek = mentorship.getCreationDate().getMillis()/1000;
-        Logger.info(tmpWeek+"");
+        User student = User.findByName(dynamicForm.get("student").substring(0,dynamicForm.get("student").indexOf(" ")));
+        Mentorship mentorship =  Mentorship.findMentroship(temp, student);
+        Logger.info(mentorship.getId()+"");
+        Long tmpWeek = mentorship.getReportDate().getMillis()/1000;
         Long time = DateTime.now().getMillis()/1000;
         Long status = time - tmpWeek;
-        Logger.info(status+"");
-        Integer week = weeklyReport.getWeek();
+
+        Integer week = mentorship.getWeek();
+        Logger.info(week + "");
 
         if(status > 604800) {
-
             week += 1;
             weeklyReport.setWeek(week);
-            mentorship.setCreationDate(DateTime.now());
+            mentorship.setWeek(week);
+            mentorship.setReportDate(DateTime.now());
             Logger.info(mentorship.getId() + "");
             mentorship.update();
-            Ebean.update(mentorship);
 
         }else{
 
@@ -90,6 +91,7 @@ public class MentorController extends Controller {
             reportField.setWeeklyField(field);
             reportField.save();
         }
+
         User u = SessionHelper.currentUser(ctx());
         List<CourseUser> userc = CourseUser.getFinder().all();
 

@@ -551,6 +551,7 @@ public class AdminController extends Controller {
         mentorship.setStudent(student);
         mentorship.setCreatedBy(SessionHelper.currentUser(ctx()).getEmail());
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
+        mentorship.setReportDate(DateTime.now());
         mentorship.save();
 
             List<Course> courses = CourseUser.allUserCourses(student);

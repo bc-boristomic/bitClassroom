@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import utility.UserConstants;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by boris on 9/21/15.
@@ -31,6 +32,10 @@ public final class Mentorship extends Model {
     private DateTime updateDate;
     @Column(name = "updated_by")
     private String updatedBy;
+    @Column(name = "week")
+    private Integer week = 1;
+    @Column(name = "date_of_report")
+    private DateTime reportDate;
 
     /**
      * Default empty constructor for Ebean
@@ -51,9 +56,25 @@ public final class Mentorship extends Model {
 
     }
 
-    public static Mentorship findMentroship(User user){
+    public static Mentorship findMentroship(User user, User student){
 
-        return finder.where().eq("mentor", user).findUnique();
+        return finder.where().eq("mentor", user).eq("student", student).findUnique();
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
+    public DateTime getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(DateTime reportDate) {
+        this.reportDate = reportDate;
     }
 
     public Long getId() {

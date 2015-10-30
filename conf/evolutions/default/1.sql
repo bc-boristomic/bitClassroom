@@ -106,6 +106,8 @@ create table mentorship (
   created_by                varchar(255),
   update_date               datetime,
   updated_by                varchar(255),
+  week                      integer,
+  date_of_report            datetime(6),
   constraint pk_mentorship primary key (id))
 ;
 

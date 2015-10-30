@@ -160,6 +160,8 @@ public final class User extends Model {
         return finder.where().eq("firstName", name).findUnique();
     }
 
+
+
     /**
      * Returns finder on User model
      *
