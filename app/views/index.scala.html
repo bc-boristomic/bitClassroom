@@ -41,7 +41,7 @@
                                         @if(cUser.getUser.getRoles != null && cUser.getUser.getRoles.size() > 0) {
                                             @for(role <- cUser.getUser.getRoles) {
                                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                                            <h5>@user.getFirstName @user.getLastName</h5>
+                                                            <h5>@cUser.getUser.getFirstName @cUser.getUser.getLastName</h5>
 
 
                                                 }
