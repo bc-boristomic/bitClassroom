@@ -169,14 +169,6 @@ GET           /teacher/test                           @controllers.users.Teacher
 GET           /mentor/test                            @controllers.users.MentorController.test()
 GET           /student/test                           @controllers.users.StudentController.test()
 
-
-# API routes
-GET           /api/user                               @controllers.api.UserAPIController.getUsers()
-GET           /api/user/:id                           @controllers.api.UserAPIController.getSpecificUser(id: Long)
-#POST          /api/user                             @controllers.api.UserAPIController.createUser()
-#PUT           /api/user/:id                         @controllers.api.UserAPIController.updateUser(id: Long)
-#DELETE        /api/user/:id                         @controllers.api.UserAPIController.deleteUser(id: Long)
-
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                           @controllers.Assets.versioned(path="/public", file: Asset)
 
@@ -239,8 +231,13 @@ POST          /admin/calendar/event-ajax              @controllers.users.UserCon
 POST          /admin/calendar/event-move              @controllers.users.UserController.move()
 POST          /admin/calendar/event-resize            @controllers.users.UserController.resize()
 
-
-
+# API routes
+POST          /api/login                              @controllers.api.UserAPIController.login()
+POST          /api/courses                            @controllers.api.UserAPIController.sendCourses()
+POST          /api/students                           @controllers.api.UserAPIController.sendStudents()
+POST          /api/posts                              @controllers.api.UserAPIController.sendPosts()
+POST          /api/messages                           @controllers.api.UserAPIController.sendAllMessages()
+POST          /api/send_message                       @controllers.api.UserAPIController.sendMessage()
 
 
 

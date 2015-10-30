@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import utility.UserConstants;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +55,17 @@ public final class Mentorship extends Model {
         }
         return m.getMentor();
 
+    }
+    
+    public static List<User> findStudentsByMentor(User u){
+        List<User> students = new ArrayList<>();
+        List<Mentorship> mentorships = finder.where().eq("mentor_id",u.getId()).findList();
+        for(Mentorship mentorship : mentorships){
+            if(mentorship.getMentor().getId() == u.getId()){
+             students.add(mentorship.getStudent());
+            }
+        }
+        return students;
     }
 
     public static Mentorship findMentroship(User user, User student){

@@ -2,7 +2,6 @@ package models.user;
 
 import com.avaje.ebean.Model;
 import models.Post;
-import models.course.CourseUser;
 import play.Logger;
 
 import javax.persistence.*;
@@ -58,5 +57,12 @@ public class Assignment extends Model {
         Logger.debug(currentUser.getId() + "    : " + post.getId() + "     ");
       return  finder.where().eq("user_id", currentUser.getId()).eq("post_id", post.getId()).findUnique();
     }
+
+    public static List<Assignment> findAllAssignmentsPerUser(User user){
+        List<Assignment> assignments = finder.where().eq("user_id",user.getId()).findList();
+        return assignments;
+    }
+
+
 
 }
