@@ -237,6 +237,7 @@ POST          /api/courses                            @controllers.api.UserAPICo
 POST          /api/students                           @controllers.api.UserAPIController.sendStudents()
 POST          /api/posts                              @controllers.api.UserAPIController.sendPosts()
 POST          /api/messages                           @controllers.api.UserAPIController.sendAllMessages()
+POST          /api/send_message                       @controllers.api.UserAPIController.sendMessage()
 
 
 

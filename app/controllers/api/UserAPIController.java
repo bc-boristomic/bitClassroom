@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class UserAPIController extends Controller {
 
@@ -254,4 +255,21 @@ public class UserAPIController extends Controller {
         return ok(jsonNode);
     }
 
+    public Result sendMessage() {
+        JsonNode json = request().body().asJson();
+        String subject = json.findPath("subject").textValue();
+        String message = json.findPath("message").textValue();
+        String receiverId = json.findPath("receiver").textValue();
+        String senderId = json.findPath("sender").textValue();
+
+        User receiver = User.findById(Long.parseLong(receiverId));
+        User sender = User.findById(Long.parseLong(senderId));
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, message, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+        play.Logger.info("-------------------------aaaajajajajajja");
+        return ok();
+    }
 }
