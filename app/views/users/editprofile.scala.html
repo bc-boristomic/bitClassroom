@@ -10,7 +10,11 @@
 
 
     <div class="col-lg-11 col-lg-offset-0">
-      <legend>@user.getEmail()</legend>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+        @user.getEmail()
+        </div>
+        <div class="panel-body">
 
       <div class="col-md-4 text-center">
         <div class="ImageWrapper ContentWrapperCl chrome-fix">
@@ -124,6 +128,8 @@
             <button type="reset" class="btn btn-default">Clear all</button>
             <button type="submit" class="btn btn-primary focus" href="@controllers.users.routes.UserController.updateProfile()">Submit</button>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </div>
