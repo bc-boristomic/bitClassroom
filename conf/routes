@@ -235,7 +235,8 @@ POST          /admin/calendar/event-resize            @controllers.users.UserCon
 POST          /api/login                              @controllers.api.UserAPIController.login()
 POST          /api/courses                            @controllers.api.UserAPIController.sendCourses()
 POST          /api/students                           @controllers.api.UserAPIController.sendStudents()
-
+POST          /api/posts                              @controllers.api.UserAPIController.sendPosts()
+POST          /api/messages                           @controllers.api.UserAPIController.sendAllMessages()
 
 
 
