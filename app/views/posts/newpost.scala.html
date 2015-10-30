@@ -6,9 +6,11 @@
 @main("Publish post") {
 
     @helper.form(action = controllers.posts.routes.PostController.savePost(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
-
-
-        <legend>Create new post</legend>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <h3>Create new post</h3>
+            </div>
+            <div class="panel-body">
 
         @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
             @for(role <- currentUser.getRoles) {
@@ -87,7 +89,10 @@
         <div class="form-group">
             <label for="files" class="col-md-3 control-label">Add files</label>
             <div class="col-md-6">
-                <input type="file" name="files" accept="" multiple class="form-control" id="files">
+
+                <span class="file-input btn btn-primary btn-file">
+                    Browse&hellip; <input type="file" name="files" accept="" id="files" class="form-control" multiple>
+                </span>
             </div>
         </div>
 
@@ -120,6 +125,9 @@
                     Publish</button>
             </div>
         </div>
+            </div>
+        </div>
+
     }
     <style>
     .req {

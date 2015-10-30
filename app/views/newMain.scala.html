@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="" href="#home"><img src="@routes.Assets.versioned("img/neo/bcLogo.png")" alt=""/></a>
+          <a class="" href="#home"><img src="@routes.Assets.versioned("img/neo/bcLogoNoText.png")" alt=""/></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="fullpage__nav nav navbar-nav navbar-right">
@@ -172,7 +172,7 @@
                 <!-- About item #1 -->
               <div class="about__item">
                 <h3 class="about-item__title">
-                  <span class="about-item-title__icon oi oi-aperture" title="Saves time" aria-hidden="true"></span> Saves time
+                  <span class="about-item-title__icon " title="Saves time" aria-hidden="true"></span><i class="fa fa-clock-o"></i> Saves time
                 </h3>
                 <p class="about-item__content">
                  The simple, paperless assignment workflow allows teachers to create, review, and grade assignments quickly, all in one place.
@@ -185,7 +185,7 @@
                 <!-- About item #2 -->
               <div class="about__item">
                 <h3 class="about-item__title">
-                  <span class="about-item-title__icon oi oi-project" title="Improves organization" aria-hidden="true"></span> Improves organization
+                  <span class="about-item-title__icon " title="Improves organization" aria-hidden="true"></span><i class="fa fa-check"></i> Improves organization
                 </h3>
                 <p class="about-item__content">
                   Students can see all of their assignments on an assignments page, and all class materials are automatically filed into folders in Google Drive.
@@ -198,7 +198,7 @@
                 <!-- About item #3 -->
               <div class="about__item">
                 <h3 class="about-item__title">
-                  <span class="about-item-title__icon oi oi-envelope-closed" title="Enhances communication" aria-hidden="true"></span> Enhances communication
+                  <span class="about-item-title__icon " title="Enhances communication" aria-hidden="true"></span><i class="fa fa-comments-o"></i> Enhances communication
                 </h3>
                 <p class="about-item__content">
                   Classroom allows teachers to send announcements and start class discussions instantly. Students can share resources with each other or provide answers to questions on the stream.
@@ -298,7 +298,7 @@
                   <!-- Title -->
                 <h3 class="features-item__title">
                   <span class="text-primary">03.</span>
-                  Fully Responsive
+                  Some content
                 </h3>
 
                   <!-- Summary -->
@@ -316,7 +316,7 @@
                   <!-- Title -->
                 <h3 class="features-item__title">
                   <span class="text-primary">04.</span>
-                  Built with LESS
+                  Some other content
                 </h3>
 
                   <!-- Summary -->
@@ -327,44 +327,7 @@
 
             </div>
           </div> <!-- / .row -->
-          <div class="row">
-            <div class="col-sm-6 col-md-5 col-md-offset-1">
 
-                <!-- Features item -->
-              <div class="features__item">
-
-                  <!-- Title -->
-                <h3 class="features-item__title">
-                  <span class="text-primary">05.</span>
-                  Functional contact form
-                </h3>
-
-                  <!-- Summary -->
-                <div class="features-item__summary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at scelerisque diam, ut pellentesque leo. Morbi lacinia ut nibh eget euismod. Donec molestie odio sed leo interdum ultrices.
-                </div>
-              </div> <!-- / .features__item -->
-
-            </div>
-            <div class="col-sm-6 col-md-5">
-
-                <!-- Features item -->
-              <div class="features__item">
-
-                  <!-- Title -->
-                <h3 class="features-item__title">
-                  <span class="text-primary">06.</span>
-                  Free future updates
-                </h3>
-
-                  <!-- Summary -->
-                <div class="features-item__summary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at scelerisque diam, ut pellentesque leo. Morbi lacinia ut nibh eget euismod. Donec molestie odio sed leo interdum ultrices.
-                </div>
-              </div> <!-- / .features__item -->
-
-            </div>
-          </div> <!-- / .row -->
         </div> <!-- / .container -->
       </div> <!-- / .site-wrapper -->
 
@@ -459,8 +422,8 @@
                 </div>
                 <a href="@routes.Emails.sendMail()">
                 <button type="submit" class="btn btn-lg btn-primary">
-                  <span class="oi oi-arrow-right" title="Send it" aria-hidden="true"></span>
-                  <span>Send it</span>
+                  <span class="glyphicon glyphicon-send" title="Send it" aria-hidden="true"></span>
+                  <span> Send it</span>
                 </button>
                 </a>
               </form>

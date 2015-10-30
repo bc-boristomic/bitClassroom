@@ -16,13 +16,8 @@
             <a href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary">
                  <span class="glyphicon glyphicon-user"></span> Classmates
             </a>
-
         </div>
-
-
-
     </div>
-
         <br>
             @for(post <- course.getPosts()){
                 @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_MENTOR) && !post.getVisibleToMentors){
@@ -125,10 +120,10 @@
                                     }
                                     <div class="panel-footer">
                                         @if(post.getPostType == 1){
-                                            <span class="label label-default">Assignment   </span>      <span class="label label-default pull-right"> @post.getCreateDate</span>
+                                            <span class="label label-primary">Assignment   </span>      <span class="label label-primary pull-right"> @post.getCreateDate</span>
 
                                         }else{
-                                            <span class="label label-default">Announcement    </span>    <span class="label label-default pull-right">@post.getCreateDate</span>
+                                            <span class="label label-primary">Announcement    </span>    <span class="label label-primary pull-right">@post.getCreateDate</span>
                                         }
 
                                         @if(SessionHelper.currentUser(ctx()).getFirstName.equals(post.getUser.getFirstName) && SessionHelper.currentUser(ctx()).getLastName.equals(post.getUser.getLastName)){
