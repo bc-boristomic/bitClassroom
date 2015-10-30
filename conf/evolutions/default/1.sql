@@ -29,6 +29,8 @@ create table course (
   updated_by                varchar(255),
   status                    integer,
   image_id                  bigint,
+  date_of_report            datetime(6),
+  week                      integer,
   constraint uq_course_image_id unique (image_id),
   constraint pk_course primary key (id))
 ;
@@ -49,6 +51,7 @@ create table daily_report (
   date                      varchar(255),
   teacher_id                bigint,
   course_id                 bigint,
+  week                      integer,
   constraint pk_daily_report primary key (id))
 ;
 

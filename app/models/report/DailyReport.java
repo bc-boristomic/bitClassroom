@@ -46,6 +46,9 @@ public final class DailyReport extends Model {
     @ManyToOne
     private Course course;
 
+    @Column(name = "week")
+    private Integer week = 1;
+
     /*
      * Default empty constructor for Ebean
      */
@@ -72,6 +75,14 @@ public final class DailyReport extends Model {
     public String getCreateDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createdDate);
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     public Course getCourse() {

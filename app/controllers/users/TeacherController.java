@@ -75,6 +75,20 @@ public class  TeacherController extends Controller {
         long courseId = Long.parseLong(dynamicForm.get("course"));
         Course course = Course.findById(courseId);
         dailyReport.setCourse(course);
+
+        Long time = course.getReportDate().getMillis()/1000;
+        Logger.info(time+"");
+        Long tmp = DateTime.now().getMillis()/1000;
+        Long result = tmp - time;
+        Logger.info(result+"");
+        Integer week = course.getWeek();
+        if(result >  604800){
+            week += 1;
+            course.setReportDate(DateTime.now());
+            course.setWeek(week);
+            dailyReport.setWeek(week);
+            course.update();
+        }
         dailyReport.save();
 
         for (Field field : fields) {

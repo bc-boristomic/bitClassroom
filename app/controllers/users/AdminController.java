@@ -357,6 +357,7 @@ public class AdminController extends Controller {
         Course course = new Course(name, description, teacher);
 
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
+        course.setReportDate(DateTime.now());
         course.setUpdateDate(new DateTime());
 
         Http.MultipartFormData data = request().body().asMultipartFormData();

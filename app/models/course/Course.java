@@ -49,6 +49,10 @@ public final class Course extends Model {
     private List<Event> events = new ArrayList<>();
     @OneToOne
     private Image image;
+    @Column (name = "date_of_report")
+    private DateTime reportDate;
+    @Column (name = "week")
+    private Integer week = 1;
 
     /**
      * Empty constructor for Ebean
@@ -141,6 +145,22 @@ public final class Course extends Model {
 
     public String getDescription() {
         return description;
+    }
+
+    public DateTime getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(DateTime reportDate) {
+        this.reportDate = reportDate;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     public void setDescription(String description) {
