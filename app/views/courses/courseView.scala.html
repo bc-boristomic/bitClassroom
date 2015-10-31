@@ -81,9 +81,9 @@
                                                     @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
 
                                                             <div class="col-sm-3">
-                                                                <h4 class="pull-right">
-                                                                    <label id="label@post.getId">DONE</label>
-                                                                </h4>
+                                                                <h5 class="pull-right">
+                                                                    <label class="label-success"id="label@post.getId"><i class="fa fa-check-square-o"></i> Done</label>
+                                                                </h5>
                                                             </div>
                                                     }
 
@@ -203,7 +203,7 @@
 
                     var links = $("#homework-link").val();
                     console.log(links);
-                    document.getElementById("label" + postId).innerText = "DONE";
+                    document.getElementById("label" + postId).innerText = "";
                     $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                     $("#sendFinishMessage"+postId).remove();
                     $.ajax({
