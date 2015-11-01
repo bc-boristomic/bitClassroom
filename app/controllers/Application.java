@@ -14,6 +14,7 @@ import play.mvc.Result;
 import utility.MD5Hash;
 import utility.UserConstants;
 import views.html.about;
+import views.html.contact;
 import views.html.index;
 import views.html.newMain;
 import views.html.users.login;

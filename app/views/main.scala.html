@@ -91,7 +91,7 @@
                                     <li><a href="/admin"><i class="fa fa-cog fa-spin"></i> Admin panel</a></li>
                                 }
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li class="dropdown ">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             Classroom<span class="caret"></span></a>
@@ -110,13 +110,13 @@
                                 }
                                 @if(role.getId.equals(UserConstants.MENTOR)) {
 
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li><a href="/weekly/report"><i class="fa fa-flag-o"></i> Weekly report</a></li>
 
                                 }
                                 @if(role.getId.equals(UserConstants.STUDENT)) {
                                     <li><a href="/post/new"><i class="fa fa-plus fa-5"></i> Add post</a></li>
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li class="dropdown active">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             Course <span class="caret"></span></a>
@@ -132,6 +132,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     @currentUser.getFirstName() <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                    <li><a href="/user/publicprofile/@SessionHelper.currentUser(ctx()).getId"><i class="fa fa-user"></i> Profile</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="/user/editprofile"><i class="fa fa-user"></i> Edit profile</a></li>
                                     <li class="divider"></li>
                                     <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign out</a></li>
