@@ -119,7 +119,7 @@ public class Image extends Model {
     public String getSize(int width, int height) {
 
         String url = cloudinary.url().format("jpg")
-                .transformation(new Transformation().width(width).height(height).crop("fit"))
+                .transformation(new Transformation().width(width).height(height).crop("fill"))
                 .generate(public_id);
 
         return url;
