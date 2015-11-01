@@ -38,7 +38,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
 
         <!-- custom icon -->
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/neo/favicon.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/neo/favicon-32x32.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
 
         <!--css for jquery-ui-->
@@ -123,13 +123,18 @@
                                         <ul class="dropdown-menu" role="menu" style="background-color : white">
                                             <li><a href="/user/courses"><i class="fa fa-plus"></i> Join course</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="/student/works"><i class="fa fa-files-o"></i> Your work</a></li>
+                                            <li><a href="/student/works"><i class="fa fa-files-o"></i> My homeworks</a></li>
                                         </ul>
                                          </li>
                                 }}}</ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    @if(currentUser.getProfilePicture.size() != 0 && currentUser.getProfilePicture != null){
+                                        <img src="@currentUser.getProfilePicture().get(currentUser.getProfilePicture.size()-1).getAvatar()" alt="">
+                                    }else{
+                                        <img src="http://res.cloudinary.com/dsjagtpwx/image/upload/v1446409587/user42_arah0a.png" alt="">
+                                    }
                                     @currentUser.getFirstName() <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu" style="background-color : white">
                                     <li><a href="/user/editprofile"><i class="fa fa-user"></i> Edit profile</a></li>
