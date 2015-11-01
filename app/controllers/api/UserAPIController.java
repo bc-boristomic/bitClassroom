@@ -9,6 +9,7 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -56,6 +57,7 @@ public class UserAPIController extends Controller {
             courseDescriptions.add(c.getDescription());
             courseTeacherNames.add(c.getTeacher());
             courseIds.add(c.getId().toString());
+            Logger.info(c.getImage().getSize(32,32));
             coursePics.add(c.getImage().getSize(32,32));
         }
 
@@ -74,7 +76,7 @@ public class UserAPIController extends Controller {
             object3.put("course_id", courseIds);
 
             JSONObject object4 = new JSONObject();
-            object4.put("course_pic", courseIds);
+            object4.put("course_pic", coursePics);
 
         jsonArray.add(object);
         jsonArray.add(object1);
