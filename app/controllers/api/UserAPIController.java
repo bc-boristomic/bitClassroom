@@ -50,11 +50,13 @@ public class UserAPIController extends Controller {
         List<String> courseDescriptions = new ArrayList<>();
         List<String> courseTeacherNames = new ArrayList<>();
         List<String> courseIds = new ArrayList<>();
+        List<String> coursePics = new ArrayList<>();
         for(Course c: courseList){
             courseNames.add(c.getName());
             courseDescriptions.add(c.getDescription());
             courseTeacherNames.add(c.getTeacher());
             courseIds.add(c.getId().toString());
+            coursePics.add(c.getImage().getSize(32,32));
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -71,10 +73,14 @@ public class UserAPIController extends Controller {
             JSONObject object3 = new JSONObject();
             object3.put("course_id", courseIds);
 
+            JSONObject object4 = new JSONObject();
+            object4.put("course_pic", courseIds);
+
         jsonArray.add(object);
         jsonArray.add(object1);
         jsonArray.add(object2);
         jsonArray.add(object3);
+        jsonArray.add(object4);
 
         JsonNode jsonNode = Json.toJson(jsonArray);
 
