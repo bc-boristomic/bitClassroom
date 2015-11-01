@@ -141,6 +141,11 @@ public class Image extends Model {
         }
     }
 
+    public String getAvatar(){
+        String url = cloudinary.url().format("png").transformation( new Transformation().width(32).height(32).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        return url;
+    }
+
 
 
 }
