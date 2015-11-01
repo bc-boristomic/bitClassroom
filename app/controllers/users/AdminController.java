@@ -489,16 +489,6 @@ public class AdminController extends Controller {
 
 
     /**
-     * See tables of daily reports
-     *
-     * @return
-     */
-    public Result listReport() {
-        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
-    }
-
-
-    /**
      * Renders page with two dropdown menus. One is for mentors and other is for
      * students that don't have mentor. User selects mentor on left side and student
      * on right side. Once buttom assign is pressed selected mentor is assigned to slected student.
@@ -916,6 +906,15 @@ public class AdminController extends Controller {
 // Refactoring reports
 
 
+    /**
+     * See tables of daily reports
+     *
+     * @return
+     */
+    public Result listReport() {
+        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+    }
+
 
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
@@ -967,9 +966,6 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-    public Result openReport(Long id) {
-        return ok(openReports.render(DailyReport.findDailyReportById(id), DailyReport.nextReport(id), DailyReport.previousReport(id), ReportField.getFinder().all()));
-    }
 
     public static String cutText(String text, int length){
         if (text.length() > length) {
@@ -979,13 +975,7 @@ public class AdminController extends Controller {
         return text;
     }
 
-    public Result pdfDailyTable() {
-        return pdfGenerator.ok(dailypdf.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()), Configuration.root().getString("application.host"));
-    }
 
-    public Result pdfDailyReports(Long id) {
-        return pdfGenerator.ok(pdfopenreport.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()), Configuration.root().getString("application.host"));
-    }
 
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));

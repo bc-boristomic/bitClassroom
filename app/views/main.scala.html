@@ -101,12 +101,25 @@
                                             <li><a href="/post/new"><i class="fa fa-plus fa-5"></i> Add post</a></li>
                                             <li><a href="/teacher/awaitlist">Awaiting approval <span class="badge" id="notify1"></span></a></li>
                                             <li class="divider"></li>
+
+
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown ">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            Reports<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+
+                                                <!-- <li><a href="/user/courses">Courses</a></li> -->
                                             <li><a href="/daily/report"><i class="fa fa-pencil"></i> Write daily report</a></li>
+                                            <li><a href="/teacher/myreports"><i class="fa fa-eye"></i> See reports</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/teacher/reports"><i class="fa fa-eye"></i> Mentors reports</a></li>
 
                                         </ul>
                                     </li>
                                     <li><a href="@controllers.users.routes.TeacherController.listAssignment()"><i class="fa fa-eye"></i> See assignment</a></li>
-                                    <li><a href="/teacher/reports"><i class="fa fa-eye"></i> See reports</a></li>
+
                                 }
                                 @if(role.getId.equals(UserConstants.MENTOR)) {
 

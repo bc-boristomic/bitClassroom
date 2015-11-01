@@ -127,6 +127,7 @@ POST          /teacher/approvestudent/:id             @controllers.users.Teacher
 GET           /teacher/awaitlist                      @controllers.users.TeacherController.awaitList()
 GET           /teacher/reports                        @controllers.users.TeacherController.seeMentorReports()
 GET           /teacher/reports/pdf                    @controllers.users.TeacherController.pdfWeeklyTable()
+GET           /teacher/myreports                      @controllers.users.TeacherController.myReports()
 
 
 
@@ -193,8 +194,8 @@ POST          /user/sendUserMail                      @controllers.Emails.sendUs
 
 
 GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
-GET           /pdfDailyTable                          @controllers.users.AdminController.pdfDailyTable()
-GET           /pdfDailyReports                        @controllers.users.AdminController.pdfDailyReports(id: Long)
+GET           /pdfDailyTable                          @controllers.users.UserController.pdfDailyTable()
+GET           /pdfDailyReports                        @controllers.users.UserController.pdfDailyReports(id: Long)
 GET           /pdfWeeklyReports                       @controllers.users.UserController.pdfWeeklyReports(id: Long)
 
 
@@ -203,7 +204,7 @@ GET           /openWeeklyReport                       @controllers.users.UserCon
 
 # Open daily reports
 
-GET           /openReport                             @controllers.users.AdminController.openReport(id: Long)
+GET           /openReport                             @controllers.users.UserController.openReport(id: Long)
 
 # FAQ page
 

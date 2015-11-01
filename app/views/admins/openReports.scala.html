@@ -1,7 +1,9 @@
 @import models.report.DailyReport
-@import models.report.ReportField
+    @import models.report.ReportField
+@import helpers.SessionHelper
+@import utility.UserConstants
 @(dr: DailyReport, nextReport: DailyReport, previousReport: DailyReport, listReportField: List[ReportField])
-    @adminmain("Open report") {
+    @main("Open report") {
         <form>
             <div>
                 <div class="col-md-10 col-md-offset-1">
@@ -9,14 +11,18 @@
                         <div class="col-md-12">
                             <ul class="pager">
                                 @if(previousReport!=null) {
-                                    <li class="previous"><a href="@controllers.users.routes.AdminController.openReport(previousReport.getId)"><span aria-hidden="true">&larr;</span>
+                                    <li class="previous"><a href="@controllers.users.routes.UserController.openReport(previousReport.getId)"><span aria-hidden="true">&larr;</span>
                                         Previous Report</a></li>
                                 }
-                                <li><a href="@controllers.users.routes.AdminController.pdfDailyReports(dr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
+                                <li><a href="@controllers.users.routes.UserController.pdfDailyReports(dr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
                                     PDF</a></li>
+                                @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)){
                                 <li><a href="@controllers.users.routes.AdminController.listReport">Back to Table</a></li>
+                                }else{
+                                    <li><a href="@controllers.users.routes.TeacherController.myReports()">Back to Table</a></li>
+                                }
                                 @if(nextReport!=null) {
-                                    <li class="next"><a href="@controllers.users.routes.AdminController.openReport(nextReport.getId)">
+                                    <li class="next"><a href="@controllers.users.routes.UserController.openReport(nextReport.getId)">
                                         Next Report <span aria-hidden="true">&rarr;</span></a></li>
                                 }
                             </ul>
