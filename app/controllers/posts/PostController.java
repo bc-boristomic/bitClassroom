@@ -5,6 +5,7 @@ import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.CloudHelper;
 import helpers.SessionHelper;
+import models.CloudFile;
 import models.Post;
 import models.PrivateMessage;
 import models.course.CourseUser;
@@ -15,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import play.Logger;
 import play.Play;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -46,7 +48,8 @@ public class PostController extends Controller {
     private final Form<Post> postForm = Form.form(Post.class);
 
     private List<String> filesList = new ArrayList<>();
-
+    private static List<String> deletedFiles = new ArrayList<>();
+    private static List<CloudFile> cloud = new ArrayList<>();
     /**
      * Adding post and refresh the page with added post
      */
@@ -74,6 +77,14 @@ public class PostController extends Controller {
      * Saving post in database
      */
 
+    public Result deleteFile(){
+        DynamicForm form = Form.form().bindFromRequest();
+        String s = form.data().get("file");
+        deletedFiles.add(s);
+
+        return ok();
+    }
+
     public Result saveEditedPost(Long id){
         Form<Post> boundForm = postForm.bindFromRequest();
 
@@ -82,6 +93,22 @@ public class PostController extends Controller {
 
         MultipartFormData data = request().body().asMultipartFormData();
         List<MultipartFormData.FilePart> files = data.getFiles();
+
+
+        for(int j= 0;j < deletedFiles.size(); j++){
+            Logger.error(deletedFiles.get(j));
+            for(int i = 0; i< post.getFiles().size(); i++){
+                Logger.error(post.getFiles().get(i).getFileName());
+                if(post.getFiles().get(i).getFileName().contains(deletedFiles.get(j))){
+
+                }else{
+                    cloud.add(post.getFiles().get(i));
+                }
+            }
+        }
+        post.setFiles(cloud);
+
+
 
         if (files != null) {
             String fName = null;
@@ -108,18 +135,22 @@ public class PostController extends Controller {
                     String date = boundForm.field("date").value();
                     String time = boundForm.field("time").value();
 
-                    post.setPostType(1);
-                    post.setDate(date);
-                    post.setTime(time);
-
+                    if(date != null && time != null) {
+                        post.setPostType(1);
+                        post.setDate(date);
+                        post.setTime(time);
+                    }
                 }
             }
         }
+
+        deletedFiles.clear();
 
         post.setTitle(title);
         post.setContent(content);
         post.setLink(link);
         post.update();
+
         return redirect("/user/class/" + post.getCourse().getId());
     }
 

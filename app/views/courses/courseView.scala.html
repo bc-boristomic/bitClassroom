@@ -163,26 +163,26 @@
                    var div = $("#sendStartMessage"+postId).parent();
 
                    $("#sendStartMessage"+postId).remove();
-                   var label = document.createElement('label');
-                   label.innerText = "STARTED";
-                   var attr = document.createAttribute("id");
-                   attr.value = "label" + postId;
-                   label.setAttributeNode(attr);
-                   var button = document.createElement('button');
-                   button.innerText = "Finish";
-                   var at = document.createAttribute("id");
-                   at.value = "sendFinishMessage" + postId;
-                   button.setAttributeNode(at);
-                   var buttClass = document.createAttribute("class");
-                   buttClass.value = "btn btn-primary";
-                   button.setAttributeNode(buttClass);
+                  // var label = document.createElement('label');
+                  // label.innerText = "STARTED";
+                  // var attr = document.createAttribute("id");
+                  // attr.value = "label" + postId;
+                  // label.setAttributeNode(attr);
+                  // var button = document.createElement('button');
+                  // button.innerText = "Finish";
+                  // var at = document.createAttribute("id");
+                  // at.value = "sendFinishMessage" + postId;
+                  // button.setAttributeNode(at);
+                  // var buttClass = document.createAttribute("class");
+                  // buttClass.value = "btn btn-primary";
+                  // button.setAttributeNode(buttClass);
 
-                   div.append(label);
-                   var att = document.createAttribute("onclick");
-                   att.value = "callSecondAjax("+postId+")";
-                   button.setAttributeNode(att);
+                   //div.append(label);
+                   //var att = document.createAttribute("onclick");
+                   //att.value = "callSecondAjax("+postId+")";
+                   //button.setAttributeNode(att);
 
-                   div.append(button);
+                   //div.append(button);
                    
 
 
@@ -226,9 +226,6 @@
                    }else{
                         button.disabled = true;
                    }
-
-
-
                 }
                 var bol = "true";
 
