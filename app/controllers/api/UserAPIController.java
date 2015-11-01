@@ -58,7 +58,7 @@ public class UserAPIController extends Controller {
             courseTeacherNames.add(c.getTeacher());
             courseIds.add(c.getId().toString());
             Logger.info(c.getImage().getSize(32,32));
-            coursePics.add(c.getImage().getSize(32,32));
+            coursePics.add(c.getImage().getSize(128,128));
         }
 
         JSONArray jsonArray = new JSONArray();
