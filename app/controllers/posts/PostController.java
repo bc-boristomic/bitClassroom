@@ -80,6 +80,24 @@ public class PostController extends Controller {
         Post post = Post.findPostById(id);
         User user = SessionHelper.currentUser(ctx());
 
+        MultipartFormData data = request().body().asMultipartFormData();
+        List<MultipartFormData.FilePart> files = data.getFiles();
+
+        if (files != null) {
+            String fName = null;
+            for (Http.MultipartFormData.FilePart filePart : files) {
+                fName = filePart.getFilename();
+                File file = filePart.getFile();
+                try {
+                    CloudHelper.uploadToCloud(file,fName, post.getId());
+                    filesList.add(fName);
+                } catch (Exception e) {
+                    Logger.info("Could not move file. " + e.getMessage());
+                    flash("error", "Could not move file.");
+                }
+            }
+        }
+
         String title = boundForm.field("title").value();
         String content = boundForm.field("content").value();
         String link = boundForm.field("link").value();

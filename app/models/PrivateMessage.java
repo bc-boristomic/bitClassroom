@@ -160,4 +160,13 @@ public class PrivateMessage extends Model {
         find.ref(id).delete();
     }
 
+    public static List<PrivateMessage> getSentMessages(Long id){
+        List<PrivateMessage> list = find.where().eq("sender_id", id).findList();
+        return list;
+    }
+
+    public static List<PrivateMessage> getReceivedMessages(Long id){
+        List<PrivateMessage> list = find.where().eq("receiver_id", id).findList();
+        return list;
+    }
 }

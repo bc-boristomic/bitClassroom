@@ -1,31 +1,27 @@
 package controllers;
 
+import controllers.api.UserAPIController;
 import helpers.SessionHelper;
-
 import models.Email;
-
-import models.Event;
 import models.Faq;
 import models.PrivateMessage;
 import models.course.CourseUser;
-import models.user.Mentorship;
 import models.user.User;
-import org.json.simple.JSONArray;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utility.MD5Hash;
 import utility.UserConstants;
-import views.html.*;
+import views.html.about;
+import views.html.contact;
+import views.html.index;
+import views.html.newMain;
 import views.html.users.login;
 import views.html.users.util.email;
 import views.html.users.util.faq;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
 
 public class Application extends Controller {
 

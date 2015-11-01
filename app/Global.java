@@ -29,7 +29,7 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(Application application) {
         Image.cloudinary = new Cloudinary("cloudinary://" + Play.application().configuration().getString("cloudinary.string"));
-        CloudHelper.createContainer();
+//        CloudHelper.createContainer();
 
         if (Role.getFinder().findRowCount() == 0) {
             Roles.saveAllRoles();

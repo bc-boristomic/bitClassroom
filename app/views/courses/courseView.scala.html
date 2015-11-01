@@ -10,13 +10,8 @@
 
     @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
     <div class="container">
-        <h4 class="page-head-line">@course.getName  @course.getDescription  <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a></h4>
-        <div ></div>
-        <div class="pull-right">
-            <a href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary">
-                 <span class="glyphicon glyphicon-user"></span> Classmates
-            </a>
-        </div>
+        <h4>@course.getName  @course.getDescription  <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a><a href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-user"></span> Classmates</a></h4>
+
     </div>
         <br>
             @for(post <- course.getPosts()){
@@ -86,9 +81,9 @@
                                                     @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
 
                                                             <div class="col-sm-3">
-                                                                <h4 class="pull-right">
-                                                                    <label id="label@post.getId">DONE</label>
-                                                                </h4>
+                                                                <h5 class="pull-right">
+                                                                    <label class="label-success"id="label@post.getId"><i class="fa fa-check-square-o"></i> Done</label>
+                                                                </h5>
                                                             </div>
                                                     }
 
@@ -179,7 +174,7 @@
                    at.value = "sendFinishMessage" + postId;
                    button.setAttributeNode(at);
                    var buttClass = document.createAttribute("class");
-                   at.value = "btn btn-primary";
+                   buttClass.value = "btn btn-primary";
                    button.setAttributeNode(buttClass);
 
                    div.append(label);
@@ -208,7 +203,7 @@
 
                     var links = $("#homework-link").val();
                     console.log(links);
-                    document.getElementById("label" + postId).innerText = "DONE";
+                    document.getElementById("label" + postId).innerText = "";
                     $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
                     $("#sendFinishMessage"+postId).remove();
                     $.ajax({

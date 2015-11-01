@@ -29,33 +29,48 @@
                             }
                                 </div>
                             <div class="panel-footer">
+
                                     <div class="panel-body">
                                         <a href="@controllers.course.routes.CourseController.course(cU.getCourse.getId)">
                                         <div class="btn btn-primary btn-block">@cU.getCourse.getDescription
                                         </div>
                                         </a>
-                                    </div>
+                                        </div>
+                                <div class="panel-body">
 
-                                @for(cUser <- courseUser){
-                                    @if(cUser.getCourse.getId == cU.getCourse.getId){
-                                        @if(cUser.getUser.getRoles != null && cUser.getUser.getRoles.size() > 0) {
-                                            @for(role <- cUser.getUser.getRoles) {
-                                                @if(role.getId.equals(UserConstants.TEACHER)) {
-                                                            <h5>@user.getFirstName @user.getLastName</h5>
-
-
+                                    <li class="dropdown ">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><div class="btn btn-primary btn-block">
+                                            Info <span class="caret"></span></div></a>
+                                        <ul class="dropdown-menu col-xs-12" role="menu">
+                                             <div class="list-group-item active">
+                                            @for(cUser <- courseUser){
+                                                @if(cUser.getCourse.getId == cU.getCourse.getId){
+                                                    @if(cUser.getUser.getRoles != null && cUser.getUser.getRoles.size() > 0) {
+                                                        @for(role <- cUser.getUser.getRoles) {
+                                                            @if(role.getId.equals(UserConstants.TEACHER)) {
+                                                                <li class="center">Teacher: @cUser.getUser.getFirstName @cUser.getUser.getLastName</li>
+                                                                <li class="divider"></li>
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }
 
-                                }
+                                            <li class="list-group-item active"><i class="fa fa-info-circle"></i> Students<span class="badge">@CourseUser.studentsInClass(cU.getCourse.getId)</span></li>
+
+                                </div>
+                                        </ul>
+                                    </li>
+                                </div>
+
 
                             </div>
 
                         </div>
                     </div>
                 }
+
+
             }
         }
 
@@ -64,3 +79,6 @@
     }
 
 }
+
+
+

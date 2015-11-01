@@ -8,7 +8,7 @@
             <div>
                 <h3 class=""> Table of daily reports </h3>
                 <ul class="pager">
-                    <li><a href="@controllers.users.routes.AdminController.pdfDailyTable" target="_blank" t><i class="fa fa-file-pdf-o"> </i>
+                    <li><a href="@controllers.users.routes.UserController.pdfDailyTable" target="_blank" t><i class="fa fa-file-pdf-o"> </i>
                         PDF</a></li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <a href="@controllers.users.routes.AdminController.openReport(ldr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                                                <a href="@controllers.users.routes.UserController.openReport(ldr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
                                             </div>
                                             <div class="col-md-6">
                                                 <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteReport(ldr.getId)">

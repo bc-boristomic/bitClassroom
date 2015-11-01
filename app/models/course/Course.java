@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import models.Event;
 import models.Image;
 import models.Post;
+import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -13,9 +14,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Medina and Senadin on 15/09/15.
- */
 @Entity
 @Table(name = "course")
 public final class Course extends Model {
@@ -231,5 +229,14 @@ public final class Course extends Model {
 
     public List<Event> getEvents() {
         return events;
+    }
+
+    public static List<Course> findAllCoursesPerUser(User user){
+        List<Course> courses = new ArrayList<>();
+        List<CourseUser> courseUsers = CourseUser.getCoursesPerUser(user);
+        for(CourseUser courseUser: courseUsers){
+            courses.add(courseUser.getCourse());
+        }
+        return courses;
     }
 }
