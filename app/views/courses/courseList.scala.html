@@ -5,7 +5,6 @@
 @main("Course") {
     @for(course <- courseList) {
         @if(course.getStatus != 2){
-            <br>
         <form action="@controllers.users.routes.StudentController.joinCourse()" method="post">
             <div class="col-sm-3" id="courseDiv">
                 <div class="panel panel-primary">
@@ -23,10 +22,8 @@
                     </div>
                     <div class="panel-footer">
                         <div class="panel-body">
-                            <a href="@controllers.course.routes.CourseController.course(course.getId)">
                                 <div class="btn btn-primary btn-block">@course.getDescription
                                 </div>
-                            </a>
                         </div>
                         @for(user <- CourseUser.allUserFromCourse(course.getId)){
                             @if(user.getRoles != null && user.getRoles.size() > 0) {
