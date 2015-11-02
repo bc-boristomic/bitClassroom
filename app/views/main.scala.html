@@ -23,6 +23,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font-awesome.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/sinister.css")" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/rotating-card.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-material-datetimepicker.css")" />
 
 
@@ -38,7 +39,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" />
 
         <!-- custom icon -->
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/neo/favicon.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/neo/favicon-32x32.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/tablesorter.min.css")"/>
 
         <!--css for jquery-ui-->
@@ -91,7 +92,7 @@
                                     <li><a href="/admin"><i class="fa fa-cog fa-spin"></i> Admin panel</a></li>
                                 }
                                 @if(role.getId.equals(UserConstants.TEACHER)) {
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li class="dropdown ">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             Classroom<span class="caret"></span></a>
@@ -101,37 +102,57 @@
                                             <li><a href="/post/new"><i class="fa fa-plus fa-5"></i> Add post</a></li>
                                             <li><a href="/teacher/awaitlist">Awaiting approval <span class="badge" id="notify1"></span></a></li>
                                             <li class="divider"></li>
+
+
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown ">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            Reports<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu" style="background-color : white">
+
+                                                <!-- <li><a href="/user/courses">Courses</a></li> -->
                                             <li><a href="/daily/report"><i class="fa fa-pencil"></i> Write daily report</a></li>
+                                            <li><a href="/teacher/myreports"><i class="fa fa-eye"></i> See reports</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/teacher/reports"><i class="fa fa-eye"></i> Mentors reports</a></li>
 
                                         </ul>
                                     </li>
                                     <li><a href="@controllers.users.routes.TeacherController.listAssignment()"><i class="fa fa-eye"></i> See assignment</a></li>
-                                    <li><a href="/teacher/reports"><i class="fa fa-eye"></i> See reports</a></li>
+
                                 }
                                 @if(role.getId.equals(UserConstants.MENTOR)) {
 
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li><a href="/weekly/report"><i class="fa fa-flag-o"></i> Weekly report</a></li>
 
                                 }
                                 @if(role.getId.equals(UserConstants.STUDENT)) {
                                     <li><a href="/post/new"><i class="fa fa-plus fa-5"></i> Add post</a></li>
-                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages<span class="badge" id="notify"></span></a></li>
+                                    <li><a href="/allMessage"><i class="fa fa-envelope-o"></i> Messages <span class="badge" id="notify"></span></a></li>
                                     <li class="dropdown active">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             Course <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu" style="background-color : white">
                                             <li><a href="/user/courses"><i class="fa fa-plus"></i> Join course</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="/student/works"><i class="fa fa-files-o"></i> Your work</a></li>
+                                            <li><a href="/student/works"><i class="fa fa-files-o"></i> My homeworks</a></li>
                                         </ul>
                                          </li>
                                 }}}</ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    @if(currentUser.getProfilePicture.size() != 0 && currentUser.getProfilePicture != null){
+                                        <img src="@currentUser.getProfilePicture().get(currentUser.getProfilePicture.size()-1).getAvatar()" alt="">
+                                    }else{
+                                        <img src="http://res.cloudinary.com/dsjagtpwx/image/upload/v1446409587/user42_arah0a.png" alt="">
+                                    }
                                     @currentUser.getFirstName() <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu" style="background-color : white">
+                                    <li><a href="/user/publicprofile/@SessionHelper.currentUser(ctx()).getId"><i class="fa fa-user"></i> Profile</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="/user/editprofile"><i class="fa fa-user"></i> Edit profile</a></li>
                                     <li class="divider"></li>
                                     <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign out</a></li>
@@ -189,7 +210,7 @@
         <div id="perspective" class="perspective effect-airbnb">
             <div class="container">
                 <div class="wrapper">
-
+                    <br>
 
         @content
 

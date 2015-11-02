@@ -109,7 +109,7 @@
   <ul class="nav navbar-nav navbar-left">
 
     <li class="navbar-left">
-      @if(SessionHelper.currentUser(ctx()).getId.equals(UserConstants.TEACHER)) {
+      @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.TEACHER)) {
         <a href="@controllers.users.routes.TeacherController.listAssignment()">
           <button type="submit" class="btn btn-facebook navbar-btn"><span class="glyphicon glyphicon-circle-arrow-left"></span>
             Go Back</button>

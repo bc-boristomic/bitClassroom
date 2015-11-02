@@ -119,7 +119,7 @@ public class Image extends Model {
     public String getSize(int width, int height) {
 
         String url = cloudinary.url().format("jpg")
-                .transformation(new Transformation().width(width).height(height).crop("fit"))
+                .transformation(new Transformation().width(width).height(height).crop("fill"))
                 .generate(public_id);
 
         return url;
@@ -141,6 +141,18 @@ public class Image extends Model {
         }
     }
 
+    public String getAvatar(){
+        String url = cloudinary.url().format("png").transformation( new Transformation().width(32).height(32).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        return url;
+    }
 
+    public String getCover(){
+        String url = cloudinary.url().format("jpg").transformation(new Transformation().width(800).height(300).crop("fill").effect("blur", 1000)).generate(public_id);
+        return url;
+    }
+    public String getProfileImage(){
+        String url = cloudinary.url().format("png").transformation( new Transformation().width(256).height(256).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        return url;
+    }
 
 }

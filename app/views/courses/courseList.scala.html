@@ -7,8 +7,12 @@
         @if(course.getStatus != 2){
         <form action="@controllers.users.routes.StudentController.joinCourse()" method="post">
             <div class="col-sm-3" id="courseDiv">
-
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                        @course.getName
+                        </h2>
+                    </div>
                     <div class="panel-body">
                     @if(course.getImage != null){
                         <img class="img-responsive" src="@course.getImage.getSize(300,300)"/>
@@ -18,18 +22,15 @@
                     </div>
                     <div class="panel-footer">
                         <input type="text" name="course-id" id="courseId@course.getId" value="@course.getId" hidden/>
-                        <a href="#"><h2>@course.getName</h2>
-                            <h4>@course.getDescription</h4></a>
+                        <div class="panel-body">
+                                <div class="btn btn-primary btn-block">@course.getDescription
+                                </div>
+                        </div>
                         @for(user <- CourseUser.allUserFromCourse(course.getId)){
                             @if(user.getRoles != null && user.getRoles.size() > 0) {
                                 @for(role <- user.getRoles) {
                                     @if(role.getId.equals(UserConstants.TEACHER)) {
-                                        <div class="panel panel-default">
-                                            <div class="panel-body">
-                                                <h6>Teacher: @user.getFirstName @user.getLastName</h6>
-                                            </div>
-                                        </div>
-
+                                        <h5>Teacher: @user.getFirstName @user.getLastName</h5>
                                     }
                                 }
                             }

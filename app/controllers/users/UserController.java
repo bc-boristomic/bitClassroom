@@ -10,8 +10,7 @@ import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
 import models.course.CourseUser;
-import models.report.ReportWeeklyField;
-import models.report.WeeklyReport;
+import models.report.*;
 import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
@@ -33,8 +32,11 @@ import utility.MailHelper;
 import utility.UserConstants;
 import utility.UserUtils;
 import views.html.*;
+import views.html.admins.openReports;
 import views.html.admins.openWeeklyReports;
+import views.html.pdf.dailypdf;
 import views.html.pdf.pdfOpenWeeklyReport;
+import views.html.pdf.pdfopenreport;
 import views.html.posts.message;
 import views.html.users.editprofile;
 import views.html.users.login;
@@ -636,5 +638,17 @@ public class UserController extends Controller {
 
     public Result pdfWeeklyReports(Long id) {
         return pdfGenerator.ok(pdfOpenWeeklyReport.render(WeeklyReport.findWeeklyReportById(id), ReportWeeklyField.getFinderReportWeeklyField().all()), Configuration.root().getString("application.host"));
+    }
+
+    public Result openReport(Long id) {
+        return ok(openReports.render(DailyReport.findDailyReportById(id), DailyReport.nextReport(id), DailyReport.previousReport(id), ReportField.getFinder().all()));
+    }
+
+    public Result pdfDailyTable() {
+        return pdfGenerator.ok(dailypdf.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+    public Result pdfDailyReports(Long id) {
+        return pdfGenerator.ok(pdfopenreport.render(DailyReport.findDailyReportById(id), ReportField.getFinder().all()), Configuration.root().getString("application.host"));
     }
 }

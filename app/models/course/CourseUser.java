@@ -2,6 +2,7 @@ package models.course;
 
 import com.avaje.ebean.Model;
 import models.user.User;
+import utility.UserConstants;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -85,6 +86,23 @@ public final class CourseUser extends Model {
         return courseUsers;
     }
 
+    public static Integer studentsInClass(Long id){
+
+        Integer numberOFStudents = 0;
+       List<User> users = allUserFromCourse(id);
+
+        for( int i = 0; i < users.size(); i++){
+
+            if( users.get(i).getRoles().get(0).getId().equals(UserConstants.STUDENT)){
+
+                numberOFStudents++;
+            }
+        }
+
+        return numberOFStudents;
+
+    }
+
     public static CourseUser findCourseUser(User u , Course c){
         return finder.where().eq("user_id", u.getId()).eq("course_id", c.getId()).findUnique();
     }
@@ -132,7 +150,7 @@ public final class CourseUser extends Model {
     }
 
     public static List<CourseUser> getCoursesPerUser(User u){
-        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).findList();
+        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).eq("status",2).findList();
         return courseUsers;
     }
 

@@ -31,6 +31,7 @@ import views.html.posts.teacherListsAssignment;
 import views.html.users.mentorReportForStudent;
 import views.html.users.studentsHomeworkStatus;
 import views.html.users.teacherApprowedStudent;
+import views.html.users.teacherReports;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -224,7 +225,7 @@ public class  TeacherController extends Controller {
     }
 
     /**
-     * Send notification when admin approved user in the class
+     * Send notification when treacheer approved user in the class
      * @param course
      * @param student
      */
@@ -275,6 +276,22 @@ public class  TeacherController extends Controller {
 
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
+
+
+    public Result myReports (){
+
+        List<DailyReport> myReports = new ArrayList<>();
+        List<DailyReport> allReports = DailyReport.getFinder().all();
+
+        for ( int i = 0; i < allReports.size(); i++){
+
+            if(allReports.get(i).getTeacher().getId().equals(SessionHelper.currentUser(ctx()).getId())){
+                myReports.add(allReports.get(i));
+            }
+        }
+
+            return ok(teacherReports.render(ReportField.getFinder().all(), myReports, Field.getFinder().all()));
     }
 
 
