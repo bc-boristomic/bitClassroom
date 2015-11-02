@@ -1,4 +1,4 @@
-
+	
 @import models.course.Course
 @import models.user.User
 
@@ -8,161 +8,182 @@
 @(course : Course)
 @main("Classroom") {
 
-    @helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
-    <div class="container">
-        <h4>@course.getName  @course.getDescription  <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a><a href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-user"></span> Classmates</a></h4>
+@helper.form(action = controllers.users.routes.StudentController.sendFinishMessage(), 'class -> "form-horizontal", 'role -> "form") {
+<div class="container">
+	<h4>@course.getName  @course.getDescription  <a href="@controllers.users.routes.UserController.calendar(course.getId)" target="_blank" class="glyphicon glyphicon-calendar"></a><a id="classMates" href="@controllers.users.routes.UserController.studentList(course.getId)" class="btn btn-primary btn-circle btn-lg" data-toggle="tooltip" data-placement="top" title="" data-original-title="Classmates"><span class="glyphicon glyphicon-user"></span></a></h4>
 
-    </div>
-        <br>
-            @for(post <- course.getPosts()){
-                @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_MENTOR) && !post.getVisibleToMentors){
+</div>
+<br>
+@for(post <- course.getPosts()){
+@if(SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_MENTOR) && !post.getVisibleToMentors){
 
-                }else{
-                <div class="container">
+}else{
+<div class="container">
 
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <div id="postlist">
-                                
-                                <div class="panel">
-                                    <div class="panel-heading">
-                                        <div class="text-center">
-                                            <div class="row">
-                                                <div class="col-sm-8">
-                                                    <h3 class="pull-left">@post.getTitle <span class="badge">@post.getUser.getFirstName @post.getUser.getLastName</span> </h3>
+	<div class="row">
 
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="pull-right">
-                                                    @if(post.getPostType == 1){
-                                                        <small style="color:gray"><em><span class="glyphicon glyphicon-time">   Due : @post.getDate @post.getTime </span><br></em></small>
-                                                    }
-                                                    </h4>
-                                                </div>
-                                                <!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
-                                                @if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
-                                                    @if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
-                                                        @if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
-                                                            <div class="col-sm-3">
-                                                                <h4 class="pull-right" onmouseover="spanMsg(@post.getId)">
-                                                                    <button  class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
-                                                                        Start</button>
-                                                                </h4>
-                                                            </div>
-                                                        }
-                                                    }
+		<div class="col-sm-12 col-md-12 col-lg-10 col-lg-offset-1">
+			<div id="postlist">
+				<div class="panel panel-default">
+					
+					<div class="card-container manual-flip">
+						<div class="card">
+							<div class="front">
+								<div class="cover">
+									@if(course.getImage() != null){
+									<img src="@course.getImage().getCover" alt="cover">
+								}else{
+								<img src="http://res.cloudinary.com/dsjagtpwx/image/upload/e_blur:1000/v1446421009/tabla_bv9cgr.jpg" alt="">
+							}
+						</div>
+						<div class="user">
+							@if(post.getUser().getProfilePicture.size() != 0 && post.getUser().getProfilePicture != null){
+							<img src="@post.getUser().getProfilePicture().get(post.getUser().getProfilePicture.size()-1).getProfileImage()" alt="">
+						}else{
+						<img src="http://res.cloudinary.com/dsjagtpwx/image/upload/v1446422715/user43_1_y6tnet.png" alt="">
+					}
+				</div>
+                                <div class="content">
+                                    <div class="main">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>@post.getTitle</h5>
 
-                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
-                                                        <div class="col-sm-3" >
-                                                            <h4 class="pull-right">
-                                                                <label id="label@post.getId">STARTED</label>
-                                                            </h4>
-                                                            </div>
-                                                        <div class="col-sm-11" >
-                                                            <h4 class="pull-right" onmouseout="" style="padding-right: 20px;" onmouseover="span(@post.getId)">
-                                                                <button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
-                                                                    Finish</button>
-                                                            </h4>
-                                                        </div>
-                                                    }
-
-
-                                                    @if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
-                                         <div class="col-sm-3">
-                                                            <h4 class="pull-right">
-                                                                <button class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
-                                                                    Start</button>
-                                                            </h4>
-                                                        </div>
-                                                    }
-
-
-                                                    @if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
-
-                                                            <div class="col-sm-3">
-                                                                <h5 class="pull-right">
-                                                                    <label class="label-success"id="label@post.getId"><i class="fa fa-check-square-o"></i> Done</label>
-                                                                </h5>
-                                                            </div>
-                                                    }
-
-                                                }
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-body">
-                                        <h5><em>@post.getContent</em></h5>
-                                        <br>
-                                    </div>
-
-                                    @if(post.getLink != "") {
-                                        <div class="panel-body" style="border : 1 px solid darkgrey ; background-color : lightgrey ; margin : 0 20 px 0 20 px ; height : 60 px">
-                                            <label>Link : </label>
-                                            <a href="@post.getLink" target="_blank">@post.getLink</a>
-                                        </div>
-                                    }
-
-                                    @if(post.getFiles != null) {
-                                        <div class="panel-body" style="border : 1 px solid darkgrey ; background-color : lightgrey ; margin : 0 20 px 20 px 20 px ; height : 60 px">
-                                            <label>Attachment : </label>
-                                            @for(file <- post.getFiles) {
-                                                <br/><a href="@file.getUrl()">@file.getFileName()</a>
-                                            }
-                                        </div>
-                                    }
-                                    <div class="panel-footer">
-                                        @if(post.getPostType == 1){
-                                            <span class="label label-primary">Assignment   </span>      <span class="label label-primary pull-right"> @post.getCreateDate</span>
-
-                                        }else{
-                                            <span class="label label-primary">Announcement    </span>    <span class="label label-primary pull-right">@post.getCreateDate</span>
-                                        }
-
-                                        @if(SessionHelper.currentUser(ctx()).getFirstName.equals(post.getUser.getFirstName) && SessionHelper.currentUser(ctx()).getLastName.equals(post.getUser.getLastName)){
-                                            <a href="@controllers.posts.routes.PostController.editPost(post.getId)"><i class="glyphicon glyphicon-edit" style="padding-left: 10px;"></i></a>
-
-                                        }
-
-
-
-
-                                        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT) && post.getPostType == 1 && SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
-
-                                        <br>
-                                        <br>
-                                            <form action="">
-                                                <div class="form-control">
-                                                    <label class="col-lg-2 ">Link:</label>
-
-                                                    <input type="link" id="homework-link" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
-
-                                                </div>
-                                            </form>
-                                        }
-
-
-                                    </div>
-                                </div>
-                            </div>
+						</div>
+                        <div class="col-md-4">
+                            <h3 class="name"><span class="label label-primary">@post.getUser.getFirstName @post.getUser.getLastName</span> </h3>
                         </div>
-                    </div>
+						<div class="col-md-4">
+								@if(post.getPostType == 1){
+								<h5><i class="fa fa-calendar-check-o"></i> Due: @post.getDate @post.getTime</h5>
+							}
+					</div>
+					<!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
+					@if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
+					@if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
+					@if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
+					<div class="col-md-4">
+						<h4 class="pull-right" onmouseover="spanMsg(@post.getId)">
+							<button  class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)" disabled="true">
+								Start</button>
+							</h4>
+						</div>
+					}
+				}
+
+				@if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 1) {
+				<div class="col-md-4" >
+					<h4 class="pull-right">
+						<label id="label@post.getId">STARTED</label>
+					</h4>
+				</div>
+				<div class="col-sm-11" >
+					<h4 class="pull-right" onmouseout="" style="padding-right: 20px;" onmouseover="span(@post.getId)">
+						<button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
+							Finish</button>
+						</h4>
+					</div>
+				}
+
+
+				@if(((SessionHelper.currentUser(ctx()).getHomeworkStatus == 0) || (SessionHelper.currentUser(ctx()).getHomeworkStatus == 2)) && Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 0){
+				<div class="col-md-4">
+					<h4 class="pull-right">
+						<button class="btn btn-primary" id="sendStartMessage@post.getId" onclick="callAjax(@post.getId)">
+							Start</button>
+						</h4>
+					</div>
+				}
+
+
+				@if(Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post).getHomeworkPostStatus == 2){
+
+				<div class="col-md-4">
+					<h5 class="pull-right">
+						<label class="label-success"id="label@post.getId"><i class="fa fa-check-square-o"></i> Done</label>
+					</h5>
+				</div>
+			}
+
+		}
+
+	</div>
+	<h6>@post.getContent</h6>
+	
+	@if(post.getLink != "") {
+	<div>
+		<h6><span class="label label-primary">Link: </span></h6>
+		<a href="@post.getLink" target="_blank">@post.getLink</a>
+	</div>
+}
+
+@if(post.getFiles != null) {
+<div>
+	<h6><span class="label label-primary">Attachment : </span></h6>
+	@for(file <- post.getFiles) {
+	<a href="@file.getUrl()">@file.getFileName()</a>
+}
+</div>
+}
                 </div>
-    }
-            }
+                </div>
+<div class="footer">
+	@if(post.getPostType == 1){
+	<h4><span class="label label-success pull-left">Assignment</span></h4><h4><span class="label label-default pull-right"> @post.getCreateDate</span></h4>
 
-        <script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
-        <script>
+}else{
+    <h4><span class="label label-success pull-left">Announcement</span></h4><h4><span class="label label-default pull-right"> @post.getCreateDate</span></h4>
+}
+    <br>
 
-                function callAjax(postId){
+@if(SessionHelper.currentUser(ctx()).getFirstName.equals(post.getUser.getFirstName) && SessionHelper.currentUser(ctx()).getLastName.equals(post.getUser.getLastName)){
+<h4><a href="@controllers.posts.routes.PostController.editPost(post.getId)"> <i class="glyphicon glyphicon-edit"></i> Edit</a></h4>
 
-                    var button = document.getElementById("sendStartMessage" + postId);
-                   $("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
-                   var div = $("#sendStartMessage"+postId).parent();
+}
 
-                   $("#sendStartMessage"+postId).remove();
+
+
+
+@if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.STUDENT) && post.getPostType == 1 && SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
+
+<br>
+<br>
+<form action="">
+	<div class="form-control">
+		<label class="col-lg-2 ">Link:</label>
+
+		<input type="link" id="homework-link" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
+
+	</div>
+</form>
+}
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+}
+}
+
+<script src="@routes.Assets.versioned("javascripts/jquery-ui.min.js")" type="text/javascript"></script>
+<script>
+
+	function callAjax(postId){
+
+		var button = document.getElementById("sendStartMessage" + postId);
+		$("#sendStartMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+		var div = $("#sendStartMessage"+postId).parent();
+
+		$("#sendStartMessage"+postId).remove();
                   // var label = document.createElement('label');
                   // label.innerText = "STARTED";
                   // var attr = document.createAttribute("id");
@@ -188,74 +209,74 @@
 
 
                    $.ajax({
-                    type: "post",
-                    url : "@controllers.users.routes.StudentController.sendStartMessage()",
-                    data : "postId=" + postId + "&courseId=" + @course.getId
-                }).success(function(){
-                    location.reload();
-                })
+                   	type: "post",
+                   	url : "@controllers.users.routes.StudentController.sendStartMessage()",
+                   	data : "postId=" + postId + "&courseId=" + @course.getId
+                   }).success(function(){
+                   	location.reload();
+                   })
 
 
 
-                }
+               }
 
-                function callSecondAjax(postId){
+               function callSecondAjax(postId){
 
-                    var links = $("#homework-link").val();
-                    console.log(links);
-                    document.getElementById("label" + postId).innerText = "";
-                    $("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
-                    $("#sendFinishMessage"+postId).remove();
-                    $.ajax({
-                    type: "post",
-                    url : "@controllers.users.routes.StudentController.sendFinishMessage()",
-                    data : "postId=" + postId + "&courseId=" + @course.getId + "&linkId=" + links
-                }).success(function(){
-                    location.reload();
-                })
-                }
+               	var links = $("#homework-link").val();
+               	console.log(links);
+               	document.getElementById("label" + postId).innerText = "";
+               	$("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
+               	$("#sendFinishMessage"+postId).remove();
+               	$.ajax({
+               		type: "post",
+               		url : "@controllers.users.routes.StudentController.sendFinishMessage()",
+               		data : "postId=" + postId + "&courseId=" + @course.getId + "&linkId=" + links
+               	}).success(function(){
+               		location.reload();
+               	})
+               }
 
-                function enableLink(postId){
-                   var link = $("#homework-link").val();
-                   var regex = /^(https?:\/\/)[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
-                   var regex2 = /^www\.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
-                   var regex3 = /^https?:\/\/www.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
-                   var button = document.getElementById("sendFinishMessage" + postId);
-                   if(regex.test(link) || regex2.test(link) || regex3.test(link)){
-                        button.disabled = false;
-                   }else{
-                        button.disabled = true;
-                   }
-                }
-                var bol = "true";
+               function enableLink(postId){
+               	var link = $("#homework-link").val();
+               	var regex = /^(https?:\/\/)[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+               	var regex2 = /^www\.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+               	var regex3 = /^https?:\/\/www.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
+               	var button = document.getElementById("sendFinishMessage" + postId);
+               	if(regex.test(link) || regex2.test(link) || regex3.test(link)){
+               		button.disabled = false;
+               	}else{
+               		button.disabled = true;
+               	}
+               }
+               var bol = "true";
 
-                function span(postId){
+               function span(postId){
 
-                    if(bol == "true"){
-                    var span = document.createElement('span');
-                    span.innerText = "You can't finish your assignment until you leave the link";
-                    var spanClass = document.createAttribute("class");
-                    spanClass.value = "label label-warning";
-                    span.setAttributeNode(spanClass);
-                    $("#sendFinishMessage" + postId).parent().parent().parent().before(span);
-                    bol = "false";
-                    }
+               	if(bol == "true"){
+               		var span = document.createElement('span');
+               		span.innerText = "You can't finish your assignment until you leave the link";
+               		var spanClass = document.createAttribute("class");
+               		spanClass.value = "label label-warning";
+               		span.setAttributeNode(spanClass);
+               		$("#sendFinishMessage" + postId).parent().parent().parent().before(span);
+               		bol = "false";
+               	}
 
-                }
+               }
 
-                var bol1 = "true";
-                function spanMsg(postId){
-                    if(bol1 == "true"){
-                    var span = document.createElement('span');
-                    span.innerText = "You can't start new assignment until you finish the started one";
-                    var spanClass = document.createAttribute("class");
-                    spanClass.value = "label label-warning";
-                    span.setAttributeNode(spanClass);
-                    $("#sendStartMessage" + postId).parent().parent().parent().before(span);
-                    bol1 = "false";
-                    }
-                }
+               var bol1 = "true";
+               function spanMsg(postId){
+               	if(bol1 == "true"){
+               		var span = document.createElement('span');
+               		span.innerText = "You can't start new assignment until you finish the started one";
+               		var spanClass = document.createAttribute("class");
+               		spanClass.value = "label label-warning";
+               		span.setAttributeNode(spanClass);
+               		$("#sendStartMessage" + postId).parent().parent().parent().before(span);
+               		bol1 = "false";
+               	}
+               }
 
-        </script>
-    }
-    }
+           </script>
+       }
+   }

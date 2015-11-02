@@ -146,6 +146,13 @@ public class Image extends Model {
         return url;
     }
 
-
+    public String getCover(){
+        String url = cloudinary.url().format("jpg").transformation(new Transformation().width(800).height(300).crop("fill").effect("blur", 1000)).generate(public_id);
+        return url;
+    }
+    public String getProfileImage(){
+        String url = cloudinary.url().format("png").transformation( new Transformation().width(256).height(256).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        return url;
+    }
 
 }
