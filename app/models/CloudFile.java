@@ -34,4 +34,8 @@ public class CloudFile extends Model {
     public String getUrl(){
         return URL + fileName;
     }
+
+    public void deleteFile(){
+        this.delete();
+    }
 }

@@ -98,15 +98,12 @@ public class PostController extends Controller {
         for(int j= 0;j < deletedFiles.size(); j++){
             Logger.error(deletedFiles.get(j));
             for(int i = 0; i< post.getFiles().size(); i++){
-                Logger.error(post.getFiles().get(i).getFileName());
                 if(post.getFiles().get(i).getFileName().contains(deletedFiles.get(j))){
-
-                }else{
-                    cloud.add(post.getFiles().get(i));
+                    post.getFiles().get(i).deleteFile();
                 }
             }
         }
-        post.setFiles(cloud);
+
 
 
 

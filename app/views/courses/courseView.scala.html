@@ -78,7 +78,7 @@
 						<label id="label@post.getId">STARTED</label>
 					</h4>
 				</div>
-				<div class="col-sm-11" >
+				<div class="col-sm-12" >
 					<h4 class="pull-right" onmouseout="" style="padding-right: 20px;" onmouseover="span(@post.getId)">
 						<button class="btn btn-primary" id="sendFinishMessage@post.getId" onclick="callSecondAjax(@post.getId)" disabled>
 							Finish</button>
@@ -153,7 +153,7 @@
 	<div class="form-control">
 		<label class="col-lg-2 ">Link:</label>
 
-		<input type="link" id="homework-link" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
+		<input type="link" id="homeworklink@post.getId" name="link" class="col-md-10 panel pull-right" onblur="enableLink(@post.getId)">
 
 	</div>
 </form>
@@ -222,7 +222,7 @@
 
                function callSecondAjax(postId){
 
-               	var links = $("#homework-link").val();
+               	var links = $("#homeworklink" + postId).val();
                	console.log(links);
                	document.getElementById("label" + postId).innerText = "";
                	$("#sendFinishMessage"+postId).hide( "drop", { direction: "down" }, "slow" );
@@ -237,14 +237,17 @@
                }
 
                function enableLink(postId){
-               	var link = $("#homework-link").val();
+               	var link = $("#homeworklink"+postId).val();
                	var regex = /^(https?:\/\/)[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
                	var regex2 = /^www\.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
                	var regex3 = /^https?:\/\/www.[\w]{3,}\.[\w]{2,6}([\/][\w?+_\-&%#!=\/]*)?$/;
                	var button = document.getElementById("sendFinishMessage" + postId);
+
                	if(regex.test(link) || regex2.test(link) || regex3.test(link)){
+
                		button.disabled = false;
                	}else{
+
                		button.disabled = true;
                	}
                }
