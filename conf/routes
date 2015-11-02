@@ -153,7 +153,7 @@ GET           /user/class/:id                         @controllers.course.Course
 GET           /post/new                               @controllers.posts.PostController.addPost()
 GET           /post/edit/:id                          @controllers.posts.PostController.editPost(id: Long)
 POST          /post/edit/:id                          @controllers.posts.PostController.saveEditedPost(id: Long)
-POST          /post/deletefile                    @controllers.posts.PostController.deleteFile()
+POST          /post/deletefile                        @controllers.posts.PostController.deleteFile()
 POST          /post                                   @controllers.posts.PostController.savePost()
 GET           /post/assignment/:id                    @controllers.posts.PostController.assignmentDetails(id: Long)
 GET           /assignment/details/:id                 @controllers.users.TeacherController.studentAssignmentStatus(id: Long, status: String)
@@ -162,6 +162,7 @@ GET           /assignment/details/:id                 @controllers.users.Teacher
 POST          /notify                                 @controllers.Application.getNotification()
 GET           /msgntif                                @controllers.Application.unreadMessages()
 POST          /weeklyntf                              @controllers.Application.weeklyNotification()
+
 
 
 # FOR TESTING ONLY

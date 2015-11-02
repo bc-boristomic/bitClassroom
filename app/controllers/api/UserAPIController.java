@@ -57,8 +57,11 @@ public class UserAPIController extends Controller {
             courseDescriptions.add(c.getDescription());
             courseTeacherNames.add(c.getTeacher());
             courseIds.add(c.getId().toString());
-            Logger.info(c.getImage().getSize(32,32));
-            coursePics.add(c.getImage().getSize(128,128));
+            if(c.getImage() != null) {
+                coursePics.add(c.getImage().getSize(128, 128));
+            }else{
+                coursePics.add("http://res.cloudinary.com/dsjagtpwx/image/upload/v1446422806/graduation-cap2_lbwk2j.png");
+            }
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -102,12 +105,18 @@ public class UserAPIController extends Controller {
         List<String> studentTokens = new ArrayList<>();
         List<String> studentRoles = new ArrayList<>();
         List<String> studentIds = new ArrayList<>();
+        List<String> studentPics = new ArrayList<>();
         for(User student: students){
             studentNames.add(student.getFirstName());
             studentLastnames.add(student.getLastName());
             studentRoles.add(student.getRoles().get(0).getName());
             studentTokens.add(student.getToken());
             studentIds.add(student.getId().toString());
+            if(student.getProfilePicture().size() != 0) {
+                studentPics.add(student.getProfilePicture().get(student.getProfilePicture().size() - 1).getAvatar());
+            }else{
+                studentPics.add("http://res.cloudinary.com/dsjagtpwx/image/upload/v1446422579/user43_zotlwc.png");
+            }
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -127,11 +136,15 @@ public class UserAPIController extends Controller {
         JSONObject object4 = new JSONObject();
         object4.put("user_id",studentIds);
 
+        JSONObject object5 = new JSONObject();
+        object5.put("user_pic",studentPics);
+
         jsonArray.add(object);
         jsonArray.add(object1);
         jsonArray.add(object2);
         jsonArray.add(object3);
         jsonArray.add(object4);
+        jsonArray.add(object5);
         JsonNode jsonNode = Json.toJson(jsonArray);
         return ok(jsonNode);
     }

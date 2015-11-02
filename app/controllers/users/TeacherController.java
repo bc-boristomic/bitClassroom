@@ -225,7 +225,7 @@ public class  TeacherController extends Controller {
     }
 
     /**
-     * Send notification when admin approved user in the class
+     * Send notification when treacheer approved user in the class
      * @param course
      * @param student
      */

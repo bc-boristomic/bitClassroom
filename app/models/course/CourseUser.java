@@ -150,7 +150,7 @@ public final class CourseUser extends Model {
     }
 
     public static List<CourseUser> getCoursesPerUser(User u){
-        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).findList();
+        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).eq("status",2).findList();
         return courseUsers;
     }
 
