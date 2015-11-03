@@ -20,18 +20,18 @@
         <table id="sort" class="table-bordered">
             <div>
                 <thead>
-                    <tr>
-                        <th>Week</th>
-                        <th>Timestamp</th>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Mentor</th>
-                        <th>Student</th>
+                    <tr class="navbar-inverse">
+                        <th class="th-color">Week</th>
+                        <th class="th-color">Timestamp</th>
+                        <th class="th-color">Date</th>
+                        <th class="th-color">Title</th>
+                        <th class="th-color">Mentor</th>
+                        <th class="th-color">Student</th>
                         @for(rwf <- listWeeklyField) {
-                            <th>@rwf.getName</th>
+                            <th class="th-color">@rwf.getName</th>
                         }
-                        <th>Report</th>
-                        <th>Action</th>
+                        <th class="th-color">Report</th>
+                        <th class="th-color">Action</th>
                     </tr>
                 </thead>
                 @for(lwr <- listWeeklyReport) {

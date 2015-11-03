@@ -10,18 +10,18 @@
     <div class="table-responsive">
       <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
-          <tr class="information">
-            <th>Name:</th>
-            <th>Email:</th>
-            <th>Role:</th>
-            <th></th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Name:</th>
+            <th class="th-color">Email:</th>
+            <th class="th-color">Role:</th>
+            <th class="th-color"></th>
 
           </tr>
         </thead>
         <tbody>
         @for(users <- userList){
           @if(users.getId != SessionHelper.currentUser(ctx()).getId) {
-            <tr class="info">
+            <tr class="information">
               <td>@users.getFirstName @users.getLastName</td>
               <td>@users.getEmail</td>
               <td>@users.getRoles.get(0)</td>

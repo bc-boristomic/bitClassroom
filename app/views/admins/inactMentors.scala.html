@@ -12,17 +12,17 @@
 
       <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
-          <tr class="success">
-            <th>Mentor</th>
-            <th>E-mail</th>
-            <th>Info</th>
-            <th>Unread message</th>
-            <th>Send message</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Mentor</th>
+            <th class="th-color">E-mail</th>
+            <th class="th-color">Info</th>
+            <th class="th-color">Unread message</th>
+            <th class="th-color">Send message</th>
           </tr>
         </thead>
         <tbody>
         @for(men <- mentorship) {
-          <tr class="info">
+          <tr class="information">
             <td class="text-center">@men.getFirstName @men.getLastName</td>
             <td class="text-center">@men.getEmail</td>
             <td class="text-center">@men.getCellPhone</td>

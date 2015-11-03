@@ -37,6 +37,10 @@ body {
     -moz-border-radius: 0px;
 }
 
+.th-color{
+    color: #b2dbfb;
+}
+
 .progress {
 
     height: 8px;

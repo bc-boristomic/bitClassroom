@@ -10,16 +10,16 @@
 
       <table id="sort" class="table-condensed table-hover table">
         <thead>
-          <tr class="danger">
-            <th>Course name</th>
-            <th>Description</th>
-            <th>Teacher</th>
-            <th>Deleted by</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Course name</th>
+            <th class="th-color">Description</th>
+            <th class="th-color">Teacher</th>
+            <th class="th-color">Deleted by</th>
           </tr>
         </thead>
         <tbody>
         @for(course <- courses) {
-          <tr class="info">
+          <tr class="information">
             <td>@course.getName</td>
             <td>@course.getDescription</td>
             <td>@course.getTeacher</td>

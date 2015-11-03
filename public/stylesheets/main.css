@@ -26,6 +26,9 @@ input[readonly] {
     cursor: text !important;
 }
 
+.th-color{
+    color: #b2dbfb;
+}
 
 .btn-circle {
     width: 30px;

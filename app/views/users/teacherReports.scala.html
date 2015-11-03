@@ -15,18 +15,18 @@
     <table id="sort" class="table-bordered">
       <div>
         <thead>
-          <tr>
-            <th>Week</th>
-            <th>Timestamp</th>
-            <th>Date</th>
-            <th>Teacher</th>
-            <th>Course</th>
-            <th>Title</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Week</th>
+            <th class="th-color">Timestamp</th>
+            <th class="th-color">Date</th>
+            <th class="th-color">Teacher</th>
+            <th class="th-color">Course</th>
+            <th class="th-color">Title</th>
             @for(rf <- listField) {
-              <th>@rf.getName</th>
+              <th class="th-color">@rf.getName</th>
             }
-            <th>Report</th>
-            <th>Action</th>
+            <th class="th-color">Report</th>
+            <th class="th-color">Action</th>
           </tr>
         </thead>
         @for(ldr <- listDailyReport) {
