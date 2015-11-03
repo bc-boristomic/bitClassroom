@@ -49,13 +49,13 @@
                                                         @for(role <- cUser.getUser.getRoles) {
                                                             @if(role.getId.equals(UserConstants.TEACHER)) {
                                                                 <li class="center">Teacher: @cUser.getUser.getFirstName @cUser.getUser.getLastName</li>
-                                                                <li class="divider"></li>
+
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
-
+                                                 <li class="divider"></li>
                                             <li class="list-group-item active"><i class="fa fa-info-circle"></i> Students<span class="badge">@CourseUser.studentsInClass(cU.getCourse.getId)</span></li>
 
                                 </div>
