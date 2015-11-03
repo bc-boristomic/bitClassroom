@@ -241,6 +241,7 @@ POST          /api/students                           @controllers.api.UserAPICo
 POST          /api/posts                              @controllers.api.UserAPIController.sendPosts()
 POST          /api/messages                           @controllers.api.UserAPIController.sendAllMessages()
 POST          /api/send_message                       @controllers.api.UserAPIController.sendMessage()
+GET           /api/calendar/:id                       @controllers.api.UserAPIController.calendar(id:Long)
 
 
 

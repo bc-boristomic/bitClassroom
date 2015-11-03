@@ -1,6 +1,7 @@
 package controllers.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.Event;
 import models.Post;
 import models.PrivateMessage;
 import models.course.Course;
@@ -13,11 +14,12 @@ import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.apiCalendar;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class UserAPIController extends Controller {
 
@@ -294,5 +296,55 @@ public class UserAPIController extends Controller {
         object.put("response","ok");
         JsonNode jsonNode = Json.toJson(object);
         return ok(jsonNode);
+    }
+
+
+    public static Long courseId;
+    public static Course course;
+    public  Result calendar(Long id) {
+        courseId = id;
+        course = Course.findById(id);
+        return ok(apiCalendar.render(course));
+    }
+
+
+    /**
+     * Returns list of events for calendar view
+     * @param start Long Timestamp of current view start
+     * @param end Long Timestamp of current view end
+     * @return Result
+     */
+    public  Result json(Long start, Long end) {
+
+        Date startDate = new Date(start*1000);
+        Date endDate = new Date(end*1000);
+
+        List<Event> courseEvent = new ArrayList<>();
+        List<Event> resultList = Event.findInDateRange(startDate, endDate);
+        for ( int i = 0; i < resultList.size(); i++){
+            if(resultList.get(i).getCourse().getId().equals(courseId)){
+                courseEvent.add(resultList.get(i));
+            }
+        }
+        ArrayList<Map<Object, Serializable>> allEvents = new ArrayList<Map<Object, Serializable>>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        for (Event event : courseEvent) {
+            Map<Object, Serializable> eventRemapped = new HashMap<Object, Serializable>();
+            eventRemapped.put("id", event.getId());
+            eventRemapped.put("title", event.getTitle());
+            eventRemapped.put("start", df.format(event.getStart()));
+            eventRemapped.put("end", df.format(event.getEnd()));
+            eventRemapped.put("allDay", event.getAllDay());
+            eventRemapped.put("url", "/calendar/event/"+event.getId().toString());
+
+            allEvents.add(eventRemapped);
+
+        }
+        Logger.info(allEvents.toString());
+        JSONArray obj = new JSONArray();
+        obj.addAll(allEvents);
+
+        return ok(obj.toJSONString());
     }
 }
