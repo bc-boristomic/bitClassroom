@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class CloudFile extends Model {
-    public static final String URL = "https://bitclassroom2015.blob.core.windows.net/classroomcontainer/";
+    public static final String URL = "https://classroomstorage.blob.core.windows.net/classroomcontainer/";
 
     @Id
     public Long id;

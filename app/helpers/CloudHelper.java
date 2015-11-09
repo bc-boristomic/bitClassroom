@@ -18,8 +18,8 @@ public class CloudHelper {
 
     public static final String storageConnectionString =
             "DefaultEndpointsProtocol=http;"
-                    + "AccountName=bitclassroom2015;"
-                    + "AccountKey=44RxTdL7oxjX2yQ4h5KFwq9xN9Td9NjiunzxDqnbCVAgb7AZWwFNTpZ2xRnj6fVC+4i6RMDweeB7DLvCVXm3yg==;";
+                    + "AccountName=classroomstorage;"
+                    + "AccountKey=330dBXLxq5BSfk5ndwejrLaArf2Ml/OUDy1zrzfcNkXxpyGdGRy0mciK3oQ3D/Gwtv8KFcx5ZEXoS/g+W0hkEw==;";
 
 
 
