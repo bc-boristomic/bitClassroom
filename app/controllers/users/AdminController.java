@@ -36,7 +36,7 @@ import views.html.admins.adduser;
 import views.html.admins.newTableWeekly;
 import views.html.admins.openReports;
 import views.html.admins.setingsweeklyreport;
-
+import views.html.admins.newTableDaily;
 import views.html.calendar;
 import views.html.formEdit;
 import views.html.formNew;
@@ -483,7 +483,6 @@ public class AdminController extends Controller {
      * @return
      */
     public Result awaitList() {
-
         return ok(approveuser.render(CourseUser.getFinder().all()));
     }
 
@@ -901,18 +900,13 @@ public class AdminController extends Controller {
         return ok(faq.render(Faq.findAllFAQ()));
     }
 
-
-//======================================================================================================================
-// Refactoring reports
-
-
     /**
      * See tables of daily reports
      *
      * @return
      */
     public Result listReport() {
-        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+        return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
 
@@ -966,7 +960,6 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-
     public static String cutText(String text, int length){
         if (text.length() > length) {
             text = text.substring(0, length);
@@ -974,8 +967,6 @@ public class AdminController extends Controller {
         }
         return text;
     }
-
-
 
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
