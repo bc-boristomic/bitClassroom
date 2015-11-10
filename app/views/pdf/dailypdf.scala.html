@@ -1,0 +1,65 @@
+@import models.report.Field
+@import models.report.ReportField
+@import models.report.DailyReport
+@import helpers.DateTimeFormatHelper
+@(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <link href="@routes.Assets.versioned("../../../public/stylesheets/style.css")" rel="stylesheet" />
+        <title>Daily report</title>
+        <style>
+        th, td {
+        border: 1px solid black;
+        text-align: center;
+        bottom: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <form>
+            <div>
+                <h3 class="text-center page-head-line"> Table of daily reports </h3>
+            </div>
+            <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
+            <table class="table-bordered">
+                <div>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Date</th>
+                            <th>Teacher</th>
+                            <th>Title</th>
+                            @for(rf <- listField) {
+                                <th>@rf.getName</th>
+                            }
+                            <th>Report</th>
+                        </tr>
+                    </thead>
+                    @for(ldr <- listDailyReport) {
+                        <tbody>
+                            <div>
+                                <tr class="success">
+                                    <td>@ldr.getCreateDate</td>
+                                    <td>@DailyReport.formaterDate(ldr.getDate)</td>
+                                    <td><a>@ldr.getTeacher.getFirstName @ldr.getTeacher.getLastName</a></td>
+                                    <td>@ldr.getName</td>
+                                    @for(field <- listField) {
+                                        @if(ldr.containsField(field) == true) {
+                                            <td>@ldr.getField(field).getValue()</td>
+                                        } else {
+                                            <td>N/A</td>
+                                        }
+                                    }
+                                    <td>@ldr.getData)</td>
+                                </tr>
+                            </div>
+                        </tbody>
+                    }
+                </div>
+            </table>
+        </form>
+    </body>
+</html>
+

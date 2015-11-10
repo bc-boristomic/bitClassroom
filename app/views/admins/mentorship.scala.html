@@ -4,8 +4,9 @@
 @adminmain("Assign mentor to students") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveMentorship(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
-
-
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-body">
         <legend>Mentorship process</legend>
         <div class="form-group">
             <label for="select" class="col-lg-2 control-label">Mentors</label>
@@ -39,8 +40,13 @@
             </div>
 
             @if(active > 0) {
-                <button type="submit" class="btn btn-primary col-lg-offset-6 top50" href="@controllers.users.routes.AdminController.saveMentorship()">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <br>
+                <button type="submit" class="btn btn-primary btn-block" href="@controllers.users.routes.AdminController.saveMentorship()">
                     Assign</button>
+                    </div>
+                </div>
             } else {
                 <br>
 
@@ -51,7 +57,8 @@
                 }
         </div>
 
-
+        </div>
+        </div>
 
 }
 

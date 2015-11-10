@@ -1,0 +1,96 @@
+@(postForm: Form[Post])(post: Post)
+@main("Edit post"){
+    @helper.form(action = controllers.posts.routes.PostController.saveEditedPost(post.getId), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+        <legend>Edit post</legend>
+
+        @if(post.getDate != null && post.getTime != null){
+            <div class="form-group">
+                <label class="col-md-3 control-label">Due date <abbr class="req" title="Please select due date."> * </abbr></label>
+                <div class="col-md-2">
+                    <input name="date" type="text" max="9999-01-01" class="form-control" id="date" value="@post.getDate" style="cursor : pointer" required>
+                </div>
+                <label class="col-md-2 control-label">Due time <abbr class="req" title="Please select due date."> * </abbr></label>
+                <div class="col-md-2">
+                    <input name="time" type="time" class="form-control" id="time" value="@post.getTime" style="cursor : pointer" required>
+                </div>
+            </div>
+        }
+
+
+        <div class="form-group">
+            <label for="title" class="col-md-3 control-label">
+                Title<abbr class="req" title="Please insert title."> * </abbr></label>
+            <div class="col-md-6">
+                <input name="title" type="text" pattern="[\w\d ]{3,}" class="form-control" id="title" value="@post.getTitle" required>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="textArea" class="col-md-3 control-label">
+                Content<abbr class="req" title="Please insert content."> * </abbr></label>
+            <div class="col-md-8">
+                <textarea name="content" data-p class="form-control" rows="5" id="textArea" style="width: 74%;resize: none"  required>@post.getContent</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="link" class="col-md-3 control-label">Add link</label>
+            <div class="col-md-6">
+                <input name="link" type="url" class="form-control" id="link" value="@post.getLink" pattern="(https?://(www.)?)?[a-z]{3,}\.[\w]{2,6}(/[\w\.\?\!\=\:\%\#/-]+)?">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="files" class="col-md-3 control-label">Add files</label>
+            <div class="col-md-6">
+                <input type="file" name="files" accept="" multiple class="form-control" id="files">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="attachments" class="col-md-3 control-label">Attachments</label>
+
+            <div class="col-md-6">
+
+                @for(file <- post.getFiles){
+                    <div id="@file.getFileName.substring(0,5)">
+                        <label for="attachments">@file.getFileName</label>
+                        <a><i onclick="d(@file.getFileName.substring(0,5))" class="glyphicon glyphicon-trash pull-right"></i></a>
+                        <br>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-7 pull-right" >
+                <button type="submit" class="btn btn-primary  focus" href="@controllers.posts.routes.PostController.saveEditedPost(post.getId)">
+                    Update</button>
+            </div>
+        </div>
+    }
+    <script>
+        function d(fileName){
+
+           try{
+                $("#"+fileName).remove();
+                $.ajax({
+                type: "post",
+                url: "@controllers.posts.routes.PostController.deleteFile()",
+                data: "file=" + fileName
+           })
+           }catch(Error){
+               var att = $(fileName).attr("id");
+               $(fileName).remove();
+               $.ajax({
+                type: "post",
+                url: "@controllers.posts.routes.PostController.deleteFile()",
+                data: "file=" + att
+           })
+           }
+
+
+        }
+    </script>
+}

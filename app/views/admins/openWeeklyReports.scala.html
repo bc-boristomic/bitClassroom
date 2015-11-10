@@ -1,0 +1,93 @@
+@import models.report.WeeklyReport
+@import models.report.ReportWeeklyField
+@import models.report.DailyReport
+@import helpers.SessionHelper
+@import utility.UserConstants
+@(wr: WeeklyReport, nextWeeklyReport: WeeklyReport, perviousWeeklyReport: WeeklyReport, listReportWeeklyField: List[ReportWeeklyField])
+@main("Open weekly report") {
+    <form>
+        <div>
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row down-border">
+                    <div class="col-md-12">
+                        <ul class="pager">
+                            @if(perviousWeeklyReport != null){
+                                <li class="previous"><a href="@controllers.users.routes.UserController.openWeeklyReport(perviousWeeklyReport.getId)"><span aria-hidden="true">&larr;</span>
+                                Previous Report</a></li>
+                        }
+                            <li><a href="@controllers.users.routes.UserController.pdfWeeklyReports(wr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
+                                PDF</a></li>
+                            @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)){
+                            <li><a href="@controllers.users.routes.AdminController.listWeeklyReport">Back to Table</a></li>
+                            }else{
+                            <li><a href="@controllers.users.routes.TeacherController.seeMentorReports()">Back to Table</a></li>
+                            }
+                            @if(nextWeeklyReport != null) {
+                                <li class="next"><a href="@controllers.users.routes.UserController.openWeeklyReport(nextWeeklyReport.getId)">
+                                    Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="row down-border top30">
+                    <div class="col-md-3">
+                        <label class="control-label">Week</label>
+                    </div>
+                    <p class="col-md-9">@wr.getWeek</p>
+                </div>
+                <div class="row down-border top17">
+                    <div class="col-md-3">
+                        <label>Timestamp</label>
+                    </div>
+                    <p class="col-md-3">@wr.getCreateDate</p>
+                    <div class="col-md-1 col-md-offset-3">
+                        <label>Date</label>
+                    </div>
+                    <p class="col-md-2">@DailyReport.formaterDate(wr.getDate)</p>
+                </div>
+
+                <div class="row down-border top30">
+                    <div class="col-md-3">
+                        <label class="control-label">Title</label>
+                    </div>
+                    <p class="col-md-9">@wr.getName</p>
+                </div>
+                <div class="row down-border top17">
+                    <div class="col-md-3">
+                        <label>Mentor</label>
+                    </div>
+                    <p class="col-md-2">@wr.getMentor</p>
+                    <a class="col-md-1 col-md-offset-6" href="#"> <i class="glyphicon glyphicon-envelope"></i></a>
+                </div>
+                <div class="row down-border top17">
+                    <div class="col-md-3">
+                        <label>Student</label>
+                    </div>
+                    <p class="col-md-2">@wr.getStudent</p>
+                    <a class="col-md-1 col-md-offset-6" href="#"> <i class="glyphicon glyphicon-envelope"></i></a>
+                </div>
+                @for(lwrf <- listReportWeeklyField) {
+                    @if(lwrf.getWeeklyReport.getId.equals(wr.getId)) {
+                        <div class="row down-border top17">
+                            <div class="col-md-3">
+                                <label>@lwrf.getWeeklyField.getName</label>
+                            </div>
+                            <p class="col-md-9">@lwrf.getValue</p>
+                        </div>
+                    }
+                }
+                <div class="row top17">
+                    <div class="col-md-3">
+                        <label>Report</label>
+                    </div>
+                    <p class="col-md-9">@wr.getData</p>
+                </div>
+            </div>
+        </div>
+        <style>
+        .down-border {
+        border-bottom: 1px solid #777777 ;
+        }
+        </style>
+    </form>
+}

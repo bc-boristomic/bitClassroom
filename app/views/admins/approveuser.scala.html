@@ -3,6 +3,9 @@
 @(courseUserForm: List[CourseUser])
 @adminmain("List of applied students") {
 
+    <br/>
+    <legend>Applied students</legend>
+
     <table class="table table-striped table-hover ">
         <thead>
             <tr>
@@ -17,7 +20,7 @@
         @for(courseUser <- courseUserForm) {
             @if(courseUser.getStatus.equals(UserConstants.INACTIVE)) {
                 <tr class="active">
-                    <td>@courseUser.getCourse.getName</td>
+                    <td>@courseUser.getCourse.getName @courseUser.getCourse.getDescription</td>
                     <td>@courseUser.getUser.getFirstName @courseUser.getUser.getLastName</td>
                     <td>Inactive</td>
                     <td><a id="approved@courseUser.getId" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></a></td>

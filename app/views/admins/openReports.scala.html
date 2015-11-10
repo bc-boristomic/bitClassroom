@@ -1,0 +1,85 @@
+@import models.report.DailyReport
+    @import models.report.ReportField
+@import helpers.SessionHelper
+@import utility.UserConstants
+@(dr: DailyReport, nextReport: DailyReport, previousReport: DailyReport, listReportField: List[ReportField])
+    @main("Open report") {
+        <form>
+            <div>
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row down-border">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                @if(previousReport!=null) {
+                                    <li class="previous"><a href="@controllers.users.routes.UserController.openReport(previousReport.getId)"><span aria-hidden="true">&larr;</span>
+                                        Previous Report</a></li>
+                                }
+                                <li><a href="@controllers.users.routes.UserController.pdfDailyReports(dr.getId)" target="_blank"><i class="fa fa-file-pdf-o"> </i>
+                                    PDF</a></li>
+                                @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)){
+                                <li><a href="@controllers.users.routes.AdminController.listReport">Back to Table</a></li>
+                                }else{
+                                    <li><a href="@controllers.users.routes.TeacherController.myReports()">Back to Table</a></li>
+                                }
+                                @if(nextReport!=null) {
+                                    <li class="next"><a href="@controllers.users.routes.UserController.openReport(nextReport.getId)">
+                                        Next Report <span aria-hidden="true">&rarr;</span></a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row down-border top17">
+                        <div class="col-md-3">
+                            <label>Timestamp</label>
+                        </div>
+                        <p class="col-md-3">@dr.getCreateDate</p>
+                        <div class="col-md-1 col-md-offset-3">
+                            <label>Date</label>
+                        </div>
+                        <p class="col-md-2">@DailyReport.formaterDate(dr.getDate)</p>
+                    </div>
+                    <div class="row down-border top30">
+                        <div class="col-md-3">
+                            <label class="control-label">Title</label>
+                        </div>
+
+                        <p class="col-md-9">@dr.getName</p>
+                    </div>
+                    <div class="row down-border top17">
+                        <div class="col-md-3">
+                            <label>Teacher</label>
+                        </div>
+                        <p class="col-md-2">@dr.getTeacher.getFirstName @dr.getTeacher.getLastName</p>
+                        <a class="col-md-1 col-md-offset-6" href="#"> <i class="glyphicon glyphicon-envelope"></i></a>
+                    </div>
+                    <div class="row down-border top17">
+                        <div class="col-md-3">
+                            <label>Course</label>
+                        </div>
+                        <p class="col-md-2">@dr.getCourse.getName @dr.getCourse.getDescription</p>
+                    </div>
+                    @for(lrf <- listReportField) {
+                        @if(lrf.getDailyReport.getId.equals(dr.getId)) {
+                            <div class="row down-border top17">
+                                <div class="col-md-3">
+                                    <label>@lrf.getField.getName</label>
+                                </div>
+                                <p class="col-md-9">@lrf.getValue</p>
+                            </div>
+                        }
+                    }
+                    <div class="row top17">
+                        <div class="col-md-3">
+                            <label>Report</label>
+                        </div>
+                        <p class="col-md-9">@dr.getData</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    <style>
+    .down-border {
+    border-bottom: 1px solid #777777 ;
+    }
+    </style>

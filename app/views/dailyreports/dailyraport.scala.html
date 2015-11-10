@@ -1,56 +1,76 @@
 @import models.report.DailyReport
 @import play.data.Form
-@(raportForm: Form[DailyReport])(fields: List[report.Field])
-
-@main("Raport Model") {
-    @helper.form(action = controllers.users.routes.TeacherController.saveRaport()) {
-        <!-- custom css -->
-        <link rel="stylesheets" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")">
-        <body>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="container">
-                        <h3 class="page-head-line">Fill the report:</h3>
-                    </div>
-                    <form class="form-horizontal">
-                        <div class="row top30">
-                            <label class="col-md-offset-7 col-md-1">Date:<abbr class="req" style="color: red" >*</abbr></label>
-                            <div class=" col-md-4"><input class="form-control" name="date" type="date" min="2015-01-01" required></div>
+@import models.course.Course
+@(raportForm: Form[DailyReport])(fields: List[report.Field], courseList: List[Course])
+    @main("Raport Model") {
+        @helper.form(action = controllers.users.routes.TeacherController.saveRaport()) {
+            <!-- custom css -->
+            <link rel="stylesheets" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")">
+            <body>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="container">
+                            <h3 class="page-head-line">Fill the report:</h3>
                         </div>
-
-                        <div class="row top30">
-                            <label class="col-sm-2">Title: <abbr class="req" style="color: red" > * </abbr></label>
-                            <div class="col-sm-10"><input class="form-control" name="title" value="" pattern="[\w]{3}[\w\d -:()]+" required></div>
-                        </div>
-                        <div class="form-group top30">
-                        @fields.map { field =>
+                        <form class="form-horizontal">
                             <div class="row top30">
-                                <div class="col-sm-2">
-                                    <label for="field_@field.getId()" >@field.getName(): <abbr class="req" style="color: red" > * </abbr></label>
+                                <label class="col-md-offset-7 col-md-1">Date:<abbr class="req">*</abbr></label>
+                                <div class=" col-md-4"><input class="form-control" name="date" type="date" min="2015-01-01" required></div>
+                            </div>
+                            <div class="row top30">
+                                <label class="col-sm-2">Title: <abbr class="req"> * </abbr></label>
+                                <div class="col-sm-10"><input class="form-control" name="title" value="" pattern="[\w]{3}[\w\d -:()]+" required></div>
+                            </div>
+                            <div class="row top30">
+                                <label class="col-sm-2">Course: <abbr class="req"> * </abbr></label>
+                                <div class="col-sm-10"><select class="form-control" id="select" name="course">
+                                @for(course <- courseList) {
+                                    @if(course.getStatus == 1) {
+                                        <option value="@course.getId()">@course.getName @course.getDescription</option>
+                                    }
+                                }
+                                </select>
                                 </div>
+                            </div>
+                            <div class="form-group top30">
+                            @fields.map { field =>
+                                <div class="row top30">
+                                    <div class="col-sm-2">
+                                        <label for="field_@field.getId()" >@field.getName()
+                                            : <abbr class="req"> * </abbr></label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="2" name="@field.getId()" id="field_@field.getId()" type="text" pattern="[\w]{3}[\w\d -:()]+" required></textarea>
+                                    </div>
+                                </div>
+                            }
+                            </div>
+                            <div class="row top30">
+                                <label class="col-sm-2 control-label">Report:  <abbr class="req">
+                                    * </abbr></label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="2" name="@field.getId()" id="field_@field.getId()" type="text" pattern="[\w]{3}[\w\d -:()]+" required></textarea>
+                                    <textarea class="form-control" rows="4" name="data" pattern="[\w]{3}[\w\d -:()]+" required></textarea>
                                 </div>
                             </div>
-                        }
-                        </div>
-                        <div class="row top30">
-                            <label class="col-sm-2 control-label">Report:  <abbr class="req" style="color: red" > * </abbr></label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" rows="4" name="data" pattern="[\w]{3}[\w\d -:()]+" required></textarea>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10 top30">
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10 top30" style="margin-bottom: 30px">
-                                <button type="submit" class="btn btn-success">Save</button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </body>
+            </body>
+        }
     }
-}
-<script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
+    <style>
+    .req {
+    color: red ;
+    }
+    .top30 {
+    margin-top: 20px ;
+    }
+    </style>
+    <script src="@routes.Assets.versioned("javascripts/deleteConfirm.js")"></script>
 
 

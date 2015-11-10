@@ -1,0 +1,110 @@
+@import models.user.Assignment
+@(listPost: List[Assignment])
+@main("List assignment") {
+
+<div class="container-fluid">
+  <ul class="nav navbar-nav navbar-left">
+    <li class="dropdown active">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><button type="submit" class="btn btn-info navbar-btn">
+        Homeworks  <span class="glyphicon glyphicon-plus-sign"></span></button></a>
+      <ul class="dropdown-menu" role="menu" style="background-color : white">
+        <li class="navbar-left">
+          <a href="@controllers.users.routes.StudentController.worksActivity("DONE")">
+            <button type="submit" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-ok"></span>
+              DONE</button>
+          </a>
+        </li>
+        <li>
+          <a href="@controllers.users.routes.StudentController.worksActivity("WORKING")">
+            <button type="button" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-check"></span>
+              WORKING</button>
+          </a>
+        </li>
+        <li>
+          <a href="@controllers.users.routes.StudentController.worksActivity("NOT")">
+            <button type="button" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span>
+              TO-DO</button>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+</div>
+
+  <br>
+  <br>
+  @for(lp <- listPost) {
+
+      <a href="@controllers.posts.routes.PostController.assignmentDetails(lp.getPost.getId)">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <div id="postlist">
+                <div class="panel">
+                  <div class="panel-heading">
+                    <div class="text-center">
+                      <div class="row">
+                        <div class="col-sm-9">
+                          <h3 class="pull-left">@lp.getPost.getTitle</h3>
+                          <h5 class="pull-right" style="font-family : Arial" y><em>@lp.getPost.getDate</em></h5>
+                        </div>
+                        <div class="col-sm-3">
+                          <h4 class="pull-right">
+                            <a href="#"><small style="color : blue"><em>@lp.getUser.getEmail <br></em></small></a>
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel-body">
+                    <h5><em>@lp.getPost.getContent</em></h5>
+                    <br>
+                  </div>
+
+                  @if(lp.getPost.getLink != "") {
+                    <div class="panel-body" style="border : 1 px solid darkgrey ; background-color : lightgrey ; margin : 0 20 px 0 20 px ; height : 60 px">
+                      <label>Link : </label>
+                      <a href="@lp.getPost.getLink" target="_blank">@lp.getPost.getLink</a>
+                    </div>
+                  }
+
+                  @if(lp.getPost.getFiles != null) {
+                    <div class="panel-body" style="border : 1 px solid darkgrey ; background-color : lightgrey ; margin : 0 20 px 20 px 20 px ; height : 60 px">
+                      <label>Attachment : </label>
+                      @for(file <- lp.getPost.getFiles) {
+                        <br/><a href="@file.getUrl()">@file.getFileName()</a>
+                      }
+                    </div>
+                  }
+
+                  <div class="panel-footer">
+                  @if(lp.getPost.getPostType == 1) {
+                    <span class="label label-default">
+                      Assigment </span> <span class="label label-default pull-right">@lp.getPost.getCreateDate</span>
+                  } else {
+                    <span class="label label-default">
+                      Announcement </span> <span class="label label-default pull-right">@lp.getPost.getCreateDate</span>
+                  }
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+  }
+
+  @if(listPost.size == 0){
+
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>Woohoo, no assignments!
+      <div><a href=""></a></div>
+    </div>
+  }
+}

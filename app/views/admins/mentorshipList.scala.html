@@ -3,26 +3,23 @@
 @adminmain("Mentorship program") {
 
 
-  <div class="container">
-    <h4 class="page-head-line">Active mentorship</h4>
-
-  </div>
-
+  <br/>
+  <legend>Active mentorship</legend>
 
   <div class="container">
     <div class="table-responsive">
 
       <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
-          <tr class="success">
-            <th>Mentor</th>
-            <th>Student</th>
-            <th>Delete</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Mentor</th>
+            <th class="th-color">Student</th>
+            <th class="th-color">Delete</th>
           </tr>
         </thead>
         <tbody>
         @for(men <- mentorship) {
-          <tr class="info">
+          <tr class="information">
             <td>@men.getMentor.getFirstName @men.getMentor.getLastName</td>
             <td>@men.getStudent.getFirstName @men.getStudent.getLastName</td>
             <td>

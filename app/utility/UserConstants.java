@@ -19,9 +19,11 @@ public abstract class UserConstants {
     public static final int NOT_FULLY_ACTIVE = 1;
     public static final int FULLY_ACTIVE = 2;
     public static final int DELETED = 3;
+    public static final int ACTIVE_MENTOR = 14;
 
     public static final int DONT_HAVE_MENTOR = 10;
     public static final int HAVE_MENTOR = 11;
     public static final int ACTIVE_MENTORSHIP = 12;
     public static final int EXPIRED_MENTORSHIP = 13;
+
 }

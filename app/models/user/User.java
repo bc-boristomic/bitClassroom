@@ -1,17 +1,21 @@
 package models.user;
-
 import com.avaje.ebean.Model;
+import models.CloudFile;
 import models.Image;
 import models.Post;
 import models.PrivateMessage;
+import models.course.Course;
+import models.course.CourseUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import utility.MD5Hash;
 import utility.UserConstants;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boris on 9/12/15.
@@ -61,28 +65,32 @@ public final class User extends Model {
     @Column(name = "status", length = 1)
     private Integer status = UserConstants.INACTIVE;
     @Column(name = "student_status", length = 1)
-    private Integer studentStatus;
+    private Integer studentStatus = 0;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime creationDate = new DateTime();
     @Column(name = "created_by", updatable = false, length = 50)
     private String createdBy;
     @Column(name = "homework_status", length = 1)
     private Integer homeworkStatus = 0;
+    @Column(name = "weekly_status", length = 1)
+    private Integer weeklyReportStatus = 0;
+    @Column(name = "daily_status", length = 1)
+    private Integer dailyReportStatus = 0;
+    private Integer unreadMessage = 0;
     @Column(unique = true)
-    private String token;
+    public String token;
     @Column(name = "update_date", columnDefinition = "datetime")
     private DateTime updateDate;
     @Column(name = "updated_by", length = 50)
     private String updatedBy;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy="sender", cascade=CascadeType.ALL)
     private List<PrivateMessage> messages = new ArrayList<>();
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Assignment> assigments = new ArrayList<>();
-
 
     /**
      * Default empty constructor for Ebean
@@ -153,6 +161,8 @@ public final class User extends Model {
         return finder.where().eq("firstName", name).findUnique();
     }
 
+
+
     /**
      * Returns finder on User model
      *
@@ -168,23 +178,23 @@ public final class User extends Model {
      *
      * @return <code>String</code> type value of User information
      */
-    @Override
-    public String toString() {
-        String g = "female";
-        if (gender.equals(1) && gender != null) {
-            g = "male";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(firstName).append(" ");
-        sb.append(lastName).append(" ");
-        sb.append("Born ").append(birthDate).append(" ");
-        sb.append("Gender: ").append(g).append(" ");
-        sb.append("Location: ").append(location).append(" ");
-        sb.append("Phone: ").append(cellPhone).append(" ");
-        sb.append("Web: ").append(website);
-        sb.append("STATUS ").append(status);
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        String g = "female";
+//        if (gender.equals(1) && gender != null) {
+//            g = "male";
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Name: ").append(firstName).append(" ");
+//        sb.append(lastName).append(" ");
+//        sb.append("Born ").append(birthDate).append(" ");
+//        sb.append("Gender: ").append(g).append(" ");
+//        sb.append("Location: ").append(location).append(" ");
+//        sb.append("Phone: ").append(cellPhone).append(" ");
+//        sb.append("Web: ").append(website);
+//        sb.append("STATUS ").append(status);
+//        return sb.toString();
+//    }
 
 
 
@@ -192,6 +202,22 @@ public final class User extends Model {
 
     public Long getId() {
         return id;
+    }
+
+    public Integer getUnreadMessage() {
+        return unreadMessage;
+    }
+
+    public void setUnreadMessage(Integer unreadMessage) {
+        this.unreadMessage = unreadMessage;
+    }
+
+    public Integer getDailyReportStatus() {
+        return dailyReportStatus;
+    }
+
+    public void setDailyReportStatus(Integer dailyReportStatus) {
+        this.dailyReportStatus = dailyReportStatus;
     }
 
     public String getEmail() {
@@ -290,6 +316,14 @@ public final class User extends Model {
 
     public Integer getStatus() {
         return status;
+    }
+
+    public Integer getWeeklyReportStatus() {
+        return weeklyReportStatus;
+    }
+
+    public void setWeeklyReportStatus(Integer weeklyReportStatus) {
+        this.weeklyReportStatus = weeklyReportStatus;
     }
 
     public void setStatus(Integer status) {
@@ -420,16 +454,31 @@ public final class User extends Model {
 
     public static boolean deleteUser(Long id) {
 
+        List<Course> course = CourseUser.allUserCourses(User.findById(id));
+        for ( int i = 0; i < course.size(); i++){
+
+            course.get(i).delete();
+        }
         finder.deleteById(id);
         return true;
     }
 
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken() {
+        this.token = UUID.randomUUID().toString();
     }
 
     public String getToken() {
         return token;
+    }
+
+    public static User findUserByToken(String token){
+        return finder.where().eq("token",token).findUnique();
+    }
+
+    public static User findEmailAndPassword(String email, String password) {
+        String pass = MD5Hash.getEncriptedPasswordMD5(password);
+        User user = finder.where().eq("email",email).eq("password",pass).findUnique();
+        return user;
     }
 }

@@ -1,0 +1,103 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
+@(faqList : List[Faq])
+@main("FAQ"){
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1>BitClassroom FAQ <small>BitClassroom Frequently Asked Questions</small></h1>
+      </div>
+
+
+      <div class="container">
+        <br />
+
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          If you cannot find an answer to your question,
+          make sure <a href="/home#contact">Contact Us</a>
+          <div><a href=""></a></div>
+        </div>
+
+        <div class="panel-group" id="accordion">
+
+          <div class="faqHeader">General questions</div>
+          <tbody>
+          @for(faq <- faqList){
+            <tr>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse@faq.getId">@faq.getQuestion</a>
+                </h4>
+              </div>
+              <div id="collapse@faq.getId" class="panel-collapse collapse">
+                <div class="panel-body">
+
+                 <td> @faq.getAnswer</td>
+                  @if(SessionHelper.currentUser(ctx())!= null && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)) {
+                    <td><div class="pull-right"><a href="@controllers.users.routes.AdminController.editFAQ(faq.getId)"><span class="glyphicon glyphicon-edit"></span><i>
+                      Edit</i></a></div>
+                    </td>
+
+                    <td>
+                      <a data-role="delete" data-delete-parent="tr" href="@controllers.users.routes.AdminController.deleteFAQ(faq.getId)" role="button">
+                        <i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+                  }
+
+                </div>
+              </div>
+            </div></tr>
+          }
+          <tbody>
+
+
+      </div>
+
+        @if(SessionHelper.currentUser(ctx())!= null && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_ADMIN)){
+
+          <a class="btn btn-warning pull-right" href="@controllers.users.routes.AdminController.setupFAQ()"><strong>Add new  <span class="glyphicon glyphicon-plus"></span></strong></a>
+
+        }
+
+
+        </div>
+
+      <style>
+      .faqHeader {
+      font-size: 27px;
+      margin: 20px;
+      }
+
+      .panel-heading [data-toggle="collapse"]:after {
+      font-family: 'Glyphicons Halflings';
+      content: "\e072"; /* "play" icon */
+      float: right;
+      color: #F58723;
+      font-size: 18px;
+      line-height: 22px;
+      /* rotate "play" icon from > (right arrow) to down arrow */
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      }
+
+      .panel-heading [data-toggle="collapse"].collapsed:after {
+      /* rotate "play" icon from > (right arrow) to ^ (up arrow) */
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+      color: #454444;
+      }
+      </style>
+
+    </div>
+
+}
+

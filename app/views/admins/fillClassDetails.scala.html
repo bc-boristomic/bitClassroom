@@ -7,7 +7,8 @@
 @adminmain("Fill in the form") {
 
     @helper.form(action = controllers.users.routes.AdminController.saveCourse(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
-
+        <div class="panel panel-default">
+            <div class="panel-body">
         <legend>Create new course</legend>
 
         <form id="courseForm" method="post" class="form-horizontal">
@@ -22,6 +23,7 @@
                     <input type="text" class="form-control" name="description" placeholder="Description" required />
                 </div>
             </div>
+            <label>Select teacher</label>
             <div class="form-group" id="courseTemplate">
                 <div class="col-lg-6">
                     <select id="selection" name="type" required>
@@ -37,7 +39,7 @@
                         }
                     }
                     </select>
-                    <label>Teacher</label>
+
                 </div>
 
             </div>
@@ -58,6 +60,9 @@
                 </div>
             </div>
         </form>
+
+            </div>
+        </div>
 
 
     }

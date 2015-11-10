@@ -41,6 +41,9 @@ public class WeeklyReport extends Model{
     @Column(name = "data", length = 4000)
     private String data;
 
+    @Column(name = "week")
+    private Integer week = 1;
+
     //Constructior
     public WeeklyReport() {
 
@@ -65,7 +68,7 @@ public class WeeklyReport extends Model{
         return id;
     }
     public String getCreateDate() {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createDate); }
     public String getDate() {
         return date;
@@ -82,10 +85,10 @@ public class WeeklyReport extends Model{
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getMentor() {
         return mentor;
     }
+    public Integer getWeek() { return week; }
 
     //Setters
     public void setCreateDate(DateTime createDate) {
@@ -103,9 +106,11 @@ public class WeeklyReport extends Model{
     public void setData(String data) {
         this.data = data;
     }
-
     public void setMentor(String mentor) {
         this.mentor = mentor;
+    }
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     public static WeeklyReport findWeeklyReportById(Long id) {
@@ -138,6 +143,28 @@ public class WeeklyReport extends Model{
             if (wf.getWeeklyField().equals(field)) {
                 return wf;
             }
+        }
+        return null;
+    }
+
+    public List<WeeklyReport> findAllReport(){
+
+        return weeklyFinder.findList();
+    }
+
+
+    public static WeeklyReport nextWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
+
+    public static WeeklyReport previousWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
         }
         return null;
     }

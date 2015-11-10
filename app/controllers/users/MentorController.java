@@ -1,5 +1,6 @@
 package controllers.users;
 
+import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.course.CourseUser;
@@ -18,6 +19,8 @@ import play.mvc.Security;
 import utility.UserConstants;
 import views.html.dailyreports.weeklyreport;
 import views.html.index;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,7 +43,10 @@ public class MentorController extends Controller {
     }
 
     public Result saveRaport() {
+
         User temp = SessionHelper.currentUser(ctx());
+        temp.setWeeklyReportStatus(2);
+        temp.save();
         List<WeeklyField> fields = WeeklyField.getFinder().findList();
         DynamicForm dynamicForm = Form.form().bindFromRequest();
         dynamicForm.bindFromRequest(request());
@@ -53,6 +59,28 @@ public class MentorController extends Controller {
         weeklyReport.setName(dynamicForm.get("title"));
         weeklyReport.setStudent(dynamicForm.get("student"));
         weeklyReport.setData(dynamicForm.get("data"));
+        User student = User.findByName(dynamicForm.get("student").substring(0,dynamicForm.get("student").indexOf(" ")));
+        Mentorship mentorship =  Mentorship.findMentroship(temp, student);
+        Logger.info(mentorship.getId()+"");
+        Long tmpWeek = mentorship.getReportDate().getMillis()/1000;
+        Long time = DateTime.now().getMillis()/1000;
+        Long status = time - tmpWeek;
+
+        Integer week = mentorship.getWeek();
+        Logger.info(week + "");
+
+        if(status > 604800) {
+            week += 1;
+            weeklyReport.setWeek(week);
+            mentorship.setWeek(week);
+            mentorship.setReportDate(DateTime.now());
+            Logger.info(mentorship.getId() + "");
+            mentorship.update();
+
+        }else{
+
+            weeklyReport.setWeek(week);
+        }
         weeklyReport.save();
 
         for (WeeklyField field : fields) {
@@ -63,11 +91,12 @@ public class MentorController extends Controller {
             reportField.setWeeklyField(field);
             reportField.save();
         }
+
         User u = SessionHelper.currentUser(ctx());
         List<CourseUser> userc = CourseUser.getFinder().all();
 
         flash("success", "Your report has been sent");
-        return ok(index.render(u, userc));
+        return redirect("/");
 
     }
 

@@ -1,10 +1,8 @@
 package models.course;
 
 import com.avaje.ebean.Model;
-import helpers.SessionHelper;
-import models.Post;
-import models.user.Assignment;
 import models.user.User;
+import utility.UserConstants;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -44,15 +42,18 @@ public final class CourseUser extends Model {
      * @return <code>List</code> type value of all courses from database
      */
     public static List<CourseUser> findAll(Long userId) {
-        List<CourseUser> list = finder.all();
-        List<CourseUser> courseUserList = new ArrayList<>();
+        return finder.where().eq("user_id", userId).findList();
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getUser().getId().equals(userId)) {
-                courseUserList.add(list.get(i));
-            }
-        }
-        return courseUserList;
+//        List<CourseUser> list = finder.all();
+//        List<CourseUser> courseUserList = new ArrayList<>();
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).getUser().getId().equals(userId)) {
+//                courseUserList.add(list.get(i));
+//
+//            }
+//        }
+//        return courseUserList;
     }
 
     public static List<Course> allUserCourses(User currentUser) {
@@ -83,6 +84,23 @@ public final class CourseUser extends Model {
         }
 
         return courseUsers;
+    }
+
+    public static Integer studentsInClass(Long id){
+
+        Integer numberOFStudents = 0;
+       List<User> users = allUserFromCourse(id);
+
+        for( int i = 0; i < users.size(); i++){
+
+            if( users.get(i).getRoles().get(0).getId().equals(UserConstants.STUDENT)){
+
+                numberOFStudents++;
+            }
+        }
+
+        return numberOFStudents;
+
     }
 
     public static CourseUser findCourseUser(User u , Course c){
@@ -131,6 +149,10 @@ public final class CourseUser extends Model {
         return finder;
     }
 
+    public static List<CourseUser> getCoursesPerUser(User u){
+        List<CourseUser> courseUsers = finder.where().eq("user_id",u.getId()).eq("status",2).findList();
+        return courseUsers;
+    }
 
 
     @Override

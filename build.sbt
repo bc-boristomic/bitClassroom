@@ -19,7 +19,10 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.11",
   "org.apache.commons" % "commons-email" % "1.3.3",
   "com.cloudinary" % "cloudinary" % "1.0.14",
-  "com.typesafe.play" %% "play-mailer" % "2.4.1"
+  "com.typesafe.play" %% "play-mailer" % "2.4.1",
+  "it.innove" % "play2-pdf" % "1.3.0",
+  "com.microsoft.azure" % "azure-storage" % "4.0.0"
+
 
 
 )

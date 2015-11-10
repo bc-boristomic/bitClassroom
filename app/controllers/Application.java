@@ -1,24 +1,30 @@
 package controllers;
 
+import controllers.api.UserAPIController;
 import helpers.SessionHelper;
-
 import models.Email;
-
+import models.Event;
+import models.Faq;
 import models.PrivateMessage;
+import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
+import org.json.simple.JSONArray;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utility.MD5Hash;
 import utility.UserConstants;
-import views.html.about;
-import views.html.index;
-import views.html.newMain;
+import views.html.*;
 import views.html.users.login;
 import views.html.users.util.email;
+import views.html.users.util.faq;
 
-import java.util.List;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Application extends Controller {
 
@@ -158,5 +164,21 @@ public class Application extends Controller {
         return ok(String.valueOf(notify));
     }
 
+    public Result weeklyNotification(){
+
+        int counter = User.getFinder().where().eq("studentStatus", 14).findRowCount();
+        int notify = User.getFinder().where().eq("weeklyReportStatus", 2).findRowCount();
+        return ok(notify + "/" + counter);
+    }
+
+    public Result faq(){
+
+        List<Faq> faqList = Faq.findAllFAQ();
+        return ok(faq.render(faqList));
+    }
+
+    public Result contact(){
+        return ok(contact.render());
+    }
 
 }

@@ -1,32 +1,33 @@
 @import models.user.Mentorship
 @import models.user.User
-@(mentorship: List[User])
-@adminmain("Mentors") {
+@import java.util
+@(mentorship: util.HashSet[User])
+@adminmain("Inactive mentors") {
 
-  <div class="container">
-    <h4 class="page-head-line">Inactive mentors</h4>
-
-  </div>
+  <br/>
+  <legend>Inactive mentors</legend>
   
   <div class="container">
     <div class="table-responsive">
 
       <table id="sort" class="table-condensed table-hover table table-bordered">
         <thead>
-          <tr class="success">
-            <th>Mentor</th>
-            <th>E-mail</th>
-            <th>Info</th>
-            <th>Send message</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Mentor</th>
+            <th class="th-color">E-mail</th>
+            <th class="th-color">Info</th>
+            <th class="th-color">Unread message</th>
+            <th class="th-color">Send message</th>
           </tr>
         </thead>
         <tbody>
         @for(men <- mentorship) {
-          <tr class="info">
-            <td>@men.getFirstName @men.getLastName</td>
-            <td>@men.getEmail</td>
-            <td>@men.getCellPhone</td>
-            <td><a href="@controllers.users.routes.UserController.newMessage(men.getId)"><i class="glyphicon glyphicon-envelope"></i></a></td>
+          <tr class="information">
+            <td class="text-center">@men.getFirstName @men.getLastName</td>
+            <td class="text-center">@men.getEmail</td>
+            <td class="text-center">@men.getCellPhone</td>
+            <td class="text-center"><span class="badge text-center">@men.getUnreadMessage</span></td>
+            <td class="text-center"><a href="@controllers.users.routes.UserController.newMessage(men.getId)">Send  <i class="glyphicon glyphicon-envelope"></i></a></td>
           </tr>
         }
         </tbody>

@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html>
-
-  <body>
-    <label>Email </label>
-    <input type="email" name="email" id="email" required="required" placeholder="Email">
-    <div>
-      <input type="button" value="Send" onclick="sendEmail(email)" class="button">
+@main("Forgot password"){
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form action="@controllers.users.routes.UserController.sendRecoveryMail()" method="post">
+          <h4>
+            Please enter your email address so we can send you link for recovering password.
+          </h4>
+          <div>
+          <input name="email" type="email" required/>
+          </div>
+          <div>
+            <a href="@controllers.users.routes.UserController.sendRecoveryMail()">
+              <button class="btn btn-primary" style="margin-top: 5px">
+                Send
+              </button>
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
-  </body>
-</html>
+  </div>
+}

@@ -2,25 +2,23 @@
 @(courses: List[Course])
 @adminmain("Archived courses") {
 
-  <div class="container">
-    <h4 class="page-head-line">Courses on bitClassroom</h4>
-  </div>
-
+  <br/>
+  <legend>Archived course on bitClassroom</legend>
   <div class="container">
     <div class="table-responsive">
 
       <table id="sort" class="table-condensed table-hover table">
         <thead>
-          <tr class="information">
-            <th>Name</th>
-            <th>Description</th>
-            <th>Archived by</th>
-            <th>Reactivate</th>
+          <tr class="navbar-inverse">
+            <th class="th-color">Name</th>
+            <th class="th-color">Description</th>
+            <th class="th-color">Archived by</th>
+            <th class="th-color">Reactivate</th>
           </tr>
         </thead>
         <tbody>
         @for(course <- courses) {
-          <tr class="info">
+          <tr class="information">
             <td>@course.getName</td>
             <td>@course.getDescription</td>
             <td>@course.getUpdatedBy</td>

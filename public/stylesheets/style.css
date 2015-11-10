@@ -37,6 +37,10 @@ body {
     -moz-border-radius: 0px;
 }
 
+.th-color{
+    color: #b2dbfb;
+}
+
 .progress {
 
     height: 8px;
@@ -58,15 +62,7 @@ body {
     -webkit-border-radius:50%;
     -moz-border-radius:50%;
 }
-/* =============================================================
-   HEADER SECTION STYLES
- ============================================================ */
-header {
-    background-color: darkred;
-    color: #fff;
-    text-align: right;
-    max-height: 30px;
-}
+
 
 
 /* =============================================================
@@ -165,17 +161,7 @@ header {
     background-color: #F0677C!important;
 }
 
-.navbar-inverse {
 
-    background-image: url("../images/bitclassroom.jpg");
-    border-color: transparent;
-    background-size: cover !important;
-    width: 100% !important;
-
-    background-position: center;
-    min-height: 250px;
-    border-top: 5px solid darkred;
-}
 
 .navbar-toggle {
     background-color: #F0677C;

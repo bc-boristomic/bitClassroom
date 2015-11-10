@@ -31,28 +31,25 @@ public final class Post extends Model {
     @Constraints.Required
     private String content;
     @Column(name="post_type")
-    private Integer postType;
+    private Integer postType = 0;
     @Column(name="visible_mentors")
-    private Boolean visibleToMentors;
+    private Boolean visibleToMentors = false;
     @Column(name = "link")
     private String link;
-    @Column(name="files")
-    private String files;
     @Column(name = "date")
     private String date;
     @Column(name="time")
     private String time;
     @Column(name = "create_date", updatable = false, columnDefinition = "datetime")
     private DateTime createdDate = new DateTime();
-    @Column (name = "creator")
-    private User creator;
     @ManyToOne
     private Course course;
     @ManyToOne
     private User user;
     @OneToMany
     private List<Assignment> assigments = new ArrayList<>();
-
+    @OneToMany
+    private List<CloudFile> files;
 
     /**
      * Empty constructor for Ebean
@@ -178,13 +175,14 @@ public final class Post extends Model {
         return link;
     }
 
-    public void setFiles(String files) {
-        this.files = files;
+    public void addFile(CloudFile file) {
+        this.files.add(file);
     }
 
-    public String getFiles() {return files;}
+    public List<CloudFile> getFiles() {return files;}
 
-    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
+
+    public String getCreateDate() {DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy - HH:mm");
         return dtf.print(createdDate); }
 
     public void setCreatedDate(DateTime createdDate) {
@@ -214,11 +212,4 @@ public final class Post extends Model {
         this.assigments = assigments;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
 }

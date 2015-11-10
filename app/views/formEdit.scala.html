@@ -1,0 +1,89 @@
+@import helpers.SessionHelper
+@import utility.UserConstants
+@import models.course.Course
+@(id: Long, eventForm: Form[Event], event: Event, course: Course)
+
+@import helper._
+
+@implicitField = @{ FieldConstructor(fields.twoColumns.f) }
+
+@layouts.mainLayout("Edit event: "+ event.getTitle){
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-inner">
+            <div class="container">
+                <br/>
+                <a class="brand badge" href="@controllers.users.routes.UserController.calendar(course.getId)">@course.getName @course.getDescription Calendar</a>
+                @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+                    <ul class="nav pull-right">
+                        <li >
+
+                            <a class="badge" href="@controllers.users.routes.UserController.list()">
+                                 Event's list</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    <br/>
+<div class="container">
+
+    @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+        <h3>Edit event: @event.getTitle </h3>
+    } else {
+        <h3>Event details</h3>
+    }
+    <br/> <br/>
+    @helper.form(action = controllers.users.routes.UserController.update(id), 'id->"eventFormEdit") {
+
+        @inputText(eventForm("title"), args =
+            '_label -> "Title",
+            'size ->18,
+            'placeholder -> "But not too long...",
+            'class -> "required",
+            'minlength -> "3"
+        )
+        <br/>
+        @checkbox(field = eventForm("allDay"), args =
+            '_label -> "All day event?"
+        )
+
+        <br/>
+        @inputText(eventForm("start"), args =
+            '_label -> "Start date",
+            '_help -> "",
+            'size ->18,
+            'placeholder -> "dd.mm.yyyy hh:mm",
+            'placeholder -> "dd.mm.yyyy",
+            'class -> "required"
+        )
+
+        <br/>
+        @inputText(eventForm("end"), args =
+            '_label -> "End date",
+            '_help -> "",
+            'size ->18,
+            'placeholder -> "dd.mm.yyyy hh:mm"
+        )
+
+        <br/>
+        <br/>
+
+
+        @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+        <div class="row" id="rowOf_submitbuttons">
+            <div class="span8 offset2">
+            <input type="submit" value="Save an event" class="btn btn-warning"> or
+            <a href="@controllers.users.routes.UserController.list()" class="btn">Cancel</a>
+            </div>
+        </div>
+        }else{
+
+        }
+        }
+</div>
+}
+

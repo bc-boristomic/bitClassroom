@@ -1,0 +1,69 @@
+@import models.report.WeeklyField
+@import models.report.ReportWeeklyField
+@import models.report.WeeklyReport
+@import controllers.users.AdminController
+@import models.report.DailyReport
+@(listReportWeeklyField: List[ReportWeeklyField],
+        listWeeklyReport: Set[WeeklyReport],
+        listWeeklyField: List[WeeklyField])
+@main("Weekly List") {
+  <form>
+    <div>
+      <h3 class="page-head-line"> Table of weekly reports </h3>
+      <ul class="pager">
+        <li><a href="@controllers.users.routes.TeacherController.pdfWeeklyTable" target="_blank"><i class="fa fa-file-pdf-o"> </i>
+          PDF</a></li>
+      </ul>
+    </div>
+    <table id="sort" class="table-bordered">
+      <div>
+        <thead>
+          <tr class="navbar-inverse">
+            <th class="th-color">Week</th>
+            <th class="th-color">Timestamp</th>
+            <th class="th-color">Date</th>
+            <th class="th-color">Title</th>
+            <th class="th-color">Mentor</th>
+            <th class="th-color">Student</th>
+            @for(rwf <- listWeeklyField) {
+              <th class="th-color">@rwf.getName</th>
+            }
+            <th class="th-color">Report</th>
+            <th class="th-color">Action</th>
+          </tr>
+        </thead>
+        @for(lwr <- listWeeklyReport) {
+          <tbody>
+            <div>
+              <tr class="success">
+                <td>@lwr.getWeek</td>
+                <td>@lwr.getCreateDate</td>
+                <td>@DailyReport.formaterDate(lwr.getDate)</td>
+                <td>@lwr.getName</td>
+                <td>@lwr.getMentor</td>
+                <td>@lwr.getStudent</td>
+                @for(field <- listWeeklyField) {
+                  @if(lwr.containsWeeklyField(field) == true) {
+                    <td>@lwr.getWeeklyField(field).getValue()</td>
+                  } else {
+                    <td>N/A</td>
+                  }
+                }
+                <td>@AdminController.cutText(lwr.getData, 40)</td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <a href="@controllers.users.routes.UserController.openWeeklyReport(lwr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                    </div>
+                    <div class="col-md-6">
+                                        </div>
+                  </div>
+                </td>
+              </tr>
+            </div>
+          </tbody>
+        }
+      </div>
+    </table>
+  </form>
+}

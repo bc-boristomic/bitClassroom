@@ -1,4 +1,5 @@
 import com.cloudinary.Cloudinary;
+import helpers.CloudHelper;
 import models.Image;
 import models.course.Course;
 import models.user.Role;
@@ -28,6 +29,7 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(Application application) {
         Image.cloudinary = new Cloudinary("cloudinary://" + Play.application().configuration().getString("cloudinary.string"));
+//        CloudHelper.createContainer();
 
         if (Role.getFinder().findRowCount() == 0) {
             Roles.saveAllRoles();

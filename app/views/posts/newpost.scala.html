@@ -6,9 +6,11 @@
 @main("Publish post") {
 
     @helper.form(action = controllers.posts.routes.PostController.savePost(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
-
-
-        <legend>Create new post</legend>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <h3>Create new post</h3>
+            </div>
+            <div class="panel-body">
 
         @if(currentUser != null && currentUser.getRoles.size() > 0 && currentUser.getRoles != null) {
             @for(role <- currentUser.getRoles) {
@@ -16,7 +18,7 @@
 
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                Please select post type<abbr class="req" title="Please select due date.">
+                                Please select post type<abbr class="req" title="Please select post type.">
                                 * </abbr>
                             </label>
 
@@ -48,7 +50,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Due date <abbr class="req" title="Please select due date."> * </abbr></label>
                         <div class="col-md-2">
-                            <input name="date" type="text" max="9999-01-01" class="form-control" id="date" placeholder="mm/dd/yyyy" style="cursor : pointer" disabled="true" required>
+                            <input name="date" type="text" max="9999-01-01" class="form-control" id="date" placeholder="dd/mm/yyyy" style="cursor : pointer" disabled="true" required>
                         </div>
                         <label class="col-md-2 control-label">Due time <abbr class="req" title="Please select due date."> * </abbr></label>
                         <div class="col-md-2">
@@ -62,7 +64,7 @@
 
         <div class="form-group">
             <label for="title" class="col-md-3 control-label">
-                Title<abbr class="req" title="Please select due date."> * </abbr></label>
+                Title<abbr class="req" title="Please insert title."> * </abbr></label>
             <div class="col-md-6">
                 <input name="title" type="text" pattern="[\w\d ]{3,}" class="form-control" id="title" placeholder="Write post title here." required>
             </div>
@@ -71,8 +73,8 @@
 
         <div class="form-group">
             <label for="textArea" class="col-md-3 control-label">
-                Content<abbr class="req" title="Please select due date."> * </abbr></label>
-            <div class="col-md-6">
+                Content<abbr class="req" title="Please insert content."> * </abbr></label>
+            <div class="col-md-8">
             <textarea name="content" data-p class="form-control" rows="5" id="textArea" style="width: 74%;resize: none"  placeholder="Write post content here." required></textarea>
             </div>
         </div>
@@ -87,7 +89,10 @@
         <div class="form-group">
             <label for="files" class="col-md-3 control-label">Add files</label>
             <div class="col-md-6">
-                <input type="file" name="files" accept="" multiple class="form-control" id="files">
+
+                <span class="file-input btn btn-primary btn-file">
+                    Browse&hellip; <input type="file" name="files" accept="" id="files" class="form-control" multiple>
+                </span>
             </div>
         </div>
 
@@ -120,6 +125,9 @@
                     Publish</button>
             </div>
         </div>
+            </div>
+        </div>
+
     }
     <style>
     .req {
@@ -150,6 +158,13 @@
         var time = document.getElementById("time");
         var date = document.getElementById("date");
     </script>
+
+    <script type="text/javascript">
+          $(function () {
+             $('#date').datepicker({ minDate: 0 });
+              });
+
+           </script>
 }
 
 

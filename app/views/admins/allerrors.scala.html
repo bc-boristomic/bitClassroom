@@ -1,12 +1,8 @@
 @(errorList: List[ErrorLog])
-@adminmain("List of all errors") {
+@adminmain("Errors") {
 
-
-    <div class="container">
-        <h4 class="page-head-line">Errors:</h4>
-
-    </div>
-
+    <br/>
+    <legend>Errors</legend>
 
     <div class="container">
         <div class="table-responsive">
@@ -21,7 +17,7 @@
         </thead>
         <tbody>
         @for(err <- errorList) {
-            <tr class="info">
+            <tr class="information">
                 <td>@err.getMessage</td>
                 <td>@err.getDate</td>
                 <td>

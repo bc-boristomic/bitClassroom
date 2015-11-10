@@ -1,8 +1,10 @@
 package models.course;
 
 import com.avaje.ebean.Model;
+import models.Event;
 import models.Image;
 import models.Post;
+import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -12,9 +14,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Medina and Senadin on 15/09/15.
- */
 @Entity
 @Table(name = "course")
 public final class Course extends Model {
@@ -44,8 +43,14 @@ public final class Course extends Model {
     private Integer status = CourseConstants.ACTIVE_COURSE;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Event> events = new ArrayList<>();
     @OneToOne
     private Image image;
+    @Column (name = "date_of_report")
+    private DateTime reportDate;
+    @Column (name = "week")
+    private Integer week = 1;
 
     /**
      * Empty constructor for Ebean
@@ -140,6 +145,22 @@ public final class Course extends Model {
         return description;
     }
 
+    public DateTime getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(DateTime reportDate) {
+        this.reportDate = reportDate;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -204,5 +225,18 @@ public final class Course extends Model {
             newPosts.add(posts.get(i));
         }
         return newPosts;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public static List<Course> findAllCoursesPerUser(User user){
+        List<Course> courses = new ArrayList<>();
+        List<CourseUser> courseUsers = CourseUser.getCoursesPerUser(user);
+        for(CourseUser courseUser: courseUsers){
+            courses.add(courseUser.getCourse());
+        }
+        return courses;
     }
 }

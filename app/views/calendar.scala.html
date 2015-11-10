@@ -1,0 +1,67 @@
+@import java.util.Date
+@import helpers.SessionHelper
+@import utility.UserConstants
+@import models.course.Course
+@(pageTitle: String)(course: Course)
+
+@layouts.calendarLayout(course.getName + course.getDescription + " calendar") {
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-inner ">
+            <div class="container-fluid">
+                <br/>
+                <a class="brand" href="@controllers.users.routes.UserController.calendar(course.getId)"><strong><span class="badge la-dark">@course.getName @course.getDescription calendar</span></strong></a>
+
+                @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)){
+                    <div class="pull-right">
+                            <a href="@controllers.users.routes.UserController.list()"><span class="badge col-lg-pull-12">
+                                 Event's list</span></a>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+    <br/>
+    @if(SessionHelper.currentUser(ctx).getRoles.get(0).getId.equals(UserConstants.ADMIN)) {
+<div style="display: none;">
+
+        <form action="@controllers.users.routes.UserController.addByAjax()" method="POST" id="eventFormNew">
+            <input type="text" name="title" id="newTitle"/>
+            <input type="text" name="start" id="newStart"/>
+            <input type="text" name="end" id="newEnd"/>
+            <input type="text" name="allDay" id="newAllDay"/>
+        </form>
+
+
+        <form action="@controllers.users.routes.UserController.move()" method="POST" id="eventFormMove">
+            <input type="text" name="id" id="moveId"/>
+            <input type="text" name="dayDelta" id="moveDayDelta"/>
+            <input type="text" name="minuteDelta" id="moveMinuteDelta"/>
+            <input type="text" name="allDay" id="moveAllDay"/>
+        </form>
+
+
+        <form action="@controllers.users.routes.UserController.resize()" method="POST" id="eventFormResize">
+            <input type="text" name="id" id="resizeId"/>
+            <input type="text" name="dayDelta" id="resizeDayDelta"/>
+            <input type="text" name="minuteDelta" id="resizeMinuteDelta"/>
+        </form>
+</div>
+    }else{
+
+    }
+
+
+    <div id='calendar'>
+
+        <br/>
+    </div>
+    @if(SessionHelper.currentUser(ctx()).getRoles.get(0).getId.eq(UserConstants.ADMIN)) {
+
+        <script src="@routes.Assets.versioned("javascripts/adminRenderCalendar.js")"></script>
+    }
+
+
+    }
+
+

@@ -4,27 +4,26 @@
 @(courses: List[Course])
 @adminmain("Active courses") {
 
-    <div class="container">
-        <h4 class="page-head-line">Courses on bitClassroom</h4>
-    </div>
+    <br/>
+    <legend>Course on bitClassroom</legend>
 
     <div class="container">
         <div class="table-responsive">
 
             <table id="sort" class="table-condensed table-hover table">
                 <thead>
-                    <tr class="information">
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Teachers</th>
-                        <th>Overview</th>
-                        <th>Archive</th>
-                        <th>Delete</th>
+                    <tr class="navbar-inverse">
+                        <th class="th-color">Name</th>
+                        <th class="th-color">Description</th>
+                        <th class="th-color">Teachers</th>
+                        <th class="th-color">Overview</th>
+                        <th class="th-color">Archive</th>
+                        <th class="th-color">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                 @for(course <- courses) {
-                    <tr class="info">
+                    <tr class="information">
                         <td>@course.getName</td>
                         <td>@course.getDescription</td>
 

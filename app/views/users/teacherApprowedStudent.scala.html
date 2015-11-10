@@ -1,0 +1,59 @@
+@import models.course.CourseUser
+@import utility.UserConstants
+@(courseUserForm: List[CourseUser])
+@main("List of applied students") {
+
+    <br/>
+    <legend>Applied students</legend>
+
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Student</th>
+                <th>Status</th>
+                <th>Accept</th>
+                <th>Decline</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(courseUser <- courseUserForm) {
+            @if(courseUser.getStatus.equals(UserConstants.INACTIVE)) {
+                <tr class="active">
+                    <td>@courseUser.getCourse.getName @courseUser.getCourse.getDescription</td>
+                    <td>@courseUser.getUser.getFirstName @courseUser.getUser.getLastName</td>
+                    <td>Inactive</td>
+                    <td><a id="approved@courseUser.getId" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></a></td>
+                    <td><a id="dissaproved@courseUser.getId" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></a></td>
+
+                    <script>
+        $(document).ready(function() {
+            $("#approved@courseUser.getId").click(function() {
+                $.ajax({
+                    type: "post",
+                    url: "@controllers.users.routes.TeacherController.approveStudent(courseUser.getId)",
+                    data: "pressed=2"
+                }).success(function(response) {
+                   window.location.href = '/teacher/awaitlist';
+                })
+            })
+             $("#dissaproved@courseUser.getId").click(function() {
+                $.ajax({
+                    type: "post",
+                    url: "@controllers.users.routes.TeacherController.approveStudent(courseUser.getId)",
+                    data: "pressed=3"
+                }).success(function(response) {
+                    window.location.href = '/teacher/awaitlist';
+                })
+            })
+        });
+    </script>
+                </tr>
+
+            }
+        }
+        </tbody>
+    </table>
+
+
+}

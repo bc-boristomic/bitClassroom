@@ -1,8 +1,11 @@
-@import models.user.User
+ @import models.user.User
 @(userForm: Form[User])(user: User)
-@adminmain("Add new user") {
+@adminmain("Edit user role") {
 
   @helper.form(action = controllers.users.routes.AdminController.saveNewUser(user.getNickName), 'class -> "form-horizontal", 'role -> "form") {
+
+    <br/>
+    <legend>Edit user role if it registred</legend>
     <div class="col-lg-offset-2" style="border: 5px #134fb8">
       <legend>Edit @user.getFirstName @user.getLastName</legend>
       <div class="form-group">

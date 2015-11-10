@@ -11,17 +11,37 @@
 
 
         <div class="col-lg-11 col-lg-offset-0">
-            <legend>@user.getEmail()</legend>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                @user.getEmail()
+                </div>
+                <div class="panel-body">
+
+
 
 
             <div class="col-md-4 text-center">
+                <div class="ImageWrapper ContentWrapperCl chrome-fix">
                 @if(user.getProfilePicture.size() != 0 && user.getProfilePicture != null){
                     <img src="@user.getProfilePicture.get(user.getProfilePicture.size()-1).getSize(300,300)"/>
                 }else{
                     <img src="http://placehold.it/300x300"/>
                 }
-                <br>
-                <input type="file" name="image" accept="image/*" id="upload-img"/>
+                    <div class="ImageOverlayH">
+                        <div class="ContentCl">
+                            <div class="Content">
+                                <h2>
+                                    Change your picture.
+                                </h2>
+                                <div class="ReadMore">
+                            <span class="file-input btn btn-primary btn-file">
+                                Browse&hellip; <input type="file" name="image" accept="image/*" id="upload-img" multiple>
+                            </span>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
                 <!-- edit form column -->
@@ -38,7 +58,7 @@
                 <div class="form-group">
                     <label for="birth-date" class="col-lg-3 control-label">Birth date <abbr class="req" title="Select your bith date." style="color : red" > * </abbr></label>
                     <div class="col-lg-9">
-                        <input name="birth-date" type="date" min="1965-01-01" max="1997-01-01" class="form-control" id="birth-date" required>
+                        <input type="text" class="form-control" id="birth-date" data-dtp="dtp_tZPI4" required>
                     </div>
                 </div>
 
@@ -139,8 +159,20 @@
                     </div>
                 </div>
             </div>
+                </div>
+            </div>
         </div>
+        <script>
+            	$(document).ready(function(){
+			$('#birth-date').bootstrapMaterialDatePicker({
+			 format : 'DD/MM/YYYY',
+			  maxDate : '01/01/1997',
+			  time:false,
+			  });
 
+			$.material.init()
+		});
+        </script>
 
     }
 }

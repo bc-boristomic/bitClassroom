@@ -1,0 +1,50 @@
+@import models.report.DailyReport
+@import models.report.ReportField
+@import helpers.DateTimeFormatHelper
+@(dr: DailyReport, listReportField: List[ReportField])
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="@routes.Assets.versioned("../../../public/stylesheets/style.css")" rel="stylesheet" />
+        <title>Daily PDF</title>
+        <meta charset="UTF-8">
+        <script>
+        document.getElementById("demo").innerHTML = Date().toString();
+        </script>
+        <style>
+        td {
+        border: 0.5px solid black;
+        bottom: 15px;
+        padding: 15px 15px 15px 15px;
+        }
+        </style>
+    </head>
+    <body>
+        <h3 class="page-head-line"> Daily report </h3>
+        <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
+        <form>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr class="row"><td class="col-md-2">
+                        Title</td><td class="col-md-9 col-md-offset-1">@dr.getName</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Timestamp</td><td class="col-md-9 col-md-offset-1">@dr.getCreateDate</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Date</td><td class="col-md-9 col-md-offset-1">@DailyReport.formaterDate(dr.getDate)</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Teacher</td><td class="col-md-9 col-md-offset-1">@dr.getTeacher.getFirstName @dr.getTeacher.getLastName</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Course</td><td class="col-md-9 col-md-offset-1">@dr.getCourse.getName @dr.getCourse.getDescription</td></tr>
+                    @for(lrf <- listReportField) {
+                        @if(lrf.getDailyReport.getId.equals(dr.getId)) {
+                            <tr class="row"><td class="col-md-2">
+                            @lrf.getField.getName</td><td class="col-md-9 col-md-offset-1">@lrf.getValue</td></tr>
+                        }
+                    }
+                    <tr class="row"><td class="col-md-2">
+                        Report</td><td class="col-md-9 col-md-offset-1">@dr.getData</td></tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

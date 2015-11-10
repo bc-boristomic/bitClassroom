@@ -1,0 +1,55 @@
+@import models.report.WeeklyReport
+@import models.report.ReportWeeklyField
+@import models.report.DailyReport
+@import helpers.DateTimeFormatHelper
+@(wr: WeeklyReport, listReportWeeklyField: List[ReportWeeklyField])
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="@routes.Assets.versioned("../../../public/stylesheets/style.css")" rel="stylesheet" />
+        <title>Daily PDF</title>
+        <meta charset="UTF-8">
+        <script>
+        document.getElementById("demo").innerHTML = Date().toString();
+        </script>
+        <style>
+        td {
+        border: 0.5px solid black ;
+        bottom: 15px ;
+        padding: 15px 15px 15px 15px ;
+        }
+        </style>
+        <title>Weekly PDF</title>
+    </head>
+    <body>
+        <h3 class="page-head-line"> Weekly report </h3>
+        <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
+        <form>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr class="row"><td class="col-md-2">
+                        Week</td><td class="col-md-9 col-md-offset-1">@wr.getWeek</td> </tr>
+                    <tr class="row"><td class="col-md-2">
+                        Title</td><td class="col-md-9 col-md-offset-1">@wr.getName</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Timestamp</td><td class="col-md-9 col-md-offset-1">@wr.getCreateDate</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Date</td><td class="col-md-9 col-md-offset-1">@DailyReport.formaterDate(wr.getDate)</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Mentor</td><td class="col-md-9 col-md-offset-1">@wr.getMentor</td></tr>
+                    <tr class="row"><td class="col-md-2">
+                        Student</td><td class="col-md-9 col-md-offset-1">@wr.getStudent</td></tr>
+                    @for(lwrf <- listReportWeeklyField) {
+                        @if(lwrf.getWeeklyReport.getId.equals(wr.getId)) {
+                            <tr class="row"><td class="col-md-2">
+                            @lwrf.getWeeklyField.getName</td><td class="col-md-9 col-md-offset-1">@lwrf.getValue</td></tr>
+                        }
+                    }
+                    <tr class="row"><td class="col-md-2">
+                        Report</td><td class="col-md-9 col-md-offset-1">@wr.getData</td></tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

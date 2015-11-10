@@ -1,0 +1,38 @@
+@adminmain("FAQ setup") {
+
+    @helper.form(action = controllers.users.routes.AdminController.saveFAQ(), 'class -> "form-horizontal", 'role -> "form", 'enctype -> "multipart/form-data") {
+
+        <br>
+        <br>
+        <div class="container">
+
+            <div class="page-header">
+                <h1>BitClassroom FAQ <small>BitClassroom Frequently Asked Questions</small></h1>
+            </div>
+
+                <br />
+            <form class="form-horizontal">
+        <div class="form-group has-success">
+            <label class="col-xs-2 control-label" for="inputQuestion">Question</label>
+            <div class="col-xs-10">
+                <input type="text" id="inputQuestion" name="question" class="form-control" placeholder="Enter the new question." required>
+            </div>
+        </div>
+        <div class="form-group has-warning">
+            <label class="col-xs-2 control-label" for="inputAnswer">Answer</label>
+            <div class="col-xs-10">
+                <textarea type="" id="inputAnswer"  name="answer" rows="5" class="form-control" placeholder="Enter the answer." required></textarea>
+
+            </div>
+        </div>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-twitter" href="#">
+                        <strong>Update FAQ  <span class="glyphicon glyphicon-edit"></span></strong></button>
+                </div>
+
+    </form>
+
+        </div>
+
+    }
+}

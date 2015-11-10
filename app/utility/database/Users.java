@@ -61,6 +61,7 @@ public class Users {
 			whatUser.setFirstName(FIRST_NAME_TEAM[i]);
 			whatUser.setLastName(LAST_NAME_TEAM[i]);
 			whatUser.setStatus(UserConstants.FULLY_ACTIVE);
+			whatUser.setStudentStatus(0);
 			whatUser.setNickName("Nick" + i);
 			whatUser.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.ADMIN })));
 			whatUser.setCreatedBy("Global.java");
@@ -69,6 +70,7 @@ public class Users {
 			} else {
 				whatUser.setGender(1);
 			}
+			whatUser.setToken();
 			whatUser.save();
 		}
 
@@ -78,8 +80,10 @@ public class Users {
 			teacher.setPassword(MD5Hash.getEncriptedPasswordMD5("Teacher123"));
 			teacher.setFirstName(FIRST_NAME_TEACHERS[i]);
 			teacher.setLastName(LAST_NAME_TEACHERS[i]);
+			teacher.setStudentStatus(0);
 			teacher.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.TEACHER })));
 			teacher.setCreatedBy("Global.java");
+			teacher.setToken();
 			teacher.save();
 		}
 
@@ -93,6 +97,7 @@ public class Users {
 			student.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
 			student.setHomeworkStatus(0);
 			student.setCreatedBy("Global.java");
+			student.setToken();
 			student.save();
 		}
 
@@ -102,8 +107,10 @@ public class Users {
 			mentor.setPassword(MD5Hash.getEncriptedPasswordMD5("Mentor123"));
 			mentor.setFirstName(FIRST_NAME_MENTORS[i]);
 			mentor.setLastName(LAST_NAME_MENTORS[i]);
+			mentor.setStudentStatus(0);
 			mentor.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.MENTOR })));
 			mentor.setCreatedBy("Global.java");
+			mentor.setToken();
 			mentor.save();
 		}
 
@@ -113,8 +120,10 @@ public class Users {
 			staff.setPassword(MD5Hash.getEncriptedPasswordMD5("Staff123"));
 			staff.setFirstName(FIRST_NAME_STAFF[i]);
 			staff.setLastName(LAST_NAME_STAFF[i]);
+			staff.setStudentStatus(0);
 			staff.setRoles(new ArrayList<Role>(Arrays.asList(new Role[] { Roles.ADMIN })));
 			staff.setCreatedBy("Global.java");
+			staff.setToken();
 			staff.save();
 		}
 	}

@@ -1,0 +1,65 @@
+@import models.report.Field
+@import models.report.ReportField
+@import models.report.DailyReport
+@import controllers.users.AdminController
+@(listReportField: List[ReportField], listDailyReport: List[DailyReport], listField: List[Field])
+@main("Daily List") {
+  <form>
+    <div>
+      <h3 class="page-head-line"> Table of daily reports </h3>
+      <ul class="pager">
+        <li><a href="@controllers.users.routes.UserController.pdfDailyTable" target="_blank" t><i class="fa fa-file-pdf-o"> </i>
+          PDF</a></li>
+      </ul>
+    </div>
+    <table id="sort" class="table-bordered">
+      <div>
+        <thead>
+          <tr class="navbar-inverse">
+            <th class="th-color">Week</th>
+            <th class="th-color">Timestamp</th>
+            <th class="th-color">Date</th>
+            <th class="th-color">Teacher</th>
+            <th class="th-color">Course</th>
+            <th class="th-color">Title</th>
+            @for(rf <- listField) {
+              <th class="th-color">@rf.getName</th>
+            }
+            <th class="th-color">Report</th>
+            <th class="th-color">Action</th>
+          </tr>
+        </thead>
+        @for(ldr <- listDailyReport) {
+          <tbody>
+            <div>
+              <tr class="success">
+                <td>@ldr.getWeek</td>
+                <td>@ldr.getCreateDate</td>
+                <td>@DailyReport.formaterDate(ldr.getDate)</td>
+                <td><a>@ldr.getTeacher.getFirstName @ldr.getTeacher.getLastName</a></td>
+                <td>@ldr.getCourse.getName @ldr.getCourse.getDescription</td>
+                <td>@AdminController.cutText(ldr.getName, 20)</td>
+                @for(field <- listField) {
+                  @if(ldr.containsField(field) == true) {
+                    <td>@AdminController.cutText(ldr.getField(field).getValue(), 20)</td>
+                  } else {
+                    <td>N/A</td>
+                  }
+                }
+                <td>@AdminController.cutText(ldr.getData, 40)</td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <a href="@controllers.users.routes.UserController.openReport(ldr.getId)"><i class="glyphicon glyphicon-folder-open"></i></a>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+            </div>
+          </tbody>
+        }
+      </div>
+    </table>
+  </form>
+}

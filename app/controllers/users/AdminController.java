@@ -3,9 +3,8 @@ package controllers.users;
 import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
-import models.ErrorLog;
-import models.Image;
-import models.PrivateMessage;
+import it.innove.play.pdf.PdfGenerator;
+import models.*;
 import models.course.Course;
 import models.course.CourseUser;
 import models.report.*;
@@ -14,6 +13,12 @@ import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import play.Configuration;
+import play.Logger;
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -27,18 +32,43 @@ import utility.MailHelper;
 import utility.UserConstants;
 import utility.database.Roles;
 import views.html.admins.*;
+import views.html.admins.adduser;
+import views.html.admins.newTableWeekly;
+import views.html.admins.openReports;
+import views.html.admins.setingsweeklyreport;
 
+import views.html.calendar;
+import views.html.formEdit;
+import views.html.formNew;
+import views.html.list;
+
+
+import views.html.admins.openWeeklyReports;
+import views.html.admins.setingsweeklyreport;
+import views.html.pdf.pdfopenreport;
+import views.html.pdf.weeklypdf;
+import views.html.pdf.dailypdf;
+import views.html.pdf.pdfOpenWeeklyReport;
+import views.html.users.teacherApprowedStudent;
+import views.html.users.util.faq;
+
+import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 
 /**
  * Created by boris on 9/12/15.
  */
 @Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
+
+    @Inject
+    public PdfGenerator pdfGenerator;
 
     private final Form<User> userForm = Form.form(User.class);
 
@@ -158,20 +188,18 @@ public class AdminController extends Controller {
             u.setRoles(roles);
             u.setCreationDate(new DateTime());
             u.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
-
+            u.setToken();
             if (u != null) {
                 try {
                     u.save();
                 } catch (PersistenceException e) {
-                    Ebean.save(new ErrorLog(e.getMessage()));
+                    Ebean.save(new ErrorLog(e.getLocalizedMessage()));
                     flash("warning", "Something went wrong, user could not be saved to database.");
                     return redirect("/admin");
                 }
-
-                u.setToken(UUID.randomUUID().toString());
-                u.update();
-                String host = url + "validate/" + u.getToken();
-                MailHelper.send(u.getEmail(), host);
+                String host = url + "login";
+                String host1 = url + "remove/" + u.token;
+                MailHelper.send(u.getEmail(), host, host1);
                 flash("success", String.format("User %s successfully added to database", u.getFirstName()));
                 return redirect("/admin/adduser");
             }
@@ -315,9 +343,21 @@ public class AdminController extends Controller {
         
         String teacherId = getTeacher.split(" ")[2];
 
+        List<Course> courses =  Course.findAll();
+        for(int i = 0; i < courses.size(); i++){
+            if(courses.get(i).getStatus() == 1) {
+                if (courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description) && courses.get(i).getStatus() != 2) {
+                    flash("warning", "Course already exist");
+                    return redirect("/admin/createcourse");
+                }
+            }
+        }
+
 
         Course course = new Course(name, description, teacher);
+
         course.setCreatedBy(SessionHelper.currentUser(ctx()).getFirstName());
+        course.setReportDate(DateTime.now());
         course.setUpdateDate(new DateTime());
 
         Http.MultipartFormData data = request().body().asMultipartFormData();
@@ -379,6 +419,8 @@ public class AdminController extends Controller {
             cu.save();
         }
 
+        approvedNotification(cu.getCourse(), cu.getUser());
+
 
         Course c = cu.getCourse();
         for(int i = 0; i < c.getPosts().size(); i++){
@@ -393,6 +435,16 @@ public class AdminController extends Controller {
         }
 
         User u = Mentorship.findMentorByUser(cu.getUser());
+        List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
+
+        if( u != null) {
+            for (int i = 0; i < courseUsers.size(); i++) {
+                if (courseUsers.get(i).getId() == u.getId()) {
+                    return ok("");
+                }
+            }
+        }
+
         if(u != null){
             CourseUser cc = new CourseUser();
             cc.setCourse(cu.getCourse());
@@ -402,9 +454,27 @@ public class AdminController extends Controller {
         }
 
 
-
         return ok("");
     }
+
+    /**
+     * Send notification when admin approved user in the class
+     * @param course
+     * @param student
+     */
+    public void approvedNotification ( Course course, User student){
+
+        String subject = "Course information";
+        String content = "Your application for access to the course" + course.getName() + " is accepted";
+
+        User sender = SessionHelper.currentUser(ctx());
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, student);
+        privMessage.setStatus(0);
+        student.getMessages().add(privMessage);
+        student.save();
+
+    }
+
 
     /**
      * List of students that applied for courses. Course name, student name and
@@ -413,16 +483,8 @@ public class AdminController extends Controller {
      * @return
      */
     public Result awaitList() {
-        return ok(views.html.admins.approveuser.render(CourseUser.getFinder().all()));
-    }
 
-    /**
-     * See tables of daily reports
-     *
-     * @return
-     */
-    public Result listReport() {
-        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+        return ok(approveuser.render(CourseUser.getFinder().all()));
     }
 
 
@@ -467,15 +529,20 @@ public class AdminController extends Controller {
             }
         }
         User mentor = User.findById(ment);
+        mentor.setStudentStatus(UserConstants.ACTIVE_MENTOR);
+        mentor.update();
         User student = User.findById(stud);
         student.setStudentStatus(UserConstants.HAVE_MENTOR);
         student.update();
+
+        mentorshipNotification(mentor , student);
 
         Mentorship mentorship = new Mentorship();
         mentorship.setMentor(mentor);
         mentorship.setStudent(student);
         mentorship.setCreatedBy(SessionHelper.currentUser(ctx()).getEmail());
         mentorship.setStatus(UserConstants.ACTIVE_MENTORSHIP);
+        mentorship.setReportDate(DateTime.now());
         mentorship.save();
 
             List<Course> courses = CourseUser.allUserCourses(student);
@@ -486,19 +553,24 @@ public class AdminController extends Controller {
                     cc.setCourse(courses.get(i));
                     cc.setStatus(2);
                     cc.setUser(mentor);
-                    cc.save();
+                    cc.save();  
                 }
 
 
             }
 
 
-        flash("success", String.format("Successfully assigned %s to %s.", mentor.getFirstName(), student.getFirstName()));
+        flash("success", String.format("Successfully assigned %s %s to %s %s.", mentor.getFirstName(), mentor.getLastName(), student.getFirstName(), student.getLastName()));
         return redirect("/admin/mentorship");
     }
 
 
-
+    /**
+     * MEthod for send auto message to mentor and student,
+     * @param mentor
+     * @param student
+     * @return
+     */
     public Result mentorshipNotification(User mentor, User student) {
 
         User sender = SessionHelper.currentUser(ctx());
@@ -556,7 +628,7 @@ public class AdminController extends Controller {
 
 
         flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
-        return redirect("/admin/mentorship");
+        return redirect("/admin/addnewteacher");
 
     }
 
@@ -592,17 +664,45 @@ public class AdminController extends Controller {
      */
     public Result inactiveMentors(){
 
+        Logger.info(DateTime.now().dayOfWeek().getAsShortText());
+        List<User> mentors = new ArrayList<>();
+        List<User> users = User.findAll();
+        for ( int i = 0; i < users.size(); i++){
+            if( users.get(i).getStudentStatus() != null && users.get(i).getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
+                mentors.add(users.get(i));
+            }
+        }
+        for(int i = 0; i < mentors.size(); i++){
+            if( mentors.get(i).getWeeklyReportStatus() != 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Fri")){
+
+                sendMentorNotification(mentors.get(i));
+
+            }else if( mentors.get(i).getWeeklyReportStatus() == 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Sat")){
+
+                mentors.get(i).setWeeklyReportStatus(1);
+                mentors.get(i).update();
+
+            }
+        }
+
+
         List<PrivateMessage>  message = PrivateMessage.findAllMessage();
-        List<User> inactiveMentors = new ArrayList<>();
+        HashSet<User> inactiveMentors = new HashSet<>();
+
+
         for( int i = 0; i < message.size(); i++){
-            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
                 DateTime start = new DateTime();
                 Long result = start.getMillis() - message.get(i).getCreationDate().getMillis();
                 if(result > 60000) {
                     inactiveMentors.add(message.get(i).getReceiver());
+                    if(!inactiveMentors.add(message.get(i).getReceiver())){
+                        message.get(i).getReceiver().setUnreadMessage(message.get(i).getReceiver().getUnreadMessage()+1);
+                    }
                 }
             }
         }
+
         return ok(inactMentors.render(inactiveMentors));
     }
 
@@ -623,6 +723,9 @@ public class AdminController extends Controller {
 
         men.getStudent().setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
         men.getStudent().update();
+        men.getMentor().setStudentStatus(0);
+        men.getMentor().update();
+
         flash("success", String.format("Successfully removed %s to %s mentorship relationship.", men.getMentor().getFirstName(), men.getStudent().getFirstName()));
         return redirect("/admin/activementors");
     }
@@ -688,6 +791,24 @@ public class AdminController extends Controller {
         return redirect("admin/allusers");
     }
 
+
+    /**
+     * Method for send notification to mentor when due time pass for weekly report
+     * @param user
+     */
+    public void sendMentorNotification (User user){
+
+        User sender = SessionHelper.currentUser(ctx());
+        User receiver = user;
+        String subject = "Weekly report";
+        String content = "Please write a weekly report";
+
+        PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
+        privMessage.setStatus(0);
+        receiver.getMessages().add(privMessage);
+        receiver.save();
+    }
+
     /**
      * Renders view with table filled with all archived courses. Course name, description and email of user who
      * archived it is displayed,
@@ -724,6 +845,76 @@ public class AdminController extends Controller {
         }
         return ok();
     }
+
+
+    /**
+     * Method for add new question and answer in FAQ view.
+     * @return
+     */
+    public Result setupFAQ (){
+
+        return ok(faqSetup.render());
+    }
+
+    /**
+     * Method for save new question and answer to FAq page, redirect to FAQ page.
+     * @return
+     */
+    public Result saveFAQ(){
+
+        DynamicForm form = Form.form().bindFromRequest();
+        String question = form.get("question");
+        String answer = form.get("answer");
+
+        Faq newFAQ = new Faq(question, answer);
+        newFAQ.save();
+
+        return redirect("/faq");
+    }
+
+    public Result upDateFaq(Long id){
+
+        DynamicForm form = Form.form().bindFromRequest();
+        String question = form.get("question");
+        String answer = form.get("answer");
+        Faq faq = Faq.findFaqById(id);
+
+        faq.setQuestion(question);
+        faq.setAnswer(answer);
+        faq.update();
+
+        return redirect("/faq");
+
+    }
+
+    public Result editFAQ(Long id){
+        Faq faq = Faq.findFaqById(id);
+        return ok(faqEdit.render(faq));
+
+    }
+
+
+    public Result deleteFAQ(Long id){
+
+        Logger.info(id.toString());
+        Faq.findFaqById(id).delete();
+        return ok(faq.render(Faq.findAllFAQ()));
+    }
+
+
+//======================================================================================================================
+// Refactoring reports
+
+
+    /**
+     * See tables of daily reports
+     *
+     * @return
+     */
+    public Result listReport() {
+        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+    }
+
 
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
@@ -775,5 +966,19 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
+
+    public static String cutText(String text, int length){
+        if (text.length() > length) {
+            text = text.substring(0, length);
+            return text + "..." ;
+        }
+        return text;
+    }
+
+
+
+    public Result pdfWeeklyTable() {
+        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    }
 
 }

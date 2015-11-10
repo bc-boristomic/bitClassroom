@@ -1,0 +1,69 @@
+@import models.report.WeeklyField
+@import models.report.ReportWeeklyField
+@import models.report.WeeklyReport
+@import helpers.DateTimeFormatHelper
+@(listReportWeeklyField: List[ReportWeeklyField],
+        listWeeklyReport: List[WeeklyReport],
+        listWeeklyField: List[WeeklyField])
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="@routes.Assets.versioned("../../../public/stylesheets/style.css")" rel="stylesheet" />
+        <title>Weekly report</title>
+        <style>
+        th, td {
+        border: 1px solid black;
+        text-align: center;
+        bottom: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <form>
+            <div>
+                <h3 class="text-center page-head-line"> Table of weekly reports </h3>
+            </div>
+            <p>@DateTimeFormatHelper.getCurrentDateFormated</p>
+            <table class="table-bordered">
+                <div>
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Timestamp</th>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Mentor</th>
+                            <th>Student</th>
+                            @for(rwf <- listWeeklyField) {
+                                <th>@rwf.getName</th>
+                            }
+                            <th>Report</th>
+                        </tr>
+                    </thead>
+                    @for(lwr <- listWeeklyReport) {
+                        <tbody>
+                            <div>
+                                <tr class="success">
+                                    <td>N/A</td>
+                                    <td>@lwr.getCreateDate</td>
+                                    <td>@lwr.getDate</td>
+                                    <td>@lwr.getName</td>
+                                    <td>@lwr.getMentor</td>
+                                    <td>@lwr.getStudent</td>
+                                    @for(field <- listWeeklyField) {
+                                        @if(lwr.containsWeeklyField(field) == true) {
+                                            <td>@lwr.getWeeklyField(field).getValue()</td>
+                                        } else {
+                                            <td>N/A</td>
+                                        }
+                                    }
+                                    <td>@lwr.getData</td>
+                                </tr>
+                            </div>
+                        </tbody>
+                    }
+                </div>
+            </table>
+        </form>
+    </body>
+</html>
