@@ -29,7 +29,7 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(Application application) {
         Image.cloudinary = new Cloudinary("cloudinary://" + Play.application().configuration().getString("cloudinary.string"));
-//        CloudHelper.createContainer();
+
 
         if (Role.getFinder().findRowCount() == 0) {
             Roles.saveAllRoles();
@@ -54,9 +54,4 @@ public class Global extends GlobalSettings {
         return F.Promise.<Result>pure(badRequest(views.html.notfound.render()));
     }
 
-//    @Override
-//    public <T extends EssentialFilter> Class<T>[] filters() {
-//        Class[] filters = {CSRFFilter.class};
-//        return filters;
-//    }
 }
