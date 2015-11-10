@@ -1,7 +1,6 @@
 package models.report;
 
 import com.avaje.ebean.Model;
-
 import javax.persistence.*;
 
 /**
