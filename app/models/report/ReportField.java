@@ -1,9 +1,8 @@
 package models.report;
 
 import com.avaje.ebean.Model;
-
 import javax.persistence.*;
-import java.util.List;
+
 
 /**
  * Created by enver on 9/12/15.

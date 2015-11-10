@@ -44,7 +44,6 @@ import views.html.users.profile;
 import views.html.posts.studentList;
 import views.html.posts.allMessage;
 import views.html.users.util.resetpassword;
-
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
@@ -60,8 +59,6 @@ public class UserController extends Controller {
 
     @Inject
     public PdfGenerator pdfGenerator;
-
-    private List<String> imageList = new ArrayList<>();
 
     final static Form<Event> eventForm = Form.form(Event.class);
     private final Form<User> userForm = Form.form(User.class);
@@ -79,6 +76,13 @@ public class UserController extends Controller {
         return ok(profile.render(temp));
     }
 
+    /**
+     * Method for update user profile info.
+     * Complements users profile , each new user is required to fill in the requested information
+     * in order to have access to the application
+     *
+     * @return
+     */
     @Security.Authenticated(Authorization.InactiveUser.class)
     public Result updateProfile() {
         User temp = SessionHelper.currentUser(ctx());
@@ -134,7 +138,6 @@ public class UserController extends Controller {
 
         flash("warning", "Your profile could not be updated. Please contact site administrator.");
         return redirect("/");
-
     }
 
     @Security.Authenticated(Authorization.FullyActiveUser.class)
@@ -144,6 +147,10 @@ public class UserController extends Controller {
     }
 
 
+    /**
+     * Method for edit user profile information and user profile picture.
+     * @return
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result saveProfile() {
         User temp = SessionHelper.currentUser(ctx());
@@ -197,14 +204,6 @@ public class UserController extends Controller {
         flash("warning", "Your profile could not be updated. Please contact site administrator.");
         return redirect("/");
     }
-
-
-    @Security.Authenticated(Authorization.FullyActiveUser.class)
-    public Result test() {
-        Logger.info(new DateTime().getMillis() + " ");
-        return redirect("/login");
-    }
-
 
     /**
      * Method for see all student in the class.
@@ -287,6 +286,11 @@ public class UserController extends Controller {
         return redirect("/allMessage");
     }
 
+    /**
+     * Method for delete send messages
+     * @param id - selected message
+     * @return
+     */
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result deleteSendMessage(Long id){
 
@@ -602,9 +606,6 @@ public class UserController extends Controller {
         event.setCourse(course);
         event.update();
 
-//        if (thereIsSomeError){
-//            return badRequest("You can not move this event!");
-//        }
 
         return ok("changed");
     }
@@ -624,10 +625,6 @@ public class UserController extends Controller {
         event.setEnd(new DateTime(event.getEnd()).plusDays(dayDelta).plusMinutes(minuteDelta).toDate());
         event.setEndsSameDay(endsSameDay(event.getStart(), event.getEnd()));
         event.update();
-
-//        if (thereIsSomeError){
-//            return badRequest("You can not resize this event!");
-//        }
 
         return ok("changed");
     }

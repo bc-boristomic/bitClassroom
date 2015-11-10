@@ -32,7 +32,6 @@ import views.html.users.mentorReportForStudent;
 import views.html.users.studentsHomeworkStatus;
 import views.html.users.teacherApprowedStudent;
 import views.html.users.teacherReports;
-
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,8 +46,9 @@ public class  TeacherController extends Controller {
 
     @Inject
     public PdfGenerator pdfGenerator;
-
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
+
+
     public Result dailyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
@@ -106,21 +106,28 @@ public class  TeacherController extends Controller {
         List<CourseUser> userc = CourseUser.getFinder().all();
         return ok(index.render(u, userc));
     }
-    public Result test() {
-        return ok("you are teacher");
-    }
 
+    /**
+     * Method for get all assignemnts
+     * @return
+     */
     public Result listAssignment() {
         User user = SessionHelper.currentUser(ctx());
         return ok(teacherListsAssignment.render(user.getPosts()));
     }
 
+    /**
+     * Method for see homework activity,
+     * teacher can see list of students who have done homework, who are still working  and which do not
+     *
+     * @param id - id of Post model.
+     * @param status - String for selected list, Done, Working , Not
+     * @return
+     */
     public Result studentAssignmentStatus(Long id, String status) {
 
-        Logger.info(id + "");
         Post post = Post.findPostById(id);
         Course course = post.getCourse();
-        Logger.info(course.getName());
         List<User> users = CourseUser.allUserFromCourse(course.getId());
         List<User> students = new ArrayList<>();
 
@@ -154,8 +161,12 @@ public class  TeacherController extends Controller {
         return ok(studentsHomeworkStatus.render(students, post));
     }
 
+    /**
+     * List of students that applied for courses. Course name, student name and
+     * approve, dissaprove buttons are displayed in a row.
+     * @return
+     */
     public Result awaitList(){
-
 
         List<CourseUser> allCourseUserList = CourseUser.getFinder().all();
         List<CourseUser> courseUserList = CourseUser.findAll(SessionHelper.currentUser(ctx()).getId());
@@ -169,13 +180,20 @@ public class  TeacherController extends Controller {
                     studentCourseList.add(allCourseUserList.get(i));
                 }
             }
-
         }
         Logger.info(studentCourseList.size()+"");
         return ok(teacherApprowedStudent.render(studentCourseList));
     }
 
 
+    /**
+     * Based on option pressed eg. approve or dissaprove, option value is send along with
+     * CourseUser id. CourseUser is found by id passed to this method, status is set and ok
+     * is send so page can be refreshed. Ajax is used in approveuser view.
+     *
+     * @param id <code>Long</code> type value of CourseUser id
+     * @return empty ok
+     */
     public Result approveStudent(Long id) {
         DynamicForm form = Form.form().bindFromRequest();
 
@@ -187,8 +205,6 @@ public class  TeacherController extends Controller {
         }
 
         approvedNotification(cu.getCourse(), cu.getUser());
-
-
         Course c = cu.getCourse();
         for(int i = 0; i < c.getPosts().size(); i++){
             if(c.getPosts().get(i).getPostType() == 1){
@@ -198,7 +214,6 @@ public class  TeacherController extends Controller {
                 a.setHomeworkPostStatus(0);
                 a.save();
             }
-
         }
 
         User u = Mentorship.findMentorByUser(cu.getUser());
@@ -219,7 +234,6 @@ public class  TeacherController extends Controller {
             cc.setUser(u);
             cc.save();
         }
-
 
         return ok("");
     }
@@ -242,6 +256,12 @@ public class  TeacherController extends Controller {
 
     }
 
+
+    /**
+     * Method for see all mentors reports that are written about students
+     * of which he is a teacher.
+     * @return
+     */
     public Result seeMentorReports(){
 
         List<CourseUser> allCourseUserList = CourseUser.getFinder().all();
@@ -279,6 +299,10 @@ public class  TeacherController extends Controller {
     }
 
 
+    /**
+     * Method for see all daily reports that the teacher had written
+     * @return
+     */
     public Result myReports (){
 
         List<DailyReport> myReports = new ArrayList<>();

@@ -13,10 +13,6 @@ import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import play.Configuration;
 import play.Logger;
 import play.Play;
@@ -34,35 +30,25 @@ import utility.database.Roles;
 import views.html.admins.*;
 import views.html.admins.adduser;
 import views.html.admins.newTableWeekly;
-import views.html.admins.openReports;
 import views.html.admins.setingsweeklyreport;
-
+import views.html.admins.newTableDaily;
 import views.html.calendar;
 import views.html.formEdit;
 import views.html.formNew;
 import views.html.list;
-
-
 import views.html.admins.openWeeklyReports;
 import views.html.admins.setingsweeklyreport;
 import views.html.pdf.pdfopenreport;
 import views.html.pdf.weeklypdf;
-import views.html.pdf.dailypdf;
-import views.html.pdf.pdfOpenWeeklyReport;
-import views.html.users.teacherApprowedStudent;
 import views.html.users.util.faq;
-
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 /**
- * Created by boris on 9/12/15.
+ * Created by NN on 9/12/15.
  */
 @Security.Authenticated(Authorization.Admin.class)
 public class AdminController extends Controller {
@@ -71,17 +57,16 @@ public class AdminController extends Controller {
     public PdfGenerator pdfGenerator;
 
     private final Form<User> userForm = Form.form(User.class);
-
     private final Form<Field> fieldForm = Form.form(Field.class);
-
     private final Form<CourseUser> courseUserForm = Form.form(CourseUser.class);
     private final Form<Course> courseForm = Form.form(Course.class);
-    private List<String> imageList = new ArrayList<>();
     private static String url = Play.application().configuration().getString("url");
+
+
     /**
-     * Admin index page.
+     * Admin home page, with all course.
      *
-     * @return
+     * @return -- view of all available courses, created by admin
      */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
@@ -89,15 +74,17 @@ public class AdminController extends Controller {
     }
 
     /**
-     * Renders page with user information for registration.
-     * TODO roles as checkboxes
-     *
-     * @return
+     *Method for add new user in data base
+     * @return - view for add new user with input form.
      */
     public Result addNewUser() {
         return ok(adduser.render(userForm));
     }
 
+    /**
+     * Method for see all user in the classroom.
+     * @return - list of all user wher is available to delete specified user
+     */
     public Result listOfUser() {
         return ok(views.html.admins.userlist.render(User.findAll()));
     }
@@ -113,13 +100,15 @@ public class AdminController extends Controller {
     }
 
     /**
-     * Registers new user to the site.
+     * Method for save new user in data base.
+     * We take input parameters with bound form , and make the User object, which we save in data base
+     * like new User
      *
-     * @return
+     * @return - redirect to add new user page.
      */
     public Result saveNewUser(String type) {
-        Form<User> boundForm = userForm.bindFromRequest();
 
+        Form<User> boundForm = userForm.bindFromRequest();
         String email = "";
         String passwordHashed = "";
         User u = null;
@@ -241,10 +230,6 @@ public class AdminController extends Controller {
     }
 
 
-    public Result test() {
-        return ok("you are admin");
-    }
-
     /**
      * Deletes user from database. When trashcan icon is pressed users id is send.
      * Id is taken as parameter in method and used to find user and delete it.
@@ -328,9 +313,11 @@ public class AdminController extends Controller {
     }
 
     /**
-     * Saves course to database.
+     * Method for save new course in data base,
+     * courses may not have the same description .
+     * Automatically added to the course teacher and admin who created it
      *
-     * @return
+     * @return - redirect to same page to add another course if we want that
      */
     public Result saveCourse() {
         Form<Course> boundForm = courseForm.bindFromRequest();
@@ -458,9 +445,9 @@ public class AdminController extends Controller {
     }
 
     /**
-     * Send notification when admin approved user in the class
-     * @param course
-     * @param student
+     * Send notification when admin approved user in the class, sender is current admin.
+     * @param course - Applied course, used for get course name in private message
+     * @param student - A student who has applied, used for private messahe reciver,
      */
     public void approvedNotification ( Course course, User student){
 
@@ -483,7 +470,6 @@ public class AdminController extends Controller {
      * @return
      */
     public Result awaitList() {
-
         return ok(approveuser.render(CourseUser.getFinder().all()));
     }
 
@@ -566,12 +552,14 @@ public class AdminController extends Controller {
 
 
     /**
-     * MEthod for send auto message to mentor and student,
-     * @param mentor
-     * @param student
-     * @return
+     * Method for send auto message to mentor and student,
+     * to inform them about working together.
+     *
+     * @param mentor - selected Mentor user
+     * @param student - selected Student user
+     *
      */
-    public Result mentorshipNotification(User mentor, User student) {
+    public void mentorshipNotification(User mentor, User student) {
 
         User sender = SessionHelper.currentUser(ctx());
         String subject = "Mentorship";
@@ -586,13 +574,20 @@ public class AdminController extends Controller {
         mentor.getMessages().add(mentorMessage);
         mentor.save();
 
-        return redirect("admin/mentorship");
     }
 
+    /**
+     * Method for add new teacher in selected course.
+     * @return - view with list of active course and available teacher
+     */
     public Result teachers(){
         return ok(views.html.admins.addteacher.render(User.getFinder().orderBy().asc("first_name").findList(), Course.getFinder().where().eq("status", 1).findList()));
     }
 
+    /**
+     * Method for save new teacher for selected course
+     * @return - redirect on same page
+     */
     public Result addTeacher(){
         DynamicForm form = Form.form().bindFromRequest();
         String teacher = form.get("teacher");
@@ -618,14 +613,11 @@ public class AdminController extends Controller {
             }
         }
 
-
-
         CourseUser cu = new CourseUser();
         cu.setCourse(Course.findById(cou));
         cu.setUser(User.findById(tea));
         cu.setStatus(2);
         cu.save();
-
 
         flash("success", String.format("Successfully added %s %s to %s %s.", User.findById(tea).getFirstName(), User.findById(tea).getLastName(), Course.findById(cou).getName(), Course.findById(cou).getDescription()));
         return redirect("/admin/addnewteacher");
@@ -634,8 +626,7 @@ public class AdminController extends Controller {
 
     /**
      * Renders table with information about current mentorship status.
-     *
-     * @return
+     * @return - table of active mentorship
      */
     public Result seeMentorsAndStudents() {
         return ok(views.html.admins.mentorshipList.render(Mentorship.getFinder().where().eq("status", UserConstants.ACTIVE_MENTORSHIP).findList()));
@@ -643,7 +634,7 @@ public class AdminController extends Controller {
 
     /**
      * Method for get list of all mentors in the classroom.
-     * @return
+     * @return- table of all mentors in classroom
      */
     public Result  seeAllMentors(){
 
@@ -660,7 +651,11 @@ public class AdminController extends Controller {
 
 
     /**
-     * Method for get list of inactive mentors
+     * Method for get list of inactive mentors.
+     *
+     * First we find all active mentors and then we find all them inbox messages.
+     * If they have not read messages older than two days , it is automatically added to the inactive mentors list,
+     * then like admin we have possibility to send message.
      */
     public Result inactiveMentors(){
 
@@ -685,10 +680,8 @@ public class AdminController extends Controller {
             }
         }
 
-
         List<PrivateMessage>  message = PrivateMessage.findAllMessage();
         HashSet<User> inactiveMentors = new HashSet<>();
-
 
         for( int i = 0; i < message.size(); i++){
             if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
@@ -772,8 +765,9 @@ public class AdminController extends Controller {
 
 
     /**
-     * Method for auto send message to User when course is deleted
-     * @param id - User id.
+     * Method for send message to users when course is deleted
+     * @param id - User id, used for message receiver.
+     * @param course - deleted course, used for get course name.
      * @return
      */
     public Result sendAutoMessage(Long id, Course course) {
@@ -791,7 +785,6 @@ public class AdminController extends Controller {
         return redirect("admin/allusers");
     }
 
-
     /**
      * Method for send notification to mentor when due time pass for weekly report
      * @param user
@@ -802,7 +795,6 @@ public class AdminController extends Controller {
         User receiver = user;
         String subject = "Weekly report";
         String content = "Please write a weekly report";
-
         PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
         privMessage.setStatus(0);
         receiver.getMessages().add(privMessage);
@@ -820,6 +812,10 @@ public class AdminController extends Controller {
     }
 
 
+    /**
+     * View with table filled with all deleted course.
+     * @return
+     */
     public Result deletedCourses() {
         return ok(views.html.admins.coursesDeleted.render(Course.getFinder().where().eq("status", CourseConstants.DELETED_COURSE).findList()));
     }
@@ -852,7 +848,6 @@ public class AdminController extends Controller {
      * @return
      */
     public Result setupFAQ (){
-
         return ok(faqSetup.render());
     }
 
@@ -872,6 +867,11 @@ public class AdminController extends Controller {
         return redirect("/faq");
     }
 
+    /**
+     * Method for edit selected FAQ
+     * @param id - id of selected FAQ object, used for update this FAQ object
+     * @return - on FAQ page
+     */
     public Result upDateFaq(Long id){
 
         DynamicForm form = Form.form().bindFromRequest();
@@ -887,32 +887,36 @@ public class AdminController extends Controller {
 
     }
 
+    /**
+     * Method for select specified FAQ for edit
+     * @param id - selected FAQ id.
+     * @return
+     */
     public Result editFAQ(Long id){
         Faq faq = Faq.findFaqById(id);
         return ok(faqEdit.render(faq));
 
     }
 
-
+    /**
+     * Method for delete selected FAQ.
+     * @param id - of selected course
+     * @return - List of all FAQ
+     */
     public Result deleteFAQ(Long id){
 
         Logger.info(id.toString());
         Faq.findFaqById(id).delete();
         return ok(faq.render(Faq.findAllFAQ()));
     }
-
-
-//======================================================================================================================
-// Refactoring reports
-
-
+    
     /**
      * See tables of daily reports
      *
      * @return
      */
     public Result listReport() {
-        return ok(views.html.admins.newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
+        return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
 
@@ -966,7 +970,6 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
-
     public static String cutText(String text, int length){
         if (text.length() > length) {
             text = text.substring(0, length);
@@ -974,8 +977,6 @@ public class AdminController extends Controller {
         }
         return text;
     }
-
-
 
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
