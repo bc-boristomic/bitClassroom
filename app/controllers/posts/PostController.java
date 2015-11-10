@@ -1,7 +1,5 @@
 package controllers.posts;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebeaninternal.server.lib.util.Str;
 import helpers.Authorization;
 import helpers.CloudHelper;
 import helpers.SessionHelper;
@@ -12,10 +10,7 @@ import models.course.CourseUser;
 import models.user.Assignment;
 import models.user.Role;
 import models.user.User;
-import org.apache.commons.io.FileUtils;
-import org.joda.time.DateTime;
 import play.Logger;
-import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -23,16 +18,11 @@ import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import play.mvc.Security;
-import play.twirl.api.Html;
 import utility.UserConstants;
 import views.html.posts.assignmentView;
 import views.html.posts.editpost;
 import views.html.posts.newpost;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,10 +36,11 @@ import models.course.Course;
 public class PostController extends Controller {
 
     private final Form<Post> postForm = Form.form(Post.class);
-
     private List<String> filesList = new ArrayList<>();
     private static List<String> deletedFiles = new ArrayList<>();
     private static List<CloudFile> cloud = new ArrayList<>();
+
+
     /**
      * Adding post and refresh the page with added post
      */
@@ -57,12 +48,22 @@ public class PostController extends Controller {
         return ok(newpost.render(postForm, SessionHelper.currentUser(ctx()), CourseUser.allUserCourses(SessionHelper.currentUser(ctx()))));
     }
 
+    /**
+     * Method for get view for edit post
+     * @param id - selected post
+     * @return
+     */
     public Result editPost(Long id){
         Post post = Post.findPostById(id);
 
         return ok(editpost.render(postForm, post));
     }
 
+    /**
+     * MEthod for get assignment details
+     * @param id - long Id of selected post
+     * @return
+     */
     public Result assignmentDetails(Long id){
 
         Post post = Post.findPostById(id);
@@ -85,6 +86,11 @@ public class PostController extends Controller {
         return ok();
     }
 
+    /**
+     * Method for update post.Used when post is edited.
+     * @param id - long id of selected Post
+     * @return
+     */
     public Result saveEditedPost(Long id){
         Form<Post> boundForm = postForm.bindFromRequest();
 
@@ -104,9 +110,6 @@ public class PostController extends Controller {
             }
         }
 
-
-
-
         if (files != null) {
             String fName = null;
             for (Http.MultipartFormData.FilePart filePart : files) {
@@ -121,7 +124,6 @@ public class PostController extends Controller {
                 }
             }
         }
-
         String title = boundForm.field("title").value();
         String content = boundForm.field("content").value();
         String link = boundForm.field("link").value();
@@ -140,7 +142,6 @@ public class PostController extends Controller {
                 }
             }
         }
-
         deletedFiles.clear();
 
         post.setTitle(title);
@@ -151,6 +152,15 @@ public class PostController extends Controller {
         return redirect("/user/class/" + post.getCourse().getId());
     }
 
+    /**
+     * Method for save new post. With boundForm we get all entered informastion of post:
+     * posts title, posts content, posts link,
+     * posts files, post type, is visible to mentors.
+     *
+     * Also this method used for save new assignment if post type is 1, and to all classmates add this assignment in they works.
+     *
+     * @return
+     */
     public Result savePost() {
 
         Form<Post> boundForm = postForm.bindFromRequest();
@@ -195,24 +205,17 @@ public class PostController extends Controller {
                 if(r.getId().equals(UserConstants.TEACHER)){
                     String date = boundForm.field("date").value();
                     String time = boundForm.field("time").value();
-                   // String mentor = boundForm.field("visible").value();
-
-                   // Logger.info("jebo te caca =============== " + post.getPostType() + " i cjeli post: " + post.toString());
-                    //type 0 announcement
                     Integer typeOfPost = 0;
                     if (type.equals("1")) {
                         typeOfPost = 1; //type 1 assignment
                     }
 
-
                     post.setPostType(typeOfPost);
                     post.setDate(date);
                     post.setTime(time);
-
                 }
             }
         }
-
 
         if (user != null && selectedCourse!= null) {
 
@@ -243,7 +246,6 @@ public class PostController extends Controller {
                 }
             }
 
-
             flash("success", "You successfully added new post.");
             return redirect("/user/class/" + Long.parseLong(selectedCourse)); // TODO add call to route for listing posts
         }
@@ -252,14 +254,20 @@ public class PostController extends Controller {
 
     }
 
-    public Result postNotification(User student, Post post, Course course) {
+
+    /**
+     * Method for send notification to all users in class when someone posted new post.
+     * @param student - Type of user
+     * @param post - used for get post type.
+     * @param course - used for Course information in notification
+     */
+    public void postNotification(User student, Post post, Course course) {
 
         String type;
         if(post.getPostType() == 1){
             type = "Assignment";
         }else{
             type = "Announcement";
-
         }
 
         User sender = SessionHelper.currentUser(ctx());
@@ -270,7 +278,6 @@ public class PostController extends Controller {
         student.getMessages().add(privMessage);
         student.save();
 
-        return redirect("/user/class/" + course.getId());
     }
 
 }

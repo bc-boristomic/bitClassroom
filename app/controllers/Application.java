@@ -1,16 +1,12 @@
 package controllers;
 
-import controllers.api.UserAPIController;
+
 import helpers.SessionHelper;
 import models.Email;
-import models.Event;
 import models.Faq;
 import models.PrivateMessage;
-import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
-import org.json.simple.JSONArray;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,10 +16,6 @@ import views.html.*;
 import views.html.users.login;
 import views.html.users.util.email;
 import views.html.users.util.faq;
-
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Application extends Controller {
@@ -37,31 +29,25 @@ public class Application extends Controller {
      * @return
      */
 
-
     public Result welcome() {
         return ok(newMain.render());
     }
 
+    /**
+     * Method used for get home page when user is log in.
+     *
+     * @return - Return view of all users active course.
+     */
     public Result index() {
         User temp = SessionHelper.currentUser(ctx());
 
         if (temp == null) {
             return redirect("/home");
         }
-        //List<CourseUser> culist = CourseUser.findAll(temp.getId());
-
-        // if (temp != null && culist.size()!= 0) {
-
-        //   List<Course> list = CourseUser.allUserCourses(temp);
 
         List<CourseUser> user = CourseUser.getFinder().all();
 
         return ok(index.render(temp, user));
-
-        // } else {
-
-        //     return ok(temp);
-        // }
 
     }
 
@@ -164,6 +150,12 @@ public class Application extends Controller {
         return ok(String.valueOf(notify));
     }
 
+    /**
+     * Method for get weekly notification.
+     * Used for admin view.
+     * Showing how much  the weekly reports expected and how many have already been filled
+     * @return
+     */
     public Result weeklyNotification(){
 
         int counter = User.getFinder().where().eq("studentStatus", 14).findRowCount();
@@ -171,12 +163,20 @@ public class Application extends Controller {
         return ok(notify + "/" + counter);
     }
 
+    /**
+     * MEthod for see all FAQ in classroom
+     * @return
+     */
     public Result faq(){
 
         List<Faq> faqList = Faq.findAllFAQ();
         return ok(faq.render(faqList));
     }
 
+    /**
+     * Method for see contact Us form.
+     * @return
+     */
     public Result contact(){
         return ok(contact.render());
     }

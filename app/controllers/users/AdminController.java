@@ -909,7 +909,7 @@ public class AdminController extends Controller {
         Faq.findFaqById(id).delete();
         return ok(faq.render(Faq.findAllFAQ()));
     }
-    
+
     /**
      * See tables of daily reports
      *
