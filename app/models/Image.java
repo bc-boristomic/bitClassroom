@@ -44,6 +44,13 @@ public class Image extends Model {
     Course course;
 
 
+    /**
+     * This method creates a cloudinary image file and saves it in the database
+     * @param public_id
+     * @param image_url
+     * @param secret_image_url
+     * @return the created image
+     */
     public static Image create(String public_id, String image_url, String secret_image_url) {
         Image img = new Image();
         img.public_id = public_id;
@@ -53,6 +60,12 @@ public class Image extends Model {
         return img;
     }
 
+    /**
+     * Method used to create a image file
+     * @param image
+     * @param id
+     * @return
+     */
     public static Image create(File image, Long id) {
         Map result;
         try {
@@ -63,6 +76,13 @@ public class Image extends Model {
         }
         return null;
     }
+
+    /**
+     * Creates a cloudinary image file
+     * @param image
+     * @param id
+     * @return
+     */
     public static Image createCourseImage(File image, Long id) {
         Map result;
         try {
@@ -74,6 +94,12 @@ public class Image extends Model {
         return null;
     }
 
+    /**
+     * Creates a cloudinary image file
+     * @param uploadResult
+     * @param id
+     * @return
+     */
     public static Image courseImage(Map uploadResult,Long id){
         Image img = new Image();
         img.public_id = (String) uploadResult.get("public_id");
@@ -88,6 +114,12 @@ public class Image extends Model {
         return img;
     }
 
+    /**
+     *
+     * @param uploadResult
+     * @param id
+     * @return
+     */
     public static Image create(Map uploadResult, Long id) {
         Image img = new Image();
 
@@ -103,19 +135,21 @@ public class Image extends Model {
         return img;
     }
 
+    /**
+     * This method searches the database for images
+     * @return a list of image files
+     */
     public static List<Image> all() {
         return finder.all();
     }
 
-//    public static String getImagePath(User user) {
-//        List<Image> image = Image.finder.where().eq("user", user).findList();
-//        if (image.size() > 0) {
-//            return image.get(0).image_url;
-//        } else {
-//            return "http://placehold.it/450x600";
-//        }
-//    }
 
+    /**
+     * This method generates a url for the wanted image
+     * @param width
+     * @param height
+     * @return the public url of the cloudinary image
+     */
     public String getSize(int width, int height) {
 
         String url = cloudinary.url().format("jpg")
@@ -125,6 +159,12 @@ public class Image extends Model {
         return url;
     }
 
+    /**
+     * This method return a url with for a manipulated image
+     * @param width
+     * @param height
+     * @return
+     */
     public String getThumbnail(Integer width, Integer height){
         String url = cloudinary.url().format("png")
                 .transformation(
@@ -133,6 +173,9 @@ public class Image extends Model {
         return url;
     }
 
+    /**
+     * This method deletes an image from cloudinary
+     */
     public void deleteImage() {
         try {
             cloudinary.uploader().destroy(public_id, null);
@@ -141,17 +184,33 @@ public class Image extends Model {
         }
     }
 
+    /**
+     *This method returns a url for an avatar image
+     * @return url
+     */
     public String getAvatar(){
-        String url = cloudinary.url().format("png").transformation( new Transformation().width(32).height(32).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        String url = cloudinary.url().format("png").transformation(
+                new Transformation().width(32).height(32).crop("thumb").gravity("face").radius("max")).generate(public_id);
         return url;
     }
 
+    /**
+     * This method returns an url for a cover image
+     * @return url
+     */
     public String getCover(){
-        String url = cloudinary.url().format("jpg").transformation(new Transformation().width(800).height(300).crop("fill").effect("blur", 1000)).generate(public_id);
+        String url = cloudinary.url().format("jpg").transformation(
+                new Transformation().width(800).height(300).crop("fill").effect("blur", 1000)).generate(public_id);
         return url;
     }
+
+    /**
+     * This method return a url for a profile picture
+     * @return url
+     */
     public String getProfileImage(){
-        String url = cloudinary.url().format("png").transformation( new Transformation().width(256).height(256).crop("thumb").gravity("face").radius("max")).generate(public_id);
+        String url = cloudinary.url().format("png").transformation(
+                new Transformation().width(256).height(256).crop("thumb").gravity("face").radius("max")).generate(public_id);
         return url;
     }
 
