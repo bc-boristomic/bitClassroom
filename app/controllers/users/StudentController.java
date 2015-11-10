@@ -15,14 +15,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import utility.UserConstants;
 import views.html.users.studentsWork;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by boris on 9/12/15.
+ * Created by NN on 9/12/15.
  */
 @Security.Authenticated(Authorization.Student.class)
 public class StudentController extends Controller {
@@ -80,6 +78,11 @@ public class StudentController extends Controller {
         return ok("2");
     }
 
+    /**
+     * Method for send message to teacher and mentor,when a student starts doing their homework.
+     * Also student homework status was update.
+     * @return
+     */
     public Result sendStartMessage() {
 
         DynamicForm form = Form.form().bindFromRequest();
@@ -114,16 +117,19 @@ public class StudentController extends Controller {
         return redirect("/user/class/"+courseId);
     }
 
+    /**
+     *  Method for send message to teacher and mentor,when a student finished their homework.
+     *  Also student homework status was update.
+     *
+     * @return
+     */
     public Result sendFinishMessage() {
 
         DynamicForm form = Form.form().bindFromRequest();
         String postId = form.data().get("postId");
         String courseId = form.data().get("courseId");
         Course c = Course.findById(Long.parseLong(courseId));
-        // Logger.info(c.getName());
-        // Logger.info(c.getTeacher());
         Post p = Post.findPostById(Long.parseLong(postId));
-        //flash("succes", c.getName() + "  " + c.getTeacher() +  "  " + p.getTitle());
         User sender = SessionHelper.currentUser(ctx());
         User receiver = Mentorship.findMentorByUser(sender);
         User receiverTeacher = User.findByName(c.getTeacher().substring(0, c.getTeacher().indexOf(' ') + 1));
@@ -155,13 +161,22 @@ public class StudentController extends Controller {
     }
 
 
+    /**
+     * Method for see student all assignemnt from all course.
+     * Also he have access to see
+     * @return
+     */
     public Result studentsWork(){
 
         List<Assignment> posts = SessionHelper.currentUser(ctx()).getAssignments();
-        Logger.info(posts.size()+"");
         return ok(studentsWork.render(posts));
     }
 
+    /**
+     * Method which return list of assignment that is done , that works and that is not done
+     * @param status - homework status, used for list selection.
+     * @return
+     */
     public Result worksActivity(String status){
 
         List<Assignment> posts = SessionHelper.currentUser(ctx()).getAssignments();
@@ -180,19 +195,8 @@ public class StudentController extends Controller {
 
                 assignments.add(posts.get(i));
             }
-
         }
-
         return ok(studentsWork.render(assignments));
-
     }
-
-
-    
-    public Result test() {
-        return ok("you are student");
-    }
-
-
 
 }

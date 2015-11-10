@@ -1,6 +1,5 @@
 package controllers.users;
 
-import com.avaje.ebean.Ebean;
 import helpers.Authorization;
 import helpers.SessionHelper;
 import models.course.CourseUser;
@@ -18,9 +17,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import utility.UserConstants;
 import views.html.dailyreports.weeklyreport;
-import views.html.index;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +26,7 @@ import java.util.List;
 public class MentorController extends Controller {
 
     private static final Form<WeeklyReport> reportForm = Form.form(WeeklyReport.class);
+
 
     public Result weeklyReport() {
         DynamicForm dynamicForm = new DynamicForm();
@@ -98,10 +95,6 @@ public class MentorController extends Controller {
         flash("success", "Your report has been sent");
         return redirect("/");
 
-    }
-
-    public Result test() {
-        return ok("you are mentor");
     }
 
 }
