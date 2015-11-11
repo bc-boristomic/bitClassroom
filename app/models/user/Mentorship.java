@@ -48,6 +48,11 @@ public final class Mentorship extends Model {
         return finder;
     }
 
+    /**
+     * Method for find students mentor
+     * @param u - Student
+     * @return - Students mentor
+     */
     public static User findMentorByUser(User u){
        Mentorship m = finder.where().eq("student_id", u.getId()).eq("status", UserConstants.ACTIVE_MENTORSHIP).findUnique();
         if(m == null){
@@ -56,7 +61,12 @@ public final class Mentorship extends Model {
         return m.getMentor();
 
     }
-    
+
+    /**
+     * Method for find all mentors students
+     * @param u - Specified mentor
+     * @return - List of User
+     */
     public static List<User> findStudentsByMentor(User u){
         List<User> students = new ArrayList<>();
         List<Mentorship> mentorships = finder.where().eq("mentor_id",u.getId()).findList();
@@ -68,10 +78,20 @@ public final class Mentorship extends Model {
         return students;
     }
 
+    /**
+     * MEthod for find specified mentorship with selected student and mentor
+     * @param user - Mentor
+     * @param student - Student
+     * @return - Mentorship Object
+     */
     public static Mentorship findMentroship(User user, User student){
 
         return finder.where().eq("mentor", user).eq("student", student).findUnique();
     }
+
+
+    /* ONLY GETTERS AND SETTERS FOR COURSE CLASS BELLOW */
+
 
     public Integer getWeek() {
         return week;
