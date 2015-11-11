@@ -6,6 +6,7 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -157,11 +158,21 @@ public final class DailyReport extends Model {
     }
 
     public static String formaterDate(String date) {
-        String[] parts = date.split("-");
-        String year = parts[0];
-        String month = parts[1];
-        String day = parts[2];
-        return day + "." + month + "." + year;
+        Logger.info(date);
+        if (date.contains("-")) {
+            String[] parts = date.split("-");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        } else if (date.contains("/")) {
+            String[] parts = date.split("/");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        }
+        return date;
     }
 
     public static DailyReport previousReport(Long id) {
