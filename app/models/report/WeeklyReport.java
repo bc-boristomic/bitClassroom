@@ -113,6 +113,12 @@ public class WeeklyReport extends Model{
         this.week = week;
     }
 
+    /**
+     * Returns Weekly Report for given WeeklyReportId
+     *
+     * @param id Long
+     * @return Weekly Report
+     */
     public static WeeklyReport findWeeklyReportById(Long id) {
         List<WeeklyReport> weeklyReport = weeklyFinder.where().eq("id", id).findList();
         if (weeklyReport.size() == 0) {
@@ -121,6 +127,11 @@ public class WeeklyReport extends Model{
         return (WeeklyReport) weeklyReport.get(0);
     }
 
+    /**
+     * Formats date.
+     *
+     * @return String.
+     */
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createDate);
