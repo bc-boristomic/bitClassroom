@@ -44,16 +44,6 @@ public final class CourseUser extends Model {
     public static List<CourseUser> findAll(Long userId) {
         return finder.where().eq("user_id", userId).findList();
 
-//        List<CourseUser> list = finder.all();
-//        List<CourseUser> courseUserList = new ArrayList<>();
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            if (list.get(i).getUser().getId().equals(userId)) {
-//                courseUserList.add(list.get(i));
-//
-//            }
-//        }
-//        return courseUserList;
     }
 
     /**

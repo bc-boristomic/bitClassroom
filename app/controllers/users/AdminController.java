@@ -7,6 +7,7 @@ import it.innove.play.pdf.PdfGenerator;
 import models.*;
 import models.course.Course;
 import models.course.CourseUser;
+import models.course.PremiumCourse;
 import models.report.*;
 import models.user.Assignment;
 import models.user.Mentorship;
@@ -327,6 +328,8 @@ public class AdminController extends Controller {
         String description = boundForm.field("description").value();
         String getTeacher = boundForm.field("type").value();
         String teacher = getTeacher.split(" ")[0] + " " + getTeacher.split(" ")[1];
+        String checkBox = boundForm.field("premium").value();
+        Logger.info(checkBox);
         
         String teacherId = getTeacher.split(" ")[2];
 
@@ -351,7 +354,17 @@ public class AdminController extends Controller {
         Http.MultipartFormData.FilePart filePart = data.getFile("image");
 
         try {
-            course.save();
+                course.save();
+
+            if("1".equals(checkBox)){
+
+                String price = boundForm.field("price").value();
+                String quantity = boundForm.field("quantity").value();
+
+                PremiumCourse premiumCourse = new PremiumCourse(price, course, quantity);
+                premiumCourse.save();
+
+            }
         } catch (PersistenceException e) {
             Ebean.save(new ErrorLog(e.getMessage()));
             flash("warning", "Something went wrong, course could not be saved to data base");
@@ -383,6 +396,8 @@ public class AdminController extends Controller {
             flash("warning", "Something went wrong, course teacher could not be saved to data base");
             return redirect("/admin/createcourse");
         }
+
+
 
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");

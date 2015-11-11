@@ -129,6 +129,15 @@ create table post (
   constraint pk_post primary key (id))
 ;
 
+create table premium_course (
+  id                        bigint auto_increment not null,
+  price                     varchar(255),
+  quantity                  varchar(255),
+  course_id                 bigint,
+  constraint uq_premium_course_course_id unique (course_id),
+  constraint pk_premium_course primary key (id))
+;
+
 create table private_message (
   id                        bigint auto_increment not null,
   subject                   varchar(255),
@@ -252,18 +261,20 @@ alter table post add constraint fk_post_course_14 foreign key (course_id) refere
 create index ix_post_course_14 on post (course_id);
 alter table post add constraint fk_post_user_15 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_post_user_15 on post (user_id);
-alter table private_message add constraint fk_private_message_sender_16 foreign key (sender_id) references user (id) on delete restrict on update restrict;
-create index ix_private_message_sender_16 on private_message (sender_id);
-alter table private_message add constraint fk_private_message_receiver_17 foreign key (receiver_id) references user (id) on delete restrict on update restrict;
-create index ix_private_message_receiver_17 on private_message (receiver_id);
-alter table report_field add constraint fk_report_field_dailyReport_18 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
-create index ix_report_field_dailyReport_18 on report_field (daly_id);
-alter table report_field add constraint fk_report_field_field_19 foreign key (field_id) references field (id) on delete restrict on update restrict;
-create index ix_report_field_field_19 on report_field (field_id);
-alter table report_weekly_field add constraint fk_report_weekly_field_weeklyReport_20 foreign key (weekly_report) references weekly_report (id) on delete restrict on update restrict;
-create index ix_report_weekly_field_weeklyReport_20 on report_weekly_field (weekly_report);
-alter table report_weekly_field add constraint fk_report_weekly_field_weeklyField_21 foreign key (weekly_field) references weekly_field (id) on delete restrict on update restrict;
-create index ix_report_weekly_field_weeklyField_21 on report_weekly_field (weekly_field);
+alter table premium_course add constraint fk_premium_course_course_16 foreign key (course_id) references course (id) on delete restrict on update restrict;
+create index ix_premium_course_course_16 on premium_course (course_id);
+alter table private_message add constraint fk_private_message_sender_17 foreign key (sender_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_sender_17 on private_message (sender_id);
+alter table private_message add constraint fk_private_message_receiver_18 foreign key (receiver_id) references user (id) on delete restrict on update restrict;
+create index ix_private_message_receiver_18 on private_message (receiver_id);
+alter table report_field add constraint fk_report_field_dailyReport_19 foreign key (daly_id) references daily_report (id) on delete restrict on update restrict;
+create index ix_report_field_dailyReport_19 on report_field (daly_id);
+alter table report_field add constraint fk_report_field_field_20 foreign key (field_id) references field (id) on delete restrict on update restrict;
+create index ix_report_field_field_20 on report_field (field_id);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyReport_21 foreign key (weekly_report) references weekly_report (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyReport_21 on report_weekly_field (weekly_report);
+alter table report_weekly_field add constraint fk_report_weekly_field_weeklyField_22 foreign key (weekly_field) references weekly_field (id) on delete restrict on update restrict;
+create index ix_report_weekly_field_weeklyField_22 on report_weekly_field (weekly_field);
 
 
 
@@ -298,6 +309,8 @@ drop table image;
 drop table mentorship;
 
 drop table post;
+
+drop table premium_course;
 
 drop table private_message;
 
