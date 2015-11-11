@@ -7582,7 +7582,7 @@ body::after {
   }
 }
 .team-member__avatar {
-  max-width: 50%;
+  max-width: 100%;
   margin: 0 auto 15px;
   border: 10px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
@@ -7633,6 +7633,12 @@ body::after {
 }
 .team-member-contact__item.google-plus:hover {
   background: #c23321;
+}
+.team-member-contact__item.github {
+  background: #000000;
+}
+.team-member-contact__item.github:hover {
+  background: #4f4f4f;
 }
 /* -------------------- *\
     #FEATURES SCREEN

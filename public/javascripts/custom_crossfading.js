@@ -27,7 +27,7 @@ $(window).load(function() {
         // Plugin setup
         
         // Navigation
-        anchors: ['home', 'about', 'features', 'contact'],
+        anchors: ['home', 'about', 'features', 'team','contact'],
         menu: '.fullpage__nav',
 
         // Custom selectors
