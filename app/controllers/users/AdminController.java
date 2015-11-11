@@ -909,7 +909,7 @@ public class AdminController extends Controller {
         Faq.findFaqById(id).delete();
         return ok(faq.render(Faq.findAllFAQ()));
     }
-    
+
     /**
      * See tables of daily reports
      *
@@ -919,26 +919,48 @@ public class AdminController extends Controller {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
-
+    /**
+     *Deletes specific Weekly Report, Report is found by fildId.
+     * @param id Long.
+     * @return redirect to same page.
+     */
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
         return redirect("/listWeeklyReport");
     }
 
+    /**
+     *Deletes specific field, fild is found by fildId.
+     * @param id Long.
+     * @return redirect to same page.
+     */
     public Result deleteField(Long id) {
         Field.findFieldById(id).delete();
         return redirect("/admin/createdaily");
     }
 
+    /**
+     *Deletes specific field, fild is found by fildId.
+     * @param id Long.
+     * @return redirect to same page.
+     */
     public Result deleteWeeklyField(Long id) {
         WeeklyField.findFielWeeklydById(id).delete();
         return redirect("/admin/createweekly");
     }
 
+    /**
+     *Renders page for creating new Field
+     * @return ok
+     */
     public Result genWeeklyField() {
         return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
     }
 
+    /**
+     *Saves new field to database. Field name is take from weekly field form
+     * @return redirect to same page
+     */
     public Result saveWeeklyField() {
         Form<WeeklyField> fieldWeeklyForm = Form.form(WeeklyField.class);
         WeeklyField wf = new WeeklyField();
@@ -953,6 +975,11 @@ public class AdminController extends Controller {
         return redirect("/admin/createweekly");
     }
 
+    /**
+     *Changes first letter to uppersasse
+     * @param name String
+     * @return String
+     */
     public static String firstUpperCase(String name) {
         String s = name.substring(0, 1);
         String s1 = s.toUpperCase();
@@ -970,6 +997,12 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
+    /**
+     *Shortens given string to given input int length, and adds three dots
+     * @param text String
+     * @param length int
+     * @return String
+     */
     public static String cutText(String text, int length){
         if (text.length() > length) {
             text = text.substring(0, length);
@@ -978,6 +1011,11 @@ public class AdminController extends Controller {
         return text;
     }
 
+    /**
+     * Renders weeklytableToPDF file into PDF file, PdfGenerator is used to render.
+     *
+     * @return ok and generates weeklytable in PDF format
+     */
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
     }

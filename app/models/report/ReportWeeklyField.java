@@ -39,8 +39,6 @@ public class ReportWeeklyField extends Model {
     /**
      * GETTERS AND SETTERS FOR REPORTWEEKLYFIELD CLASS BELLOW
      * */
-
-    //Getters
     public static Finder<Long, ReportWeeklyField> getFinderReportWeeklyField() {
         return finderReportWeeklyField;
     }
@@ -57,7 +55,6 @@ public class ReportWeeklyField extends Model {
         return weeklyField;
     }
 
-    //Setters
     public void setValue(String value) {
         this.value = value;
     }

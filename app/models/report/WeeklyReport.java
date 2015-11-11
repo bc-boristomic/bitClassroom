@@ -129,6 +129,12 @@ public class WeeklyReport extends Model{
     @OneToMany(mappedBy = "weeklyReport", cascade = CascadeType.ALL)
     private List<ReportWeeklyField> fieldWList = new ArrayList<>();
 
+    /**
+     * Checks if Weekly Field already exists in database.
+     *
+     * @param field WeeklyField
+     * @return Boolean true if exist, false if not.
+     */
     public boolean containsWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf :fieldWList) {
             if (wf.getWeeklyField().equals(field)) {
@@ -138,6 +144,12 @@ public class WeeklyReport extends Model{
         return false;
     }
 
+    /**
+     * Returns Report Weekly Field if Report Weekly Field name is same as field.
+     *
+     * @param field WeeklyField
+     * @return Report Weekly Field
+     */
     public ReportWeeklyField getWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf : fieldWList) {
             if (wf.getWeeklyField().equals(field)) {
@@ -147,12 +159,34 @@ public class WeeklyReport extends Model{
         return null;
     }
 
+    /**
+     * Finds all Weekly reports
+     * @return all Weekly Reports
+     */
     public List<WeeklyReport> findAllReport(){
-
         return weeklyFinder.findList();
     }
 
+    /**
+     * Finds previous WeeklyReport from all reports.
+     *
+     * @param id Long
+     * @return WeeklyReport
+     */
+    public static WeeklyReport previousWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
 
+    /**
+     * Finds next WeeklyReport from all reports.
+     *
+     * @param id Long
+     * @return WeeklyReport
+     */
     public static WeeklyReport nextWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
         if (reports.size() > 0) {
@@ -161,11 +195,5 @@ public class WeeklyReport extends Model{
         return null;
     }
 
-    public static WeeklyReport previousWeeklyReport(Long id) {
-        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
-        if (reports.size() > 0) {
-            return reports.get(0);
-        }
-        return null;
-    }
+
 }

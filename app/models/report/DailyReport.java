@@ -6,6 +6,7 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -49,10 +50,9 @@ public final class DailyReport extends Model {
     @Column(name = "week")
     private Integer week = 1;
 
-    /*
+    /**
      * Default empty constructor for Ebean
      */
-
     public DailyReport() {
     }
 
@@ -124,6 +124,12 @@ public final class DailyReport extends Model {
     @OneToMany(mappedBy = "dailyReport", cascade = CascadeType.ALL)
     private List<ReportField> fieldList = new ArrayList<>();
 
+    /**
+     * Checks if Field already exists in database.
+     *
+     * @param field Field
+     * @return Boolean true if exist, false if not.
+     */
     public boolean containsField(Field field) {
         for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
@@ -133,6 +139,12 @@ public final class DailyReport extends Model {
         return false;
     }
 
+    /**
+     * Returns Report Field if Report Field name is same as field.
+     *
+     * @param field Field
+     * @return Report Field
+     */
     public ReportField getField(Field field) {
         for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
@@ -142,28 +154,56 @@ public final class DailyReport extends Model {
         return null;
     }
 
+    /**
+     * Returns Daily Report for given dailyReportId
+     *
+     * @param id Long
+     * @return Daily Report
+     */
     public static DailyReport findDailyReportById(Long id) {
-
-        List<DailyReport> report = finder.where().eq("id", id).findList();
-        if (report.size() == 0) {
-            return null;
-        }
-        return (DailyReport) report.get(0);
+        return finder.where().eq("id", id).findUnique();
     }
 
+    /**
+     * Formats date.
+     *
+     * @return String.
+     */
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createdDate);
     }
 
+    /**
+     * Formats date
+     *
+     * @param date String
+     * @return String
+     */
     public static String formaterDate(String date) {
-        String[] parts = date.split("-");
-        String year = parts[0];
-        String month = parts[1];
-        String day = parts[2];
-        return day + "." + month + "." + year;
+        Logger.info(date);
+        if (date.contains("-")) {
+            String[] parts = date.split("-");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        } else if (date.contains("/")) {
+            String[] parts = date.split("/");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        }
+        return date;
     }
 
+    /**
+     * Finds previous Report from all reports.
+     *
+     * @param id Long
+     * @return Daily Report
+     */
     public static DailyReport previousReport(Long id) {
         List<DailyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
         if (reports.size() > 0) {
@@ -172,6 +212,12 @@ public final class DailyReport extends Model {
         return null;
     }
 
+    /**
+     * Finds next Report from all reports.
+     *
+     * @param id Long
+     * @return Daily Report
+     */
     public static DailyReport nextReport(Long id) {
         List<DailyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
         if (reports.size() > 0) {

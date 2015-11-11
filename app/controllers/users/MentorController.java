@@ -27,7 +27,10 @@ public class MentorController extends Controller {
 
     private static final Form<WeeklyReport> reportForm = Form.form(WeeklyReport.class);
 
-
+    /**
+     *Renders view for mentor to write Weekly Report
+     * @return ok and renders weeklyreport
+     */
     public Result weeklyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
@@ -39,6 +42,10 @@ public class MentorController extends Controller {
 
     }
 
+    /**
+     *Takes values via dynamic form from html and creates new weekly report then saves to data base
+     * @return redirect home
+     */
     public Result saveRaport() {
 
         User temp = SessionHelper.currentUser(ctx());
@@ -75,7 +82,6 @@ public class MentorController extends Controller {
             mentorship.update();
 
         }else{
-
             weeklyReport.setWeek(week);
         }
         weeklyReport.save();
@@ -94,7 +100,6 @@ public class MentorController extends Controller {
 
         flash("success", "Your report has been sent");
         return redirect("/");
-
     }
 
 }

@@ -19,6 +19,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.StatusConstants;
 import utility.UserConstants;
 import views.html.admins.newTableWeekly;
 import views.html.admins.openWeeklyReports;
@@ -48,7 +49,10 @@ public class  TeacherController extends Controller {
     public PdfGenerator pdfGenerator;
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
 
-
+    /**
+     *
+     * @return
+     */
     public Result dailyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
@@ -62,6 +66,10 @@ public class  TeacherController extends Controller {
         return ok(dailyraport.render(raportForm, fields, courseList));
     }
 
+    /**
+     *
+     * @return
+     */
     public Result saveRaport() {
         User temp = SessionHelper.currentUser(ctx());
         List<Field> fields = Field.getFinder().findList();
@@ -131,7 +139,7 @@ public class  TeacherController extends Controller {
         List<User> users = CourseUser.allUserFromCourse(course.getId());
         List<User> students = new ArrayList<>();
 
-        if (status.equals("Done")) {
+        if (StatusConstants.DONE.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 2) {
@@ -140,7 +148,7 @@ public class  TeacherController extends Controller {
                     students.add(users.get(i));
                 }
             }
-        } else if (status.equals("Working")) {
+        } else if (StatusConstants.WORKING.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 1) {
@@ -149,7 +157,7 @@ public class  TeacherController extends Controller {
                 }
             }
         }
-        if (status.equals("Not")) {
+        if (StatusConstants.NOT_DONE.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 0) {
@@ -256,7 +264,6 @@ public class  TeacherController extends Controller {
 
     }
 
-
     /**
      * Method for see all mentors reports that are written about students
      * of which he is a teacher.
@@ -294,8 +301,13 @@ public class  TeacherController extends Controller {
 
     }
 
-    public Result pdfWeeklyTable() {
-        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    /**
+     * Renders weeklyToPDF file into PDF file, PdfGenerator is used to render.
+     *
+     * @return ok and generates weekly in PDF format
+     */
+ public Result pdfWeeklyTable() {
+     return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
     }
 
 
@@ -314,8 +326,7 @@ public class  TeacherController extends Controller {
                 myReports.add(allReports.get(i));
             }
         }
-
-            return ok(teacherReports.render(ReportField.getFinder().all(), myReports, Field.getFinder().all()));
+        return ok(teacherReports.render(ReportField.getFinder().all(), myReports, Field.getFinder().all()));
     }
 
 
