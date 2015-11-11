@@ -462,8 +462,7 @@ public final class User extends Model {
     }
 
     public static User findEmailAndPassword(String email, String password) {
-        String pass = MD5Hash.getEncriptedPasswordMD5(password);
-        User user = finder.where().eq("email",email).eq("password",pass).findUnique();
+        User user = finder.where().eq("email",email).eq("password",password).findUnique();
         return user;
     }
 }

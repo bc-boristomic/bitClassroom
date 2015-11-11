@@ -28,22 +28,22 @@ public class UserAPIController extends Controller {
         String email = json.findPath("email").textValue();
         String password = json.findPath("password").textValue();
         Map<String,Object> map = new TreeMap<>();
-        User u = User.findEmailAndPassword(email, password);
-        if(u == null){
+        User user = User.findEmailAndPassword(email, password);
+        if(user == null){
             return badRequest();
         }
-        map.put("name",u.getFirstName());
-        map.put("lastname",u.getLastName());
-        map.put("token",u.getToken());
-        map.put("role",u.getRoles().get(0).getName());
-        map.put("user_id",u.getId());
+        map.put("name",user.getFirstName());
+        map.put("lastname",user.getLastName());
+//        map.put("token",user.getToken());
+        map.put("role",user.getRoles().get(0).getName());
+        map.put("user_id",user.getId());
         JsonNode jsonObject = Json.toJson(map);
+        response().setHeader("token",user.getToken());
         return ok(jsonObject);
     }
 
     public Result sendCourses(){
-        JsonNode json = request().body().asJson();
-        String token = json.findPath("token").textValue();
+        String token = request().getHeader("userToken");
         User u = User.findUserByToken(token);
         if(u == null){
             return badRequest();
@@ -95,8 +95,7 @@ public class UserAPIController extends Controller {
     }
 
     public Result sendStudents(){
-        JsonNode json = request().body().asJson();
-        String token = json.findPath("token").textValue();
+        String token = request().getHeader("userToken");
         User u = User.findUserByToken(token);
         if(u == null){
             return badRequest();
@@ -152,6 +151,11 @@ public class UserAPIController extends Controller {
     }
 
     public Result sendPosts() {
+        String token = request().getHeader("userToken");
+        User u = User.findUserByToken(token);
+        if(u == null){
+            return badRequest();
+        }
         JsonNode json = request().body().asJson();
         String id = json.findPath("course_id").textValue();
         Course course = Course.findById(Long.parseLong(id));
@@ -204,6 +208,11 @@ public class UserAPIController extends Controller {
     }
 
     public Result sendAllMessages(){
+        String token = request().getHeader("userToken");
+        User u = User.findUserByToken(token);
+        if(u == null){
+            return badRequest();
+        }
         JsonNode json = request().body().asJson();
         String id = json.findPath("user_id").textValue();
 
@@ -278,6 +287,11 @@ public class UserAPIController extends Controller {
     }
 
     public Result sendMessage() {
+        String token = request().getHeader("userToken");
+        User u = User.findUserByToken(token);
+        if(u == null){
+            return badRequest();
+        }
         JsonNode json = request().body().asJson();
         String subject = json.findPath("subject").textValue();
         String message = json.findPath("message").textValue();
