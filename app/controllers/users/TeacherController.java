@@ -19,6 +19,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import utility.StatusConstants;
 import utility.UserConstants;
 import views.html.admins.newTableWeekly;
 import views.html.admins.openWeeklyReports;
@@ -138,7 +139,7 @@ public class  TeacherController extends Controller {
         List<User> users = CourseUser.allUserFromCourse(course.getId());
         List<User> students = new ArrayList<>();
 
-        if (status.equals("Done")) {
+        if (StatusConstants.DONE.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 2) {
@@ -147,7 +148,7 @@ public class  TeacherController extends Controller {
                     students.add(users.get(i));
                 }
             }
-        } else if (status.equals("Working")) {
+        } else if (StatusConstants.WORKING.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 1) {
@@ -156,7 +157,7 @@ public class  TeacherController extends Controller {
                 }
             }
         }
-        if (status.equals("Not")) {
+        if (StatusConstants.NOT_DONE.equals(status)) {
             for (int i = 0; i < users.size(); i++) {
 
                 if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_STUDENT) && Assignment.findCurrentAssignment(users.get(i), post).getHomeworkPostStatus() == 0) {

@@ -8,6 +8,7 @@ import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
 import play.data.Form;
+import play.libs.F;
 import play.mvc.*;
 import views.html.courses.courseList;
 import views.html.courses.courseView;
@@ -41,8 +42,12 @@ public class CourseController extends Controller {
     @Security.Authenticated(Authorization.FullyActiveUser.class)
     public Result course(Long id){
         Course c = Course.findById(id);
-        return ok(courseView.render(c));
-
+        User user = SessionHelper.currentUser(ctx());
+        if(CourseUser.isAllowed(user, c)) {
+            return ok(courseView.render(c));
+        }else{
+            return redirect("/user/courses");
+        }
     }
 
 }
