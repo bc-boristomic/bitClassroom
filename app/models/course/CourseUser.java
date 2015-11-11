@@ -154,6 +154,17 @@ public final class CourseUser extends Model {
         return courseUsers;
     }
 
+    public static boolean isAllowed(User user, Course course){
+
+      if ( finder.where().eq("user_id", user.getId()).eq("course_id", course.getId()).findUnique() != null){
+
+          return true;
+      }
+
+        return false;
+
+    }
+
 
     @Override
     public String toString() {
