@@ -50,10 +50,9 @@ public final class DailyReport extends Model {
     @Column(name = "week")
     private Integer week = 1;
 
-    /*
+    /**
      * Default empty constructor for Ebean
      */
-
     public DailyReport() {
     }
 
@@ -125,6 +124,12 @@ public final class DailyReport extends Model {
     @OneToMany(mappedBy = "dailyReport", cascade = CascadeType.ALL)
     private List<ReportField> fieldList = new ArrayList<>();
 
+    /**
+     * Checks if Field already exists in database.
+     *
+     * @param field Field
+     * @return Boolean true if exist, false if not.
+     */
     public boolean containsField(Field field) {
         for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
@@ -135,9 +140,10 @@ public final class DailyReport extends Model {
     }
 
     /**
+     * Returns Report Field if Report Field name is same as field.
      *
-     * @param field
-     * @return
+     * @param field Field
+     * @return Report Field
      */
     public ReportField getField(Field field) {
         for (ReportField rf : fieldList) {
@@ -149,21 +155,19 @@ public final class DailyReport extends Model {
     }
 
     /**
+     * Returns Daily Report for given dailyReportId
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return Daily Report
      */
     public static DailyReport findDailyReportById(Long id) {
-        List<DailyReport> report = finder.where().eq("id", id).findList();
-        if (report.size() == 0) {
-            return null;
-        }
-        return (DailyReport) report.get(0);
+        return finder.where().eq("id", id).findUnique();
     }
 
     /**
+     * Formats date.
      *
-     * @return
+     * @return String.
      */
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
@@ -171,9 +175,10 @@ public final class DailyReport extends Model {
     }
 
     /**
+     * Formats date
      *
-     * @param date
-     * @return
+     * @param date String
+     * @return String
      */
     public static String formaterDate(String date) {
         Logger.info(date);
@@ -194,9 +199,10 @@ public final class DailyReport extends Model {
     }
 
     /**
+     * Finds previous Report from all reports.
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return Daily Report
      */
     public static DailyReport previousReport(Long id) {
         List<DailyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
@@ -207,9 +213,10 @@ public final class DailyReport extends Model {
     }
 
     /**
+     * Finds next Report from all reports.
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return Daily Report
      */
     public static DailyReport nextReport(Long id) {
         List<DailyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();

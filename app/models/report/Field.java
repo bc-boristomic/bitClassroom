@@ -42,9 +42,9 @@ public final class Field extends Model {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * Finds unique Field by id
+     * @param id Long
+     * @return Field
      */
     public static Field findFieldById(Long id) {
         List<Field> field = finder.where().eq("id", id).findList();

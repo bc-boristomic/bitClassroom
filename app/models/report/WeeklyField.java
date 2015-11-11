@@ -27,7 +27,6 @@ public class WeeklyField extends Model{
     public WeeklyField() {
     }
 
-    //Getters
     public static Finder<Long, WeeklyField> getFinder() {
         return finderFieldWeekly;
     }
@@ -38,13 +37,15 @@ public class WeeklyField extends Model{
         return name;
     }
 
-
-    //Setter for name
     public void setName(String name) {
         this.name = name;
     }
 
-
+    /**
+     * Finds unique Weekly Field by id
+     * @param id Long
+     * @return Weekly Field
+     */
     public static WeeklyField findFielWeeklydById(Long id) {
         List<WeeklyField> weeklyField = finderFieldWeekly.where().eq("id", id).findList();
         if (weeklyField.size() == 0) {

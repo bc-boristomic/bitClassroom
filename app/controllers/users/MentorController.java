@@ -24,14 +24,12 @@ import java.util.List;
  */
 @Security.Authenticated(Authorization.Mentor.class)
 public class MentorController extends Controller {
-    /**
-     *
-     */
+
     private static final Form<WeeklyReport> reportForm = Form.form(WeeklyReport.class);
 
     /**
-     *
-     * @return
+     *Renders view for mentor to write Weekly Report
+     * @return ok and renders weeklyreport
      */
     public Result weeklyReport() {
         DynamicForm dynamicForm = new DynamicForm();
@@ -45,8 +43,8 @@ public class MentorController extends Controller {
     }
 
     /**
-     *
-     * @return
+     *Takes values via dynamic form from html and creates new weekly report then saves to data base
+     * @return redirect home
      */
     public Result saveRaport() {
 

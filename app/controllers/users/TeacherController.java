@@ -301,8 +301,13 @@ public class  TeacherController extends Controller {
 
     }
 
-    public Result pdfWeeklyTable() {
-        return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
+    /**
+     * Renders weeklyToPDF file into PDF file, PdfGenerator is used to render.
+     *
+     * @return ok and generates weekly in PDF format
+     */
+ public Result pdfWeeklyTable() {
+     return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
     }
 
 
