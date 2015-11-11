@@ -919,26 +919,48 @@ public class AdminController extends Controller {
         return ok(newTableDaily.render(ReportField.getFinder().all(), DailyReport.getFinder().all(), Field.getFinder().all()));
     }
 
-
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public Result deleteWeeklyReport(Long id) {
         WeeklyReport.findWeeklyReportById(id).delete();
         return redirect("/listWeeklyReport");
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Result deleteField(Long id) {
         Field.findFieldById(id).delete();
         return redirect("/admin/createdaily");
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Result deleteWeeklyField(Long id) {
         WeeklyField.findFielWeeklydById(id).delete();
         return redirect("/admin/createweekly");
     }
 
+    /**
+     *
+     * @return
+     */
     public Result genWeeklyField() {
         return ok(setingsweeklyreport.render(WeeklyField.getFinder().all()));
     }
 
+    /**
+     *
+     * @return
+     */
     public Result saveWeeklyField() {
         Form<WeeklyField> fieldWeeklyForm = Form.form(WeeklyField.class);
         WeeklyField wf = new WeeklyField();
@@ -953,6 +975,11 @@ public class AdminController extends Controller {
         return redirect("/admin/createweekly");
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static String firstUpperCase(String name) {
         String s = name.substring(0, 1);
         String s1 = s.toUpperCase();
@@ -970,6 +997,12 @@ public class AdminController extends Controller {
         return ok(newTableWeekly.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()));
     }
 
+    /**
+     *
+     * @param text
+     * @param length
+     * @return
+     */
     public static String cutText(String text, int length){
         if (text.length() > length) {
             text = text.substring(0, length);
@@ -978,6 +1011,10 @@ public class AdminController extends Controller {
         return text;
     }
 
+    /**
+     *
+     * @return
+     */
     public Result pdfWeeklyTable() {
         return pdfGenerator.ok(weeklypdf.render(ReportWeeklyField.getFinderReportWeeklyField().all(), WeeklyReport.getFinder().all(), WeeklyField.getFinder().all()), Configuration.root().getString("application.host"));
     }

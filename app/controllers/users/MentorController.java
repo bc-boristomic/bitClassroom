@@ -24,10 +24,15 @@ import java.util.List;
  */
 @Security.Authenticated(Authorization.Mentor.class)
 public class MentorController extends Controller {
-
+    /**
+     *
+     */
     private static final Form<WeeklyReport> reportForm = Form.form(WeeklyReport.class);
 
-
+    /**
+     *
+     * @return
+     */
     public Result weeklyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
@@ -39,6 +44,10 @@ public class MentorController extends Controller {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public Result saveRaport() {
 
         User temp = SessionHelper.currentUser(ctx());
@@ -75,7 +84,6 @@ public class MentorController extends Controller {
             mentorship.update();
 
         }else{
-
             weeklyReport.setWeek(week);
         }
         weeklyReport.save();
@@ -94,7 +102,6 @@ public class MentorController extends Controller {
 
         flash("success", "Your report has been sent");
         return redirect("/");
-
     }
 
 }

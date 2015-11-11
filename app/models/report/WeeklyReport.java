@@ -158,7 +158,7 @@ public class WeeklyReport extends Model{
     }
 
     /**
-     * 
+     *
      * @return
      */
     public List<WeeklyReport> findAllReport(){
