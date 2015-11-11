@@ -168,6 +168,20 @@ public class WeeklyReport extends Model{
     }
 
     /**
+     * Finds previous WeeklyReport from all reports.
+     *
+     * @param id Long
+     * @return WeeklyReport
+     */
+    public static WeeklyReport previousWeeklyReport(Long id) {
+        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
+        if (reports.size() > 0) {
+            return reports.get(0);
+        }
+        return null;
+    }
+
+    /**
      * Finds next WeeklyReport from all reports.
      *
      * @param id Long
@@ -181,17 +195,5 @@ public class WeeklyReport extends Model{
         return null;
     }
 
-    /**
-     * Finds previous WeeklyReport from all reports.
-     *
-     * @param id Long
-     * @return WeeklyReport
-     */
-    public static WeeklyReport previousWeeklyReport(Long id) {
-        List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
-        if (reports.size() > 0) {
-            return reports.get(0);
-        }
-        return null;
-    }
+
 }
