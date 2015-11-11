@@ -49,7 +49,10 @@ public class  TeacherController extends Controller {
     public PdfGenerator pdfGenerator;
     private static final Form<DailyReport> raportForm = Form.form(DailyReport.class);
 
-
+    /**
+     *
+     * @return
+     */
     public Result dailyReport() {
         DynamicForm dynamicForm = new DynamicForm();
         dynamicForm.bindFromRequest(request());
@@ -63,6 +66,10 @@ public class  TeacherController extends Controller {
         return ok(dailyraport.render(raportForm, fields, courseList));
     }
 
+    /**
+     *
+     * @return
+     */
     public Result saveRaport() {
         User temp = SessionHelper.currentUser(ctx());
         List<Field> fields = Field.getFinder().findList();
@@ -257,7 +264,6 @@ public class  TeacherController extends Controller {
 
     }
 
-
     /**
      * Method for see all mentors reports that are written about students
      * of which he is a teacher.
@@ -315,8 +321,7 @@ public class  TeacherController extends Controller {
                 myReports.add(allReports.get(i));
             }
         }
-
-            return ok(teacherReports.render(ReportField.getFinder().all(), myReports, Field.getFinder().all()));
+        return ok(teacherReports.render(ReportField.getFinder().all(), myReports, Field.getFinder().all()));
     }
 
 
