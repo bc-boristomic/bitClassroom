@@ -56,6 +56,11 @@ public final class CourseUser extends Model {
 //        return courseUserList;
     }
 
+    /**
+     * Find all courses which student attending
+     * @param currentUser - user
+     * @return List of Courses
+     */
     public static List<Course> allUserCourses(User currentUser) {
         List<Course> courseByUserList = new ArrayList<>();
 
@@ -71,6 +76,11 @@ public final class CourseUser extends Model {
         return courseByUserList;
     }
 
+    /**
+     * Find all users from specific course
+     * @param id - Long course id
+     * @return List of users
+     */
     public static List<User> allUserFromCourse (Long id){
 
         List<User> courseUsers = new ArrayList<>();
@@ -85,6 +95,12 @@ public final class CourseUser extends Model {
 
         return courseUsers;
     }
+
+    /**
+     * Count student in a classs
+     * @param id - Long
+     * @return Integer number of students
+     */
 
     public static Integer studentsInClass(Long id){
 
@@ -103,6 +119,12 @@ public final class CourseUser extends Model {
 
     }
 
+    /**
+     * Find course user
+     * @param u  - User
+     * @param c  - Course
+     * @return CourseUser
+     */
     public static CourseUser findCourseUser(User u , Course c){
         return finder.where().eq("user_id", u.getId()).eq("course_id", c.getId()).findUnique();
     }

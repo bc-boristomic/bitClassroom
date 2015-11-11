@@ -59,7 +59,7 @@
 								<h5><i class="fa fa-calendar-check-o"></i> Due: @post.getDate @post.getTime</h5>
 							}
 					</div>
-					<!--(User.findByName(course.getTeacher().substring(0, course.getTeacher().indexOf(' ')+ 1))).getRoles().get(0).getName.equals(UserConstants.TEACHER)-->
+
 					@if(post.getPostType == 1 && SessionHelper.currentUser(ctx()).getRoles.get(0).getName.equals(UserConstants.NAME_STUDENT) ) {
 					@if(SessionHelper.currentUser(ctx()).getHomeworkStatus == 1){
 					@if((Assignment.findCurrentAssignment(SessionHelper.currentUser(ctx()), post)).getHomeworkPostStatus == 0) {
@@ -184,29 +184,6 @@
 		var div = $("#sendStartMessage"+postId).parent();
 
 		$("#sendStartMessage"+postId).remove();
-                  // var label = document.createElement('label');
-                  // label.innerText = "STARTED";
-                  // var attr = document.createAttribute("id");
-                  // attr.value = "label" + postId;
-                  // label.setAttributeNode(attr);
-                  // var button = document.createElement('button');
-                  // button.innerText = "Finish";
-                  // var at = document.createAttribute("id");
-                  // at.value = "sendFinishMessage" + postId;
-                  // button.setAttributeNode(at);
-                  // var buttClass = document.createAttribute("class");
-                  // buttClass.value = "btn btn-primary";
-                  // button.setAttributeNode(buttClass);
-
-                   //div.append(label);
-                   //var att = document.createAttribute("onclick");
-                   //att.value = "callSecondAjax("+postId+")";
-                   //button.setAttributeNode(att);
-
-                   //div.append(button);
-                   
-
-
 
                    $.ajax({
                    	type: "post",
@@ -215,8 +192,6 @@
                    }).success(function(){
                    	location.reload();
                    })
-
-
 
                }
 
