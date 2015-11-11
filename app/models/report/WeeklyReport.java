@@ -129,6 +129,11 @@ public class WeeklyReport extends Model{
     @OneToMany(mappedBy = "weeklyReport", cascade = CascadeType.ALL)
     private List<ReportWeeklyField> fieldWList = new ArrayList<>();
 
+    /**
+     *
+     * @param field
+     * @return
+     */
     public boolean containsWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf :fieldWList) {
             if (wf.getWeeklyField().equals(field)) {
@@ -138,6 +143,11 @@ public class WeeklyReport extends Model{
         return false;
     }
 
+    /**
+     *
+     * @param field
+     * @return
+     */
     public ReportWeeklyField getWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf : fieldWList) {
             if (wf.getWeeklyField().equals(field)) {
@@ -147,12 +157,19 @@ public class WeeklyReport extends Model{
         return null;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<WeeklyReport> findAllReport(){
-
         return weeklyFinder.findList();
     }
 
-
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static WeeklyReport nextWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
         if (reports.size() > 0) {
@@ -161,6 +178,11 @@ public class WeeklyReport extends Model{
         return null;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static WeeklyReport previousWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
         if (reports.size() > 0) {

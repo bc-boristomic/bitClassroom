@@ -31,7 +31,7 @@ public final class ReportField extends Model {
     public ReportField() {
     }
 
-    /* GETTERS AND SETTERS FOR REPORTFIELD CLASS BELLOW */
+    /** GETTERS AND SETTERS FOR REPORTFIELD CLASS BELLOW */
 
     public static Finder<Long, ReportField> getFinder() {
         return finder;
