@@ -195,7 +195,6 @@ POST          /user/sendUserMail                      @controllers.Emails.sendUs
 
 # Download PDF
 
-
 GET           /pdfWeeklyTable                         @controllers.users.AdminController.pdfWeeklyTable()
 GET           /pdfDailyTable                          @controllers.users.UserController.pdfDailyTable()
 GET           /pdfDailyReports                        @controllers.users.UserController.pdfDailyReports(id: Long)
