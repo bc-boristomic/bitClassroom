@@ -130,9 +130,10 @@ public class WeeklyReport extends Model{
     private List<ReportWeeklyField> fieldWList = new ArrayList<>();
 
     /**
+     * Checks if Weekly Field already exists in database.
      *
-     * @param field
-     * @return
+     * @param field WeeklyField
+     * @return Boolean true if exist, false if not.
      */
     public boolean containsWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf :fieldWList) {
@@ -144,9 +145,10 @@ public class WeeklyReport extends Model{
     }
 
     /**
+     * Returns Report Weekly Field if Report Weekly Field name is same as field.
      *
-     * @param field
-     * @return
+     * @param field WeeklyField
+     * @return Report Weekly Field
      */
     public ReportWeeklyField getWeeklyField(WeeklyField field) {
         for (ReportWeeklyField wf : fieldWList) {
@@ -158,17 +160,18 @@ public class WeeklyReport extends Model{
     }
 
     /**
-     *
-     * @return
+     * Finds all Weekly reports
+     * @return all Weekly Reports
      */
     public List<WeeklyReport> findAllReport(){
         return weeklyFinder.findList();
     }
 
     /**
+     * Finds next WeeklyReport from all reports.
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return WeeklyReport
      */
     public static WeeklyReport nextWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
@@ -179,9 +182,10 @@ public class WeeklyReport extends Model{
     }
 
     /**
+     * Finds previous WeeklyReport from all reports.
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return WeeklyReport
      */
     public static WeeklyReport previousWeeklyReport(Long id) {
         List<WeeklyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();

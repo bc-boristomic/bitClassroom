@@ -125,7 +125,7 @@ public final class DailyReport extends Model {
     private List<ReportField> fieldList = new ArrayList<>();
 
     /**
-     * Checks if field already exists in database.
+     * Checks if Field already exists in database.
      *
      * @param field Field
      * @return Boolean true if exist, false if not.
