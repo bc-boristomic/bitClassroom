@@ -6,6 +6,7 @@ import models.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -133,6 +134,11 @@ public final class DailyReport extends Model {
         return false;
     }
 
+    /**
+     *
+     * @param field
+     * @return
+     */
     public ReportField getField(Field field) {
         for (ReportField rf : fieldList) {
             if (rf.getField().equals(field)) {
@@ -142,8 +148,12 @@ public final class DailyReport extends Model {
         return null;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static DailyReport findDailyReportById(Long id) {
-
         List<DailyReport> report = finder.where().eq("id", id).findList();
         if (report.size() == 0) {
             return null;
@@ -151,19 +161,43 @@ public final class DailyReport extends Model {
         return (DailyReport) report.get(0);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFormattedCreationDate() {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm (dd.MM.yyyy)");
         return dtf.print(createdDate);
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     public static String formaterDate(String date) {
-        String[] parts = date.split("-");
-        String year = parts[0];
-        String month = parts[1];
-        String day = parts[2];
-        return day + "." + month + "." + year;
+        Logger.info(date);
+        if (date.contains("-")) {
+            String[] parts = date.split("-");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        } else if (date.contains("/")) {
+            String[] parts = date.split("/");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+            return day + "." + month + "." + year;
+        }
+        return date;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static DailyReport previousReport(Long id) {
         List<DailyReport> reports = getFinder().where().lt("id", id).orderBy("id Desc").findList();
         if (reports.size() > 0) {
@@ -172,6 +206,11 @@ public final class DailyReport extends Model {
         return null;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static DailyReport nextReport(Long id) {
         List<DailyReport> reports = getFinder().where().gt("id", id).orderBy("id asc").findList();
         if (reports.size() > 0) {
