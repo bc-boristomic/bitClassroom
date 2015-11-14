@@ -2,25 +2,15 @@ package controllers.course;
 
 import helpers.Authorization;
 import helpers.SessionHelper;
-
-import models.Post;
 import models.course.Course;
 import models.course.CourseUser;
 import models.user.User;
-import play.data.Form;
-import play.libs.F;
-import play.mvc.*;
-import views.html.courses.courseList;
-import views.html.courses.courseView;
-import views.html.courses.courseView;
-
-import models.course.Course;
-import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import views.html.courses.courseList;
-import java.util.List;
-import views.html.*;
+import views.html.courses.courseView;
+import views.html.courses.redeemcode;
 
 /**
  * Created by Medina and Senadin on 16/09/15.
@@ -36,6 +26,10 @@ public class CourseController extends Controller {
         return ok(courseList.render(Course.findAll()));
     }
 
+    @Security.Authenticated(Authorization.FullyActiveUser.class)
+    public Result redeemCode(){
+        return ok(redeemcode.render());
+    }
     /**
      * Shows on the page list of users who are going to the course
      */

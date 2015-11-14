@@ -35,6 +35,12 @@ create table course (
   constraint pk_course primary key (id))
 ;
 
+create table course_coupon (
+  id                        bigint auto_increment not null,
+  code                      varchar(255),
+  constraint pk_course_coupon primary key (id))
+;
+
 create table course_user (
   id                        bigint auto_increment not null,
   status                    integer(1),
@@ -132,8 +138,11 @@ create table post (
 create table premium_course (
   id                        bigint auto_increment not null,
   price                     varchar(255),
-  quantity                  varchar(255),
+  quantity_bitbay           integer,
+  quantityBooking           integer,
   course_id                 bigint,
+  bit_bay                   varchar(255),
+  bit_booking               varchar(255),
   constraint uq_premium_course_course_id unique (course_id),
   constraint pk_premium_course primary key (id))
 ;
@@ -291,6 +300,8 @@ drop table assignment;
 drop table cloud_file;
 
 drop table course;
+
+drop table course_coupon;
 
 drop table course_user;
 

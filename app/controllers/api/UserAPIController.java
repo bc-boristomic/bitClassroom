@@ -38,7 +38,7 @@ public class UserAPIController extends Controller {
         map.put("role",user.getRoles().get(0).getName());
         map.put("user_id",user.getId());
         JsonNode jsonObject = Json.toJson(map);
-        response().setHeader("token",user.getToken());
+//        response().setHeader("token",user.getToken());
         return ok(jsonObject);
     }
 

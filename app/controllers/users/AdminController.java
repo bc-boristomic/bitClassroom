@@ -1,7 +1,12 @@
 package controllers.users;
 
 import com.avaje.ebean.Ebean;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import helpers.Authorization;
+import helpers.ServiceRequest;
 import helpers.SessionHelper;
 import it.innove.play.pdf.PdfGenerator;
 import models.*;
@@ -14,6 +19,7 @@ import models.user.Mentorship;
 import models.user.Role;
 import models.user.User;
 import org.joda.time.DateTime;
+import org.json.simple.JSONObject;
 import play.Configuration;
 import play.Logger;
 import play.Play;
@@ -42,11 +48,14 @@ import views.html.admins.setingsweeklyreport;
 import views.html.pdf.pdfopenreport;
 import views.html.pdf.weeklypdf;
 import views.html.users.util.faq;
+
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
+import org.json.*;
 
 /**
  * Created by NN on 9/12/15.
@@ -75,7 +84,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Method for add new user in data base
+     * Method for add new user in data base
+     *
      * @return - view for add new user with input form.
      */
     public Result addNewUser() {
@@ -84,6 +94,7 @@ public class AdminController extends Controller {
 
     /**
      * Method for see all user in the classroom.
+     *
      * @return - list of all user wher is available to delete specified user
      */
     public Result listOfUser() {
@@ -93,9 +104,10 @@ public class AdminController extends Controller {
 
     /**
      * Method for set users new type of role.
+     *
      * @param id - Long user id, used for find selected User
      */
-    public Result editUserRole(Long id){
+    public Result editUserRole(Long id) {
         User user = User.findById(id);
         return ok(views.html.admins.editUserRole.render(userForm, user));
     }
@@ -132,44 +144,44 @@ public class AdminController extends Controller {
         String student = boundForm.field("student").value();
         String tmpRole = boundForm.field("type").value();
 
-            List<Role> roles = new ArrayList<>();
-            Long role = null;
-            if (tmpRole != null) {
-                if ("1".equals(tmpRole)) {
-                    role = 1L;
-                    Role r = new Role(role, UserConstants.NAME_ADMIN);
-                    roles.add(r);
-                } else if ("2".equals(tmpRole)) {
-                    role = 2L;
-                    Role r = new Role(role, UserConstants.NAME_TEACHER);
-                    roles.add(r);
-                } else if ("3".equals(tmpRole)) {
-                    role = 3L;
-                    Role r = new Role(role, UserConstants.NAME_MENTOR);
-                    roles.add(r);
-                } else if ("4".equals(tmpRole)) {
-                    role = 4L;
-                    Role r = new Role(role, UserConstants.NAME_STUDENT);
-                    roles.add(r);
-                    if(type.equals("save")) {
-                        u = new User();
-                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
-                    }else {
-                        u = User.findByNick(type);
-                        u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
-                    }
-                } else if ("5".equals(tmpRole)) {
-                    roles.add(Roles.ADMIN);
-                    roles.add(Roles.TEACHER);
+        List<Role> roles = new ArrayList<>();
+        Long role = null;
+        if (tmpRole != null) {
+            if ("1".equals(tmpRole)) {
+                role = 1L;
+                Role r = new Role(role, UserConstants.NAME_ADMIN);
+                roles.add(r);
+            } else if ("2".equals(tmpRole)) {
+                role = 2L;
+                Role r = new Role(role, UserConstants.NAME_TEACHER);
+                roles.add(r);
+            } else if ("3".equals(tmpRole)) {
+                role = 3L;
+                Role r = new Role(role, UserConstants.NAME_MENTOR);
+                roles.add(r);
+            } else if ("4".equals(tmpRole)) {
+                role = 4L;
+                Role r = new Role(role, UserConstants.NAME_STUDENT);
+                roles.add(r);
+                if (type.equals("save")) {
+                    u = new User();
+                    u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
+                } else {
+                    u = User.findByNick(type);
+                    u.setStudentStatus(UserConstants.DONT_HAVE_MENTOR);
                 }
-                try {
-                    //role = Long.parseLong(tmpRole);
-                } catch (NumberFormatException e) {
-                    Ebean.save(new ErrorLog(e.getMessage()));
-                }
+            } else if ("5".equals(tmpRole)) {
+                roles.add(Roles.ADMIN);
+                roles.add(Roles.TEACHER);
             }
+            try {
+                //role = Long.parseLong(tmpRole);
+            } catch (NumberFormatException e) {
+                Ebean.save(new ErrorLog(e.getMessage()));
+            }
+        }
 
-        if(type.equals("save")){
+        if (type.equals("save")) {
             u = new User();
             u.setFirstName(fname);
             u.setLastName(lname);
@@ -196,7 +208,7 @@ public class AdminController extends Controller {
             flash("warning", "Something went wrong, user could not be saved to database.");
             Ebean.save(new ErrorLog("Could not save user: " + u.getEmail()));
             return redirect("/admin");
-        }else{
+        } else {
 
             User tmp = User.findByNick(type);
             tmp.setNickName(fname);
@@ -294,7 +306,7 @@ public class AdminController extends Controller {
         model.setName(name1);
         try {
             model.save();
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             flash("warning", "Name field already exist");
             return redirect("/admin/createdaily");
         }
@@ -310,6 +322,8 @@ public class AdminController extends Controller {
      * @return
      */
     public Result addCourse() {
+        //Course c = PremiumCourse.findCourseByPremium("1");
+        //Logger.info("----------------" + c.getName());
         return ok(views.html.admins.fillClassDetails.render(User.getFinder().orderBy().asc("first_name").findList(), courseForm));
     }
 
@@ -329,13 +343,11 @@ public class AdminController extends Controller {
         String getTeacher = boundForm.field("type").value();
         String teacher = getTeacher.split(" ")[0] + " " + getTeacher.split(" ")[1];
         String checkBox = boundForm.field("premium").value();
-        Logger.info(checkBox);
-        
         String teacherId = getTeacher.split(" ")[2];
 
-        List<Course> courses =  Course.findAll();
-        for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getStatus() == 1) {
+        List<Course> courses = Course.findAll();
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getStatus() == 1) {
                 if (courses.get(i).getName().equals(name) && courses.get(i).getDescription().equals(description) && courses.get(i).getStatus() != 2) {
                     flash("warning", "Course already exist");
                     return redirect("/admin/createcourse");
@@ -353,15 +365,16 @@ public class AdminController extends Controller {
         Http.MultipartFormData data = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart filePart = data.getFile("image");
 
+        PremiumCourse premiumCourse = null;
         try {
-                course.save();
+            course.save();
 
-            if("1".equals(checkBox)){
+            if ("1".equals(checkBox)) {
 
                 String price = boundForm.field("price").value();
                 String quantity = boundForm.field("quantity").value();
 
-                PremiumCourse premiumCourse = new PremiumCourse(price, course, quantity);
+                premiumCourse = new PremiumCourse(price, course, Integer.parseInt(quantity)-10,10);
                 premiumCourse.save();
 
             }
@@ -379,12 +392,27 @@ public class AdminController extends Controller {
             course.update();
         }
 
+        if (checkBox != null && checkBox.equals("1")) {
+            JSONObject json = new JSONObject();
+            json.put("course_name", course.getName());
+            json.put("course_description", course.getDescription());
+            json.put("course_price", boundForm.field("price").value());
+            json.put("course_quantity", Integer.parseInt(boundForm.field("quantity").value())-10 + "");
+            if (course.getImage() != null) {
+                json.put("course_image_url", course.getImage().image_url);
+            } else {
+                json.put("course_image_url", "no_image");
+            }
+            ServiceRequest.post("http://10.0.82.161:9000/product/new/bitclassroomcourse", json.toString(), checkRequest(premiumCourse));
+            ServiceRequest.post("http://10.0.82.121:9000/api/saveCourse", json.toString(), checkRequest(premiumCourse));
+        }
+
         CourseUser cu = new CourseUser();
         cu.setCourse(course);
         cu.setStatus(User.findById(Long.parseLong(teacherId)).getStatus());
         cu.setUser(User.findById(Long.parseLong(teacherId)));
 
-        CourseUser  adminCourse = new CourseUser();
+        CourseUser adminCourse = new CourseUser();
         adminCourse.setCourse(course);
         adminCourse.setStatus(2);
         adminCourse.setUser(SessionHelper.currentUser(ctx()));
@@ -397,10 +425,32 @@ public class AdminController extends Controller {
             return redirect("/admin/createcourse");
         }
 
-
-
         flash("success", "You successfully added new course.");
         return redirect("/admin/createcourse");
+    }
+
+
+    public static Callback checkRequest(PremiumCourse premiumCourse) {
+        Logger.info("uusaooooo");
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                flash("error", "Couldn't send request to bitBay or bitBooking");
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                String responseJSON = response.body().string();
+                Logger.info("-------" + responseJSON + "------");
+                if (responseJSON.indexOf("bitbay") != -1) {
+                    premiumCourse.premiumIdBitBay = responseJSON.replaceAll("\"","");
+                } else {
+                    premiumCourse.premiumIdBitBooking = responseJSON.replaceAll("\"","");
+                }
+                premiumCourse.update();
+            }
+        };
     }
 
     /**
@@ -425,8 +475,8 @@ public class AdminController extends Controller {
 
 
         Course c = cu.getCourse();
-        for(int i = 0; i < c.getPosts().size(); i++){
-            if(c.getPosts().get(i).getPostType() == 1){
+        for (int i = 0; i < c.getPosts().size(); i++) {
+            if (c.getPosts().get(i).getPostType() == 1) {
                 Assignment a = new Assignment();
                 a.setUser(cu.getUser());
                 a.setPost(c.getPosts().get(i));
@@ -439,7 +489,7 @@ public class AdminController extends Controller {
         User u = Mentorship.findMentorByUser(cu.getUser());
         List<User> courseUsers = CourseUser.allUserFromCourse(cu.getCourse().getId());
 
-        if( u != null) {
+        if (u != null) {
             for (int i = 0; i < courseUsers.size(); i++) {
                 if (courseUsers.get(i).getId() == u.getId()) {
                     return ok("");
@@ -447,7 +497,7 @@ public class AdminController extends Controller {
             }
         }
 
-        if(u != null){
+        if (u != null) {
             CourseUser cc = new CourseUser();
             cc.setCourse(cu.getCourse());
             cc.setStatus(Integer.parseInt(s));
@@ -461,10 +511,11 @@ public class AdminController extends Controller {
 
     /**
      * Send notification when admin approved user in the class, sender is current admin.
-     * @param course - Applied course, used for get course name in private message
+     *
+     * @param course  - Applied course, used for get course name in private message
      * @param student - A student who has applied, used for private messahe reciver,
      */
-    public void approvedNotification ( Course course, User student){
+    public void approvedNotification(Course course, User student) {
 
         String subject = "Course information";
         String content = "Your application for access to the course" + course.getName() + " is accepted";
@@ -536,7 +587,7 @@ public class AdminController extends Controller {
         student.setStudentStatus(UserConstants.HAVE_MENTOR);
         student.update();
 
-        mentorshipNotification(mentor , student);
+        mentorshipNotification(mentor, student);
 
         Mentorship mentorship = new Mentorship();
         mentorship.setMentor(mentor);
@@ -546,19 +597,19 @@ public class AdminController extends Controller {
         mentorship.setReportDate(DateTime.now());
         mentorship.save();
 
-            List<Course> courses = CourseUser.allUserCourses(student);
-            for(int i = 0; i < courses.size(); i++){
-                CourseUser courseUser = CourseUser.findCourseUser(mentor, courses.get(i));
-                if(courseUser == null){
-                    CourseUser cc = new CourseUser();
-                    cc.setCourse(courses.get(i));
-                    cc.setStatus(2);
-                    cc.setUser(mentor);
-                    cc.save();  
-                }
-
-
+        List<Course> courses = CourseUser.allUserCourses(student);
+        for (int i = 0; i < courses.size(); i++) {
+            CourseUser courseUser = CourseUser.findCourseUser(mentor, courses.get(i));
+            if (courseUser == null) {
+                CourseUser cc = new CourseUser();
+                cc.setCourse(courses.get(i));
+                cc.setStatus(2);
+                cc.setUser(mentor);
+                cc.save();
             }
+
+
+        }
 
 
         flash("success", String.format("Successfully assigned %s %s to %s %s.", mentor.getFirstName(), mentor.getLastName(), student.getFirstName(), student.getLastName()));
@@ -570,9 +621,8 @@ public class AdminController extends Controller {
      * Method for send auto message to mentor and student,
      * to inform them about working together.
      *
-     * @param mentor - selected Mentor user
+     * @param mentor  - selected Mentor user
      * @param student - selected Student user
-     *
      */
     public void mentorshipNotification(User mentor, User student) {
 
@@ -593,17 +643,19 @@ public class AdminController extends Controller {
 
     /**
      * Method for add new teacher in selected course.
+     *
      * @return - view with list of active course and available teacher
      */
-    public Result teachers(){
+    public Result teachers() {
         return ok(views.html.admins.addteacher.render(User.getFinder().orderBy().asc("first_name").findList(), Course.getFinder().where().eq("status", 1).findList()));
     }
 
     /**
      * Method for save new teacher for selected course
+     *
      * @return - redirect on same page
      */
-    public Result addTeacher(){
+    public Result addTeacher() {
         DynamicForm form = Form.form().bindFromRequest();
         String teacher = form.get("teacher");
         String course = form.get("course");
@@ -621,8 +673,8 @@ public class AdminController extends Controller {
         }
 
         List<User> courseUsers = CourseUser.allUserFromCourse(Course.findById(cou).getId());
-        for(int i = 0; i < courseUsers.size(); i++){
-            if(courseUsers.get(i).getId() == User.findById(tea).getId()){
+        for (int i = 0; i < courseUsers.size(); i++) {
+            if (courseUsers.get(i).getId() == User.findById(tea).getId()) {
                 flash("warning", "Teacher is already teaching on the course");
                 return redirect("/admin/addnewteacher");
             }
@@ -641,6 +693,7 @@ public class AdminController extends Controller {
 
     /**
      * Renders table with information about current mentorship status.
+     *
      * @return - table of active mentorship
      */
     public Result seeMentorsAndStudents() {
@@ -649,15 +702,16 @@ public class AdminController extends Controller {
 
     /**
      * Method for get list of all mentors in the classroom.
+     *
      * @return- table of all mentors in classroom
      */
-    public Result  seeAllMentors(){
+    public Result seeAllMentors() {
 
         List<User> users = User.findAll();
         List<User> mentors = new ArrayList<>();
 
-        for( int i = 0; i < users.size(); i++){
-            if( users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)){
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getRoles().get(0).getName().equals(UserConstants.NAME_MENTOR)) {
                 mentors.add(users.get(i));
             }
         }
@@ -667,27 +721,27 @@ public class AdminController extends Controller {
 
     /**
      * Method for get list of inactive mentors.
-     *
+     * <p>
      * First we find all active mentors and then we find all them inbox messages.
      * If they have not read messages older than two days , it is automatically added to the inactive mentors list,
      * then like admin we have possibility to send message.
      */
-    public Result inactiveMentors(){
+    public Result inactiveMentors() {
 
         Logger.info(DateTime.now().dayOfWeek().getAsShortText());
         List<User> mentors = new ArrayList<>();
         List<User> users = User.findAll();
-        for ( int i = 0; i < users.size(); i++){
-            if( users.get(i).getStudentStatus() != null && users.get(i).getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getStudentStatus() != null && users.get(i).getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)) {
                 mentors.add(users.get(i));
             }
         }
-        for(int i = 0; i < mentors.size(); i++){
-            if( mentors.get(i).getWeeklyReportStatus() != 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Fri")){
+        for (int i = 0; i < mentors.size(); i++) {
+            if (mentors.get(i).getWeeklyReportStatus() != 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Fri")) {
 
                 sendMentorNotification(mentors.get(i));
 
-            }else if( mentors.get(i).getWeeklyReportStatus() == 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Sat")){
+            } else if (mentors.get(i).getWeeklyReportStatus() == 2 && DateTime.now().dayOfWeek().getAsShortText().equals("Sat")) {
 
                 mentors.get(i).setWeeklyReportStatus(1);
                 mentors.get(i).update();
@@ -695,17 +749,17 @@ public class AdminController extends Controller {
             }
         }
 
-        List<PrivateMessage>  message = PrivateMessage.findAllMessage();
+        List<PrivateMessage> message = PrivateMessage.findAllMessage();
         HashSet<User> inactiveMentors = new HashSet<>();
 
-        for( int i = 0; i < message.size(); i++){
-            if(message.get(i).getStatus() == 0 && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)){
+        for (int i = 0; i < message.size(); i++) {
+            if (message.get(i).getStatus() == 0 && message.get(i).getReceiver().getStudentStatus().equals(UserConstants.ACTIVE_MENTOR)) {
                 DateTime start = new DateTime();
                 Long result = start.getMillis() - message.get(i).getCreationDate().getMillis();
-                if(result > 60000) {
+                if (result > 60000) {
                     inactiveMentors.add(message.get(i).getReceiver());
-                    if(!inactiveMentors.add(message.get(i).getReceiver())){
-                        message.get(i).getReceiver().setUnreadMessage(message.get(i).getReceiver().getUnreadMessage()+1);
+                    if (!inactiveMentors.add(message.get(i).getReceiver())) {
+                        message.get(i).getReceiver().setUnreadMessage(message.get(i).getReceiver().getUnreadMessage() + 1);
                     }
                 }
             }
@@ -759,9 +813,9 @@ public class AdminController extends Controller {
         DynamicForm form = Form.form().bindFromRequest();
         Course course = Course.getFinder().byId(id);
         String s = form.data().get("pressed");
-        if( Integer.parseInt(s) == 2){
+        if (Integer.parseInt(s) == 2) {
             List<User> users = CourseUser.allUserFromCourse(id);
-            for (int i = 0; i < users.size(); i++){
+            for (int i = 0; i < users.size(); i++) {
                 sendAutoMessage(users.get(i).getId(), course);
             }
 
@@ -781,7 +835,8 @@ public class AdminController extends Controller {
 
     /**
      * Method for send message to users when course is deleted
-     * @param id - User id, used for message receiver.
+     *
+     * @param id     - User id, used for message receiver.
      * @param course - deleted course, used for get course name.
      * @return
      */
@@ -790,7 +845,7 @@ public class AdminController extends Controller {
         User sender = SessionHelper.currentUser(ctx());
         User receiver = User.findById(id);
         String subject = "Information";
-        String content = "Course " + course.getName()  + " is deleted by admin " + sender.getFirstName() +" " + sender.getLastName() +".";
+        String content = "Course " + course.getName() + " is deleted by admin " + sender.getFirstName() + " " + sender.getLastName() + ".";
 
         PrivateMessage privMessage = PrivateMessage.create(subject, content, sender, receiver);
         privMessage.setStatus(0);
@@ -802,9 +857,10 @@ public class AdminController extends Controller {
 
     /**
      * Method for send notification to mentor when due time pass for weekly report
+     *
      * @param user
      */
-    public void sendMentorNotification (User user){
+    public void sendMentorNotification(User user) {
 
         User sender = SessionHelper.currentUser(ctx());
         User receiver = user;
@@ -829,6 +885,7 @@ public class AdminController extends Controller {
 
     /**
      * View with table filled with all deleted course.
+     *
      * @return
      */
     public Result deletedCourses() {
@@ -860,17 +917,19 @@ public class AdminController extends Controller {
 
     /**
      * Method for add new question and answer in FAQ view.
+     *
      * @return
      */
-    public Result setupFAQ (){
+    public Result setupFAQ() {
         return ok(faqSetup.render());
     }
 
     /**
      * Method for save new question and answer to FAq page, redirect to FAQ page.
+     *
      * @return
      */
-    public Result saveFAQ(){
+    public Result saveFAQ() {
 
         DynamicForm form = Form.form().bindFromRequest();
         String question = form.get("question");
@@ -884,10 +943,11 @@ public class AdminController extends Controller {
 
     /**
      * Method for edit selected FAQ
+     *
      * @param id - id of selected FAQ object, used for update this FAQ object
      * @return - on FAQ page
      */
-    public Result upDateFaq(Long id){
+    public Result upDateFaq(Long id) {
 
         DynamicForm form = Form.form().bindFromRequest();
         String question = form.get("question");
@@ -904,10 +964,11 @@ public class AdminController extends Controller {
 
     /**
      * Method for select specified FAQ for edit
+     *
      * @param id - selected FAQ id.
      * @return
      */
-    public Result editFAQ(Long id){
+    public Result editFAQ(Long id) {
         Faq faq = Faq.findFaqById(id);
         return ok(faqEdit.render(faq));
 
@@ -915,10 +976,11 @@ public class AdminController extends Controller {
 
     /**
      * Method for delete selected FAQ.
+     *
      * @param id - of selected course
      * @return - List of all FAQ
      */
-    public Result deleteFAQ(Long id){
+    public Result deleteFAQ(Long id) {
 
         Logger.info(id.toString());
         Faq.findFaqById(id).delete();
@@ -935,7 +997,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Deletes specific Weekly Report, Report is found by fildId.
+     * Deletes specific Weekly Report, Report is found by fildId.
+     *
      * @param id Long.
      * @return redirect to same page.
      */
@@ -945,7 +1008,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Deletes specific field, fild is found by fildId.
+     * Deletes specific field, fild is found by fildId.
+     *
      * @param id Long.
      * @return redirect to same page.
      */
@@ -955,7 +1019,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Deletes specific field, fild is found by fildId.
+     * Deletes specific field, fild is found by fildId.
+     *
      * @param id Long.
      * @return redirect to same page.
      */
@@ -965,7 +1030,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Renders page for creating new Field
+     * Renders page for creating new Field
+     *
      * @return ok
      */
     public Result genWeeklyField() {
@@ -973,7 +1039,8 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Saves new field to database. Field name is take from weekly field form
+     * Saves new field to database. Field name is take from weekly field form
+     *
      * @return redirect to same page
      */
     public Result saveWeeklyField() {
@@ -984,14 +1051,15 @@ public class AdminController extends Controller {
         wf.setName(nameWF);
         try {
             wf.save();
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             flash("warning", "Name field already exist");
         }
         return redirect("/admin/createweekly");
     }
 
     /**
-     *Changes first letter to uppersasse
+     * Changes first letter to uppersasse
+     *
      * @param name String
      * @return String
      */
@@ -1013,15 +1081,16 @@ public class AdminController extends Controller {
     }
 
     /**
-     *Shortens given string to given input int length, and adds three dots
-     * @param text String
+     * Shortens given string to given input int length, and adds three dots
+     *
+     * @param text   String
      * @param length int
      * @return String
      */
-    public static String cutText(String text, int length){
+    public static String cutText(String text, int length) {
         if (text.length() > length) {
             text = text.substring(0, length);
-            return text + "..." ;
+            return text + "...";
         }
         return text;
     }

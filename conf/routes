@@ -156,6 +156,7 @@ GET           /student/works/status                   @controllers.users.Student
 # 				::COURSE ROUTES BELLOW ::
 
 GET           /user/courses                           @controllers.course.CourseController.allCourses()
+GET           /user/courses/redeemcode                @controllers.course.CourseController.redeemCode()
 GET           /user/class/:id                         @controllers.course.CourseController.course(id: Long)
 
 # 				:: POST ROUTES BELLOW ::
@@ -243,5 +244,6 @@ POST          /api/messages                           @controllers.api.UserAPICo
 POST          /api/send_message                       @controllers.api.UserAPIController.sendMessage()
 GET           /api/calendar/:id                       @controllers.api.UserAPIController.calendar(id:Long)
 
-
+#Selling courses
+POST          /course/sold                            @controllers.course.SellCourses.payCourses()
 

@@ -91,4 +91,34 @@ public class MailHelper {
             Logger.warn("Email error: " + e);
         }
     }
+
+    public static void sendCoupon(String email, String message) {
+
+        try {
+            HtmlEmail mail = new HtmlEmail();
+            mail.setSubject("bitClassroom coupon!");
+            mail.setFrom("bitClassroom <" + Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV") + ">");
+            mail.addTo("Contact <" + Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV") + ">");
+            mail.addTo(email);
+            mail.setMsg(message);
+            mail.setHtmlMsg(String
+                    .format("<html><body><strong> %s </strong> <p> %s </p> <p> %s </p></body></html>",
+                            "Thank you for buying our coupon!",
+                            "To activate your coupon you must have email address like name.surname@bitcamp.ba and contact our administrator to " +
+                                    "approve you on our page. After that you can enter following code and start your course. Code:", message));
+            mail.setHostName("smtp.gmail.com");
+            mail.setStartTLSEnabled(true);
+            mail.setSSLOnConnect(true);
+            mail.setAuthenticator(new DefaultAuthenticator(
+                    Play.application().configuration().reference().getString("EMAIL_USERNAME_ENV"),
+                    Play.application().configuration().reference().getString("EMAIL_PASSWORD_ENV")
+            ));
+            mail.send();
+            Logger.info("----------MAIL SENT------");
+        } catch (Exception e) {
+            Logger.warn("Email error: " + e);
+        }
+    }
+
+
 }
